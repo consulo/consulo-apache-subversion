@@ -16,17 +16,6 @@
 
 package org.jetbrains.idea.svn.branchConfig;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.svn.SvnVcs;
 import com.intellij.lifecycle.PeriodicalTasksCloser;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -46,13 +35,16 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.vcs.ProgressManagerQueue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.svn.SvnVcs;
+
+import java.io.File;
+import java.util.*;
 
 /**
  * @author yole
  */
-@State(name = "SvnBranchConfigurationManager", storages = {
-		@Storage(file = StoragePathMacros.PROJECT_FILE)
-})
+@State(name = "SvnBranchConfigurationManager", storages = @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/misc.xml"))
 public class SvnBranchConfigurationManager implements PersistentStateComponent<SvnBranchConfigurationManager.ConfigurationBean>
 {
 	private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationManager");
