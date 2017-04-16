@@ -17,12 +17,15 @@
 
 package org.jetbrains.idea.svn;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeSet;
-
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.components.*;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Comparing;
+import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vcs.changes.VcsAnnotationRefresher;
+import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.api.Depth;
@@ -43,24 +46,14 @@ import org.tmatesoft.svn.core.internal.wc.SVNConfigFile;
 import org.tmatesoft.svn.core.internal.wc.SVNFileUtil;
 import org.tmatesoft.svn.core.wc.ISVNOptions;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.RoamingType;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.changes.VcsAnnotationRefresher;
-import com.intellij.util.containers.ContainerUtil;
 
-@State(name = "SvnConfiguration", roamingType = RoamingType.DISABLED, storages = {
-		@Storage(file = StoragePathMacros.WORKSPACE_FILE)
-})
+import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeSet;
+
+@State(name = "SvnConfiguration", storages = @Storage(file = StoragePathMacros.WORKSPACE_FILE))
 public class SvnConfiguration implements PersistentStateComponent<SvnConfigurationState>
 {
 
