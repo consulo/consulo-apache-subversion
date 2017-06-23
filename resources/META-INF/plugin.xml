@@ -9,7 +9,6 @@
 	<project-components>
 		<component>
 			<implementation-class>org.jetbrains.idea.svn.SvnFileUrlMappingImpl</implementation-class>
-			<option name="workspace" value="true"/>
 		</component>
 	</project-components>
 
