@@ -15,12 +15,37 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.List;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.browse.DirectoryEntry;
+import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
+import org.jetbrains.idea.svn.history.SvnFileRevision;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.wc.SVNRevision;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vcs.vfs.VcsFileSystem;
 import com.intellij.openapi.vcs.vfs.VcsVirtualFile;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -32,27 +57,6 @@ import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.EditSourceOnDoubleClickHandler;
 import com.intellij.util.NotNullFunction;
 import com.intellij.util.containers.Convertor;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.browse.DirectoryEntry;
-import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
-import org.jetbrains.idea.svn.history.SvnFileRevision;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.wc.SVNRevision;
-
-import javax.swing.*;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
 
 /**
  * @author alex
@@ -276,8 +280,9 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
   }
 
   @Nullable
-  public Object getData(@NonNls String dataId) {
-    if (CommonDataKeys.NAVIGATABLE.is(dataId)) {
+  @Override
+  public Object getData(Key<?> dataId) {
+    if (CommonDataKeys.NAVIGATABLE == dataId) {
       final Project project = myVCS.getProject();
       if (project == null || project.isDefault()) {
         return null;
@@ -295,7 +300,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
           navigate(project, vcsFile, requestFocus);
         }
       } : null;
-    } else if (CommonDataKeys.PROJECT.is(dataId)) {
+    } else if (CommonDataKeys.PROJECT == dataId) {
       return myVCS.getProject();
     }
     return null;

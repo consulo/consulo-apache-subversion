@@ -15,6 +15,9 @@
  */
 package org.jetbrains.idea.svn.history;
 
+import java.util.List;
+
+import org.jetbrains.idea.svn.SvnVcs;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -27,9 +30,6 @@ import com.intellij.openapi.vcs.history.VcsFileRevision;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.Consumer;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.idea.svn.SvnVcs;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,7 +52,7 @@ public class SvnEditCommitMessageFromFileHistoryAction extends AnAction {
     final VirtualFile revisionVirtualFile = e.getData(VcsDataKeys.VCS_VIRTUAL_FILE);
     if (revision == null || revisionVirtualFile == null) return;
     final SvnFileRevision svnFileRevision = (SvnFileRevision) revision;
-    final Consumer<String> listener = VcsDataKeys.REMOTE_HISTORY_CHANGED_LISTENER.getData(e.getDataContext());
+    final Consumer<String> listener = e.getData(VcsDataKeys.REMOTE_HISTORY_CHANGED_LISTENER);
     SvnEditCommitMessageAction.askAndEditRevision(svnFileRevision.getRevision().getNumber(), svnFileRevision.getCommitMessage(),
       (SvnRepositoryLocation) svnFileRevision.getChangedRepositoryPath(), project, new Consumer<String>() {
       @Override

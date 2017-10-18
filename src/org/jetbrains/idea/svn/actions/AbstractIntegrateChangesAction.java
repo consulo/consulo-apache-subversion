@@ -15,12 +15,6 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangesBrowserUseCase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
@@ -28,6 +22,15 @@ import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
 import org.jetbrains.idea.svn.integrate.MergerFactory;
 import org.jetbrains.idea.svn.integrate.SelectedCommittedStuffChecker;
 import org.jetbrains.idea.svn.integrate.SvnIntegrateChangesActionPerformer;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vcs.changes.committed.CommittedChangesBrowserUseCase;
 
 public abstract class AbstractIntegrateChangesAction<T extends SelectedCommittedStuffChecker> extends AnAction implements DumbAware {
   private final boolean myCheckUseCase;
@@ -43,7 +46,7 @@ public abstract class AbstractIntegrateChangesAction<T extends SelectedCommitted
 
   public final void update(final AnActionEvent e) {
     final Project project = e.getProject();
-    final CommittedChangesBrowserUseCase useCase = CommittedChangesBrowserUseCase.DATA_KEY.getData(e.getDataContext());
+    final CommittedChangesBrowserUseCase useCase = e.getData(CommittedChangesBrowserUseCase.DATA_KEY);
     final Presentation presentation = e.getPresentation();
 
     if ((project == null) || (myCheckUseCase) && ((useCase == null) || (! CommittedChangesBrowserUseCase.COMMITTED.equals(useCase)))) {
@@ -80,8 +83,7 @@ public abstract class AbstractIntegrateChangesAction<T extends SelectedCommitted
   protected abstract String getDialogTitle();
 
   public void actionPerformed(final AnActionEvent e) {
-    final DataContext dataContext = e.getDataContext();
-    final Project project = CommonDataKeys.PROJECT.getData(dataContext);
+    final Project project = e.getProject();
 
     final T checker = createChecker();
     checker.execute(e);

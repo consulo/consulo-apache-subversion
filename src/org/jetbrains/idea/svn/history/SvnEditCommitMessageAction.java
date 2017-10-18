@@ -15,11 +15,19 @@
  */
 package org.jetbrains.idea.svn.history;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.svn.SvnPropertyKeys;
+import org.jetbrains.idea.svn.SvnUtil;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.properties.PropertyValue;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.wc.SVNRevision;
+import org.tmatesoft.svn.core.wc2.SvnTarget;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
@@ -35,16 +43,6 @@ import com.intellij.openapi.vcs.changes.ChangeList;
 import com.intellij.openapi.vcs.changes.committed.CommittedChangesCache;
 import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
 import com.intellij.util.Consumer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.svn.SvnPropertyKeys;
-import org.jetbrains.idea.svn.SvnUtil;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.properties.PropertyValue;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.wc.SVNRevision;
-import org.tmatesoft.svn.core.wc2.SvnTarget;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,14 +53,13 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
 public class SvnEditCommitMessageAction extends AnAction {
   @Override
   public void actionPerformed(AnActionEvent e) {
-    final DataContext dc = e.getDataContext();
-    final ChangeList[] lists = VcsDataKeys.CHANGE_LISTS.getData(dc);
+    final ChangeList[] lists = e.getData(VcsDataKeys.CHANGE_LISTS);
     final boolean enabled = lists != null && lists.length == 1 && lists[0] instanceof SvnChangeList;
     if (! enabled) return;
     final SvnChangeList svnList = (SvnChangeList) lists[0];
-    Project project = CommonDataKeys.PROJECT.getData(dc);
+    Project project = e.getProject();
     project = project == null ? ProjectManager.getInstance().getDefaultProject() : project;
-    final Consumer<String> listener = VcsDataKeys.REMOTE_HISTORY_CHANGED_LISTENER.getData(dc);
+    final Consumer<String> listener = e.getData(VcsDataKeys.REMOTE_HISTORY_CHANGED_LISTENER);
 
     askAndEditRevision(svnList.getNumber(), svnList.getComment(), svnList.getLocation(), project, listener, false);
   }
@@ -79,13 +76,12 @@ public class SvnEditCommitMessageAction extends AnAction {
 
   @Override
   public void update(AnActionEvent e) {
-    final DataContext dc = e.getDataContext();
-    final ChangeList[] lists = VcsDataKeys.CHANGE_LISTS.getData(dc);
+    final ChangeList[] lists = e.getData(VcsDataKeys.CHANGE_LISTS);
     final boolean enabled = lists != null && lists.length == 1 && lists[0] instanceof SvnChangeList;
     boolean visible = enabled;
-    Project project = CommonDataKeys.PROJECT.getData(dc);
+    Project project = e.getProject();
     if (project == null) {
-      visible = VcsDataKeys.REMOTE_HISTORY_LOCATION.getData(dc) instanceof SvnRepositoryLocation;
+      visible = e.getData(VcsDataKeys.REMOTE_HISTORY_LOCATION) instanceof SvnRepositoryLocation;
     } else {
       visible = ProjectLevelVcsManager.getInstance(project).checkVcsIsActive(SvnVcs.VCS_NAME);
     }

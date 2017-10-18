@@ -15,7 +15,17 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.*;
+import java.util.Arrays;
+import java.util.List;
+
+import org.jetbrains.idea.svn.SvnBundle;
+import org.jetbrains.idea.svn.SvnStatusUtil;
+import org.jetbrains.idea.svn.SvnUtil;
+import org.jetbrains.idea.svn.SvnVcs;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.project.DumbAware;
@@ -26,13 +36,6 @@ import com.intellij.openapi.vcs.VcsDirectoryMapping;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.idea.svn.SvnBundle;
-import org.jetbrains.idea.svn.SvnStatusUtil;
-import org.jetbrains.idea.svn.SvnUtil;
-import org.jetbrains.idea.svn.SvnVcs;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ShareWholeProject extends AnAction implements DumbAware {
   @Override
@@ -57,7 +60,7 @@ public class ShareWholeProject extends AnAction implements DumbAware {
 
     public void execute(final AnActionEvent e) {
       final DataContext dataContext = e.getDataContext();
-      myProject = CommonDataKeys.PROJECT.getData(dataContext);
+      myProject = e.getProject();
       if (myProject == null || myProject.isDefault()) {
         // remain false
         return;

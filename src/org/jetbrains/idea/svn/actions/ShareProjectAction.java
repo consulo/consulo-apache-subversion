@@ -15,6 +15,23 @@
  */
 package org.jetbrains.idea.svn.actions;
 
+import java.io.File;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.svn.SvnBundle;
+import org.jetbrains.idea.svn.SvnStatusUtil;
+import org.jetbrains.idea.svn.SvnUtil;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.SvnWorkingCopyFormatHolder;
+import org.jetbrains.idea.svn.WorkingCopyFormat;
+import org.jetbrains.idea.svn.api.ClientFactory;
+import org.jetbrains.idea.svn.api.Depth;
+import org.jetbrains.idea.svn.checkout.SvnCheckoutProvider;
+import org.jetbrains.idea.svn.dialogs.ShareDialog;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.wc.SVNRevision;
+import org.tmatesoft.svn.core.wc2.SvnTarget;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -32,18 +49,6 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.svn.*;
-import org.jetbrains.idea.svn.api.ClientFactory;
-import org.jetbrains.idea.svn.api.Depth;
-import org.jetbrains.idea.svn.checkout.SvnCheckoutProvider;
-import org.jetbrains.idea.svn.dialogs.ShareDialog;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.wc.SVNRevision;
-import org.tmatesoft.svn.core.wc2.SvnTarget;
-
-import java.io.File;
 
 public class ShareProjectAction extends BasicAction {
 
@@ -55,14 +60,14 @@ public class ShareProjectAction extends BasicAction {
     Presentation presentation = e.getPresentation();
     final DataContext dataContext = e.getDataContext();
 
-    Project project = CommonDataKeys.PROJECT.getData(dataContext);
+    Project project = e.getProject();
     if ((project == null) || (ProjectLevelVcsManager.getInstance(project).isBackgroundVcsOperationRunning())) {
       presentation.setEnabled(false);
       presentation.setVisible(false);
       return;
     }
 
-    VirtualFile[] files = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
+    VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
     if (files == null || files.length == 0) {
       presentation.setEnabled(false);
       presentation.setVisible(false);

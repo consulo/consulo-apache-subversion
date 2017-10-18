@@ -1,5 +1,29 @@
 package org.jetbrains.idea.svn.difftool;
 
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder.SvnDiffSettings;
+import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffRequest;
+import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffViewer;
+import org.jetbrains.idea.svn.properties.PropertyData;
+import org.jetbrains.idea.svn.properties.PropertyValue;
 import com.intellij.diff.DiffContext;
 import com.intellij.diff.FrameDiffTool.DiffViewer;
 import com.intellij.diff.FrameDiffTool.ToolbarComponents;
@@ -30,24 +54,6 @@ import com.intellij.ui.components.panels.Wrapper;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder.SvnDiffSettings;
-import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffRequest;
-import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffViewer;
-import org.jetbrains.idea.svn.properties.PropertyData;
-import org.jetbrains.idea.svn.properties.PropertyValue;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public class SvnDiffViewer implements DiffViewer {
   private static final Logger LOG = Logger.getInstance(SvnDiffViewer.class);
@@ -99,7 +105,7 @@ public class SvnDiffViewer implements DiffViewer {
     myPanel.add(myNotificationPanel, BorderLayout.SOUTH);
     DataManager.registerDataProvider(myPanel, new DataProvider() {
       @Override
-      public Object getData(@NonNls String dataId) {
+      public Object getData(@NonNls Key<?> dataId) {
         DataProvider propertiesDataProvider = DataManagerImpl.getDataProviderEx(myPropertiesViewer.getComponent());
         DataProvider contentDataProvider = DataManagerImpl.getDataProviderEx(myContentViewer.getComponent());
         DataProvider defaultDP = myPropertiesViewerFocused ? propertiesDataProvider : contentDataProvider;

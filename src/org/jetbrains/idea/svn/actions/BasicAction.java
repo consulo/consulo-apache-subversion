@@ -17,20 +17,29 @@
 
 package org.jetbrains.idea.svn.actions;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.jetbrains.idea.svn.SvnVcs;
 import com.intellij.history.LocalHistory;
 import com.intellij.history.LocalHistoryAction;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.*;
+import com.intellij.openapi.vcs.AbstractVcs;
+import com.intellij.openapi.vcs.AbstractVcsHelper;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vcs.TransactionRunnable;
+import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.idea.svn.SvnVcs;
-
-import java.util.Arrays;
-import java.util.List;
 
 public abstract class BasicAction extends AnAction implements DumbAware {
   private static final Logger LOG = Logger.getInstance("org.jetbrains.idea.svn.actions.BasicAction");
@@ -40,9 +49,9 @@ public abstract class BasicAction extends AnAction implements DumbAware {
       LOG.debug("enter: actionPerformed(id='" + ActionManager.getInstance().getId(this) + "')");
     }
     final DataContext dataContext = event.getDataContext();
-    final Project project = CommonDataKeys.PROJECT.getData(dataContext);
+    final Project project = event.getProject();
 
-    final VirtualFile[] files = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
+    final VirtualFile[] files = dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
     if (LOG.isDebugEnabled() && files != null) {
       LOG.debug("files='" + Arrays.asList(files) + "'");
     }
@@ -104,9 +113,8 @@ public abstract class BasicAction extends AnAction implements DumbAware {
     super.update(e);
 
     Presentation presentation = e.getPresentation();
-    final DataContext dataContext = e.getDataContext();
 
-    Project project = CommonDataKeys.PROJECT.getData(dataContext);
+    Project project = e.getProject();
     if (project == null) {
       presentation.setEnabled(false);
       presentation.setVisible(false);
@@ -120,7 +128,7 @@ public abstract class BasicAction extends AnAction implements DumbAware {
       return;
     }
 
-    VirtualFile[] files = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
+    VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
     if (files == null || files.length == 0) {
       presentation.setEnabled(false);
       presentation.setVisible(true);

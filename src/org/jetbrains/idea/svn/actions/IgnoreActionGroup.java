@@ -15,24 +15,22 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vfs.VirtualFile;
+import java.util.Map;
+import java.util.Set;
+
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.ignore.FileGroupInfo;
 import org.jetbrains.idea.svn.ignore.IgnoreGroupHelperAction;
 import org.jetbrains.idea.svn.ignore.IgnoreInfoGetter;
 import org.jetbrains.idea.svn.ignore.SvnPropertyService;
-
-import java.util.Map;
-import java.util.Set;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.vfs.VirtualFile;
 
 public class IgnoreActionGroup extends DefaultActionGroup implements DumbAware {
   private final IgnoreGroupHelperAction myHelperAction;
@@ -76,8 +74,7 @@ public class IgnoreActionGroup extends DefaultActionGroup implements DumbAware {
     if ((e.getPresentation().isEnabled())) {
       removeAll();
       if (myHelperAction.allAreIgnored()) {
-        final DataContext dataContext = e.getDataContext();
-        final Project project = CommonDataKeys.PROJECT.getData(dataContext);
+        final Project project = e.getProject();
         SvnVcs vcs = SvnVcs.getInstance(project);
 
         final Ref<Boolean> filesOk = new Ref<>(Boolean.FALSE);

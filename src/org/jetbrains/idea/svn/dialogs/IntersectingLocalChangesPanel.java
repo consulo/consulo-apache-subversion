@@ -15,6 +15,20 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
+import static com.intellij.openapi.vcs.changes.ChangesUtil.getNavigatableArray;
+import static com.intellij.util.ContentsUtil.addContent;
+import static com.intellij.util.containers.UtilKt.stream;
+
+import java.awt.Dimension;
+import java.util.List;
+import java.util.Objects;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.SwingConstants;
+import javax.swing.tree.TreePath;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.actions.EditSourceAction;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -37,17 +51,6 @@ import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.components.BorderLayoutPanel;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import javax.swing.tree.TreePath;
-import java.awt.*;
-import java.util.List;
-import java.util.Objects;
-
-import static com.intellij.openapi.vcs.changes.ChangesUtil.getNavigatableArray;
-import static com.intellij.util.ContentsUtil.addContent;
-import static com.intellij.util.containers.UtilKt.stream;
 
 public class IntersectingLocalChangesPanel {
 
@@ -70,7 +73,7 @@ public class IntersectingLocalChangesPanel {
     new EditSourceAction().registerCustomShortcutSet(CommonShortcuts.getEditSource(), panel);
 
     DataManager.registerDataProvider(panel, dataId -> {
-      if (CommonDataKeys.NAVIGATABLE_ARRAY.is(dataId)) {
+      if (CommonDataKeys.NAVIGATABLE_ARRAY == dataId) {
         return getNavigatableArray(myProject, stream(tree.getSelectionPaths())
           .map(TreePath::getLastPathComponent)
           .map(node -> (ChangesBrowserNode<?>)node)

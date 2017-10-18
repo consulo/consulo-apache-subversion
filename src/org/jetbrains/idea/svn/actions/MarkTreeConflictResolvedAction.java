@@ -15,9 +15,17 @@
  */
 package org.jetbrains.idea.svn.actions;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.svn.ConflictedSvnChange;
+import org.jetbrains.idea.svn.SvnBundle;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.api.Depth;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
@@ -32,15 +40,6 @@ import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.svn.ConflictedSvnChange;
-import org.jetbrains.idea.svn.SvnBundle;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.api.Depth;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class MarkTreeConflictResolvedAction extends AnAction implements DumbAware {
   private static final String myText = SvnBundle.message("action.mark.tree.conflict.resolved.text");
@@ -63,9 +62,8 @@ public class MarkTreeConflictResolvedAction extends AnAction implements DumbAwar
     private final Project myProject;
 
     public MyChecker(final AnActionEvent e) {
-      final DataContext dc = e.getDataContext();
-      myProject = CommonDataKeys.PROJECT.getData(dc);
-      final Change[] changes = VcsDataKeys.CHANGE_LEAD_SELECTION.getData(dc);
+      myProject = e.getProject();
+      final Change[] changes = e.getData(VcsDataKeys.CHANGE_LEAD_SELECTION);
 
       if (myProject == null || changes == null || changes.length != 1) {
         myEnabled = false;

@@ -1,5 +1,24 @@
 package org.jetbrains.idea.svn.difftool.properties;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JComponent;
+import javax.swing.SwingConstants;
+
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.svn.properties.PropertyData;
+import org.jetbrains.idea.svn.properties.PropertyValue;
 import com.intellij.diff.DiffContentFactory;
 import com.intellij.diff.DiffContext;
 import com.intellij.diff.comparison.ComparisonManager;
@@ -14,7 +33,12 @@ import com.intellij.diff.requests.ContentDiffRequest;
 import com.intellij.diff.tools.util.DiffSplitter;
 import com.intellij.diff.tools.util.SyncScrollSupport;
 import com.intellij.diff.tools.util.side.TwosideTextDiffViewer;
-import com.intellij.diff.util.*;
+import com.intellij.diff.util.DiffDividerDrawUtil;
+import com.intellij.diff.util.DiffDrawUtil;
+import com.intellij.diff.util.DiffUserDataKeys;
+import com.intellij.diff.util.DiffUtil;
+import com.intellij.diff.util.Side;
+import com.intellij.diff.util.TextDiffType;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.EditorSettings;
@@ -35,17 +59,6 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.hash.HashMap;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.svn.properties.PropertyData;
-import org.jetbrains.idea.svn.properties.PropertyValue;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.util.*;
-import java.util.List;
 
 public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   @NotNull private final WrapperRequest myWrapperRequest;
@@ -310,8 +323,8 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
 
   @Nullable
   @Override
-  public Object getData(@NonNls String dataId) {
-    if (PlatformDataKeys.HELP_ID.is(dataId)) {
+  public Object getData(@NonNls Key<?> dataId) {
+    if (PlatformDataKeys.HELP_ID == dataId) {
       return "topicId758145";
     }
     return super.getData(dataId);
