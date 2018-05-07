@@ -15,14 +15,15 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
+import javax.swing.JTree;
+
+import org.jetbrains.idea.svn.browse.DirectoryEntry;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.util.PlatformIcons;
 import com.intellij.util.text.DateFormatUtil;
-import org.jetbrains.idea.svn.browse.DirectoryEntry;
-
-import javax.swing.*;
+import consulo.awt.TargetAWT;
 
 public class SvnRepositoryTreeCellRenderer extends ColoredTreeCellRenderer {
 
@@ -50,7 +51,7 @@ public class SvnRepositoryTreeCellRenderer extends ColoredTreeCellRenderer {
           }
         }
         setIcon(node.getSVNDirEntry().isFile()
-                ? FileTypeManager.getInstance().getFileTypeByFileName(name).getIcon()
+                ? TargetAWT.to(FileTypeManager.getInstance().getFileTypeByFileName(name).getIcon())
                 : PlatformIcons.DIRECTORY_CLOSED_ICON);
       }
     }
