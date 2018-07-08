@@ -15,11 +15,36 @@
  */
 package org.jetbrains.idea.svn;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.jetbrains.idea.svn.api.Depth;
+import org.jetbrains.idea.svn.auth.SvnAuthenticationManager;
+import org.jetbrains.idea.svn.checkout.SvnCheckoutProvider;
+import org.junit.Before;
+import org.tmatesoft.svn.core.ISVNDirEntryHandler;
+import org.tmatesoft.svn.core.SVNDirEntry;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
+import org.tmatesoft.svn.core.auth.SVNAuthentication;
+import org.tmatesoft.svn.core.auth.SVNPasswordAuthentication;
+import org.tmatesoft.svn.core.auth.SVNSSHAuthentication;
+import org.tmatesoft.svn.core.auth.SVNUserNameAuthentication;
+import org.tmatesoft.svn.core.io.SVNRepository;
+import org.tmatesoft.svn.core.wc.SVNRevision;
 import com.intellij.openapi.progress.EmptyProgressIndicator;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.*;
+import com.intellij.openapi.vcs.CheckoutProvider;
+import com.intellij.openapi.vcs.FilePath;
+import com.intellij.openapi.vcs.VcsException;
+import com.intellij.openapi.vcs.VcsKey;
 import com.intellij.openapi.vcs.actions.VcsContextFactory;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.CurrentContentRevision;
@@ -27,7 +52,6 @@ import com.intellij.openapi.vcs.history.VcsAppendableHistoryPartnerAdapter;
 import com.intellij.openapi.vcs.history.VcsFileRevision;
 import com.intellij.openapi.vcs.history.VcsHistoryProvider;
 import com.intellij.openapi.vcs.update.FileGroup;
-import com.intellij.openapi.vcs.update.SequentialUpdatesContext;
 import com.intellij.openapi.vcs.update.UpdateSession;
 import com.intellij.openapi.vcs.update.UpdatedFiles;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -36,20 +60,6 @@ import com.intellij.util.Processor;
 import com.intellij.util.containers.Convertor;
 import com.intellij.vcsUtil.VcsUtil;
 import junit.framework.Assert;
-import org.jetbrains.idea.svn.api.Depth;
-import org.jetbrains.idea.svn.auth.SvnAuthenticationManager;
-import org.jetbrains.idea.svn.checkout.SvnCheckoutProvider;
-import org.junit.Before;
-import org.tmatesoft.svn.core.*;
-import org.tmatesoft.svn.core.auth.*;
-import org.tmatesoft.svn.core.io.SVNRepository;
-import org.tmatesoft.svn.core.wc.SVNRevision;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

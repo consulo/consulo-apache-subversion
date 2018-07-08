@@ -3,7 +3,6 @@
 	<name>Subversion Integration</name>
 	<version>SNAPSHOT</version>
 	<category>VCS Integration</category>
-	<description>For Subversion 1.7 and older versions</description>
 	<vendor>JetBrains</vendor>
 	<resource-bundle>org.jetbrains.idea.svn.SvnBundle</resource-bundle>
 	<project-components>
