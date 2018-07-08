@@ -1,1 +1,1 @@
-![Build Status](http://must-be.org/vulcan/statusImage?name=consulo-apache-subversion)
+[![Build Status](https://ci.consulo.io/job/consulo-apache-subversion/badge/icon)](https://ci.consulo.io/job/consulo-apache-subversion/)
