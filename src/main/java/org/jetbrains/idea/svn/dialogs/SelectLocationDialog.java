@@ -27,8 +27,8 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.Ref;
 import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -71,7 +71,7 @@ public class SelectLocationDialog extends DialogWrapper {
   }
 
   @Nullable
-  public static Pair<SVNURL, SVNURL> selectLocation(Project project, @NotNull SVNURL url) {
+  public static Pair<SVNURL, SVNURL> selectLocation(Project project, @Nonnull SVNURL url) {
     SelectLocationDialog dialog = new SelectLocationDialog(project, url, null, null, true, true);
     return dialog.showAndGet() ? create(dialog.getSelectedURL(), dialog.getRootUrl()) : null;
   }
@@ -128,7 +128,7 @@ public class SelectLocationDialog extends DialogWrapper {
     HelpManager.getInstance().invokeHelp(HELP_ID);
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction(), getHelpAction()};
   }
@@ -251,7 +251,7 @@ public class SelectLocationDialog extends DialogWrapper {
     return panel;
   }
 
-  @NotNull
+  @Nonnull
   private JComponent createToolbar() {
     DefaultActionGroup group = new DefaultActionGroup();
     group.add(new RepositoryBrowserDialog.EditLocationAction(myRepositoryBrowser));

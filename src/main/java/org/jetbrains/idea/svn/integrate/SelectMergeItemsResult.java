@@ -15,26 +15,28 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 
 import java.util.List;
 
 public class SelectMergeItemsResult {
-  @NotNull private final QuickMergeContentsVariants myResultCode;
-  @NotNull private final List<SvnChangeList> myLists;
+  @Nonnull
+  private final QuickMergeContentsVariants myResultCode;
+  @Nonnull
+  private final List<SvnChangeList> myLists;
 
-  public SelectMergeItemsResult(@NotNull QuickMergeContentsVariants resultCode, @NotNull List<SvnChangeList> lists) {
+  public SelectMergeItemsResult(@Nonnull QuickMergeContentsVariants resultCode, @Nonnull List<SvnChangeList> lists) {
     myResultCode = resultCode;
     myLists = lists;
   }
 
-  @NotNull
+  @Nonnull
   public QuickMergeContentsVariants getResultCode() {
     return myResultCode;
   }
 
-  @NotNull
+  @Nonnull
   public List<SvnChangeList> getSelectedLists() {
     return myLists;
   }

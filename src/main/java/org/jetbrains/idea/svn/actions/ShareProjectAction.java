@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.actions;
 
 import java.io.File;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -222,8 +222,8 @@ public class ShareProjectAction extends BasicAction {
     return folderEmpty[0];
   }
 
-  private static Pair<SVNRevision, SVNURL> createRemoteFolder(@NotNull final SvnVcs vcs,
-                                                              @NotNull final SVNURL parent,
+  private static Pair<SVNRevision, SVNURL> createRemoteFolder(@Nonnull final SvnVcs vcs,
+                                                              @Nonnull final SVNURL parent,
                                                               final String folderName,
                                                               String commitText) throws VcsException, SVNException {
     SVNURL url = parent.appendPath(folderName, false);
@@ -247,7 +247,7 @@ public class ShareProjectAction extends BasicAction {
     VcsDirtyScopeManager.getInstance(project).dirDirtyRecursively(file);
   }
 
-  private static void addRecursively(@NotNull final SvnVcs activeVcs, @NotNull final ClientFactory factory, final VirtualFile file)
+  private static void addRecursively(@Nonnull final SvnVcs activeVcs, @Nonnull final ClientFactory factory, final VirtualFile file)
     throws VcsException {
     final SvnExcludingIgnoredOperation operation = new SvnExcludingIgnoredOperation(activeVcs.getProject(), new SvnExcludingIgnoredOperation.Operation() {
       public void doOperation(final VirtualFile virtualFile) throws VcsException {

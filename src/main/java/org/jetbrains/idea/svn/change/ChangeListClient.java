@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.change;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.SvnClient;
 
 import java.io.File;
@@ -12,7 +12,7 @@ import java.io.File;
  */
 public interface ChangeListClient extends SvnClient {
 
-  void add(@NotNull String changeList, @NotNull File path, @Nullable String[] changeListsToOperate) throws VcsException;
+  void add(@Nonnull String changeList, @Nonnull File path, @Nullable String[] changeListsToOperate) throws VcsException;
 
-  void remove(@NotNull File path) throws VcsException;
+  void remove(@Nonnull File path) throws VcsException;
 }

@@ -21,7 +21,6 @@ import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vcs.*;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.CurrentContentRevision;
-import com.intellij.openapi.vcs.update.SequentialUpdatesContext;
 import com.intellij.openapi.vcs.update.UpdateSession;
 import com.intellij.openapi.vcs.update.UpdatedFiles;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -30,7 +29,7 @@ import com.intellij.util.Processor;
 import com.intellij.util.containers.Convertor;
 import com.intellij.vcsUtil.VcsUtil;
 import junit.framework.Assert;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationManager;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationNotifier;
@@ -326,7 +325,7 @@ public class SvnNativeClientAuthTest extends Svn17TestCase {
     //Assert.assertEquals(myExpectedCert, myCertificateAskedInteractivelyCount);
   }
 
-  private static void clearAuthCache(@NotNull SvnConfiguration instance) {
+  private static void clearAuthCache(@Nonnull SvnConfiguration instance) {
     SvnAuthenticationNotifier.clearAuthenticationDirectory(instance);
     instance.clearRuntimeStorage();
   }

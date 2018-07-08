@@ -15,6 +15,32 @@
  */
 package org.jetbrains.idea.svn16;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.jetbrains.idea.svn.SvnConfiguration;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.auth.ProviderType;
+import org.jetbrains.idea.svn.auth.SvnAuthenticationInteraction;
+import org.jetbrains.idea.svn.auth.SvnAuthenticationListener;
+import org.jetbrains.idea.svn.auth.SvnAuthenticationManager;
+import org.jetbrains.idea.svn.auth.SvnAuthenticationNotifier;
+import org.jetbrains.idea.svn.auth.SvnAuthenticationProvider;
+import org.tmatesoft.svn.core.SVNErrorMessage;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
+import org.tmatesoft.svn.core.auth.SVNAuthentication;
+import org.tmatesoft.svn.core.auth.SVNPasswordAuthentication;
+import org.tmatesoft.svn.core.auth.SVNSSHAuthentication;
+import org.tmatesoft.svn.core.auth.SVNSSLAuthentication;
+import org.tmatesoft.svn.core.auth.SVNUserNameAuthentication;
+import org.tmatesoft.svn.core.internal.util.jna.SVNJNAUtil;
+import org.tmatesoft.svn.core.internal.wc.SVNConfigFile;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.SystemInfo;
@@ -22,25 +48,9 @@ import com.intellij.openapi.util.Trinity;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.testFramework.EdtTestUtil;
 import com.intellij.testFramework.PlatformTestCase;
-import com.intellij.util.ThrowableRunnable;
 import com.intellij.util.concurrency.Semaphore;
 import com.intellij.util.ui.UIUtil;
 import junit.framework.Assert;
-import org.jetbrains.idea.svn.SvnConfiguration;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.auth.*;
-import org.tmatesoft.svn.core.SVNErrorMessage;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.auth.*;
-import org.tmatesoft.svn.core.internal.util.jna.SVNJNAUtil;
-import org.tmatesoft.svn.core.internal.wc.SVNConfigFile;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class SvnAuthenticationTest extends PlatformTestCase {
   private SvnAuthenticationManager myAuthenticationManager;
@@ -50,7 +60,7 @@ public class SvnAuthenticationTest extends PlatformTestCase {
   private SvnConfiguration myConfiguration;
 
   @Override
-  protected void runBareRunnable(ThrowableRunnable<Throwable> runnable) throws Throwable {
+  protected void runBareRunnable(Runnable runnable) throws Throwable {
     runnable.run();
   }
 

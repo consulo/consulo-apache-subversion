@@ -21,7 +21,7 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.OptionsDialog;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 
@@ -47,7 +47,7 @@ public class LockDialog extends OptionsDialog {
 
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction(), getHelpAction()};
   }

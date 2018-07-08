@@ -29,7 +29,7 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.changes.CurrentContentRevision;
 import com.intellij.util.containers.HashMap;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNPropertyValue;
@@ -50,7 +50,7 @@ public class SvnDiffEditor implements ISVNEditor {
 
   private final Map<String, Change> myChanges;
 
-  public SvnDiffEditor(@NotNull SVNRepository source, SVNRepository target, long targetRevision, boolean reverse) {
+  public SvnDiffEditor(@Nonnull SVNRepository source, SVNRepository target, long targetRevision, boolean reverse) {
     mySource = source;
     myTarget = target;
     myTargetRevision = targetRevision;
@@ -58,7 +58,7 @@ public class SvnDiffEditor implements ISVNEditor {
     myReverse = reverse;
   }
 
-  public SvnDiffEditor(@NotNull final File sourceRoot, final SVNRepository target, long targetRevision,
+  public SvnDiffEditor(@Nonnull final File sourceRoot, final SVNRepository target, long targetRevision,
                        boolean reverse) {
     mySourceRoot = sourceRoot;
     myTarget = target;

@@ -26,8 +26,8 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.SvnWorkingCopyFormatHolder;
@@ -72,13 +72,13 @@ import consulo.annotations.RequiredDispatchThread;
 
 public class SvnCheckoutProvider implements CheckoutProvider {
 
-  public void doCheckout(@NotNull final Project project, Listener listener) {
+  public void doCheckout(@Nonnull final Project project, Listener listener) {
     // TODO: Several dialogs is invoked while dialog.show() - seems code should be rewritten to be more transparent
     CheckoutDialog dialog = new CheckoutDialog(project, listener);
     dialog.show();
   }
 
-  public static void doCheckout(@NotNull Project project, @NotNull File target, final String url, final SVNRevision revision,
+  public static void doCheckout(@Nonnull Project project, @Nonnull File target, final String url, final SVNRevision revision,
                                 final Depth depth, final boolean ignoreExternals, @Nullable final Listener listener) {
     if (! target.exists()) {
       target.mkdirs();
@@ -91,8 +91,8 @@ public class SvnCheckoutProvider implements CheckoutProvider {
     }
   }
 
-  @NotNull
-  public static ClientFactory getFactory(@NotNull SvnVcs vcs, @NotNull WorkingCopyFormat format) throws VcsException {
+  @Nonnull
+  public static ClientFactory getFactory(@Nonnull SvnVcs vcs, @Nonnull WorkingCopyFormat format) throws VcsException {
     ClientFactory settingsFactory = vcs.getFactoryFromSettings();
     ClientFactory otherFactory = vcs.getOtherFactory();
     List<WorkingCopyFormat> settingsFactoryFormats = settingsFactory.createCheckoutClient().getSupportedFormats();
@@ -112,7 +112,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
     final Exception[] exception = new Exception[1];
     final Task.Backgroundable checkoutBackgroundTask = new Task.Backgroundable(project,
                      message("message.title.check.out"), true, VcsConfiguration.getInstance(project).getCheckoutOption()) {
-      public void run(@NotNull final ProgressIndicator indicator) {
+      public void run(@Nonnull final ProgressIndicator indicator) {
         final WorkingCopyFormat format = selectedFormat == null ? UNKNOWN : selectedFormat;
 
         SvnWorkingCopyFormatHolder.setPresetFormat(format);
@@ -183,8 +183,8 @@ public class SvnCheckoutProvider implements CheckoutProvider {
   }
 
   @RequiredDispatchThread
-  @NotNull
-  public static WorkingCopyFormat promptForWCopyFormat(@NotNull File target, @NotNull Project project) {
+  @Nonnull
+  public static WorkingCopyFormat promptForWCopyFormat(@Nonnull File target, @Nonnull Project project) {
     return new CheckoutFormatFromUserProvider(project, target).prompt();
   }
 
@@ -292,13 +292,17 @@ public class SvnCheckoutProvider implements CheckoutProvider {
 
     private static final Logger LOG = Logger.getInstance(CheckoutFormatFromUserProvider.class);
 
-    @NotNull private final Project myProject;
-    @NotNull private final SvnVcs myVcs;
-    @NotNull private final File myPath;
+    @Nonnull
+	private final Project myProject;
+    @Nonnull
+	private final SvnVcs myVcs;
+    @Nonnull
+	private final File myPath;
 
-    @NotNull private final AtomicReference<String> error;
+    @Nonnull
+	private final AtomicReference<String> error;
 
-    public CheckoutFormatFromUserProvider(@NotNull Project project, @NotNull File path) {
+    public CheckoutFormatFromUserProvider(@Nonnull Project project, @Nonnull File path) {
       myProject = project;
       myVcs = SvnVcs.getInstance(project);
       myPath = path;
@@ -317,7 +321,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
       return result;
     }
 
-    @NotNull
+    @Nonnull
     private WorkingCopyFormat displayUpgradeDialog() {
       final UpgradeFormatDialog dialog = new UpgradeFormatDialog(myProject, myPath, false);
       final ModalityState dialogState = any();
@@ -351,7 +355,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
       return dialog.showAndGet() ? dialog.getUpgradeMode() : UNKNOWN;
     }
 
-    @NotNull
+    @Nonnull
     private List<WorkingCopyFormat> loadSupportedFormats() {
       List<WorkingCopyFormat> result = ContainerUtil.newArrayList();
 
@@ -366,8 +370,8 @@ public class SvnCheckoutProvider implements CheckoutProvider {
       return result;
     }
 
-    @NotNull
-    private static List<WorkingCopyFormat> getOtherFactoryFormats(@NotNull ClientFactory otherFactory) {
+    @Nonnull
+    private static List<WorkingCopyFormat> getOtherFactoryFormats(@Nonnull ClientFactory otherFactory) {
       List<WorkingCopyFormat> result;
 
       try {

@@ -15,10 +15,11 @@
  */
 package org.jetbrains.idea.svn.checkin;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.tmatesoft.svn.core.SVNErrorMessage;
 
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 
@@ -32,9 +33,10 @@ public class CommitInfo {
   private final long myRevision;
   private final Date myDate;
   private final String myAuthor;
-  @Nullable private final SVNErrorMessage myErrorMessage;
+  @Nullable
+  private final SVNErrorMessage myErrorMessage;
 
-  private CommitInfo(@NotNull CommitInfo.Builder builder) {
+  private CommitInfo(@Nonnull CommitInfo.Builder builder) {
     myRevision = builder.revision;
     myAuthor = builder.author;
     myDate = builder.date;
@@ -72,7 +74,8 @@ public class CommitInfo {
     @XmlElement(name = "date")
     private Date date;
 
-    @Nullable private SVNErrorMessage error;
+    @Nullable
+	private SVNErrorMessage error;
 
     public Builder() {
     }
@@ -95,31 +98,31 @@ public class CommitInfo {
       return date;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setRevision(long revision) {
       this.revision = revision;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setAuthor(String author) {
       this.author = author;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setDate(Date date) {
       this.date = date;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setError(@Nullable SVNErrorMessage error) {
       this.error = error;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public CommitInfo build() {
       return new CommitInfo(this);
     }

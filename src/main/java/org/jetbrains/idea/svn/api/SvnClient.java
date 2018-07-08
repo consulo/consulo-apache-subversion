@@ -1,6 +1,7 @@
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.SvnVcs;
 
 /**
@@ -8,15 +9,15 @@ import org.jetbrains.idea.svn.SvnVcs;
  */
 public interface SvnClient {
 
-  @NotNull
+  @Nonnull
   SvnVcs getVcs();
 
-  @NotNull
+  @Nonnull
   ClientFactory getFactory();
 
-  void setVcs(@NotNull SvnVcs vcs);
+  void setVcs(@Nonnull SvnVcs vcs);
 
-  void setFactory(@NotNull ClientFactory factory);
+  void setFactory(@Nonnull ClientFactory factory);
 
   void setIsActive(boolean isActive);
 }

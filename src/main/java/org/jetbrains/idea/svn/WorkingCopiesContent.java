@@ -24,7 +24,7 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentManager;
 import com.intellij.util.NotNullFunction;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.dialogs.CopiesPanel;
 
 import javax.swing.*;
@@ -33,9 +33,10 @@ public class WorkingCopiesContent implements ChangesViewContentProvider {
 
   public static final String TAB_NAME = SvnBundle.message("dialog.show.svn.map.title");
 
-  @NotNull private final Project myProject;
+  @Nonnull
+  private final Project myProject;
 
-  public WorkingCopiesContent(@NotNull Project project) {
+  public WorkingCopiesContent(@Nonnull Project project) {
     myProject = project;
   }
 
@@ -48,7 +49,7 @@ public class WorkingCopiesContent implements ChangesViewContentProvider {
   public void disposeContent() {
   }
 
-  public static void show(@NotNull Project project) {
+  public static void show(@Nonnull Project project) {
     final ToolWindowManager manager = ToolWindowManager.getInstance(project);
     if (manager != null) {
       final ToolWindow window = manager.getToolWindow(ChangesViewContentManager.TOOLWINDOW_ID);
@@ -65,9 +66,9 @@ public class WorkingCopiesContent implements ChangesViewContentProvider {
 
   public static class VisibilityPredicate implements NotNullFunction<Project, Boolean> {
 
-    @NotNull
+    @Nonnull
     @Override
-    public Boolean fun(@NotNull Project project) {
+    public Boolean fun(@Nonnull Project project) {
       return ProjectLevelVcsManager.getInstance(project).checkVcsIsActive(SvnVcs.VCS_NAME);
     }
   }

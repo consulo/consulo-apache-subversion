@@ -20,13 +20,14 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.ChangeListManager;
 import com.intellij.openapi.vcs.changes.InvokeAfterUpdateMode;
 import com.intellij.openapi.vcs.changes.LocalChangeList;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class MergeTask extends BaseMergeTask {
 
-  @NotNull private final Runnable myCallback;
+  @Nonnull
+  private final Runnable myCallback;
 
-  public MergeTask(@NotNull QuickMerge mergeProcess, @NotNull Runnable callback) {
+  public MergeTask(@Nonnull QuickMerge mergeProcess, @Nonnull Runnable callback) {
     super(mergeProcess);
     myCallback = callback;
   }

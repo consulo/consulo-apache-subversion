@@ -22,7 +22,7 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;
@@ -45,7 +45,7 @@ public class SSLCredentialsDialog extends DialogWrapper {
     return "svn.sslCredentialsDialog";
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction()};
   }
@@ -129,7 +129,7 @@ public class SSLCredentialsDialog extends DialogWrapper {
     return null;
   }
 
-  public void setFile(@NotNull String file) {
+  public void setFile(@Nonnull String file) {
     myCertificatePath.setText(file);
   }
 }

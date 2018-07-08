@@ -26,8 +26,8 @@ import com.intellij.openapi.vcs.checkout.CheckoutStrategy;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.components.JBScrollPane;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.DepthCombo;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.api.Depth;
@@ -160,7 +160,7 @@ public class CheckoutOptionsDialog extends DialogWrapper {
     return myTopPanel;
   }
 
-  @NotNull
+  @Nonnull
   public SVNRevision getRevision() throws ConfigurationException {
       return svnSelectRevisionPanel.getRevision();
   }

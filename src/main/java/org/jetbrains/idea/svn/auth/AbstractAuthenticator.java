@@ -21,7 +21,7 @@ import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
 import com.intellij.util.messages.MessageBusConnection;
 import org.intellij.lang.annotations.MagicConstant;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNErrorMessage;
@@ -39,14 +39,17 @@ abstract class AbstractAuthenticator {
 
   private static final Logger LOG = Logger.getInstance(AbstractAuthenticator.class);
 
-  @NotNull protected final AuthenticationService myAuthenticationService;
-  @NotNull protected final SvnVcs myVcs;
-  @NotNull protected final SVNURL myUrl;
+  @Nonnull
+  protected final AuthenticationService myAuthenticationService;
+  @Nonnull
+  protected final SvnVcs myVcs;
+  @Nonnull
+  protected final SVNURL myUrl;
   protected final String myRealm;
   protected boolean myStoreInUsual;
   protected SvnAuthenticationManager myTmpDirManager;
 
-  AbstractAuthenticator(@NotNull AuthenticationService authenticationService, @NotNull SVNURL url, String realm) {
+  AbstractAuthenticator(@Nonnull AuthenticationService authenticationService, @Nonnull SVNURL url, String realm) {
     myAuthenticationService = authenticationService;
     myVcs = myAuthenticationService.getVcs();
     myUrl = url;
@@ -72,7 +75,7 @@ abstract class AbstractAuthenticator {
     }
   }
 
-  @NotNull
+  @Nonnull
   protected SvnAuthenticationManager createTmpManager() throws IOException {
     if (myTmpDirManager == null) {
       myAuthenticationService.initTmpDir(myVcs.getSvnConfiguration());
@@ -102,7 +105,7 @@ abstract class AbstractAuthenticator {
     return afterAuthCall();
   }
 
-  protected void makeAuthCall(@NotNull SvnAuthenticationManager manager) throws SVNException {
+  protected void makeAuthCall(@Nonnull SvnAuthenticationManager manager) throws SVNException {
     myVcs.getSvnKitManager().createWCClient(manager).doInfo(myUrl, SVNRevision.UNDEFINED, SVNRevision.HEAD);
   }
 
@@ -140,7 +143,7 @@ abstract class AbstractAuthenticator {
     }
   }
 
-  protected static boolean storeCredentials(@NotNull SvnAuthenticationManager manager, final SVNAuthentication authentication, String realm)
+  protected static boolean storeCredentials(@Nonnull SvnAuthenticationManager manager, final SVNAuthentication authentication, String realm)
     throws SVNException {
     try {
       if (authentication instanceof SVNSSLAuthentication && (((SVNSSLAuthentication)authentication).getCertificateFile() != null)) {
@@ -155,7 +158,7 @@ abstract class AbstractAuthenticator {
     return true;
   }
 
-  @NotNull
+  @Nonnull
   private static String getFromType(SVNAuthentication authentication) {
     if (authentication instanceof SVNPasswordAuthentication) {
       return ISVNAuthenticationManager.PASSWORD;

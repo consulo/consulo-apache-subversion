@@ -4,8 +4,9 @@ import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.containers.Convertor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.*;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -30,7 +31,7 @@ public class CmdUpgradeClient extends BaseSvnClient implements UpgradeClient {
   private static final Pattern CHANGED_PATH = Pattern.compile(STATUS + PATH);
 
   @Override
-  public void upgrade(@NotNull File path, @NotNull WorkingCopyFormat format, @Nullable ProgressTracker handler) throws VcsException {
+  public void upgrade(@Nonnull File path, @Nonnull WorkingCopyFormat format, @Nullable ProgressTracker handler) throws VcsException {
     validateFormat(format, getSupportedFormats());
 
     // fake event indicating upgrade start
@@ -62,7 +63,7 @@ public class CmdUpgradeClient extends BaseSvnClient implements UpgradeClient {
 
   private static class UpgradeStatusConvertor implements Convertor<Matcher, ProgressEvent> {
 
-    public ProgressEvent convert(@NotNull Matcher matcher) {
+    public ProgressEvent convert(@Nonnull Matcher matcher) {
       String statusMessage = matcher.group(1);
       String path = matcher.group(2);
 
@@ -70,7 +71,7 @@ public class CmdUpgradeClient extends BaseSvnClient implements UpgradeClient {
     }
 
     @Nullable
-    public static EventAction createAction(@NotNull String code) {
+    public static EventAction createAction(@Nonnull String code) {
       EventAction result = null;
 
       if ("Upgraded".equals(code)) {
@@ -83,10 +84,12 @@ public class CmdUpgradeClient extends BaseSvnClient implements UpgradeClient {
 
   private static class UpgradeLineCommandListener extends LineCommandAdapter {
 
-    @NotNull private final FileStatusResultParser parser;
-    @NotNull private final AtomicReference<VcsException> exception;
+    @Nonnull
+	private final FileStatusResultParser parser;
+    @Nonnull
+	private final AtomicReference<VcsException> exception;
 
-    private UpgradeLineCommandListener(@NotNull FileStatusResultParser parser) {
+    private UpgradeLineCommandListener(@Nonnull FileStatusResultParser parser) {
       this.parser = parser;
       exception = new AtomicReference<>();
     }

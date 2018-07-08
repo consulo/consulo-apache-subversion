@@ -18,8 +18,9 @@ package org.jetbrains.idea.svn;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.Function;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.integrate.LocalChangesAction;
 import org.jetbrains.idea.svn.integrate.QuickMergeContentsVariants;
@@ -37,8 +38,10 @@ public class QuickMergeTestInteraction implements QuickMergeInteraction {
 
   private QuickMergeContentsVariants myMergeVariant = QuickMergeContentsVariants.all;
   private final boolean myReintegrateAnswer;
-  @Nullable private final Function.Mono<List<SvnChangeList>> mySelectedListsProvider;
-  @NotNull private final List<Exception> myExceptions;
+  @Nullable
+  private final Function.Mono<List<SvnChangeList>> mySelectedListsProvider;
+  @Nonnull
+  private final List<Exception> myExceptions;
 
   public QuickMergeTestInteraction(boolean reintegrate, @Nullable Function.Mono<List<SvnChangeList>> selectedListsProvider) {
     myReintegrateAnswer = reintegrate;
@@ -46,13 +49,13 @@ public class QuickMergeTestInteraction implements QuickMergeInteraction {
     myExceptions = newArrayList();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public QuickMergeContentsVariants selectMergeVariant() {
     return myMergeVariant;
   }
 
-  public void setMergeVariant(@NotNull QuickMergeContentsVariants mergeVariant) {
+  public void setMergeVariant(@Nonnull QuickMergeContentsVariants mergeVariant) {
     myMergeVariant = mergeVariant;
   }
 
@@ -62,14 +65,14 @@ public class QuickMergeTestInteraction implements QuickMergeInteraction {
   }
 
   @Override
-  public boolean shouldReintegrate(@NotNull String targetUrl) {
+  public boolean shouldReintegrate(@Nonnull String targetUrl) {
     return myReintegrateAnswer;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public SelectMergeItemsResult selectMergeItems(@NotNull List<SvnChangeList> lists,
-                                                 @NotNull MergeChecker mergeChecker,
+  public SelectMergeItemsResult selectMergeItems(@Nonnull List<SvnChangeList> lists,
+                                                 @Nonnull MergeChecker mergeChecker,
                                                  boolean allStatusesCalculated,
                                                  boolean allListsLoaded) {
     return new SelectMergeItemsResult(
@@ -78,18 +81,18 @@ public class QuickMergeTestInteraction implements QuickMergeInteraction {
     );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public LocalChangesAction selectLocalChangesAction(boolean mergeAll) {
     return LocalChangesAction.continueMerge;
   }
 
   @Override
-  public void showIntersectedLocalPaths(@NotNull List<FilePath> paths) {
+  public void showIntersectedLocalPaths(@Nonnull List<FilePath> paths) {
   }
 
   @Override
-  public void showErrors(@NotNull String message, @NotNull List<VcsException> exceptions) {
+  public void showErrors(@Nonnull String message, @Nonnull List<VcsException> exceptions) {
     if (!isEmpty(exceptions)) {
       myExceptions.addAll(exceptions);
     }
@@ -99,7 +102,7 @@ public class QuickMergeTestInteraction implements QuickMergeInteraction {
   }
 
   @Override
-  public void showErrors(@NotNull String message, boolean isError) {
+  public void showErrors(@Nonnull String message, boolean isError) {
     if (isError) {
       myExceptions.add(new RuntimeException(message));
     } else {

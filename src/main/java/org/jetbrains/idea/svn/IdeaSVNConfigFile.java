@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn;
 
 import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.config.DefaultProxyGroup;
 import org.jetbrains.idea.svn.config.ProxyGroup;
 import org.tmatesoft.svn.core.internal.wc.SVNConfigFile;
@@ -47,8 +47,8 @@ public class IdeaSVNConfigFile {
     myPatternsMap = new HashMap<>();
   }
 
-  @NotNull
-  public static String getNewGroupName(@NotNull String host, @NotNull IdeaSVNConfigFile configFile) {
+  @Nonnull
+  public static String getNewGroupName(@Nonnull String host, @Nonnull IdeaSVNConfigFile configFile) {
     String groupName = host;
     final Map<String, ProxyGroup> groups = configFile.getAllGroups();
     while (StringUtil.isEmptyOrSpaces(groupName) || groups.containsKey(groupName)) {

@@ -36,8 +36,8 @@ import com.intellij.util.Consumer;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnChangeProvider;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -69,7 +69,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
   private final String myTitle;
   private boolean myDryRun;
 
-  public SvnIntegrateChangesTask(final SvnVcs vcs, @NotNull WorkingCopyInfo info, final MergerFactory mergerFactory,
+  public SvnIntegrateChangesTask(final SvnVcs vcs, @Nonnull WorkingCopyInfo info, final MergerFactory mergerFactory,
                                  final SVNURL currentBranchUrl, final String title, final boolean dryRun, String branchName) {
     super(vcs.getProject(), title, true, VcsConfiguration.getInstance(vcs.getProject()).getUpdateOption());
     myDryRun = dryRun;
@@ -95,7 +95,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     }
   }
 
-  public void run(@NotNull final ProgressIndicator indicator) {
+  public void run(@Nonnull final ProgressIndicator indicator) {
     myHandler.setProgressIndicator(ProgressManager.getInstance().getProgressIndicator());
     myResolveWorker = new ResolveWorker(myInfo.isUnderProjectRoot(), myProject);
 
@@ -126,18 +126,18 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     }
   }
 
-  @NotNull
-  private static VcsException createError(@NotNull String... messages) {
+  @Nonnull
+  private static VcsException createError(@Nonnull String... messages) {
     return createException(false, messages);
   }
 
-  @NotNull
-  private static VcsException createWarning(@NotNull String... messages) {
+  @Nonnull
+  private static VcsException createWarning(@Nonnull String... messages) {
     return createException(true, messages);
   }
 
-  @NotNull
-  private static VcsException createException(boolean isWarning, @NotNull String... messages) {
+  @Nonnull
+  private static VcsException createException(boolean isWarning, @Nonnull String... messages) {
     Collection<String> notEmptyMessages = ContainerUtil.mapNotNull(messages, new Function<String, String>() {
       @Override
       public String fun(@Nullable String message) {
@@ -293,7 +293,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
       }, null);
   }
 
-  @NotNull
+  @Nonnull
   private Collection<FilePath> gatherChangedPaths() {
     final Collection<FilePath> result = new ArrayList<>();
 
@@ -323,7 +323,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     showAlienCommit(dirtyScope);
   }
 
-  private void showAlienCommit(@NotNull final AlienDirtyScope dirtyScope) {
+  private void showAlienCommit(@Nonnull final AlienDirtyScope dirtyScope) {
     new Task.Backgroundable(myVcs.getProject(),
                             SvnBundle.message("action.Subversion.integrate.changes.collecting.changes.to.commit.task.title")) {
 
@@ -331,7 +331,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
       private final Ref<String> caughtError = new Ref<>();
 
       @Override
-      public void run(@NotNull ProgressIndicator indicator) {
+      public void run(@Nonnull ProgressIndicator indicator) {
         indicator.setIndeterminate(true);
 
         if (!myVcs.getProject().isDisposed()) {
@@ -401,7 +401,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
 
     @Nullable
     @Override
-    public FileStatus getStatus(@NotNull FilePath filePath) {
+    public FileStatus getStatus(@Nonnull FilePath filePath) {
       throw new UnsupportedOperationException();
     }
 
@@ -411,7 +411,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     }
 
     @Override
-    public void setDefaultChangeList(@NotNull String list) {
+    public void setDefaultChangeList(@Nonnull String list) {
       throw new UnsupportedOperationException();
     }
   }

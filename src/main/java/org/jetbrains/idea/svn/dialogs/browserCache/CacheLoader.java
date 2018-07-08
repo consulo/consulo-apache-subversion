@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
 import com.intellij.openapi.components.ServiceManager;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
 
@@ -25,7 +25,8 @@ import java.util.List;
 
 public class CacheLoader extends Loader {
 
-  @NotNull private final Loader myRepositoryLoader;
+  @Nonnull
+  private final Loader myRepositoryLoader;
 
   public static Loader getInstance() {
     return ServiceManager.getService(Loader.class);
@@ -36,7 +37,7 @@ public class CacheLoader extends Loader {
     myRepositoryLoader = new RepositoryLoader(myCache);
   }
 
-  public void load(@NotNull final RepositoryTreeNode node, @NotNull final Expander expander) {
+  public void load(@Nonnull final RepositoryTreeNode node, @Nonnull final Expander expander) {
     SwingUtilities.invokeLater(new Runnable(){
       public void run() {
         final String nodeUrl = node.getURL().toString();
@@ -55,7 +56,7 @@ public class CacheLoader extends Loader {
     });
   }
 
-  @NotNull
+  @Nonnull
   protected NodeLoadState getNodeLoadState() {
     return NodeLoadState.CACHED;
   }

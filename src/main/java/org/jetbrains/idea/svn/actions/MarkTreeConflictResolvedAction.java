@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.ConflictedSvnChange;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
@@ -105,7 +105,7 @@ public class MarkTreeConflictResolvedAction extends AnAction implements DumbAwar
     if (result == Messages.YES) {
       final Ref<VcsException> exception = new Ref<>();
       ProgressManager.getInstance().run(new Task.Backgroundable(checker.getProject(), markText, true) {
-        public void run(@NotNull ProgressIndicator indicator) {
+        public void run(@Nonnull ProgressIndicator indicator) {
           final ConflictedSvnChange change = checker.getChange();
           final FilePath path = change.getTreeConflictMarkHolder();
           SvnVcs vcs = SvnVcs.getInstance(checker.getProject());

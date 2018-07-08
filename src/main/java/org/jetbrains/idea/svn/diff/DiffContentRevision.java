@@ -22,7 +22,7 @@ import com.intellij.openapi.vcs.changes.ByteBackedContentRevision;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.io.SVNRepository;
 
@@ -35,7 +35,7 @@ public class DiffContentRevision implements ByteBackedContentRevision {
   private FilePath myFilePath;
   private long myRevision;
 
-  public DiffContentRevision(String path, @NotNull SVNRepository repos, long revision) {
+  public DiffContentRevision(String path, @Nonnull SVNRepository repos, long revision) {
     this(path, repos, revision, VcsUtil.getFilePath(path));
   }
 
@@ -46,14 +46,14 @@ public class DiffContentRevision implements ByteBackedContentRevision {
     myRevision = revision;
   }
 
-  @NotNull
+  @Nonnull
   public String getContent() throws VcsException {
     final byte[] bytes = getContentAsBytes();
     final Charset charset = myFilePath.getCharset();
     return CharsetToolkit.bytesToString(bytes, charset);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public byte[] getContentAsBytes() throws VcsException {
     if (myContents == null) {
@@ -70,12 +70,12 @@ public class DiffContentRevision implements ByteBackedContentRevision {
     return myContents;
   }
 
-  @NotNull
+  @Nonnull
   public FilePath getFile() {
     return myFilePath;
   }
 
-  @NotNull
+  @Nonnull
   public VcsRevisionNumber getRevisionNumber() {
     return new VcsRevisionNumber.Long(myRevision);
   }

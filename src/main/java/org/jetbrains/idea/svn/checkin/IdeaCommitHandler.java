@@ -24,8 +24,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.api.EventAction;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -46,7 +46,8 @@ public class IdeaCommitHandler implements CommitEventHandler, ProgressTracker {
   private static final Logger LOG = Logger.getInstance(IdeaCommitHandler.class);
 
   @Nullable private final ProgressIndicator myProgress;
-  @NotNull private final List<VirtualFile> myDeletedFiles = ContainerUtil.newArrayList();
+  @Nonnull
+  private final List<VirtualFile> myDeletedFiles = ContainerUtil.newArrayList();
   private final boolean myCheckCancel;
   private final boolean myTrackDeletedFiles;
 
@@ -60,7 +61,7 @@ public class IdeaCommitHandler implements CommitEventHandler, ProgressTracker {
     myTrackDeletedFiles = trackDeletedFiles;
   }
 
-  @NotNull
+  @Nonnull
   public List<VirtualFile> getDeletedFiles() {
     return myDeletedFiles;
   }
@@ -103,7 +104,7 @@ public class IdeaCommitHandler implements CommitEventHandler, ProgressTracker {
     }
   }
 
-  private void updateProgress(@NotNull CommitEventType type, @NotNull String target) {
+  private void updateProgress(@Nonnull CommitEventType type, @Nonnull String target) {
     if (myProgress == null) return;
 
     if (CommitEventType.adding.equals(type)) {
@@ -119,7 +120,7 @@ public class IdeaCommitHandler implements CommitEventHandler, ProgressTracker {
     }
   }
 
-  private void trackDeletedFile(@NotNull ProgressEvent event) {
+  private void trackDeletedFile(@Nonnull ProgressEvent event) {
     @NonNls final String filePath = "file://" + event.getFile().getAbsolutePath().replace(File.separatorChar, '/');
     VirtualFile virtualFile = ApplicationManager.getApplication().runReadAction(new Computable<VirtualFile>() {
       @Nullable
@@ -133,8 +134,8 @@ public class IdeaCommitHandler implements CommitEventHandler, ProgressTracker {
     }
   }
 
-  @NotNull
-  private static CommitEventType convert(@NotNull EventAction action) {
+  @Nonnull
+  private static CommitEventType convert(@Nonnull EventAction action) {
     CommitEventType result = CommitEventType.unknown;
 
     if (EventAction.COMMIT_ADDED.equals(action)) {

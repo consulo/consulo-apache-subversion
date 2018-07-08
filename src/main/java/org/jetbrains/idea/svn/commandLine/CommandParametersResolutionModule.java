@@ -17,8 +17,8 @@ package org.jetbrains.idea.svn.commandLine;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VfsUtilCore;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.InfoCommandRepositoryProvider;
 import org.jetbrains.idea.svn.api.Repository;
 import org.jetbrains.idea.svn.api.UrlMappingRepositoryProvider;
@@ -32,12 +32,12 @@ import java.io.File;
  */
 public class CommandParametersResolutionModule extends BaseCommandRuntimeModule {
 
-  public CommandParametersResolutionModule(@NotNull CommandRuntime runtime) {
+  public CommandParametersResolutionModule(@Nonnull CommandRuntime runtime) {
     super(runtime);
   }
 
   @Override
-  public void onStart(@NotNull Command command) throws SvnBindException {
+  public void onStart(@Nonnull Command command) throws SvnBindException {
     if (command.getRepositoryUrl() == null) {
       command.setRepositoryUrl(resolveRepositoryUrl(command));
     }
@@ -49,7 +49,7 @@ public class CommandParametersResolutionModule extends BaseCommandRuntimeModule 
   }
 
   @Nullable
-  private SVNURL resolveRepositoryUrl(@NotNull Command command) {
+  private SVNURL resolveRepositoryUrl(@Nonnull Command command) {
     UrlMappingRepositoryProvider urlMappingProvider = new UrlMappingRepositoryProvider(myVcs, command.getTarget());
     InfoCommandRepositoryProvider infoCommandProvider = new InfoCommandRepositoryProvider(myVcs, command.getTarget());
 
@@ -61,8 +61,8 @@ public class CommandParametersResolutionModule extends BaseCommandRuntimeModule 
     return repository != null ? repository.getUrl() : null;
   }
 
-  @NotNull
-  private File resolveWorkingDirectory(@NotNull Command command) {
+  @Nonnull
+  private File resolveWorkingDirectory(@Nonnull Command command) {
     SvnTarget target = command.getTarget();
     File workingDirectory = target.isFile() ? target.getFile() : null;
     // TODO: Do we really need search existing parent - or just take parent directory if target is file???
@@ -71,8 +71,8 @@ public class CommandParametersResolutionModule extends BaseCommandRuntimeModule 
     return workingDirectory != null ? workingDirectory : getDefaultWorkingDirectory(myVcs.getProject());
   }
 
-  @NotNull
-  public static File getDefaultWorkingDirectory(@NotNull Project project) {
+  @Nonnull
+  public static File getDefaultWorkingDirectory(@Nonnull Project project) {
     return !project.isDefault() ? VfsUtilCore.virtualToIoFile(project.getBaseDir()) : CommandUtil.getHomeDirectory();
   }
 }

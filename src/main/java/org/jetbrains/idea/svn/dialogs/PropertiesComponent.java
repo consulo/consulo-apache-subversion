@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.annotation.Nonnull;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -32,8 +33,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -159,7 +159,7 @@ public class PropertiesComponent extends JPanel {
     }
   }
 
-  private static void collectProperties(@NotNull SvnVcs vcs, @NotNull File file, @NotNull final Map<String, String> props) {
+  private static void collectProperties(@Nonnull SvnVcs vcs, @Nonnull File file, @Nonnull final Map<String, String> props) {
     try {
       PropertyConsumer handler = new PropertyConsumer() {
         public void handleProperty(File path, PropertyData property) throws SVNException {

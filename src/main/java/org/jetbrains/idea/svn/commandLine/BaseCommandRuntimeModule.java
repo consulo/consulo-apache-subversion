@@ -15,7 +15,8 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 
@@ -24,18 +25,21 @@ import org.jetbrains.idea.svn.auth.AuthenticationService;
  */
 public abstract class BaseCommandRuntimeModule implements CommandRuntimeModule {
 
-  @NotNull protected final CommandRuntime myRuntime;
-  @NotNull protected final AuthenticationService myAuthenticationService;
-  @NotNull protected final SvnVcs myVcs;
+  @Nonnull
+  protected final CommandRuntime myRuntime;
+  @Nonnull
+  protected final AuthenticationService myAuthenticationService;
+  @Nonnull
+  protected final SvnVcs myVcs;
 
-  public BaseCommandRuntimeModule(@NotNull CommandRuntime runtime) {
+  public BaseCommandRuntimeModule(@Nonnull CommandRuntime runtime) {
     myRuntime = runtime;
     myAuthenticationService = runtime.getAuthenticationService();
     myVcs = runtime.getVcs();
   }
 
   @Override
-  public void onStart(@NotNull Command command) throws SvnBindException {
+  public void onStart(@Nonnull Command command) throws SvnBindException {
 
   }
 }

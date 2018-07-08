@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.checkin;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -21,10 +21,10 @@ import java.util.List;
 public class CmdImportClient extends BaseSvnClient implements ImportClient {
 
   @Override
-  public long doImport(@NotNull File path,
-                       @NotNull SVNURL url,
+  public long doImport(@Nonnull File path,
+                       @Nonnull SVNURL url,
                        @Nullable Depth depth,
-                       @NotNull String message,
+                       @Nonnull String message,
                        boolean noIgnore,
                        @Nullable CommitEventHandler handler,
                        @Nullable ISVNCommitHandler commitHandler) throws VcsException {

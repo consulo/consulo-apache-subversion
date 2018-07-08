@@ -21,8 +21,8 @@ import com.intellij.ide.ui.search.BooleanOptionDescription;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.impl.VcsDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,7 +37,7 @@ public final class SvnOptionsTopHitProvider extends OptionsTopHitProvider {
     return "vcs";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public Collection<BooleanOptionDescription> getOptions(@Nullable Project project) {
     if (project != null) {

@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.commandLine;
 
 import com.intellij.openapi.util.Key;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.auth.AcceptResult;
 import org.tmatesoft.svn.core.SVNURL;
@@ -44,13 +44,15 @@ public class TerminalSslCertificateModule extends BaseTerminalModule {
   // if credentials caching is allowed
   private static final Pattern ACCEPT_CERTIFICATE_PROMPT = Pattern.compile("\\(R\\)eject.*\\?\\s?");
 
-  @NotNull private final StringBuilder certificateError = new StringBuilder();
-  @NotNull private final StringBuilder certificateInfo = new StringBuilder();
+  @Nonnull
+  private final StringBuilder certificateError = new StringBuilder();
+  @Nonnull
+  private final StringBuilder certificateInfo = new StringBuilder();
   private boolean collectingCertificateError;
   private boolean collectingCertificateInfo;
   private String serverUrl;
 
-  public TerminalSslCertificateModule(@NotNull CommandRuntime runtime, @NotNull CommandExecutor executor) {
+  public TerminalSslCertificateModule(@Nonnull CommandRuntime runtime, @Nonnull CommandExecutor executor) {
     super(runtime, executor);
   }
 

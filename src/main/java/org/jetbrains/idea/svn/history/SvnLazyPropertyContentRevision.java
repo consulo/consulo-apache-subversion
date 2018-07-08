@@ -21,8 +21,9 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnBaseContentRevision;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -40,7 +41,7 @@ public class SvnLazyPropertyContentRevision extends SvnBaseContentRevision imple
   private final SVNURL myUrl;
   private List<PropertyData> myContent;
 
-  public SvnLazyPropertyContentRevision(@NotNull SvnVcs vcs, @NotNull FilePath file, VcsRevisionNumber number, SVNURL url) {
+  public SvnLazyPropertyContentRevision(@Nonnull SvnVcs vcs, @Nonnull FilePath file, VcsRevisionNumber number, SVNURL url) {
     super(vcs, file);
     myNumber = number;
     myUrl = url;
@@ -86,7 +87,7 @@ public class SvnLazyPropertyContentRevision extends SvnBaseContentRevision imple
     return ref.get();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public VcsRevisionNumber getRevisionNumber() {
     return myNumber;

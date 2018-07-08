@@ -2,8 +2,8 @@ package org.jetbrains.idea.svn.checkout;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressTracker;
@@ -23,8 +23,8 @@ import java.util.List;
 public class CmdExportClient extends BaseSvnClient implements ExportClient {
 
   @Override
-  public void export(@NotNull SvnTarget from,
-                     @NotNull File to,
+  public void export(@Nonnull SvnTarget from,
+                     @Nonnull File to,
                      @Nullable SVNRevision revision,
                      @Nullable Depth depth,
                      @Nullable String nativeLineEnd,

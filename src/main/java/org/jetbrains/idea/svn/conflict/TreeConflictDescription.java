@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.conflict;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseNodeDescription;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.tmatesoft.svn.core.wc.SVNTreeConflictDescription;
@@ -54,7 +54,7 @@ public class TreeConflictDescription extends BaseNodeDescription {
   }
 
   public TreeConflictDescription(File path,
-                                 @NotNull NodeKind nodeKind,
+                                 @Nonnull NodeKind nodeKind,
                                  ConflictAction conflictAction,
                                  ConflictReason conflictReason,
                                  ConflictOperation operation,
@@ -95,7 +95,7 @@ public class TreeConflictDescription extends BaseNodeDescription {
     return myConflictReason;
   }
 
-  @NotNull
+  @Nonnull
   public NodeKind getNodeKind() {
     return myKind;
   }
@@ -112,7 +112,7 @@ public class TreeConflictDescription extends BaseNodeDescription {
     return mySourceRightVersion;
   }
 
-  @NotNull
+  @Nonnull
   public String toPresentableString() {
     return "local " + getConflictReason() + ", incoming " + getConflictAction() + " upon " + getOperation();
   }

@@ -36,8 +36,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.util.WaitForProgressToShow;
 import com.intellij.util.containers.MultiMap;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,10 +56,12 @@ import static com.intellij.util.containers.ContainerUtil.newArrayList;
 public class ApplyPatchSaveToFileExecutor implements ApplyPatchExecutor<TextFilePatchInProgress> {
   private static final Logger LOG = Logger.getInstance(ApplyPatchSaveToFileExecutor.class);
 
-  @NotNull private final Project myProject;
-  @Nullable private final VirtualFile myNewPatchBase;
+  @Nonnull
+  private final Project myProject;
+  @Nullable
+  private final VirtualFile myNewPatchBase;
 
-  public ApplyPatchSaveToFileExecutor(@NotNull Project project, @Nullable VirtualFile newPatchBase) {
+  public ApplyPatchSaveToFileExecutor(@Nonnull Project project, @Nullable VirtualFile newPatchBase) {
     myProject = project;
     myNewPatchBase = newPatchBase;
   }
@@ -70,8 +72,8 @@ public class ApplyPatchSaveToFileExecutor implements ApplyPatchExecutor<TextFile
   }
 
   @Override
-  public void apply(@NotNull List<FilePatch> remaining,
-                    @NotNull MultiMap<VirtualFile, TextFilePatchInProgress> patchGroupsToApply,
+  public void apply(@Nonnull List<FilePatch> remaining,
+                    @Nonnull MultiMap<VirtualFile, TextFilePatchInProgress> patchGroupsToApply,
                     @Nullable LocalChangeList localList,
                     @Nullable String fileName,
                     @Nullable ThrowableComputable<Map<String, Map<String, CharSequence>>, PatchSyntaxException> additionalInfo) {
@@ -83,7 +85,7 @@ public class ApplyPatchSaveToFileExecutor implements ApplyPatchExecutor<TextFile
     }
   }
 
-  private void savePatch(@NotNull MultiMap<VirtualFile, TextFilePatchInProgress> patchGroups, @NotNull VirtualFileWrapper targetFile) {
+  private void savePatch(@Nonnull MultiMap<VirtualFile, TextFilePatchInProgress> patchGroups, @Nonnull VirtualFileWrapper targetFile) {
     VirtualFile newPatchBase = notNull(myNewPatchBase, myProject.getBaseDir());
     try {
       List<FilePatch> textPatches = toOnePatchGroup(patchGroups, newPatchBase);
@@ -97,9 +99,9 @@ public class ApplyPatchSaveToFileExecutor implements ApplyPatchExecutor<TextFile
     }
   }
 
-  @NotNull
-  public static List<FilePatch> toOnePatchGroup(@NotNull MultiMap<VirtualFile, TextFilePatchInProgress> patchGroups,
-                                                @NotNull VirtualFile newPatchBase) throws IOException {
+  @Nonnull
+  public static List<FilePatch> toOnePatchGroup(@Nonnull MultiMap<VirtualFile, TextFilePatchInProgress> patchGroups,
+                                                @Nonnull VirtualFile newPatchBase) throws IOException {
     List<FilePatch> result = newArrayList();
 
     for (Map.Entry<VirtualFile, Collection<TextFilePatchInProgress>> entry : patchGroups.entrySet()) {
@@ -121,16 +123,16 @@ public class ApplyPatchSaveToFileExecutor implements ApplyPatchExecutor<TextFile
   }
 
   @Nullable
-  private static String getNewBaseRelativePath(@NotNull VirtualFile newBase,
-                                               @NotNull VirtualFile oldBase,
+  private static String getNewBaseRelativePath(@Nonnull VirtualFile newBase,
+                                               @Nonnull VirtualFile oldBase,
                                                @Nullable String oldBaseRelativePath) throws IOException {
     return !isEmptyOrSpaces(oldBaseRelativePath)
            ? getRelativePath(newBase.getPath(), getCanonicalPath(oldBase, oldBaseRelativePath), '/')
            : oldBaseRelativePath;
   }
 
-  @NotNull
-  private static String getCanonicalPath(@NotNull VirtualFile base, @NotNull String relativePath) throws IOException {
+  @Nonnull
+  private static String getCanonicalPath(@Nonnull VirtualFile base, @Nonnull String relativePath) throws IOException {
     return toSystemIndependentName(new File(base.getPath(), relativePath).getCanonicalPath());
   }
 }

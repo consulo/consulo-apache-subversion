@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.
  */
 public interface CommandRuntimeModule {
 
-  void onStart(@NotNull Command command) throws SvnBindException;
+  void onStart(@Nonnull Command command) throws SvnBindException;
 }

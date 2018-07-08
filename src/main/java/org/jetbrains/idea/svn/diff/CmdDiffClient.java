@@ -24,8 +24,8 @@ import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.changes.CurrentContentRevision;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnStatusConvertor;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
@@ -52,9 +52,9 @@ import java.util.List;
  */
 public class CmdDiffClient extends BaseSvnClient implements DiffClient {
 
-  @NotNull
+  @Nonnull
   @Override
-  public List<Change> compare(@NotNull SvnTarget target1, @NotNull SvnTarget target2) throws VcsException {
+  public List<Change> compare(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2) throws VcsException {
     assertUrl(target1);
     if (target2.isFile()) {
       // Such combination (file and url) with "--summarize" option is supported only in svn 1.8.
@@ -78,7 +78,7 @@ public class CmdDiffClient extends BaseSvnClient implements DiffClient {
   }
 
   @Override
-  public void unifiedDiff(@NotNull SvnTarget target1, @NotNull SvnTarget target2, @NotNull OutputStream output) throws VcsException {
+  public void unifiedDiff(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2, @Nonnull OutputStream output) throws VcsException {
     assertUrl(target1);
     assertUrl(target2);
 
@@ -96,8 +96,8 @@ public class CmdDiffClient extends BaseSvnClient implements DiffClient {
     }
   }
 
-  @NotNull
-  private List<Change> parseOutput(@NotNull SvnTarget target1, @NotNull SvnTarget target2, @NotNull CommandExecutor executor)
+  @Nonnull
+  private List<Change> parseOutput(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2, @Nonnull CommandExecutor executor)
     throws SvnBindException {
     try {
       DiffInfo diffInfo = CommandUtil.parse(executor.getOutput(), DiffInfo.class);
@@ -116,11 +116,11 @@ public class CmdDiffClient extends BaseSvnClient implements DiffClient {
     }
   }
 
-  @NotNull
-  private ContentRevision createRevision(@NotNull FilePath path,
-                                         @NotNull FilePath localPath,
-                                         @NotNull SVNRevision revision,
-                                         @NotNull FileStatus status) {
+  @Nonnull
+  private ContentRevision createRevision(@Nonnull FilePath path,
+                                         @Nonnull FilePath localPath,
+                                         @Nonnull SVNRevision revision,
+                                         @Nonnull FileStatus status) {
     ContentRevision result;
 
     if (path.isNonLocal()) {
@@ -136,14 +136,14 @@ public class CmdDiffClient extends BaseSvnClient implements DiffClient {
     return result;
   }
 
-  private static FilePath createFilePath(@NotNull SvnTarget target, boolean isDirectory) {
+  private static FilePath createFilePath(@Nonnull SvnTarget target, boolean isDirectory) {
     return target.isFile()
            ? VcsUtil.getFilePath(target.getFile(), isDirectory)
            : VcsUtil.getFilePathOnNonLocal(SvnUtil.toDecodedString(target), isDirectory);
   }
 
-  @NotNull
-  private Change createChange(@NotNull SvnTarget target1, @NotNull SvnTarget target2, @NotNull DiffPath diffPath) throws SvnBindException {
+  @Nonnull
+  private Change createChange(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2, @Nonnull DiffPath diffPath) throws SvnBindException {
     // TODO: 1) Unify logic of creating Change instance with SvnDiffEditor and SvnChangeProviderContext
     // TODO: 2) If some directory is switched, files inside it are returned as modified in "svn diff --summarize", even if they are equal
     // TODO: to branch files by content - possibly add separate processing of all switched files
@@ -175,8 +175,8 @@ public class CmdDiffClient extends BaseSvnClient implements DiffClient {
     return createChange(status, beforeRevision, afterRevision);
   }
 
-  @NotNull
-  private static Change createChange(@NotNull final FileStatus status,
+  @Nonnull
+  private static Change createChange(@Nonnull final FileStatus status,
                                      @Nullable final ContentRevision beforeRevision,
                                      @Nullable final ContentRevision afterRevision) {
     // isRenamed() and isMoved() are always false here not to have text like "moved from ..." in changes window - by default different

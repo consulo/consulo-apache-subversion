@@ -19,7 +19,7 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.util.TimeoutUtil;
 import junit.framework.Assert;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.jetbrains.idea.svn.commandLine.*;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class SvnCommandLineStabilityTest extends Svn17TestCase {
     Assert.assertNotNull(result);
   }
 
-  @NotNull
+  @Nonnull
   private CommandExecutor runInfo() throws SvnBindException {
     SvnVcs vcs = SvnVcs.getInstance(myProject);
     File workingDirectory = VfsUtilCore.virtualToIoFile(myWorkingCopyDir);

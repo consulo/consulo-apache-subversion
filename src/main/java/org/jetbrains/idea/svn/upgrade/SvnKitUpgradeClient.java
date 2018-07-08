@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.upgrade;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.EventAction;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SvnKitUpgradeClient extends BaseSvnClient implements UpgradeClient {
 
   @Override
-  public void upgrade(@NotNull File path, @NotNull WorkingCopyFormat format, @Nullable ProgressTracker handler) throws VcsException {
+  public void upgrade(@Nonnull File path, @Nonnull WorkingCopyFormat format, @Nullable ProgressTracker handler) throws VcsException {
     validateFormat(format, getSupportedFormats());
 
     SVNWCClient client = myVcs.getSvnKitManager().createUpgradeClient();
@@ -41,9 +41,9 @@ public class SvnKitUpgradeClient extends BaseSvnClient implements UpgradeClient 
     return SvnKitCheckoutClient.SUPPORTED_FORMATS;
   }
 
-  private static void cleanupIfNecessary(@NotNull File path,
-                                         @NotNull WorkingCopyFormat format,
-                                         @NotNull SVNWCClient client,
+  private static void cleanupIfNecessary(@Nonnull File path,
+                                         @Nonnull WorkingCopyFormat format,
+                                         @Nonnull SVNWCClient client,
                                          @Nullable ProgressTracker handler) throws SVNException, VcsException {
     // cleanup is executed only for SVNKit as it could handle both 1.6 and 1.7 formats
     if (WorkingCopyFormat.ONE_DOT_SEVEN.equals(format)) {
@@ -53,9 +53,9 @@ public class SvnKitUpgradeClient extends BaseSvnClient implements UpgradeClient 
     }
   }
 
-  private static void upgrade(@NotNull File path,
-                              @NotNull WorkingCopyFormat format,
-                              @NotNull SVNWCClient client,
+  private static void upgrade(@Nonnull File path,
+                              @Nonnull WorkingCopyFormat format,
+                              @Nonnull SVNWCClient client,
                               @Nullable ProgressTracker handler) throws SVNException, VcsException {
     // fake event indicating upgrade start
     callHandler(handler, createEvent(path, EventAction.UPDATE_COMPLETED));

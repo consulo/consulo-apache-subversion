@@ -15,7 +15,8 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
@@ -29,7 +30,7 @@ public class TwoWaySslCallback extends UsernamePasswordCallback {
   private static final String ACCESS_TO_PREFIX = "Access to ";
   private static final String FORBIDDEN_STATUS = "forbidden";
 
-  TwoWaySslCallback(@NotNull AuthenticationService authenticationService, SVNURL url) {
+  TwoWaySslCallback(@Nonnull AuthenticationService authenticationService, SVNURL url) {
     super(authenticationService, url);
   }
 
@@ -45,7 +46,7 @@ public class TwoWaySslCallback extends UsernamePasswordCallback {
   }
 
   @Override
-  public void updateParameters(@NotNull Command command) {
+  public void updateParameters(@Nonnull Command command) {
     if (myAuthentication instanceof SVNSSLAuthentication) {
       SVNSSLAuthentication auth = (SVNSSLAuthentication)myAuthentication;
 

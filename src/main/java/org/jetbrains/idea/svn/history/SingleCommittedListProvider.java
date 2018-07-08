@@ -26,7 +26,7 @@ import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationNotifier;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -43,10 +43,14 @@ public class SingleCommittedListProvider {
 
   private static final Logger LOG = Logger.getInstance(SingleCommittedListProvider.class);
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final Project myProject;
-  @NotNull private final VirtualFile file;
-  @NotNull private final VcsRevisionNumber number;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final Project myProject;
+  @Nonnull
+  private final VirtualFile file;
+  @Nonnull
+  private final VcsRevisionNumber number;
   private SvnChangeList[] changeList;
   private SVNRevision revisionBefore;
   private SVNURL repositoryUrl;
@@ -55,7 +59,7 @@ public class SingleCommittedListProvider {
   private String repositoryRelativeUrl;
   private FilePath filePath;
 
-  public SingleCommittedListProvider(@NotNull SvnVcs vcs, @NotNull VirtualFile file, @NotNull VcsRevisionNumber number) {
+  public SingleCommittedListProvider(@Nonnull SvnVcs vcs, @Nonnull VirtualFile file, @Nonnull VcsRevisionNumber number) {
     myVcs = vcs;
     myProject = vcs.getProject();
     this.file = file;
@@ -115,12 +119,12 @@ public class SingleCommittedListProvider {
     }
   }
 
-  private boolean hasAccess(@NotNull SVNURL url) {
+  private boolean hasAccess(@Nonnull SVNURL url) {
     return SvnAuthenticationNotifier.passiveValidation(myProject, url);
   }
 
   // return changed path, if any
-  private FilePath searchFromHead(@NotNull SVNURL url) throws VcsException {
+  private FilePath searchFromHead(@Nonnull SVNURL url) throws VcsException {
     final SvnCopyPathTracker pathTracker = new SvnCopyPathTracker(repositoryUrl.toDecodedString(), repositoryRelativeUrl);
     SvnTarget target = SvnTarget.fromURL(url);
 
@@ -144,8 +148,8 @@ public class SingleCommittedListProvider {
     return path == null ? filePath : path;
   }
 
-  @NotNull
-  private SvnChangeList createChangeList(@NotNull LogEntry logEntry) {
+  @Nonnull
+  private SvnChangeList createChangeList(@Nonnull LogEntry logEntry) {
     return new SvnChangeList(myVcs, svnRootLocation, logEntry, repositoryUrl.toDecodedString());
   }
 
@@ -155,7 +159,7 @@ public class SingleCommittedListProvider {
     }
   }
 
-  private boolean searchForUrl(@NotNull SVNURL url) throws VcsException {
+  private boolean searchForUrl(@Nonnull SVNURL url) throws VcsException {
     LogEntryConsumer handler = new LogEntryConsumer() {
       @Override
       public void consume(LogEntry logEntry) {

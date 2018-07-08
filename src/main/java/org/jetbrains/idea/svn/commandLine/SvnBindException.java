@@ -21,8 +21,8 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.MultiMap;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
@@ -46,10 +46,12 @@ public class SvnBindException extends VcsException {
 
   public static final String ERROR_MESSAGE_FORMAT = "svn: E%d: %s";
 
-  @NotNull private final MultiMap<Integer, String> errors = MultiMap.create();
-  @NotNull private final MultiMap<Integer, String> warnings = MultiMap.create();
+  @Nonnull
+  private final MultiMap<Integer, String> errors = MultiMap.create();
+  @Nonnull
+  private final MultiMap<Integer, String> warnings = MultiMap.create();
 
-  public SvnBindException(@NotNull SVNErrorCode code, @NotNull String message) {
+  public SvnBindException(@Nonnull SVNErrorCode code, @Nonnull String message) {
     super(String.format(ERROR_MESSAGE_FORMAT, code.getCode(), message));
     errors.putValue(code.getCode(), getMessage());
   }
@@ -90,7 +92,7 @@ public class SvnBindException extends VcsException {
     return errors.containsKey(code) || warnings.containsKey(code);
   }
 
-  public boolean contains(@NotNull SVNErrorCode code) {
+  public boolean contains(@Nonnull SVNErrorCode code) {
     return contains(code.getCode());
   }
 
@@ -111,7 +113,7 @@ public class SvnBindException extends VcsException {
     return (category - ERROR_BASE) / CATEGORY_SIZE;
   }
 
-  private static void parse(@NotNull String message, @NotNull Pattern pattern, @NotNull MultiMap<Integer, String> map) {
+  private static void parse(@Nonnull String message, @Nonnull Pattern pattern, @Nonnull MultiMap<Integer, String> map) {
     Matcher matcher = pattern.matcher(message);
 
     while (matcher.find()) {

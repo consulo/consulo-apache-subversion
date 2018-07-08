@@ -1,8 +1,10 @@
 package org.jetbrains.idea.svn.history;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
@@ -12,9 +14,9 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
  */
 public interface HistoryClient extends SvnClient {
 
-  void doLog(@NotNull SvnTarget target,
-             @NotNull SVNRevision startRevision,
-             @NotNull SVNRevision endRevision,
+  void doLog(@Nonnull SvnTarget target,
+             @Nonnull SVNRevision startRevision,
+             @Nonnull SVNRevision endRevision,
              boolean stopOnCopy,
              boolean discoverChangedPaths,
              boolean includeMergedRevisions,

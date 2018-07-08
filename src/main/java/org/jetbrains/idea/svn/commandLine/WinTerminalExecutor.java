@@ -23,8 +23,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.io.*;
 import java.util.List;
@@ -49,11 +49,11 @@ public class WinTerminalExecutor extends TerminalExecutor {
   @Nullable private File myRedirectFile;
   @Nullable private FileInputStream myRedirectStream;
 
-  public WinTerminalExecutor(@NotNull @NonNls String exePath, @NotNull Command command) {
+  public WinTerminalExecutor(@Nonnull @NonNls String exePath, @Nonnull Command command) {
     super(exePath, command);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected SvnProcessHandler createProcessHandler() {
     return new WinTerminalProcessHandler(myProcess, myCommandLine.getCommandLineString(), needsUtf8Output(), needsBinaryOutput());
@@ -97,7 +97,7 @@ public class WinTerminalExecutor extends TerminalExecutor {
     deleteTempFile(myRedirectFile);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Process createProcess() throws ExecutionException {
     checkRedirectFile();
@@ -136,9 +136,9 @@ public class WinTerminalExecutor extends TerminalExecutor {
   /**
    * TODO: Identify pty4j quoting requirements for Windows and implement accordingly
    */
-  @NotNull
+  @Nonnull
   @Override
-  protected List<String> escapeArguments(@NotNull List<String> arguments) {
+  protected List<String> escapeArguments(@Nonnull List<String> arguments) {
     return ContainerUtil.map(arguments, new Function<String, String>() {
       @Override
       public String fun(String argument) {
@@ -147,16 +147,16 @@ public class WinTerminalExecutor extends TerminalExecutor {
     });
   }
 
-  @NotNull
-  private static String quote(@NotNull String argument) {
+  @Nonnull
+  private static String quote(@Nonnull String argument) {
     return StringUtil.wrapWithDoubleQuote(argument);
   }
 
-  private static boolean needQuote(@NotNull String argument) {
+  private static boolean needQuote(@Nonnull String argument) {
     return argument.contains(" ");
   }
 
-  private static boolean isQuoted(@NotNull String argument) {
+  private static boolean isQuoted(@Nonnull String argument) {
     return StringUtil.startsWithChar(argument, '\"') && StringUtil.endsWithChar(argument, '\"');
   }
 }

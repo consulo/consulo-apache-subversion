@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.dialogs.browser;
 
 import com.intellij.util.NotNullFunction;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
 import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
 import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
@@ -63,7 +63,7 @@ public class OpeningExpander extends AbstractOpeningExpander {
       mySelectionPath = selectionPath;
     }
 
-    @NotNull
+    @Nonnull
     public Expander fun(final RepositoryBrowserComponent repositoryBrowserComponent) {
       return new OpeningExpander(myPath, repositoryBrowserComponent, mySelectionPath);
     }

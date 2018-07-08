@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.properties;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 
 import java.util.HashMap;
@@ -33,8 +33,8 @@ public class ExternalsDefinitionParser {
    *
    * @return map of externals definitions: key - relative directory, value - corresponding complete externals definition.
    */
-  @NotNull
-  public static Map<String, String> parseExternalsProperty(@NotNull String externals) throws SvnBindException {
+  @Nonnull
+  public static Map<String, String> parseExternalsProperty(@Nonnull String externals) throws SvnBindException {
     HashMap<String, String> map = ContainerUtil.newHashMap();
 
     for (String external : StringUtil.splitByLines(externals, true)) {
@@ -50,8 +50,8 @@ public class ExternalsDefinitionParser {
    * - could be quoted with '"' char
    * - certain chars could be escaped with '\' char
    */
-  @NotNull
-  public static String parseRelativeDirectory(@NotNull String s) throws SvnBindException {
+  @Nonnull
+  public static String parseRelativeDirectory(@Nonnull String s) throws SvnBindException {
     s = s.trim();
 
     int length = s.length();
@@ -71,21 +71,21 @@ public class ExternalsDefinitionParser {
     return unescape(result);
   }
 
-  private static void assertIndex(@NotNull String s, int index, @NotNull String message) throws SvnBindException {
+  private static void assertIndex(@Nonnull String s, int index, @Nonnull String message) throws SvnBindException {
     if (index < 0) {
       throw new SvnBindException(message + " - " + s);
     }
   }
 
-  @NotNull
-  private static String unescape(@NotNull String s) {
+  @Nonnull
+  private static String unescape(@Nonnull String s) {
     return s.replace("\\", "");
   }
 
   /**
    * "from" index is excluded.
    */
-  private static int lastUnescapedIndexOf(@NotNull String s, int from, char c) {
+  private static int lastUnescapedIndexOf(@Nonnull String s, int from, char c) {
     int result = from;
 
     do {
@@ -96,11 +96,11 @@ public class ExternalsDefinitionParser {
     return result;
   }
 
-  private static boolean isUnescapedQuote(@NotNull String s, int index) {
+  private static boolean isUnescapedQuote(@Nonnull String s, int index) {
     return isUnescaped(s, index, '"');
   }
 
-  private static boolean isUnescaped(@NotNull String s, int index, char c) {
+  private static boolean isUnescaped(@Nonnull String s, int index, char c) {
     return StringUtil.isChar(s, index, c) && !StringUtil.isChar(s, index - 1, '\\');
   }
 }

@@ -15,29 +15,31 @@
  */
 package org.jetbrains.idea.svn;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNURL;
 
 import java.io.File;
 
 public class WorkingCopy {
   private final boolean myIs17Copy;
-  @NotNull private final File myFile;
-  @NotNull private final SVNURL myUrl;
+  @Nonnull
+  private final File myFile;
+  @Nonnull
+  private final SVNURL myUrl;
 
   // TODO: is17Copy is currently true in all constructor usages - remove this field and revise is17Copy() usages
-  public WorkingCopy(@NotNull File file, @NotNull SVNURL url, boolean is17Copy) {
+  public WorkingCopy(@Nonnull File file, @Nonnull SVNURL url, boolean is17Copy) {
     myFile = file;
     myUrl = url;
     myIs17Copy = is17Copy;
   }
 
-  @NotNull
+  @Nonnull
   public File getFile() {
     return myFile;
   }
 
-  @NotNull
+  @Nonnull
   public SVNURL getUrl() {
     return myUrl;
   }

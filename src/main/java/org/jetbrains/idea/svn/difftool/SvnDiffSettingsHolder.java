@@ -17,8 +17,9 @@ package org.jetbrains.idea.svn.difftool;
 
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.diff.util.DiffPlaces;
 import com.intellij.diff.util.DiffUtil;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -42,14 +43,16 @@ public class SvnDiffSettingsHolder implements PersistentStateComponent<SvnDiffSe
   }
 
   public static class SvnDiffSettings {
-    @NotNull public SharedSettings SHARED_SETTINGS = new SharedSettings();
-    @NotNull public PlaceSettings PLACE_SETTINGS = new PlaceSettings();
+    @Nonnull
+	public SharedSettings SHARED_SETTINGS = new SharedSettings();
+    @Nonnull
+	public PlaceSettings PLACE_SETTINGS = new PlaceSettings();
 
     public SvnDiffSettings() {
     }
 
-    public SvnDiffSettings(@NotNull SharedSettings SHARED_SETTINGS,
-                           @NotNull PlaceSettings PLACE_SETTINGS) {
+    public SvnDiffSettings(@Nonnull SharedSettings SHARED_SETTINGS,
+                           @Nonnull PlaceSettings PLACE_SETTINGS) {
       this.SHARED_SETTINGS = SHARED_SETTINGS;
       this.PLACE_SETTINGS = PLACE_SETTINGS;
     }
@@ -74,18 +77,18 @@ public class SvnDiffSettingsHolder implements PersistentStateComponent<SvnDiffSe
     // Impl
     //
 
-    @NotNull
+    @Nonnull
     public static SvnDiffSettings getSettings() {
       return getSettings(null);
     }
 
-    @NotNull
+    @Nonnull
     public static SvnDiffSettings getSettings(@Nullable String place) {
       return getInstance().getSettings(place);
     }
   }
 
-  @NotNull
+  @Nonnull
   public SvnDiffSettings getSettings(@Nullable String place) {
     if (place == null) place = DiffPlaces.DEFAULT;
 
@@ -105,7 +108,7 @@ public class SvnDiffSettingsHolder implements PersistentStateComponent<SvnDiffSe
 
   private State myState = new State();
 
-  @NotNull
+  @Nonnull
   public State getState() {
     return myState;
   }

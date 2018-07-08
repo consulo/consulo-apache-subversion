@@ -16,7 +16,6 @@
 package org.jetbrains.idea.svn.svnkit;
 
 import com.intellij.openapi.application.ApplicationManager;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.SvnFormatSelector;
 import org.jetbrains.idea.svn.SvnWorkingCopyFormatHolder;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
@@ -30,6 +29,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
+import javax.annotation.Nullable;
 
 /**
  * @author Konstantin Kolosovsky.

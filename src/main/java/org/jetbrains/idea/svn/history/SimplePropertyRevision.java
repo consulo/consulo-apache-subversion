@@ -4,8 +4,9 @@ import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.properties.PropertyData;
 
 import java.util.List;
@@ -34,12 +35,12 @@ public class SimplePropertyRevision implements ContentRevision, PropertyRevision
     return toSortedStringPresentation(myProperty);
   }
 
-  @NotNull
+  @Nonnull
   public FilePath getFile() {
     return myNewFilePath;
   }
 
-  @NotNull
+  @Nonnull
   public VcsRevisionNumber getRevisionNumber() {
     return new VcsRevisionNumber() {
       public String asString() {

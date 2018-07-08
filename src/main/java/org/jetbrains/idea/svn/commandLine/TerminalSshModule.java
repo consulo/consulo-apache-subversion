@@ -21,7 +21,7 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.WaitForProgressToShow;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.dialogs.ServerSSHDialog;
 import org.jetbrains.idea.svn.dialogs.SimpleCredentialsDialog;
 import org.tmatesoft.svn.core.SVNURL;
@@ -46,7 +46,7 @@ public class TerminalSshModule extends BaseTerminalModule {
   private String fingerprintAlgorithm;
   private String hostFingerprint;
 
-  public TerminalSshModule(@NotNull CommandRuntime runtime, @NotNull CommandExecutor executor) {
+  public TerminalSshModule(@Nonnull CommandRuntime runtime, @Nonnull CommandExecutor executor) {
     super(runtime, executor);
   }
 
@@ -55,19 +55,19 @@ public class TerminalSshModule extends BaseTerminalModule {
     return checkPassphrase(line) || checkPassword(line) || checkUnknownHost(line);
   }
 
-  private boolean checkPassphrase(@NotNull String line) {
+  private boolean checkPassphrase(@Nonnull String line) {
     Matcher matcher = PASSPHRASE_PROMPT.matcher(line);
 
     return matcher.matches() && handleAuthPrompt(SimpleCredentialsDialog.Mode.SSH_PASSPHRASE, matcher.group(1));
   }
 
-  private boolean checkPassword(@NotNull String line) {
+  private boolean checkPassword(@Nonnull String line) {
     Matcher matcher = PASSWORD_PROMPT.matcher(line);
 
     return matcher.matches() && handleAuthPrompt(SimpleCredentialsDialog.Mode.SSH_PASSWORD, matcher.group(1));
   }
 
-  private boolean checkUnknownHost(@NotNull String line) {
+  private boolean checkUnknownHost(@Nonnull String line) {
     Matcher unknownHostMatcher = UNKNOWN_HOST_MESSAGE.matcher(line);
     Matcher hostFingerPrintMatcher = HOST_FINGERPRINT_MESSAGE.matcher(line);
     Matcher acceptHostMatcher = ACCEPT_HOST_PROMPT.matcher(line);
@@ -110,7 +110,7 @@ public class TerminalSshModule extends BaseTerminalModule {
     sendData(answer.get() == ISVNAuthenticationProvider.REJECTED ? "no" : "yes");
   }
 
-  private boolean handleAuthPrompt(@NotNull final SimpleCredentialsDialog.Mode mode, @NotNull final String key) {
+  private boolean handleAuthPrompt(@Nonnull final SimpleCredentialsDialog.Mode mode, @Nonnull final String key) {
     SVNURL repositoryUrl = myExecutor.getCommand().requireRepositoryUrl();
     String auth = myRuntime.getAuthenticationService().requestSshCredentials(repositoryUrl.toDecodedString(), mode, key);
 

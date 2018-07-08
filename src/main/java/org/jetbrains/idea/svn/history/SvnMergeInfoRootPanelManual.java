@@ -25,8 +25,8 @@ import com.intellij.util.NotNullFunction;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
@@ -54,19 +54,24 @@ public class SvnMergeInfoRootPanelManual {
   private JTextArea myLocalArea;
   private JTextArea myMixedRevisions;
 
-  @NotNull private final Project myProject;
-  @NotNull private final NotNullFunction<WCInfoWithBranches, WCInfoWithBranches> myRefresher;
-  @NotNull private final Runnable myListener;
+  @Nonnull
+  private final Project myProject;
+  @Nonnull
+  private final NotNullFunction<WCInfoWithBranches, WCInfoWithBranches> myRefresher;
+  @Nonnull
+  private final Runnable myListener;
   private boolean myOnlyOneRoot;
-  @NotNull private WCInfoWithBranches myInfo;
-  @NotNull private final Map<String, String> myBranchToLocal;
+  @Nonnull
+  private WCInfoWithBranches myInfo;
+  @Nonnull
+  private final Map<String, String> myBranchToLocal;
   private WCInfoWithBranches.Branch mySelectedBranch;
 
-  public SvnMergeInfoRootPanelManual(@NotNull Project project,
-                                     @NotNull NotNullFunction<WCInfoWithBranches, WCInfoWithBranches> refresher,
-                                     @NotNull Runnable listener,
+  public SvnMergeInfoRootPanelManual(@Nonnull Project project,
+                                     @Nonnull NotNullFunction<WCInfoWithBranches, WCInfoWithBranches> refresher,
+                                     @Nonnull Runnable listener,
                                      boolean onlyOneRoot,
-                                     @NotNull WCInfoWithBranches info) {
+                                     @Nonnull WCInfoWithBranches info) {
     myOnlyOneRoot = onlyOneRoot;
     myInfo = info;
     myProject = project;
@@ -205,7 +210,7 @@ public class SvnMergeInfoRootPanelManual {
   }
 
   @Nullable
-  private static String getLocal(@NotNull String url, @Nullable String localPath) {
+  private static String getLocal(@Nonnull String url, @Nullable String localPath) {
     String result = null;
     Set<String> paths = SvnBranchMapperManager.getInstance().get(url);
 
@@ -230,7 +235,7 @@ public class SvnMergeInfoRootPanelManual {
   }
 
   // always assign to selected branch here
-  private void refreshSelectedBranch(@NotNull WCInfoWithBranches.Branch branch) {
+  private void refreshSelectedBranch(@Nonnull WCInfoWithBranches.Branch branch) {
     myBranchField.setText(branch.getName());
 
     if (!initSelectedBranch(branch)) {
@@ -239,7 +244,7 @@ public class SvnMergeInfoRootPanelManual {
     }
   }
 
-  private boolean initSelectedBranch(@NotNull WCInfoWithBranches.Branch branch) {
+  private boolean initSelectedBranch(@Nonnull WCInfoWithBranches.Branch branch) {
     boolean found = myInfo.getBranches().contains(branch);
 
     if (found) {
@@ -263,12 +268,12 @@ public class SvnMergeInfoRootPanelManual {
     myFixedSelectLocal = new FixedSizeButton(20);
   }
 
-  @NotNull
+  @Nonnull
   public InfoHolder getInfo() {
     return new InfoHolder(mySelectedBranch, getLocalBranch(), myInclude.isSelected());
   }
 
-  public void initSelection(@NotNull InfoHolder holder) {
+  public void initSelection(@Nonnull InfoHolder holder) {
     myInclude.setSelected(holder.isEnabled());
     if (holder.getBranch() != null) {
       refreshSelectedBranch(holder.getBranch());
@@ -278,7 +283,8 @@ public class SvnMergeInfoRootPanelManual {
 
   public static class InfoHolder {
 
-    @Nullable private final WCInfoWithBranches.Branch myBranch;
+    @Nullable
+	private final WCInfoWithBranches.Branch myBranch;
     @Nullable private final String myLocal;
     private final boolean myEnabled;
 
@@ -303,7 +309,7 @@ public class SvnMergeInfoRootPanelManual {
     }
   }
 
-  @NotNull
+  @Nonnull
   public WCInfoWithBranches getWcInfo() {
     return myInfo;
   }

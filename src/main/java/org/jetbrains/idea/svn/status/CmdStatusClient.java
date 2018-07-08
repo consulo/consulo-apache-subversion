@@ -20,8 +20,8 @@ import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.util.containers.Convertor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
@@ -52,14 +52,14 @@ import java.util.*;
 public class CmdStatusClient extends BaseSvnClient implements StatusClient {
 
   @Override
-  public long doStatus(@NotNull final File path,
+  public long doStatus(@Nonnull final File path,
                        @Nullable final SVNRevision revision,
-                       @NotNull final Depth depth,
+                       @Nonnull final Depth depth,
                        boolean remote,
                        boolean reportAll,
                        boolean includeIgnored,
                        boolean collectParentExternals,
-                       @NotNull final StatusConsumer handler,
+                       @Nonnull final StatusConsumer handler,
                        @Nullable final Collection changeLists) throws SvnBindException {
     File base = CommandUtil.requireExistingParent(path);
     final Info infoBase = myFactory.createInfoClient().doInfo(base, revision);
@@ -133,8 +133,8 @@ public class CmdStatusClient extends BaseSvnClient implements StatusClient {
     }
   }
 
-  private static void putParameters(@NotNull List<String> parameters,
-                                    @NotNull File path,
+  private static void putParameters(@Nonnull List<String> parameters,
+                                    @Nonnull File path,
                                     @Nullable Depth depth,
                                     boolean remote,
                                     boolean reportAll,
@@ -230,7 +230,7 @@ public class CmdStatusClient extends BaseSvnClient implements StatusClient {
   }
 
   @Override
-  public Status doStatus(@NotNull File path, boolean remote) throws SvnBindException {
+  public Status doStatus(@Nonnull File path, boolean remote) throws SvnBindException {
     final Status[] svnStatus = new Status[1];
     doStatus(path, SVNRevision.UNDEFINED, Depth.EMPTY, remote, false, false, false, new StatusConsumer() {
       @Override

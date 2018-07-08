@@ -22,8 +22,8 @@ import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.text.DateFormatUtil;
 import com.intellij.xml.util.XmlStringUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -51,7 +51,7 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
   private final LineAnnotationAspect DATE_ASPECT = new SvnAnnotationAspect(LineAnnotationAspect.DATE, true) {
 
     @Override
-    public String getValue(@NotNull CommitInfo info) {
+    public String getValue(@Nonnull CommitInfo info) {
       return DateFormatUtil.formatPrettyDate(info.getDate());
     }
   };
@@ -59,7 +59,7 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
   private final LineAnnotationAspect REVISION_ASPECT = new SvnAnnotationAspect(LineAnnotationAspect.REVISION, false) {
 
     @Override
-    public String getValue(@NotNull CommitInfo info) {
+    public String getValue(@Nonnull CommitInfo info) {
       return String.valueOf(info.getRevision());
     }
   };
@@ -92,7 +92,7 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
   private final LineAnnotationAspect AUTHOR_ASPECT = new SvnAnnotationAspect(LineAnnotationAspect.AUTHOR, true) {
 
     @Override
-    public String getValue(@NotNull CommitInfo info) {
+    public String getValue(@Nonnull CommitInfo info) {
       return info.getAuthor();
     }
   };
@@ -150,7 +150,7 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
     return myContents;
   }
 
-  public void setLineInfo(int lineNumber, @NotNull CommitInfo info, @Nullable CommitInfo mergeInfo) {
+  public void setLineInfo(int lineNumber, @Nonnull CommitInfo info, @Nullable CommitInfo mergeInfo) {
     myInfos.appendNumberedLineInfo(lineNumber, info, mergeInfo);
   }
 
@@ -188,7 +188,7 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
   public AnnotationSourceSwitcher getAnnotationSourceSwitcher() {
     if (! myShowMergeSources) return null;
     return new AnnotationSourceSwitcher() {
-      @NotNull
+      @Nonnull
       public AnnotationSource getAnnotationSource(int lineNumber) {
         return myInfos.getAnnotationSource(lineNumber);
       }
@@ -197,12 +197,12 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
         return myInfos.mergeSourceAvailable(lineNumber);
       }
 
-      @NotNull
+      @Nonnull
       public LineAnnotationAspect getRevisionAspect() {
         return ORIGINAL_REVISION_ASPECT;
       }
 
-      @NotNull
+      @Nonnull
       public AnnotationSource getDefaultSource() {
         return AnnotationSource.getInstance(myShowMergeSources);
       }
@@ -251,7 +251,7 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
       return info == null ? "" : getValue(info);
     }
 
-    public String getValue(@NotNull CommitInfo info) {
+    public String getValue(@Nonnull CommitInfo info) {
       return "";
     }
   }
@@ -278,7 +278,7 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
       return myMaxIdx + 1;
     }
 
-    void appendNumberedLineInfo(final int lineNumber, @NotNull CommitInfo info, @Nullable CommitInfo mergeInfo) {
+    void appendNumberedLineInfo(final int lineNumber, @Nonnull CommitInfo info, @Nullable CommitInfo mergeInfo) {
       if (myMappedLineInfo.get(lineNumber) != null) return;
       myMaxIdx = (myMaxIdx < lineNumber) ? lineNumber : myMaxIdx;
       myMappedLineInfo.put(lineNumber, info);

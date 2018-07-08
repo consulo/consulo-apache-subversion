@@ -15,8 +15,9 @@
  */
 package org.jetbrains.idea.svn.status;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -36,16 +37,16 @@ public interface StatusClient extends SvnClient {
   /**
    * TODO: Return value is never used by other code
    */
-  long doStatus(@NotNull File path,
+  long doStatus(@Nonnull File path,
                 @Nullable SVNRevision revision,
-                @NotNull Depth depth,
+                @Nonnull Depth depth,
                 boolean remote,
                 boolean reportAll,
                 boolean includeIgnored,
                 boolean collectParentExternals,
-                @NotNull StatusConsumer handler,
+                @Nonnull StatusConsumer handler,
                 @Nullable Collection changeLists) throws SvnBindException;
 
   @Nullable
-  Status doStatus(@NotNull File path, boolean remote) throws SvnBindException;
+  Status doStatus(@Nonnull File path, boolean remote) throws SvnBindException;
 }

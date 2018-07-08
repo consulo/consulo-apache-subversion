@@ -17,8 +17,9 @@ package org.jetbrains.idea.svn.status;
 
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.tmatesoft.svn.core.wc.SVNStatusType;
 
 import java.util.Map;
@@ -57,8 +58,10 @@ public enum StatusType {
 
   private static final String STATUS_PREFIX = "STATUS_";
 
-  @NotNull private static final Map<String, StatusType> ourOtherStatusTypes = ContainerUtil.newHashMap();
-  @NotNull private static final Map<String, StatusType> ourStatusTypesForStatusOperation = ContainerUtil.newHashMap();
+  @Nonnull
+  private static final Map<String, StatusType> ourOtherStatusTypes = ContainerUtil.newHashMap();
+  @Nonnull
+  private static final Map<String, StatusType> ourStatusTypesForStatusOperation = ContainerUtil.newHashMap();
 
   static {
     for (StatusType action : StatusType.values()) {
@@ -86,12 +89,12 @@ public enum StatusType {
     return myName;
   }
 
-  private static void register(@NotNull StatusType action) {
+  private static void register(@Nonnull StatusType action) {
     (action.name().startsWith(STATUS_PREFIX) ? ourStatusTypesForStatusOperation : ourOtherStatusTypes).put(action.myName, action);
   }
 
-  @NotNull
-  public static StatusType from(@NotNull SVNStatusType type) {
+  @Nonnull
+  public static StatusType from(@Nonnull SVNStatusType type) {
     StatusType result = ourOtherStatusTypes.get(type.toString());
 
     // CONFLICTED, OBSTRUCTED, MISSING status types have corresponding STATUS_* analogs with same names - so additional check added when
@@ -104,7 +107,7 @@ public enum StatusType {
   }
 
   @Nullable
-  public static StatusType forStatusOperation(@NotNull String statusName) {
+  public static StatusType forStatusOperation(@Nonnull String statusName) {
     return ourStatusTypesForStatusOperation.get(statusName);
   }
 }

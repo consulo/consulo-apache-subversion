@@ -20,7 +20,7 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.util.HashSet;
@@ -39,7 +39,7 @@ public class SuperfluousRemover {
     myParentPaths = new HashSet<>();
   }
 
-  protected boolean accept(@NotNull Change change) {
+  protected boolean accept(@Nonnull Change change) {
     ContentRevision mainRevision = myCheckBefore ? change.getBeforeRevision() : change.getAfterRevision();
     ContentRevision otherRevision = !myCheckBefore ? change.getBeforeRevision() : change.getAfterRevision();
 
@@ -51,10 +51,10 @@ public class SuperfluousRemover {
     return false;
   }
 
-  public void check(@NotNull final File file) {
+  public void check(@Nonnull final File file) {
     boolean parentAlreadyRegistered = ContainerUtil.or(myParentPaths, new Condition<File>() {
       @Override
-      public boolean value(@NotNull File parentCandidate) {
+      public boolean value(@Nonnull File parentCandidate) {
         return VfsUtilCore.isAncestor(parentCandidate, file, true);
       }
     });
@@ -62,7 +62,7 @@ public class SuperfluousRemover {
     if (!parentAlreadyRegistered) {
       ContainerUtil.retainAll(myParentPaths, new Condition<File>() {
         @Override
-        public boolean value(@NotNull File childCandidate) {
+        public boolean value(@Nonnull File childCandidate) {
           return !VfsUtilCore.isAncestor(file, childCandidate, true);
         }
       });

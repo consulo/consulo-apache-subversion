@@ -26,8 +26,9 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.changes.VcsAnnotationRefresher;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationManager;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationProvider;
@@ -64,7 +65,7 @@ public class SvnConfiguration implements PersistentStateComponent<SvnConfigurati
 	private final static long UPGRADE_TO_16_VERSION_ASKED = 125;
 
 	private final Project myProject;
-	@NotNull
+	@Nonnull
 	private SvnConfigurationState myState = new SvnConfigurationState();
 
 	private ISVNOptions myOptions;
@@ -85,7 +86,7 @@ public class SvnConfiguration implements PersistentStateComponent<SvnConfigurati
 		return UseAcceleration.commandLine.equals(getUseAcceleration());
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public SvnConfigurationState getState()
 	{
@@ -93,7 +94,7 @@ public class SvnConfiguration implements PersistentStateComponent<SvnConfigurati
 	}
 
 	@Override
-	public void loadState(@NotNull SvnConfigurationState state)
+	public void loadState(@Nonnull SvnConfigurationState state)
 	{
 		myState = state;
 	}
@@ -111,13 +112,13 @@ public class SvnConfiguration implements PersistentStateComponent<SvnConfigurati
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	public DiffOptions getMergeOptions()
 	{
 		return new DiffOptions(isIgnoreSpacesInMerge(), isIgnoreSpacesInMerge(), isIgnoreSpacesInMerge());
 	}
 
-	@NotNull
+	@Nonnull
 	private IdeaSVNConfigFile getServersFile()
 	{
 		if(myServersFile == null)
@@ -129,7 +130,7 @@ public class SvnConfiguration implements PersistentStateComponent<SvnConfigurati
 		return myServersFile;
 	}
 
-	@NotNull
+	@Nonnull
 	public SVNConfigFile getConfigFile()
 	{
 		if(myConfigFile == null)
@@ -140,7 +141,7 @@ public class SvnConfiguration implements PersistentStateComponent<SvnConfigurati
 		return myConfigFile;
 	}
 
-	@NotNull
+	@Nonnull
 	public String getSshTunnelSetting()
 	{
 		// TODO: Check SVNCompositeConfigFile - to utilize both system and user settings
@@ -544,8 +545,8 @@ public class SvnConfiguration implements PersistentStateComponent<SvnConfigurati
 		private final TreeSet<String> myKeys = ContainerUtil.newTreeSet();
 		private final Map<String, Object> myStorage = ContainerUtil.newHashMap();
 
-		@NotNull
-		public static String getKey(@NotNull String type, @NotNull String realm)
+		@Nonnull
+		public static String getKey(@Nonnull String type, @Nonnull String realm)
 		{
 			return type + "$" + realm;
 		}

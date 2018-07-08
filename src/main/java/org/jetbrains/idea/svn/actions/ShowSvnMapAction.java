@@ -15,13 +15,14 @@
  */
 package org.jetbrains.idea.svn.actions;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.vcs.VcsShowToolWindowTabAction;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.svn.WorkingCopiesContent;
 
 public class ShowSvnMapAction extends VcsShowToolWindowTabAction {
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTabName() {
     return WorkingCopiesContent.TAB_NAME;

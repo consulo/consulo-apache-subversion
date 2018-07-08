@@ -1,7 +1,7 @@
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.add.SvnKitAddClient;
 import org.jetbrains.idea.svn.annotate.SvnKitAnnotateClient;
@@ -37,7 +37,7 @@ import org.tmatesoft.svn.core.wc.ISVNStatusFileProvider;
  */
 public class SvnKitClientFactory extends ClientFactory {
 
-  public SvnKitClientFactory(@NotNull SvnVcs vcs) {
+  public SvnKitClientFactory(@Nonnull SvnVcs vcs) {
     super(vcs);
   }
 
@@ -72,13 +72,13 @@ public class SvnKitClientFactory extends ClientFactory {
     put(BrowseClient.class, SvnKitBrowseClient.class);
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public StatusClient createStatusClient(@Nullable ISVNStatusFileProvider provider, @NotNull ProgressTracker handler) {
+  public StatusClient createStatusClient(@Nullable ISVNStatusFileProvider provider, @Nonnull ProgressTracker handler) {
     return prepare(new SvnKitStatusClient(provider, handler));
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public UpdateClient createUpdateClient() {
     return prepare(new SvnKitUpdateClient());

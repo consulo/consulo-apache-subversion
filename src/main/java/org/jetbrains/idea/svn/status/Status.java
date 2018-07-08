@@ -17,8 +17,8 @@ package org.jetbrains.idea.svn.status;
 
 import com.intellij.openapi.util.Condition;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
 import org.jetbrains.idea.svn.lock.Lock;
@@ -36,9 +36,12 @@ import java.io.File;
 public class Status {
   private SVNURL myURL;
   private File myFile;
-  private @NotNull NodeKind myKind;
-  @NotNull private SVNRevision myRevision;
-  @NotNull private SVNRevision myCommittedRevision;
+  private @Nonnull
+  NodeKind myKind;
+  @Nonnull
+  private SVNRevision myRevision;
+  @Nonnull
+  private SVNRevision myCommittedRevision;
   private StatusType myContentsStatus;
   private StatusType myPropertiesStatus;
   private StatusType myRemoteContentsStatus;
@@ -48,11 +51,14 @@ public class Status {
   private boolean myIsCopied;
   private boolean myIsSwitched;
   private String myCopyFromURL;
-  @Nullable private Lock myRemoteLock;
-  @Nullable private Lock myLocalLock;
+  @Nullable
+  private Lock myRemoteLock;
+  @Nullable
+  private Lock myLocalLock;
   private SVNRevision myRemoteRevision;
   private String myChangelistName;
-  @Nullable private TreeConflictDescription myTreeConflict;
+  @Nullable
+  private TreeConflictDescription myTreeConflict;
   private boolean myIsConflicted;
 
   private StatusType myNodeStatus;
@@ -82,7 +88,7 @@ public class Status {
 
   public Status(SVNURL url,
                 File file,
-                @NotNull NodeKind kind,
+                @Nonnull NodeKind kind,
                 @Nullable SVNRevision revision,
                 @Nullable SVNRevision committedRevision,
                 StatusType contentsStatus,
@@ -131,17 +137,17 @@ public class Status {
     return myFile;
   }
 
-  @NotNull
+  @Nonnull
   public NodeKind getKind() {
     return myKind;
   }
 
-  @NotNull
+  @Nonnull
   public SVNRevision getRevision() {
     return myRevision;
   }
 
-  @NotNull
+  @Nonnull
   public SVNRevision getCommittedRevision() {
     return myCommittedRevision;
   }
@@ -162,11 +168,11 @@ public class Status {
     return myRemotePropertiesStatus;
   }
 
-  public boolean is(@NotNull StatusType type) {
+  public boolean is(@Nonnull StatusType type) {
     return type.equals(getNodeStatus()) || type.equals(getContentsStatus());
   }
 
-  public boolean is(@NotNull StatusType... types) {
+  public boolean is(@Nonnull StatusType... types) {
     return ContainerUtil.or(types, new Condition<StatusType>() {
       @Override
       public boolean value(StatusType type) {
@@ -175,11 +181,11 @@ public class Status {
     });
   }
 
-  public boolean isProperty(@NotNull StatusType type) {
+  public boolean isProperty(@Nonnull StatusType type) {
     return type.equals(getPropertiesStatus());
   }
 
-  public boolean isProperty(@NotNull StatusType... types) {
+  public boolean isProperty(@Nonnull StatusType... types) {
     return ContainerUtil.or(types, new Condition<StatusType>() {
       @Override
       public boolean value(StatusType type) {
@@ -254,15 +260,15 @@ public class Status {
     myFile = file;
   }
 
-  public void setKind(@NotNull NodeKind kind) {
+  public void setKind(@Nonnull NodeKind kind) {
     myKind = kind;
   }
 
-  public void setRevision(@NotNull SVNRevision revision) {
+  public void setRevision(@Nonnull SVNRevision revision) {
     myRevision = revision;
   }
 
-  public void setCommittedRevision(@NotNull SVNRevision committedRevision) {
+  public void setCommittedRevision(@Nonnull SVNRevision committedRevision) {
     myCommittedRevision = committedRevision;
   }
 

@@ -19,10 +19,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.MultiLineLabelUI;
 import com.intellij.util.ui.JBUI;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.SvnBundle;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -37,7 +38,7 @@ public class ChangeFormatDialog extends UpgradeFormatDialog {
     init();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Action[] createActions() {
     return new Action[]{getOKAction(),getCancelAction()};

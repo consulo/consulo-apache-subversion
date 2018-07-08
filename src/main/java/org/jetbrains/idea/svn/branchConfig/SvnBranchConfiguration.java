@@ -16,7 +16,7 @@
 
 package org.jetbrains.idea.svn.branchConfig;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,14 +30,15 @@ import java.util.List;
 @SuppressWarnings("UnusedDeclaration")
 public class SvnBranchConfiguration {
   private String myTrunkUrl;
-  @NotNull private List<String> myBranchUrls;
+  @Nonnull
+  private List<String> myBranchUrls;
   private boolean myUserinfoInUrl;
 
   public SvnBranchConfiguration() {
     myBranchUrls = new ArrayList<>();
   }
 
-  public SvnBranchConfiguration(String trunkUrl, @NotNull List<String> branchUrls, boolean userinfoInUrl) {
+  public SvnBranchConfiguration(String trunkUrl, @Nonnull List<String> branchUrls, boolean userinfoInUrl) {
     myTrunkUrl = trunkUrl;
     myBranchUrls = branchUrls;
     Collections.sort(myBranchUrls);
@@ -52,7 +53,7 @@ public class SvnBranchConfiguration {
     myUserinfoInUrl = userinfoInUrl;
   }
 
-  public void setBranchUrls(@NotNull List<String> branchUrls) {
+  public void setBranchUrls(@Nonnull List<String> branchUrls) {
     myBranchUrls = branchUrls;
     Collections.sort(myBranchUrls);
   }
@@ -65,7 +66,7 @@ public class SvnBranchConfiguration {
     return myTrunkUrl;
   }
 
-  @NotNull
+  @Nonnull
   public List<String> getBranchUrls() {
     return myBranchUrls;
   }

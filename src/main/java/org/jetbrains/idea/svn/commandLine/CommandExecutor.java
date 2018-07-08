@@ -30,8 +30,8 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcs.VcsLocaleHelper;
 import com.intellij.vcsUtil.VcsFileUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.properties.PropertyValue;
 import org.tmatesoft.svn.core.SVNCancelException;
 
@@ -58,8 +58,10 @@ public class CommandExecutor {
   private boolean myNeedsDestroy;
   private volatile String myDestroyReason;
   private volatile boolean myWasCancelled;
-  @NotNull private final List<File> myTempFiles;
-  @NotNull protected final GeneralCommandLine myCommandLine;
+  @Nonnull
+  private final List<File> myTempFiles;
+  @Nonnull
+  protected final GeneralCommandLine myCommandLine;
   protected Process myProcess;
   protected SvnProcessHandler myHandler;
   private OutputStreamWriter myProcessWriter;
@@ -71,10 +73,12 @@ public class CommandExecutor {
   private final EventDispatcher<LineCommandListener> myListeners = EventDispatcher.create(LineCommandListener.class);
 
   private final AtomicBoolean myWasError = new AtomicBoolean(false);
-  @Nullable private final LineCommandListener myResultBuilder;
-  @NotNull private final Command myCommand;
+  @Nullable
+  private final LineCommandListener myResultBuilder;
+  @Nonnull
+  private final Command myCommand;
 
-  public CommandExecutor(@NotNull @NonNls String exePath, @NotNull Command command) {
+  public CommandExecutor(@Nonnull @NonNls String exePath, @Nonnull Command command) {
     myCommand = command;
     myResultBuilder = command.getResultBuilder();
     if (myResultBuilder != null) {
@@ -95,8 +99,8 @@ public class CommandExecutor {
     myExitCodeReference = new AtomicReference<>();
   }
 
-  @NotNull
-  private List<String> prepareParameters(@NotNull Command command) {
+  @Nonnull
+  private List<String> prepareParameters(@Nonnull Command command) {
     List<String> parameters = command.getParameters();
 
     detectAndRemoveMessage(parameters);
@@ -104,7 +108,7 @@ public class CommandExecutor {
     return parameters;
   }
 
-  private void detectAndRemoveMessage(@NotNull List<String> parameters) {
+  private void detectAndRemoveMessage(@Nonnull List<String> parameters) {
     int index = parameters.indexOf("-m");
     index = index < 0 ? parameters.indexOf("--message") : index;
 
@@ -165,11 +169,11 @@ public class CommandExecutor {
     myCommandLine.withEnvironment(VcsLocaleHelper.getDefaultLocaleEnvironmentVars("svn"));
   }
 
-  @NotNull
-  private File ensureCommandFile(@NotNull String prefix,
-                                 @NotNull String extension,
-                                 @NotNull String data,
-                                 @NotNull String parameterName) throws SvnBindException {
+  @Nonnull
+  private File ensureCommandFile(@Nonnull String prefix,
+                                 @Nonnull String extension,
+                                 @Nonnull String data,
+                                 @Nonnull String parameterName) throws SvnBindException {
     File result = createTempFile(prefix, extension);
     myTempFiles.add(result);
 
@@ -222,15 +226,15 @@ public class CommandExecutor {
     }
   }
 
-  @NotNull
+  @Nonnull
   protected static File getSvnFolder() {
     File vcsFolder = new File(PathManager.getSystemPath(), "vcs");
 
     return new File(vcsFolder, "svn");
   }
 
-  @NotNull
-  protected static File createTempFile(@NotNull String prefix, @NotNull String extension) throws SvnBindException {
+  @Nonnull
+  protected static File createTempFile(@Nonnull String prefix, @Nonnull String extension) throws SvnBindException {
     try {
       return FileUtil.createTempFile(getSvnFolder(), prefix, extension);
     }
@@ -249,7 +253,7 @@ public class CommandExecutor {
     }
   }
 
-  @NotNull
+  @Nonnull
   protected SvnProcessHandler createProcessHandler() {
     return new SvnProcessHandler(myProcess, myCommandLine.getCommandLineString(), needsUtf8Output(), needsBinaryOutput());
   }
@@ -263,12 +267,12 @@ public class CommandExecutor {
     return myCommand.getParameters().contains("--xml");
   }
 
-  @NotNull
+  @Nonnull
   protected GeneralCommandLine createCommandLine() {
     return new GeneralCommandLine();
   }
 
-  @NotNull
+  @Nonnull
   protected Process createProcess() throws ExecutionException {
     return myCommandLine.createProcess();
   }
@@ -294,13 +298,13 @@ public class CommandExecutor {
     return outputAdapter.getOutput();
   }
 
-  @NotNull
+  @Nonnull
   public ByteArrayOutputStream getBinaryOutput() {
     return myHandler.getBinaryOutput();
   }
 
   // TODO: Carefully here - do not modify command from threads other than the one started command execution
-  @NotNull
+  @Nonnull
   public Command getCommand() {
     return myCommand;
   }

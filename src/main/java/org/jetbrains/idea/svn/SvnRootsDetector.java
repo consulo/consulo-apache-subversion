@@ -27,8 +27,9 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.Consumer;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.Convertor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.status.Status;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
@@ -46,15 +47,20 @@ public class SvnRootsDetector {
 
   private static final Logger LOG = Logger.getInstance(SvnRootsDetector.class);
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final SvnFileUrlMappingImpl myMapping;
-  @NotNull private final Result myResult;
-  @NotNull private final RepositoryRoots myRepositoryRoots;
-  @NotNull private final NestedCopiesHolder myNestedCopiesHolder;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final SvnFileUrlMappingImpl myMapping;
+  @Nonnull
+  private final Result myResult;
+  @Nonnull
+  private final RepositoryRoots myRepositoryRoots;
+  @Nonnull
+  private final NestedCopiesHolder myNestedCopiesHolder;
 
-  public SvnRootsDetector(@NotNull final SvnVcs vcs,
-                          @NotNull final SvnFileUrlMappingImpl mapping,
-                          @NotNull final NestedCopiesHolder holder) {
+  public SvnRootsDetector(@Nonnull final SvnVcs vcs,
+                          @Nonnull final SvnFileUrlMappingImpl mapping,
+                          @Nonnull final NestedCopiesHolder holder) {
     myVcs = vcs;
     myMapping = mapping;
     myResult = new Result();
@@ -79,7 +85,7 @@ public class SvnRootsDetector {
     }
   }
 
-  private void registerTopRoots(@NotNull VirtualFile vcsRoot, @NotNull List<Node> foundRoots) {
+  private void registerTopRoots(@Nonnull VirtualFile vcsRoot, @Nonnull List<Node> foundRoots) {
     // filter out bad(?) items
     for (Node foundRoot : foundRoots) {
       RootUrlInfo root = new RootUrlInfo(foundRoot, SvnFormatSelector.findRootAndGetFormat(foundRoot.getIoFile()), vcsRoot);
@@ -142,7 +148,7 @@ public class SvnRootsDetector {
     }, null);
   }
 
-  private void registerRootUrlFromNestedPoint(@NotNull NestedCopyInfo info, @NotNull List<RootUrlInfo> nestedRoots) {
+  private void registerRootUrlFromNestedPoint(@Nonnull NestedCopyInfo info, @Nonnull List<RootUrlInfo> nestedRoots) {
     // TODO: Seems there could be issues if myTopRoots contains nested roots => RootUrlInfo.myRoot could be incorrect
     // TODO: (not nearest ancestor) for new RootUrlInfo
     RootUrlInfo topRoot = findAncestorTopRoot(info.getFile());
@@ -157,7 +163,7 @@ public class SvnRootsDetector {
     }
   }
 
-  private boolean refreshPointInfo(@NotNull NestedCopyInfo info) {
+  private boolean refreshPointInfo(@Nonnull NestedCopyInfo info) {
     // TODO: Here we refresh url, repository url, format because they are not set for some NestedCopies in NestedCopiesBuilder.
     // TODO: For example they are not set for externals. Probably this logic could be moved to NestedCopiesBuilder instead.
     boolean refreshed = false;
@@ -184,7 +190,7 @@ public class SvnRootsDetector {
   }
 
   @Nullable
-  private RootUrlInfo findTopRoot(@NotNull final File file) {
+  private RootUrlInfo findTopRoot(@Nonnull final File file) {
     return ContainerUtil.find(myResult.myTopRoots, new Condition<RootUrlInfo>() {
       @Override
       public boolean value(RootUrlInfo topRoot) {
@@ -194,7 +200,7 @@ public class SvnRootsDetector {
   }
 
   @Nullable
-  private RootUrlInfo findAncestorTopRoot(@NotNull final VirtualFile file) {
+  private RootUrlInfo findAncestorTopRoot(@Nonnull final VirtualFile file) {
     return ContainerUtil.find(myResult.myTopRoots, new Condition<RootUrlInfo>() {
       @Override
       public boolean value(RootUrlInfo topRoot) {
@@ -235,9 +241,12 @@ public class SvnRootsDetector {
 
   public static class Result {
 
-    @NotNull private final List<VirtualFile> myLonelyRoots;
-    @NotNull private final List<RootUrlInfo> myTopRoots;
-    @NotNull private final List<RootUrlInfo> myErrorRoots;
+    @Nonnull
+	private final List<VirtualFile> myLonelyRoots;
+    @Nonnull
+	private final List<RootUrlInfo> myTopRoots;
+    @Nonnull
+	private final List<RootUrlInfo> myErrorRoots;
 
     public Result() {
       myTopRoots = new ArrayList<>();
@@ -245,17 +254,17 @@ public class SvnRootsDetector {
       myLonelyRoots = new ArrayList<>();
     }
 
-    @NotNull
+    @Nonnull
     public List<VirtualFile> getLonelyRoots() {
       return myLonelyRoots;
     }
 
-    @NotNull
+    @Nonnull
     public List<RootUrlInfo> getTopRoots() {
       return myTopRoots;
     }
 
-    @NotNull
+    @Nonnull
     public List<RootUrlInfo> getErrorRoots() {
       return myErrorRoots;
     }

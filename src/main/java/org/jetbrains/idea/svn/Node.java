@@ -17,8 +17,8 @@ package org.jetbrains.idea.svn;
 
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNURL;
 
@@ -28,38 +28,41 @@ import java.io.File;
 // TODO: provides RepositoryLocation
 public class Node {
 
-  @NotNull private final VirtualFile myFile;
-  @NotNull private final SVNURL myUrl;
-  @NotNull private final SVNURL myRepositoryUrl;
+  @Nonnull
+  private final VirtualFile myFile;
+  @Nonnull
+  private final SVNURL myUrl;
+  @Nonnull
+  private final SVNURL myRepositoryUrl;
   @Nullable private final SvnBindException myError;
 
-  public Node(@NotNull VirtualFile file, @NotNull SVNURL url, @NotNull SVNURL repositoryUrl) {
+  public Node(@Nonnull VirtualFile file, @Nonnull SVNURL url, @Nonnull SVNURL repositoryUrl) {
     this(file, url, repositoryUrl, null);
   }
 
-  public Node(@NotNull VirtualFile file, @NotNull SVNURL url, @NotNull SVNURL repositoryUrl, @Nullable SvnBindException error) {
+  public Node(@Nonnull VirtualFile file, @Nonnull SVNURL url, @Nonnull SVNURL repositoryUrl, @Nullable SvnBindException error) {
     myFile = file;
     myUrl = url;
     myRepositoryUrl = repositoryUrl;
     myError = error;
   }
 
-  @NotNull
+  @Nonnull
   public VirtualFile getFile() {
     return myFile;
   }
 
-  @NotNull
+  @Nonnull
   public File getIoFile() {
     return VfsUtilCore.virtualToIoFile(getFile());
   }
 
-  @NotNull
+  @Nonnull
   public SVNURL getUrl() {
     return myUrl;
   }
 
-  @NotNull
+  @Nonnull
   public SVNURL getRepositoryRootUrl() {
     return myRepositoryUrl;
   }

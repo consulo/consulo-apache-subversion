@@ -2,8 +2,9 @@ package org.jetbrains.idea.svn.revert;
 
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.ArrayUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressTracker;
@@ -19,7 +20,7 @@ import java.util.Collection;
 public class SvnKitRevertClient extends BaseSvnClient implements RevertClient {
 
   @Override
-  public void revert(@NotNull Collection<File> paths, @Nullable Depth depth, @Nullable ProgressTracker handler) throws VcsException {
+  public void revert(@Nonnull Collection<File> paths, @Nullable Depth depth, @Nullable ProgressTracker handler) throws VcsException {
     SVNWCClient client = myVcs.getSvnKitManager().createWCClient();
 
     client.setEventHandler(toEventHandler(handler));

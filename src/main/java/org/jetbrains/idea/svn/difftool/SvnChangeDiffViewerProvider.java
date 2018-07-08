@@ -15,8 +15,8 @@ import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProducer;
 import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffViewerWrapperProvider;
 import com.intellij.util.ThreeState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnChangeProvider;
 import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffRequest;
@@ -29,9 +29,9 @@ import java.util.Map;
 public class SvnChangeDiffViewerProvider implements ChangeDiffViewerWrapperProvider {
   private static final Logger LOG = Logger.getInstance(SvnChangeDiffViewerProvider.class);
 
-  @NotNull
+  @Nonnull
   @Override
-  public ThreeState isEquals(@NotNull Change change1, @NotNull Change change2) {
+  public ThreeState isEquals(@Nonnull Change change1, @Nonnull Change change2) {
     Change layer1 = getSvnChangeLayer(change1);
     Change layer2 = getSvnChangeLayer(change2);
     if (layer1 != null || layer2 != null) {
@@ -41,23 +41,23 @@ public class SvnChangeDiffViewerProvider implements ChangeDiffViewerWrapperProvi
   }
 
   @Override
-  public boolean canCreate(@Nullable Project project, @NotNull Change change) {
+  public boolean canCreate(@Nullable Project project, @Nonnull Change change) {
     return getSvnChangeLayer(change) != null; // TODO: do not show, if no properties are set in both revisions ?
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public DiffViewerWrapper process(@NotNull ChangeDiffRequestProducer presentable,
-                                   @NotNull UserDataHolder context,
-                                   @NotNull ProgressIndicator indicator) throws DiffRequestProducerException, ProcessCanceledException {
+  public DiffViewerWrapper process(@Nonnull ChangeDiffRequestProducer presentable,
+                                   @Nonnull UserDataHolder context,
+                                   @Nonnull ProgressIndicator indicator) throws DiffRequestProducerException, ProcessCanceledException {
     // TODO: support properties conflict for three-way-diff
 
     DiffRequest propertyRequest = createPropertyRequest(presentable.getChange(), indicator);
     return new SvnDiffViewerWrapper(propertyRequest);
   }
 
-  @NotNull
-  private static SvnPropertiesDiffRequest createPropertyRequest(@NotNull Change change, @NotNull ProgressIndicator indicator)
+  @Nonnull
+  private static SvnPropertiesDiffRequest createPropertyRequest(@Nonnull Change change, @Nonnull ProgressIndicator indicator)
     throws DiffRequestProducerException {
     try {
       Change propertiesChange = getSvnChangeLayer(change);
@@ -99,7 +99,7 @@ public class SvnChangeDiffViewerProvider implements ChangeDiffViewerWrapperProvi
   }
 
   @Nullable
-  private static Change getSvnChangeLayer(@NotNull Change change) {
+  private static Change getSvnChangeLayer(@Nonnull Change change) {
     for (Map.Entry<String, Change> entry : change.getOtherLayers().entrySet()) {
       if (SvnChangeProvider.PROPERTY_LAYER.equals(entry.getKey())) {
         if (change.getOtherLayers().size() != 1) LOG.warn("Some of change layers ignored");

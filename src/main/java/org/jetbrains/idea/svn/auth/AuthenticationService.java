@@ -38,8 +38,8 @@ import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -49,6 +49,7 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.auth.SVNAuthentication;
 
+import javax.annotation.Nullable;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.TrustManager;
@@ -69,7 +70,8 @@ import java.util.Set;
  */
 public class AuthenticationService {
 
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final SvnVcs myVcs;
   private final boolean myIsActive;
   private static final Logger LOG = Logger.getInstance(AuthenticationService.class);
   private File myTempDirectory;
@@ -77,14 +79,14 @@ public class AuthenticationService {
   private SvnConfiguration myConfiguration;
   private final Set<String> myRequestedCredentials;
 
-  public AuthenticationService(@NotNull SvnVcs vcs, boolean isActive) {
+  public AuthenticationService(@Nonnull SvnVcs vcs, boolean isActive) {
     myVcs = vcs;
     myIsActive = isActive;
     myConfiguration = SvnConfiguration.getInstance(myVcs.getProject());
     myRequestedCredentials = ContainerUtil.newHashSet();
   }
 
-  @NotNull
+  @Nonnull
   public SvnVcs getVcs() {
     return myVcs;
   }
@@ -122,7 +124,7 @@ public class AuthenticationService {
   }
 
   @Nullable
-  private <T> T requestCredentials(@NotNull String realm, @NotNull String type, @NotNull Getter<T> fromUserProvider) {
+  private <T> T requestCredentials(@Nonnull String realm, @Nonnull String type, @Nonnull Getter<T> fromUserProvider) {
     T result = null;
     // Search for stored credentials not only by key but also by "parent" keys. This is useful when we work just with URLs
     // (not working copy) and can't detect repository url beforehand because authentication is required. If found credentials of "parent"
@@ -151,9 +153,9 @@ public class AuthenticationService {
   }
 
   @Nullable
-  public String requestSshCredentials(@NotNull final String realm,
-                                      @NotNull final SimpleCredentialsDialog.Mode mode,
-                                      @NotNull final String key) {
+  public String requestSshCredentials(@Nonnull final String realm,
+                                      @Nonnull final SimpleCredentialsDialog.Mode mode,
+                                      @Nonnull final String key) {
     return requestCredentials(realm, StringUtil.toLowerCase(mode.toString()), new Getter<String>() {
       @Override
       public String get() {
@@ -181,8 +183,8 @@ public class AuthenticationService {
     });
   }
 
-  @NotNull
-  public AcceptResult acceptCertificate(@NotNull final SVNURL url, @NotNull final String certificateInfo) {
+  @Nonnull
+  public AcceptResult acceptCertificate(@Nonnull final SVNURL url, @Nonnull final String certificateInfo) {
     // TODO: Probably explicitly construct server url for realm here - like in CertificateTrustManager.
     String kind = "terminal.ssl.server";
     String realm = url.toDecodedString();
@@ -230,7 +232,7 @@ public class AuthenticationService {
   }
 
   @Nullable
-  private static String fixMessage(@NotNull IOException e) {
+  private static String fixMessage(@Nonnull IOException e) {
     String message = null;
 
     if (e instanceof SSLHandshakeException) {
@@ -247,8 +249,8 @@ public class AuthenticationService {
     return message;
   }
 
-  @NotNull
-  private HttpClient getClient(@NotNull SVNURL repositoryUrl) {
+  @Nonnull
+  private HttpClient getClient(@Nonnull SVNURL repositoryUrl) {
     // TODO: Implement algorithm of resolving necessary enabled protocols (TLSv1 vs SSLv3) instead of just using values from Settings.
     SSLContext sslContext = createSslContext(repositoryUrl);
     List<String> supportedProtocols = getSupportedSslProtocols();
@@ -274,7 +276,7 @@ public class AuthenticationService {
       .build();
   }
 
-  @NotNull
+  @Nonnull
   private List<String> getSupportedSslProtocols() {
     List<String> result = ContainerUtil.newArrayList();
 
@@ -292,8 +294,8 @@ public class AuthenticationService {
     return result;
   }
 
-  @NotNull
-  private SSLContext createSslContext(@NotNull SVNURL url) {
+  @Nonnull
+  private SSLContext createSslContext(@Nonnull SVNURL url) {
     SSLContext result = CertificateManager.getSystemSslContext();
     TrustManager trustManager = new CertificateTrustManager(this, url);
 
@@ -307,7 +309,7 @@ public class AuthenticationService {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   public SvnAuthenticationManager getAuthenticationManager() {
     return isActive() ? myConfiguration.getInteractiveManager(myVcs) : myConfiguration.getPassiveAuthenticationManager(myVcs.getProject());
   }
@@ -333,7 +335,7 @@ public class AuthenticationService {
   }
 
   @Nullable
-  public static Proxy getIdeaDefinedProxy(@NotNull final SVNURL url) {
+  public static Proxy getIdeaDefinedProxy(@Nonnull final SVNURL url) {
     // SVNKit authentication implementation sets repositories as noProxy() to provide custom proxy authentication logic - see for instance,
     // SvnAuthenticationManager.getProxyManager(). But noProxy() setting is not cleared correctly in all cases - so if svn command
     // (for command line) is executed on thread where repository url was added as noProxy() => proxies are not retrieved for such commands
@@ -356,7 +358,7 @@ public class AuthenticationService {
   }
 
   @Nullable
-  public PasswordAuthentication getProxyAuthentication(@NotNull SVNURL repositoryUrl) {
+  public PasswordAuthentication getProxyAuthentication(@Nonnull SVNURL repositoryUrl) {
     Proxy proxy = getIdeaDefinedProxy(repositoryUrl);
     PasswordAuthentication result = null;
 
@@ -383,7 +385,7 @@ public class AuthenticationService {
   }
 
   @Nullable
-  private static PasswordAuthentication getProxyAuthentication(@NotNull Proxy proxy, @NotNull SVNURL repositoryUrl) {
+  private static PasswordAuthentication getProxyAuthentication(@Nonnull Proxy proxy, @Nonnull SVNURL repositoryUrl) {
     PasswordAuthentication result = null;
 
     try {
@@ -405,7 +407,7 @@ public class AuthenticationService {
     }
   }
 
-  @NotNull
+  @Nonnull
   public static List<String> getKinds(final SVNURL url, boolean passwordRequest) {
     if (passwordRequest || "http".equals(url.getProtocol())) {
       return Collections.singletonList(ISVNAuthenticationManager.PASSWORD);

@@ -15,9 +15,11 @@
  */
 package org.jetbrains.idea.svn;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vcs.FileStatus;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.status.PortableStatus;
 import org.jetbrains.idea.svn.status.Status;
 import org.jetbrains.idea.svn.status.StatusType;
@@ -26,7 +28,7 @@ public class SvnStatusConvertor {
   private SvnStatusConvertor() {
   }
 
-  @NotNull
+  @Nonnull
   public static FileStatus convertStatus(@Nullable StatusType itemStatus, @Nullable StatusType propertiesStatus) {
     PortableStatus status = new PortableStatus();
 
@@ -36,7 +38,7 @@ public class SvnStatusConvertor {
     return convertStatus(status);
   }
 
-  @NotNull
+  @Nonnull
   public static FileStatus convertStatus(@Nullable final Status status) {
     if (status == null) {
       return FileStatus.UNKNOWN;
@@ -89,7 +91,7 @@ public class SvnStatusConvertor {
     return FileStatus.NOT_CHANGED;
   }
 
-  @NotNull
+  @Nonnull
   public static FileStatus convertPropertyStatus(final StatusType status) {
     if (status == null) {
       return FileStatus.UNKNOWN;

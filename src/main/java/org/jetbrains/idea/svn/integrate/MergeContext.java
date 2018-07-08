@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.integrate;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.WCInfo;
 
@@ -29,21 +29,30 @@ import static org.tmatesoft.svn.core.internal.util.SVNPathUtil.getRelativePath;
  */
 public class MergeContext {
 
-  @NotNull private final Project myProject;
-  @NotNull private final String myBranchName;
-  @NotNull private final VirtualFile myRoot;
-  @NotNull private final WCInfo myWcInfo;
-  @NotNull private final String mySourceUrl;
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final String myTitle;
-  @NotNull private final String myRepositoryRelativeSourcePath;
-  @NotNull private final String myRepositoryRelativeWorkingCopyPath;
+  @Nonnull
+  private final Project myProject;
+  @Nonnull
+  private final String myBranchName;
+  @Nonnull
+  private final VirtualFile myRoot;
+  @Nonnull
+  private final WCInfo myWcInfo;
+  @Nonnull
+  private final String mySourceUrl;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final String myTitle;
+  @Nonnull
+  private final String myRepositoryRelativeSourcePath;
+  @Nonnull
+  private final String myRepositoryRelativeWorkingCopyPath;
 
-  public MergeContext(@NotNull SvnVcs vcs,
-                      @NotNull String sourceUrl,
-                      @NotNull WCInfo wcInfo,
-                      @NotNull String branchName,
-                      @NotNull VirtualFile root) {
+  public MergeContext(@Nonnull SvnVcs vcs,
+                      @Nonnull String sourceUrl,
+                      @Nonnull WCInfo wcInfo,
+                      @Nonnull String branchName,
+                      @Nonnull VirtualFile root) {
     myVcs = vcs;
     myProject = vcs.getProject();
     myBranchName = branchName;
@@ -55,47 +64,47 @@ public class MergeContext {
     myRepositoryRelativeWorkingCopyPath = ensureStartSlash(getRelativePath(myWcInfo.getRepositoryRoot(), myWcInfo.getRootUrl()));
   }
 
-  @NotNull
+  @Nonnull
   public Project getProject() {
     return myProject;
   }
 
-  @NotNull
+  @Nonnull
   public String getBranchName() {
     return myBranchName;
   }
 
-  @NotNull
+  @Nonnull
   public VirtualFile getRoot() {
     return myRoot;
   }
 
-  @NotNull
+  @Nonnull
   public WCInfo getWcInfo() {
     return myWcInfo;
   }
 
-  @NotNull
+  @Nonnull
   public String getSourceUrl() {
     return mySourceUrl;
   }
 
-  @NotNull
+  @Nonnull
   public String getRepositoryRelativeSourcePath() {
     return myRepositoryRelativeSourcePath;
   }
 
-  @NotNull
+  @Nonnull
   public String getRepositoryRelativeWorkingCopyPath() {
     return myRepositoryRelativeWorkingCopyPath;
   }
 
-  @NotNull
+  @Nonnull
   public SvnVcs getVcs() {
     return myVcs;
   }
 
-  @NotNull
+  @Nonnull
   public String getTitle() {
     return myTitle;
   }

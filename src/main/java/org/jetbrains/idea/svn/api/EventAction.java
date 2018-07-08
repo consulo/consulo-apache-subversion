@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.api;
 
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.wc.SVNEventAction;
 
 import java.util.Map;
@@ -62,7 +62,8 @@ public enum EventAction {
 
   TREE_CONFLICT("tree_conflict");
 
-  @NotNull private static final Map<String, EventAction> ourAllActions = ContainerUtil.newHashMap();
+  @Nonnull
+  private static final Map<String, EventAction> ourAllActions = ContainerUtil.newHashMap();
 
   static {
     for (EventAction action : EventAction.values()) {
@@ -80,12 +81,12 @@ public enum EventAction {
     return myKey;
   }
 
-  private static void register(@NotNull EventAction action) {
+  private static void register(@Nonnull EventAction action) {
     ourAllActions.put(action.myKey, action);
   }
 
-  @NotNull
-  public static EventAction from(@NotNull SVNEventAction action) {
+  @Nonnull
+  public static EventAction from(@Nonnull SVNEventAction action) {
     return ObjectUtils.notNull(ourAllActions.get(action.toString()), UNKNOWN);
   }
 }

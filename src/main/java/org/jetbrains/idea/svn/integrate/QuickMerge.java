@@ -25,8 +25,8 @@ import static org.jetbrains.idea.svn.integrate.SvnBranchPointsCalculator.Wrapper
 import java.io.File;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.tmatesoft.svn.core.SVNURL;
@@ -42,22 +42,25 @@ public class QuickMerge extends BackgroundTaskGroup {
 
   private static final Logger LOG = Logger.getInstance(QuickMerge.class);
 
-  @NotNull private final MergeContext myMergeContext;
-  @NotNull private final QuickMergeInteraction myInteraction;
-  @NotNull private final Semaphore mySemaphore = new Semaphore();
+  @Nonnull
+  private final MergeContext myMergeContext;
+  @Nonnull
+  private final QuickMergeInteraction myInteraction;
+  @Nonnull
+  private final Semaphore mySemaphore = new Semaphore();
 
-  public QuickMerge(@NotNull MergeContext mergeContext, @NotNull QuickMergeInteraction interaction) {
+  public QuickMerge(@Nonnull MergeContext mergeContext, @Nonnull QuickMergeInteraction interaction) {
     super(mergeContext.getProject(), mergeContext.getTitle());
     myMergeContext = mergeContext;
     myInteraction = interaction;
   }
 
-  @NotNull
+  @Nonnull
   public MergeContext getMergeContext() {
     return myMergeContext;
   }
 
-  @NotNull
+  @Nonnull
   public QuickMergeInteraction getInteraction() {
     return myInteraction;
   }
@@ -81,7 +84,7 @@ public class QuickMerge extends BackgroundTaskGroup {
     mySemaphore.up();
   }
 
-  public void end(@NotNull String message, boolean isError) {
+  public void end(@Nonnull String message, boolean isError) {
     LOG.info((isError ? "Error: " : "Info: ") + message);
 
     clear();
@@ -131,7 +134,7 @@ public class QuickMerge extends BackgroundTaskGroup {
     }
   }
 
-  private void selectRevisionsToMerge(@NotNull MergeCalculatorTask task, boolean allStatusesCalculated) {
+  private void selectRevisionsToMerge(@Nonnull MergeCalculatorTask task, boolean allStatusesCalculated) {
     SelectMergeItemsResult result =
       myInteraction.selectMergeItems(task.getChangeLists(), task.getMergeChecker(), allStatusesCalculated, task.areAllListsLoaded());
 
@@ -172,7 +175,7 @@ public class QuickMerge extends BackgroundTaskGroup {
     }
   }
 
-  private void merge(@NotNull List<SvnChangeList> changeLists) {
+  private void merge(@Nonnull List<SvnChangeList> changeLists) {
     if (!changeLists.isEmpty()) {
       ChangeListsMergerFactory mergerFactory = new ChangeListsMergerFactory(changeLists, false, false, true);
 
@@ -180,14 +183,14 @@ public class QuickMerge extends BackgroundTaskGroup {
     }
   }
 
-  private void merge(@NotNull String title, @NotNull MergerFactory mergerFactory, @Nullable List<SvnChangeList> changeLists) {
+  private void merge(@Nonnull String title, @Nonnull MergerFactory mergerFactory, @Nullable List<SvnChangeList> changeLists) {
     runInEdt(new LocalChangesPromptTask(this, changeLists, () ->
       runInEdt(new MergeTask(this, () ->
         newIntegrateTask(title, mergerFactory).queue()))));
   }
 
-  @NotNull
-  private Task newIntegrateTask(@NotNull String title, @NotNull MergerFactory mergerFactory) {
+  @Nonnull
+  private Task newIntegrateTask(@Nonnull String title, @Nonnull MergerFactory mergerFactory) {
     return new SvnIntegrateChangesTask(myMergeContext.getVcs(), new WorkingCopyInfo(myMergeContext.getWcInfo().getPath(), true),
                                        mergerFactory, parseUrl(myMergeContext.getSourceUrl()), title, false,
                                        myMergeContext.getBranchName()) {
@@ -212,7 +215,7 @@ public class QuickMerge extends BackgroundTaskGroup {
            checkRepositoryVersion15(myMergeContext.getVcs(), myMergeContext.getSourceUrl());
   }
 
-  @NotNull
+  @Nonnull
   private MergerFactory createMergeAllFactory(boolean reintegrate, @Nullable WrapperInvertor copyPoint, boolean supportsMergeInfo) {
     long revision = copyPoint != null
                     ? reintegrate ? copyPoint.getWrapped().getTargetRevision() : copyPoint.getWrapped().getSourceRevision()
@@ -223,7 +226,7 @@ public class QuickMerge extends BackgroundTaskGroup {
                        revision, supportsMergeInfo);
   }
 
-  private static boolean areInSameHierarchy(@NotNull SVNURL url1, @NotNull SVNURL url2) {
+  private static boolean areInSameHierarchy(@Nonnull SVNURL url1, @Nonnull SVNURL url2) {
     return SVNURLUtil.isAncestor(url1, url2) || SVNURLUtil.isAncestor(url2, url1);
   }
 }

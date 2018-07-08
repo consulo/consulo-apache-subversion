@@ -26,8 +26,8 @@ import com.intellij.openapi.util.registry.RegistryValue;
 import com.intellij.openapi.util.registry.RegistryValueListener;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.CmdVersionClient;
 
@@ -50,15 +50,16 @@ public class SvnExecutableChecker extends ExecutableValidator {
     "^.*cannot set .* locale.*please check that your locale name is correct$",
     Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final SvnVcs myVcs;
 
-  public SvnExecutableChecker(@NotNull SvnVcs vcs) {
+  public SvnExecutableChecker(@Nonnull SvnVcs vcs) {
     super(vcs.getProject(), getNotificationTitle(), getWrongPathMessage());
 
     myVcs = vcs;
     Registry.get(SVN_EXECUTABLE_LOCALE_REGISTRY_KEY).addListener(new RegistryValueListener.Adapter() {
       @Override
-      public void afterValueChanged(@NotNull RegistryValue value) {
+      public void afterValueChanged(@Nonnull RegistryValue value) {
         myVcs.checkCommandLineVersion();
       }
     }, myProject);
@@ -69,7 +70,7 @@ public class SvnExecutableChecker extends ExecutableValidator {
     return SvnApplicationSettings.getInstance().getCommandLinePath();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getConfigurableDisplayName() {
     return SvnConfigurable.DISPLAY_NAME;
@@ -89,7 +90,7 @@ public class SvnExecutableChecker extends ExecutableValidator {
   }
 
   @Override
-  protected void showSettingsAndExpireIfFixed(@NotNull Notification notification) {
+  protected void showSettingsAndExpireIfFixed(@Nonnull Notification notification) {
     showSettings();
     // always expire notification as different message could be detected
     notification.expire();
@@ -99,7 +100,7 @@ public class SvnExecutableChecker extends ExecutableValidator {
 
   @Override
   @Nullable
-  protected Notification validate(@NotNull String executable) {
+  protected Notification validate(@Nonnull String executable) {
     Notification result = createDefaultNotification();
 
     // Necessary executable path will be taken from settings while command execution
@@ -121,7 +122,7 @@ public class SvnExecutableChecker extends ExecutableValidator {
   }
 
   @Nullable
-  private Notification validateVersion(@NotNull Version version) {
+  private Notification validateVersion(@Nonnull Version version) {
     return !myVcs.isSupportedByCommandLine(WorkingCopyFormat.from(version)) ? new ExecutableNotValidNotification(
       getOldExecutableMessage(version)) : null;
   }
@@ -161,12 +162,12 @@ public class SvnExecutableChecker extends ExecutableValidator {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   private CmdVersionClient getVersionClient() {
     return (CmdVersionClient)myVcs.getCommandLineFactory().createVersionClient();
   }
 
-  public static boolean isEnglishOutput(@NotNull String versionOutput) {
+  public static boolean isEnglishOutput(@Nonnull String versionOutput) {
     return StringUtil.containsIgnoreCase(versionOutput, SVN_VERSION_ENGLISH_OUTPUT);
   }
 
@@ -178,7 +179,7 @@ public class SvnExecutableChecker extends ExecutableValidator {
     return SvnBundle.message("subversion.executable.notification.title");
   }
 
-  private static String getOldExecutableMessage(@NotNull Version version) {
+  private static String getOldExecutableMessage(@Nonnull Version version) {
     return SvnBundle.message("subversion.executable.too.old", version);
   }
 }

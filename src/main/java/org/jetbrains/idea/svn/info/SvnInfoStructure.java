@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.info;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.conflict.ConflictAction;

@@ -1,7 +1,8 @@
 package org.jetbrains.idea.svn.api;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.util.Version;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 
 /**
@@ -9,6 +10,6 @@ import org.jetbrains.idea.svn.commandLine.SvnBindException;
  */
 public interface VersionClient extends SvnClient {
 
-  @NotNull
+  @Nonnull
   Version getVersion() throws SvnBindException;
 }

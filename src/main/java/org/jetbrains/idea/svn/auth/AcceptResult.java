@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.
@@ -29,9 +29,10 @@ public enum AcceptResult {
   // cache all values as values() method returns new array on each call
   private static final AcceptResult[] allValues = values();
 
-  @NotNull private final String code;
+  @Nonnull
+  private final String code;
 
-  AcceptResult(@NotNull String code) {
+  AcceptResult(@Nonnull String code) {
     this.code = code;
   }
 
@@ -40,7 +41,7 @@ public enum AcceptResult {
     return code;
   }
 
-  @NotNull
+  @Nonnull
   public static AcceptResult from(int value) {
     if (value < 0 || value >= allValues.length) {
       throw new IllegalArgumentException("Unknown AcceptResult - " + value);

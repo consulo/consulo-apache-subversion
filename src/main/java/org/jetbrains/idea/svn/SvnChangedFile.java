@@ -15,34 +15,38 @@
  */
 package org.jetbrains.idea.svn;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.util.ObjectUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.status.Status;
 
 class SvnChangedFile {
 
-  @NotNull private final FilePath myFilePath;
-  @NotNull private final Status myStatus;
-  @Nullable private final String myCopyFromURL;
+  @Nonnull
+  private final FilePath myFilePath;
+  @Nonnull
+  private final Status myStatus;
+  @Nullable
+  private final String myCopyFromURL;
 
-  public SvnChangedFile(@NotNull FilePath filePath, @NotNull Status status) {
+  public SvnChangedFile(@Nonnull FilePath filePath, @Nonnull Status status) {
     this(filePath, status, null);
   }
 
-  public SvnChangedFile(@NotNull FilePath filePath, @NotNull Status status, @Nullable String copyFromURL) {
+  public SvnChangedFile(@Nonnull FilePath filePath, @Nonnull Status status, @Nullable String copyFromURL) {
     myFilePath = filePath;
     myStatus = status;
     myCopyFromURL = copyFromURL;
   }
 
-  @NotNull
+  @Nonnull
   public FilePath getFilePath() {
     return myFilePath;
   }
 
-  @NotNull
+  @Nonnull
   public Status getStatus() {
     return myStatus;
   }

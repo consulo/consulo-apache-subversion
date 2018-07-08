@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
 import com.intellij.util.NotNullFunction;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 import org.jetbrains.idea.svn.checkin.CommitInfo;
@@ -91,7 +91,7 @@ public class SyntheticWorker {
   private static class Remover implements NotNullFunction<RepositoryTreeNode, Object> {
     private final SvnRepositoryCache myCache = SvnRepositoryCache.getInstance();
 
-    @NotNull
+    @Nonnull
     public Object fun(final RepositoryTreeNode repositoryTreeNode) {
       myCache.remove(repositoryTreeNode.getURL().toString());
       return Boolean.FALSE;
@@ -107,7 +107,7 @@ public class SyntheticWorker {
       myNewParentUrl = newParentUrl;
     }
 
-    @NotNull
+    @Nonnull
     public Object fun(final RepositoryTreeNode repositoryTreeNode) {
       final List<DirectoryEntry> children = myCache.getChildren(repositoryTreeNode.getURL().toString());
       if (children == null) {

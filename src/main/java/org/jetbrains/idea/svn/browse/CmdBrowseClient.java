@@ -18,8 +18,8 @@ package org.jetbrains.idea.svn.browse;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.PathUtil;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.NodeKind;
@@ -36,6 +36,7 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nullable;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -49,7 +50,7 @@ import java.util.List;
 public class CmdBrowseClient extends BaseSvnClient implements BrowseClient {
 
   @Override
-  public void list(@NotNull SvnTarget target,
+  public void list(@Nonnull SvnTarget target,
                    @Nullable SVNRevision revision,
                    @Nullable Depth depth,
                    @Nullable DirectoryEntryConsumer handler) throws VcsException {
@@ -74,7 +75,7 @@ public class CmdBrowseClient extends BaseSvnClient implements BrowseClient {
   }
 
   @Override
-  public long createDirectory(@NotNull SvnTarget target, @NotNull String message, boolean makeParents) throws VcsException {
+  public long createDirectory(@Nonnull SvnTarget target, @Nonnull String message, boolean makeParents) throws VcsException {
     assertUrl(target);
 
     List<String> parameters = ContainerUtil.newArrayList();
@@ -91,8 +92,8 @@ public class CmdBrowseClient extends BaseSvnClient implements BrowseClient {
     return listener.getCommittedRevision();
   }
 
-  private static void parseOutput(@NotNull SVNURL url,
-                                  @NotNull CommandExecutor command,
+  private static void parseOutput(@Nonnull SVNURL url,
+                                  @Nonnull CommandExecutor command,
                                   @Nullable DirectoryEntryConsumer handler,
                                   @Nullable SVNURL repositoryUrl)
     throws VcsException, SVNException {
@@ -144,8 +145,8 @@ public class CmdBrowseClient extends BaseSvnClient implements BrowseClient {
 
     public Lock.Builder lock;
 
-    @NotNull
-    public DirectoryEntry toDirectoryEntry(@NotNull SVNURL url, @Nullable SVNURL repositoryUrl) throws SVNException {
+    @Nonnull
+    public DirectoryEntry toDirectoryEntry(@Nonnull SVNURL url, @Nullable SVNURL repositoryUrl) throws SVNException {
       return new DirectoryEntry(url.appendPath(name, false), repositoryUrl, PathUtil.getFileName(name), kind,
                                 commit != null ? commit.build() : null, name);
     }

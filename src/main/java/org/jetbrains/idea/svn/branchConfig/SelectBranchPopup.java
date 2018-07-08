@@ -28,8 +28,8 @@ import com.intellij.util.continuation.ModalityIgnorantBackgroundableTask;
 import com.intellij.util.text.DateFormatUtil;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnFileUrlMapping;
@@ -100,8 +100,8 @@ public class SelectBranchPopup {
     return configuration.getTrunkUrl() + " (trunk)";
   }
 
-  @NotNull
-  private static String getBranchName(@NotNull SvnBranchItem branch) {
+  @Nonnull
+  private static String getBranchName(@Nonnull SvnBranchItem branch) {
     return SVNPathUtil.tail(branch.getUrl());
   }
 
@@ -147,7 +147,7 @@ public class SelectBranchPopup {
              (REFRESH_MESSAGE.equals(value)) ? new ListSeparator("") : null;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public String getTextFor(final String value) {
       int pos = value.lastIndexOf('/');
@@ -199,7 +199,7 @@ public class SelectBranchPopup {
       final ProgressManager pm = ProgressManager.getInstance();
       pm.run(new ModalityIgnorantBackgroundableTask(myProject, SvnBundle.message("compare.with.branch.progress.loading.branches"), true) {
         @Override
-        protected void doInAwtIfFail(@NotNull Exception e) {
+        protected void doInAwtIfFail(@Nonnull Exception e) {
           runnable.run();
         }
 
@@ -214,7 +214,7 @@ public class SelectBranchPopup {
         }
 
         @Override
-        protected void runImpl(@NotNull ProgressIndicator indicator) {
+        protected void runImpl(@Nonnull ProgressIndicator indicator) {
           final NewRootBunch manager = SvnBranchConfigurationManager.getInstance(myProject).getSvnBranchConfigManager();
 
           manager.reloadBranches(myVcsRoot, selectedBranchesHolder, InfoReliability.setByUser, false);

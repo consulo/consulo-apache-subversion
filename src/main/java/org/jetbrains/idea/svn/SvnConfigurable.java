@@ -35,8 +35,8 @@ import javax.swing.JToolTip;
 import javax.swing.SpinnerNumberModel;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationNotifier;
 import org.jetbrains.idea.svn.config.SvnConfigureProxiesDialog;
 import org.jetbrains.idea.svn.dialogs.SshSettingsPanel;
@@ -209,8 +209,8 @@ public class SvnConfigurable implements Configurable {
     UIUtil.setEnabled(myCommandLineClientOptions, myWithCommandLineClient.isSelected(), true);
   }
 
-  public static void selectConfigurationDirectory(@NotNull String path,
-                                                  @NotNull final Consumer<String> dirConsumer,
+  public static void selectConfigurationDirectory(@Nonnull String path,
+                                                  @Nonnull final Consumer<String> dirConsumer,
                                                   final Project project,
                                                   @Nullable final Component component) {
     FileChooserDescriptor descriptor =  FileChooserDescriptorFactory.createSingleFolderDescriptor()

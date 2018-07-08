@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.properties.ExternalsDefinitionParser;
 import org.junit.Test;
 
@@ -56,7 +56,7 @@ public class ExternalsDefinitionParserTest {
     assertRelativeDirectory("\"Quotes Too\"", "http://svn.thirdparty.com/repos/%22Quotes%20Too%22 \\\"Quotes\\ Too\\\"");
   }
 
-  private static void assertRelativeDirectory(@NotNull String expected, @NotNull String external) throws Exception {
+  private static void assertRelativeDirectory(@Nonnull String expected, @Nonnull String external) throws Exception {
     assertEquals(expected, ExternalsDefinitionParser.parseRelativeDirectory(external));
   }
 }

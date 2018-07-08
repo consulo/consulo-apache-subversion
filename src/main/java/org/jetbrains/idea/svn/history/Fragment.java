@@ -17,9 +17,10 @@ package org.jetbrains.idea.svn.history;
 
 import com.intellij.openapi.vcs.changes.committed.ChangesBunch;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class Fragment {
   private final Origin myOrigin;

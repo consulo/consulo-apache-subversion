@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.config;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class CompositeRunnable implements Runnable {
   private final Runnable[] myRunnables;
 
-  public CompositeRunnable(@NotNull Runnable... runnables) {
+  public CompositeRunnable(@Nonnull Runnable... runnables) {
     myRunnables = runnables;
   }
 

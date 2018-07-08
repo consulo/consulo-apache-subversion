@@ -16,8 +16,8 @@
 package org.jetbrains.idea.svn.status;
 
 import com.intellij.openapi.util.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
 import org.jetbrains.idea.svn.info.Info;
@@ -84,7 +84,7 @@ public class PortableStatus extends Status {
    */
   public PortableStatus(SVNURL url,
                         File file,
-                        @NotNull NodeKind kind,
+                        @Nonnull NodeKind kind,
                         SVNRevision revision,
                         SVNRevision committedRevision,
                         Date committedDate,
@@ -157,7 +157,7 @@ public class PortableStatus extends Status {
   }
 
   @Override
-  @NotNull
+  @Nonnull
   public NodeKind getKind() {
     if (myFileExists) return super.getKind();
     final Info info = initInfo();
@@ -218,7 +218,7 @@ public class PortableStatus extends Status {
     return file;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public SVNRevision getRevision() {
     final SVNRevision revision = super.getRevision();
@@ -255,7 +255,7 @@ public class PortableStatus extends Status {
     return myPath;
   }
 
-  public void setKind(boolean exists, @NotNull NodeKind kind) {
+  public void setKind(boolean exists, @Nonnull NodeKind kind) {
     myFileExists = exists;
     setKind(kind);
   }

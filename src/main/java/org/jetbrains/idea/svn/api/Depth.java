@@ -16,8 +16,8 @@
 package org.jetbrains.idea.svn.api;
 
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.SVNDepth;
 
 import java.util.Map;
@@ -33,7 +33,8 @@ public enum Depth {
   FILES("files"),
   EMPTY("empty");
 
-  @NotNull private static final Map<String, Depth> ourAllDepths = ContainerUtil.newHashMap();
+  @Nonnull
+  private static final Map<String, Depth> ourAllDepths = ContainerUtil.newHashMap();
 
   static {
     for (Depth action : Depth.values()) {
@@ -41,13 +42,14 @@ public enum Depth {
     }
   }
 
-  @NotNull private final String myName;
+  @Nonnull
+  private final String myName;
 
-  Depth(@NotNull String name) {
+  Depth(@Nonnull String name) {
     myName = name;
   }
 
-  @NotNull
+  @Nonnull
   public String getName() {
     return myName;
   }
@@ -57,12 +59,12 @@ public enum Depth {
     return myName;
   }
 
-  private static void register(@NotNull Depth depth) {
+  private static void register(@Nonnull Depth depth) {
     ourAllDepths.put(depth.myName, depth);
   }
 
-  @NotNull
-  public static Depth from(@NotNull String depthName) {
+  @Nonnull
+  public static Depth from(@Nonnull String depthName) {
     Depth result = ourAllDepths.get(depthName);
 
     if (result == null) {
@@ -72,17 +74,17 @@ public enum Depth {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   public static Depth from(@Nullable SVNDepth depth) {
     return depth != null ? from(depth.getName()) : UNKNOWN;
   }
 
-  @NotNull
+  @Nonnull
   public static Depth allOrFiles(boolean recursive) {
     return recursive ? INFINITY : FILES;
   }
 
-  @NotNull
+  @Nonnull
   public static Depth allOrEmpty(boolean recursive) {
     return recursive ? INFINITY : EMPTY;
   }

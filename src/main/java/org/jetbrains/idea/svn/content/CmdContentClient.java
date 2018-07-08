@@ -5,8 +5,9 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.impl.ContentRevisionCache;
 import com.intellij.util.ArrayUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.CommandExecutor;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -28,7 +29,7 @@ public class CmdContentClient extends BaseSvnClient implements ContentClient {
   private static final String NO_PRISTINE_VERSION_FOR_FILE = "has no pristine version until it is committed";
 
   @Override
-  public byte[] getContent(@NotNull SvnTarget target, @Nullable SVNRevision revision, @Nullable SVNRevision pegRevision)
+  public byte[] getContent(@Nonnull SvnTarget target, @Nullable SVNRevision revision, @Nullable SVNRevision pegRevision)
     throws VcsException, FileTooBigRuntimeException {
     // TODO: rewrite this to provide output as Stream
     // TODO: Also implement max size constraint like in SvnKitContentClient

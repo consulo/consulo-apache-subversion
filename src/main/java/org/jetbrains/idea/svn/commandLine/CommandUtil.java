@@ -20,8 +20,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.text.DateFormatUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.diff.DiffOptions;
 import org.jetbrains.idea.svn.status.StatusType;
@@ -49,17 +49,17 @@ public class CommandUtil {
    * @param condition
    * @param value
    */
-  public static void put(@NotNull List<String> parameters, boolean condition, @NotNull String value) {
+  public static void put(@Nonnull List<String> parameters, boolean condition, @Nonnull String value) {
     if (condition) {
       parameters.add(value);
     }
   }
 
-  public static void put(@NotNull List<String> parameters, @NotNull File path) {
+  public static void put(@Nonnull List<String> parameters, @Nonnull File path) {
     put(parameters, path.getAbsolutePath(), SVNRevision.UNDEFINED);
   }
 
-  public static void put(@NotNull List<String> parameters, @NotNull File path, boolean usePegRevision) {
+  public static void put(@Nonnull List<String> parameters, @Nonnull File path, boolean usePegRevision) {
     if (usePegRevision) {
       put(parameters, path);
     } else {
@@ -67,16 +67,16 @@ public class CommandUtil {
     }
   }
 
-  public static void put(@NotNull List<String> parameters, @NotNull File path, @Nullable SVNRevision pegRevision) {
+  public static void put(@Nonnull List<String> parameters, @Nonnull File path, @Nullable SVNRevision pegRevision) {
     put(parameters, path.getAbsolutePath(), pegRevision);
   }
 
-  public static void put(@NotNull List<String> parameters, @NotNull String path, @Nullable SVNRevision pegRevision) {
+  public static void put(@Nonnull List<String> parameters, @Nonnull String path, @Nullable SVNRevision pegRevision) {
     parameters.add(format(path, pegRevision));
   }
 
-  @NotNull
-  public static String format(@NotNull String path, @Nullable SVNRevision pegRevision) {
+  @Nonnull
+  public static String format(@Nonnull String path, @Nullable SVNRevision pegRevision) {
     StringBuilder builder = new StringBuilder(path);
 
     boolean hasAtSymbol = path.contains("@");
@@ -96,11 +96,11 @@ public class CommandUtil {
     return builder.toString();
   }
 
-  public static void put(@NotNull List<String> parameters, @NotNull SvnTarget target) {
+  public static void put(@Nonnull List<String> parameters, @Nonnull SvnTarget target) {
     put(parameters, target.getPathOrUrlString(), target.getPegRevision());
   }
 
-  public static void put(@NotNull List<String> parameters, @NotNull SvnTarget target, boolean usePegRevision) {
+  public static void put(@Nonnull List<String> parameters, @Nonnull SvnTarget target, boolean usePegRevision) {
     if (usePegRevision) {
       put(parameters, target);
     } else {
@@ -108,11 +108,11 @@ public class CommandUtil {
     }
   }
 
-  public static void put(@NotNull List<String> parameters, @Nullable Depth depth) {
+  public static void put(@Nonnull List<String> parameters, @Nullable Depth depth) {
     put(parameters, depth, false);
   }
 
-  public static void put(@NotNull List<String> parameters, @Nullable Depth depth, boolean sticky) {
+  public static void put(@Nonnull List<String> parameters, @Nullable Depth depth, boolean sticky) {
     if (depth != null && !Depth.UNKNOWN.equals(depth)) {
       parameters.add("--depth");
       parameters.add(depth.getName());
@@ -124,24 +124,24 @@ public class CommandUtil {
     }
   }
 
-  public static void put(@NotNull List<String> parameters, @Nullable SVNRevision revision) {
+  public static void put(@Nonnull List<String> parameters, @Nullable SVNRevision revision) {
     if (revision != null && !SVNRevision.UNDEFINED.equals(revision) && !SVNRevision.WORKING.equals(revision) && revision.isValid()) {
       parameters.add("--revision");
       parameters.add(format(revision));
     }
   }
 
-  public static void put(@NotNull List<String> parameters, @NotNull SVNRevision startRevision, @NotNull SVNRevision endRevision) {
+  public static void put(@Nonnull List<String> parameters, @Nonnull SVNRevision startRevision, @Nonnull SVNRevision endRevision) {
     parameters.add("--revision");
     parameters.add(format(startRevision) + ":" + format(endRevision));
   }
 
-  @NotNull
-  public static String format(@NotNull SVNRevision revision) {
+  @Nonnull
+  public static String format(@Nonnull SVNRevision revision) {
     return revision.getDate() != null ? "{" + DateFormatUtil.getIso8601Format().format(revision.getDate()) + "}" : revision.toString();
   }
 
-  public static void put(@NotNull List<String> parameters, @Nullable DiffOptions diffOptions) {
+  public static void put(@Nonnull List<String> parameters, @Nullable DiffOptions diffOptions) {
     if (diffOptions != null) {
       StringBuilder builder = new StringBuilder();
 
@@ -164,7 +164,7 @@ public class CommandUtil {
     }
   }
 
-  public static void putChangeLists(@NotNull List<String> parameters, @Nullable Iterable<String> changeLists) {
+  public static void putChangeLists(@Nonnull List<String> parameters, @Nullable Iterable<String> changeLists) {
     if (changeLists != null) {
       for (String changeList : changeLists) {
         parameters.add("--cl");
@@ -173,18 +173,18 @@ public class CommandUtil {
     }
   }
 
-  public static String escape(@NotNull String path) {
+  public static String escape(@Nonnull String path) {
     return path.contains("@") ? path + "@" : path;
   }
 
-  public static <T> T parse(@NotNull String data, @NotNull Class<T> type) throws JAXBException {
+  public static <T> T parse(@Nonnull String data, @Nonnull Class<T> type) throws JAXBException {
     JAXBContext context = JAXBContext.newInstance(type);
     Unmarshaller unmarshaller = context.createUnmarshaller();
 
     return (T) unmarshaller.unmarshal(new StringReader(data.trim()));
   }
 
-  @NotNull
+  @Nonnull
   public static File getHomeDirectory() {
     return new File(PathManager.getHomePath());
   }
@@ -199,12 +199,12 @@ public class CommandUtil {
     return !StringUtil.isEmpty(type) ? type.charAt(0) : ' ';
   }
 
-  @NotNull
+  @Nonnull
   public static StatusType getStatusType(@Nullable String type) {
     return getStatusType(getStatusChar(type));
   }
 
-  @NotNull
+  @Nonnull
   public static StatusType getStatusType(char first) {
     final StatusType contentsStatus;
     if ('A' == first) {
@@ -236,8 +236,8 @@ public class CommandUtil {
     return null;
   }
 
-  @NotNull
-  public static File requireExistingParent(@NotNull File file) {
+  @Nonnull
+  public static File requireExistingParent(@Nonnull File file) {
     File result = findExistingParent(file);
 
     if (result == null) {

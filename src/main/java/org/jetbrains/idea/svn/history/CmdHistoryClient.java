@@ -2,8 +2,8 @@ package org.jetbrains.idea.svn.history;
 
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.CommandExecutor;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -13,6 +13,7 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nullable;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,9 +26,9 @@ import java.util.List;
 public class CmdHistoryClient extends BaseSvnClient implements HistoryClient {
 
   @Override
-  public void doLog(@NotNull SvnTarget target,
-                    @NotNull SVNRevision startRevision,
-                    @NotNull SVNRevision endRevision,
+  public void doLog(@Nonnull SvnTarget target,
+                    @Nonnull SVNRevision startRevision,
+                    @Nonnull SVNRevision endRevision,
                     boolean stopOnCopy,
                     boolean discoverChangedPaths,
                     boolean includeMergedRevisions,
@@ -50,7 +51,7 @@ public class CmdHistoryClient extends BaseSvnClient implements HistoryClient {
     }
   }
 
-  private static void parseOutput(@NotNull CommandExecutor command, @Nullable LogEntryConsumer handler)
+  private static void parseOutput(@Nonnull CommandExecutor command, @Nullable LogEntryConsumer handler)
     throws VcsException, SVNException {
     try {
       LogInfo log = CommandUtil.parse(command.getOutput(), LogInfo.class);
@@ -66,7 +67,7 @@ public class CmdHistoryClient extends BaseSvnClient implements HistoryClient {
     }
   }
 
-  private static void iterateRecursively(@NotNull LogEntry.Builder entry, @NotNull LogEntryConsumer handler) throws SVNException {
+  private static void iterateRecursively(@Nonnull LogEntry.Builder entry, @Nonnull LogEntryConsumer handler) throws SVNException {
     handler.consume(entry.build());
 
     for (LogEntry.Builder childEntry : entry.getChildEntries()) {
@@ -79,9 +80,9 @@ public class CmdHistoryClient extends BaseSvnClient implements HistoryClient {
     }
   }
 
-  private static List<String> prepareCommand(@NotNull SvnTarget target,
-                                             @NotNull SVNRevision startRevision,
-                                             @NotNull SVNRevision endRevision,
+  private static List<String> prepareCommand(@Nonnull SvnTarget target,
+                                             @Nonnull SVNRevision startRevision,
+                                             @Nonnull SVNRevision endRevision,
                                              boolean stopOnCopy, boolean discoverChangedPaths, boolean includeMergedRevisions, long limit) {
     List<String> parameters = new ArrayList<>();
 

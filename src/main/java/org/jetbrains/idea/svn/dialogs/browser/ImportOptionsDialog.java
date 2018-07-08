@@ -27,12 +27,12 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.DepthCombo;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.api.Depth;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

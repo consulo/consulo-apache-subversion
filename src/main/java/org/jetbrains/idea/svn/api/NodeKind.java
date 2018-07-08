@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.api;
 
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNNodeKind;
 
 import javax.xml.bind.annotation.XmlEnum;
@@ -36,7 +36,8 @@ public enum NodeKind {
   // used in ConflictVersion when node is missing
   @XmlEnumValue("none") NONE("none");
 
-  @NotNull private static final Map<String, NodeKind> ourAllNodeKinds = ContainerUtil.newHashMap();
+  @Nonnull
+  private static final Map<String, NodeKind> ourAllNodeKinds = ContainerUtil.newHashMap();
 
   static {
     for (NodeKind kind : NodeKind.values()) {
@@ -44,9 +45,10 @@ public enum NodeKind {
     }
   }
 
-  @NotNull private final String myKey;
+  @Nonnull
+  private final String myKey;
 
-  NodeKind(@NotNull String key) {
+  NodeKind(@Nonnull String key) {
     myKey = key;
   }
 
@@ -67,12 +69,12 @@ public enum NodeKind {
     return myKey;
   }
 
-  private static void register(@NotNull NodeKind kind) {
+  private static void register(@Nonnull NodeKind kind) {
     ourAllNodeKinds.put(kind.myKey, kind);
   }
 
-  @NotNull
-  public static NodeKind from(@NotNull String nodeKindName) {
+  @Nonnull
+  public static NodeKind from(@Nonnull String nodeKindName) {
     NodeKind result = ourAllNodeKinds.get(nodeKindName);
 
     if (result == null) {
@@ -82,12 +84,12 @@ public enum NodeKind {
     return result;
   }
 
-  @NotNull
-  public static NodeKind from(@NotNull SVNNodeKind nodeKind) {
+  @Nonnull
+  public static NodeKind from(@Nonnull SVNNodeKind nodeKind) {
     return from(nodeKind.toString());
   }
 
-  @NotNull
+  @Nonnull
   public static NodeKind from(boolean isDirectory) {
     return isDirectory ? DIR : FILE;
   }

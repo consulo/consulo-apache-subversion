@@ -20,8 +20,9 @@ import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.status.Status;
 import org.jetbrains.idea.svn.status.StatusType;
 import org.tmatesoft.svn.core.SVNURL;
@@ -31,17 +32,20 @@ import java.util.Set;
 
 public class NestedCopiesBuilder implements StatusReceiver {
 
-  @NotNull private final Set<NestedCopyInfo> myCopies;
-  @NotNull private final SvnFileUrlMapping myMapping;
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final Set<NestedCopyInfo> myCopies;
+  @Nonnull
+  private final SvnFileUrlMapping myMapping;
+  @Nonnull
+  private final SvnVcs myVcs;
 
-  public NestedCopiesBuilder(@NotNull SvnVcs vcs, @NotNull SvnFileUrlMapping mapping) {
+  public NestedCopiesBuilder(@Nonnull SvnVcs vcs, @Nonnull SvnFileUrlMapping mapping) {
     myVcs = vcs;
     myMapping = mapping;
     myCopies = ContainerUtil.newHashSet();
   }
 
-  public void process(@NotNull FilePath path, final Status status) {
+  public void process(@Nonnull FilePath path, final Status status) {
     VirtualFile file = path.getVirtualFile();
 
     if (file != null) {
@@ -68,15 +72,15 @@ public class NestedCopiesBuilder implements StatusReceiver {
   }
 
   @Override
-  public void processCopyRoot(@NotNull VirtualFile file,
+  public void processCopyRoot(@Nonnull VirtualFile file,
                               @Nullable SVNURL url,
-                              @NotNull WorkingCopyFormat format,
+                              @Nonnull WorkingCopyFormat format,
                               @Nullable SVNURL rootURL) {
     myCopies.add(new NestedCopyInfo(file, url, format, NestedCopyType.inner, rootURL));
   }
 
   @Override
-  public void bewareRoot(@NotNull VirtualFile vf, SVNURL url) {
+  public void bewareRoot(@Nonnull VirtualFile vf, SVNURL url) {
     final File ioFile = VfsUtilCore.virtualToIoFile(vf);
     final RootUrlInfo info = myMapping.getWcRootForFilePath(ioFile);
 
@@ -89,7 +93,7 @@ public class NestedCopiesBuilder implements StatusReceiver {
   public void finish() {
   }
 
-  @NotNull
+  @Nonnull
   public Set<NestedCopyInfo> getCopies() {
     return myCopies;
   }

@@ -15,6 +15,8 @@
  */
 package org.jetbrains.idea.svn.svnkit;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -23,8 +25,8 @@ import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.SystemInfo;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnHttpAuthMethodsDefaultChecker;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -60,9 +62,12 @@ public class SvnKitManager {
 
   @Nullable private static String ourExplicitlySetSslProtocols;
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final Project myProject;
-  @NotNull private final SvnConfiguration myConfiguration;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final Project myProject;
+  @Nonnull
+  private final SvnConfiguration myConfiguration;
 
   static {
     System.setProperty("svnkit.log.native.calls", "true");
@@ -92,7 +97,7 @@ public class SvnKitManager {
     ourExplicitlySetSslProtocols = System.getProperty(SVNKIT_HTTP_SSL_PROTOCOLS);
   }
 
-  public SvnKitManager(@NotNull SvnVcs vcs) {
+  public SvnKitManager(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
     myProject = myVcs.getProject();
     myConfiguration = myVcs.getSvnConfiguration();
@@ -140,18 +145,18 @@ public class SvnKitManager {
     }
   }
 
-  @NotNull
+  @Nonnull
   public ISVNOptions getSvnOptions() {
     return myConfiguration.getOptions();
   }
 
-  @NotNull
+  @Nonnull
   public SVNRepository createRepository(String url) throws SVNException {
     return createRepository(SVNURL.parseURIEncoded(url));
   }
 
-  @NotNull
-  public SVNRepository createRepository(@NotNull SVNURL url) throws SVNException {
+  @Nonnull
+  public SVNRepository createRepository(@Nonnull SVNURL url) throws SVNException {
     SVNRepository repository = SVNRepositoryFactory.create(url);
     repository.setAuthenticationManager(getAuthenticationManager());
     repository.setTunnelProvider(getSvnOptions());
@@ -159,30 +164,30 @@ public class SvnKitManager {
     return repository;
   }
 
-  @NotNull
+  @Nonnull
   private ISVNRepositoryPool getPool() {
     return getPool(getAuthenticationManager());
   }
 
-  @NotNull
-  private ISVNRepositoryPool getPool(@NotNull ISVNAuthenticationManager manager) {
+  @Nonnull
+  private ISVNRepositoryPool getPool(@Nonnull ISVNAuthenticationManager manager) {
     if (myProject.isDisposed()) {
       throw new ProcessCanceledException();
     }
     return new PrimitivePool(manager, getSvnOptions());
   }
 
-  @NotNull
+  @Nonnull
   public SVNUpdateClient createUpdateClient() {
     return setupClient(new SVNUpdateClient(getPool(), getSvnOptions()));
   }
 
-  @NotNull
-  public SVNUpdateClient createUpdateClient(@NotNull ISVNAuthenticationManager manager) {
+  @Nonnull
+  public SVNUpdateClient createUpdateClient(@Nonnull ISVNAuthenticationManager manager) {
     return setupClient(new SVNUpdateClient(getPool(manager), getSvnOptions()), manager);
   }
 
-  @NotNull
+  @Nonnull
   public SVNStatusClient createStatusClient() {
     SVNStatusClient client = new SVNStatusClient(getPool(), getSvnOptions());
     client.setIgnoreExternals(false);
@@ -190,57 +195,57 @@ public class SvnKitManager {
     return setupClient(client);
   }
 
-  @NotNull
+  @Nonnull
   public SVNWCClient createWCClient() {
     return setupClient(new SVNWCClient(getPool(), getSvnOptions()));
   }
 
-  @NotNull
+  @Nonnull
   public SVNWCClient createUpgradeClient() {
     return new SVNWCClient(createOperationFactory());
   }
 
-  @NotNull
-  public SVNWCClient createWCClient(@NotNull ISVNAuthenticationManager manager) {
+  @Nonnull
+  public SVNWCClient createWCClient(@Nonnull ISVNAuthenticationManager manager) {
     return setupClient(new SVNWCClient(getPool(manager), getSvnOptions()), manager);
   }
 
-  @NotNull
+  @Nonnull
   public SVNCopyClient createCopyClient() {
     return setupClient(new SVNCopyClient(getPool(), getSvnOptions()));
   }
 
-  @NotNull
+  @Nonnull
   public SVNMoveClient createMoveClient() {
     return setupClient(new SVNMoveClient(getPool(), getSvnOptions()));
   }
 
-  @NotNull
+  @Nonnull
   public SVNLogClient createLogClient() {
     return setupClient(new SVNLogClient(getPool(), getSvnOptions()));
   }
 
-  @NotNull
-  public SVNLogClient createLogClient(@NotNull ISVNAuthenticationManager manager) {
+  @Nonnull
+  public SVNLogClient createLogClient(@Nonnull ISVNAuthenticationManager manager) {
     return setupClient(new SVNLogClient(getPool(manager), getSvnOptions()), manager);
   }
 
-  @NotNull
+  @Nonnull
   public SVNCommitClient createCommitClient() {
     return setupClient(new SVNCommitClient(getPool(), getSvnOptions()));
   }
 
-  @NotNull
+  @Nonnull
   public SVNDiffClient createDiffClient() {
     return setupClient(new SVNDiffClient(getPool(), getSvnOptions()));
   }
 
-  @NotNull
+  @Nonnull
   public SVNChangelistClient createChangelistClient() {
     return setupClient(new SVNChangelistClient(getPool(), getSvnOptions()));
   }
 
-  @NotNull
+  @Nonnull
   public SvnOperationFactory createOperationFactory() {
     SvnOperationFactory result = new OperationFactory();
 
@@ -251,18 +256,18 @@ public class SvnKitManager {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   private SvnAuthenticationManager getAuthenticationManager() {
     return myConfiguration.getAuthenticationManager(myVcs);
   }
 
-  @NotNull
-  private <T extends SVNBasicClient> T setupClient(@NotNull T client) {
+  @Nonnull
+  private <T extends SVNBasicClient> T setupClient(@Nonnull T client) {
     return setupClient(client, getAuthenticationManager());
   }
 
-  @NotNull
-  private static <T extends SVNBasicClient> T setupClient(@NotNull T client, @NotNull ISVNAuthenticationManager manager) {
+  @Nonnull
+  private static <T extends SVNBasicClient> T setupClient(@Nonnull T client, @Nonnull ISVNAuthenticationManager manager) {
     client.getOperationsFactory().setAuthenticationManager(manager);
 
     return client;
@@ -277,7 +282,7 @@ public class SvnKitManager {
      * So we just override default "targetWorkingCopyFormat" for {@link SvnUpgrade} instances.
      */
     @Override
-    @NotNull
+    @Nonnull
     public SvnUpgrade createUpgrade() {
       SvnUpgrade result = super.createUpgrade();
       result.setTargetWorkingCopyFormat(ISVNWCDb.WC_FORMAT_17);

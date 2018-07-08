@@ -28,8 +28,8 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationManager;
 import org.jetbrains.idea.svn.history.SimplePropertyRevision;
@@ -49,19 +49,27 @@ import static org.jetbrains.idea.svn.actions.ShowPropertiesDiffAction.getPropert
 class SvnChangeProviderContext implements StatusReceiver {
   private static final Logger LOG = Logger.getInstance("org.jetbrains.idea.svn.SvnChangeProviderContext");
 
-  @NotNull private final ChangelistBuilder myChangelistBuilder;
-  @NotNull private final List<SvnChangedFile> myCopiedFiles = ContainerUtil.newArrayList();
-  @NotNull private final List<SvnChangedFile> myDeletedFiles = ContainerUtil.newArrayList();
+  @Nonnull
+  private final ChangelistBuilder myChangelistBuilder;
+  @Nonnull
+  private final List<SvnChangedFile> myCopiedFiles = ContainerUtil.newArrayList();
+  @Nonnull
+  private final List<SvnChangedFile> myDeletedFiles = ContainerUtil.newArrayList();
   // for files moved in a subtree, which were the targets of merge (for instance).
-  @NotNull private final Map<String, Status> myTreeConflicted = ContainerUtil.newHashMap();
-  @NotNull private final Map<FilePath, String> myCopyFromURLs = ContainerUtil.newHashMap();
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final Map<String, Status> myTreeConflicted = ContainerUtil.newHashMap();
+  @Nonnull
+  private final Map<FilePath, String> myCopyFromURLs = ContainerUtil.newHashMap();
+  @Nonnull
+  private final SvnVcs myVcs;
   private final SvnBranchConfigurationManager myBranchConfigurationManager;
-  @NotNull private final List<File> filesToRefresh = ContainerUtil.newArrayList();
+  @Nonnull
+  private final List<File> filesToRefresh = ContainerUtil.newArrayList();
 
-  @Nullable private final ProgressIndicator myProgress;
+  @Nullable
+  private final ProgressIndicator myProgress;
 
-  public SvnChangeProviderContext(@NotNull SvnVcs vcs, @NotNull ChangelistBuilder changelistBuilder, @Nullable ProgressIndicator progress) {
+  public SvnChangeProviderContext(@Nonnull SvnVcs vcs, @Nonnull ChangelistBuilder changelistBuilder, @Nullable ProgressIndicator progress) {
     myVcs = vcs;
     myChangelistBuilder = changelistBuilder;
     myProgress = progress;
@@ -95,31 +103,31 @@ class SvnChangeProviderContext implements StatusReceiver {
     LocalFileSystem.getInstance().refreshIoFiles(filesToRefresh, true, false, null);
   }
 
-  @NotNull
+  @Nonnull
   public ChangelistBuilder getBuilder() {
     return myChangelistBuilder;
   }
 
-  public void reportTreeConflict(@NotNull Status status) {
+  public void reportTreeConflict(@Nonnull Status status) {
     myTreeConflicted.put(status.getFile().getAbsolutePath(), status);
   }
 
   @Nullable
-  public Status getTreeConflictStatus(@NotNull File file) {
+  public Status getTreeConflictStatus(@Nonnull File file) {
     return myTreeConflicted.get(file.getAbsolutePath());
   }
 
-  @NotNull
+  @Nonnull
   public List<SvnChangedFile> getCopiedFiles() {
     return myCopiedFiles;
   }
 
-  @NotNull
+  @Nonnull
   public List<SvnChangedFile> getDeletedFiles() {
     return myDeletedFiles;
   }
 
-  public boolean isDeleted(@NotNull FilePath path) {
+  public boolean isDeleted(@Nonnull FilePath path) {
     for (SvnChangedFile deletedFile : myDeletedFiles) {
       if (Comparing.equal(path, deletedFile.getFilePath())) {
         return true;
@@ -141,7 +149,7 @@ class SvnChangeProviderContext implements StatusReceiver {
    * @return the copy source url, or null if the file isn't a copy of anything
    */
   @Nullable
-  public String getParentCopyFromURL(@NotNull FilePath filePath) {
+  public String getParentCopyFromURL(@Nonnull FilePath filePath) {
     String result = null;
     FilePath parent = filePath;
 
@@ -161,12 +169,12 @@ class SvnChangeProviderContext implements StatusReceiver {
     return result;
   }
 
-  public void addCopiedFile(@NotNull FilePath filePath, @NotNull Status status, @NotNull String copyFromURL) {
+  public void addCopiedFile(@Nonnull FilePath filePath, @Nonnull Status status, @Nonnull String copyFromURL) {
     myCopiedFiles.add(new SvnChangedFile(filePath, status, copyFromURL));
     ContainerUtil.putIfNotNull(filePath, status.getCopyFromURL(), myCopyFromURLs);
   }
 
-  void processStatusFirstPass(@NotNull FilePath filePath, @NotNull Status status) throws SVNException {
+  void processStatusFirstPass(@Nonnull FilePath filePath, @Nonnull Status status) throws SVNException {
     if (status.getRemoteLock() != null) {
       myChangelistBuilder.processLogicallyLockedFolder(filePath.getVirtualFile(), status.getRemoteLock().toLogicalLock(false));
     }
@@ -194,7 +202,7 @@ class SvnChangeProviderContext implements StatusReceiver {
     }
   }
 
-  void processStatus(@NotNull FilePath filePath, @NotNull Status status) throws SVNException {
+  void processStatus(@Nonnull FilePath filePath, @Nonnull Status status) throws SVNException {
     WorkingCopyFormat format = myVcs.getWorkingCopyFormat(filePath.getIOFile());
     if (!WorkingCopyFormat.UNKNOWN.equals(format) && format.less(WorkingCopyFormat.ONE_DOT_SEVEN)) {
       loadEntriesFile(filePath);
@@ -251,7 +259,7 @@ class SvnChangeProviderContext implements StatusReceiver {
     }
   }
 
-  public void addModifiedNotSavedChange(@NotNull VirtualFile file) throws SVNException {
+  public void addModifiedNotSavedChange(@Nonnull VirtualFile file) throws SVNException {
     final FilePath filePath = VcsUtil.getFilePath(file);
     final Info svnInfo = myVcs.getInfo(file);
 
@@ -266,14 +274,14 @@ class SvnChangeProviderContext implements StatusReceiver {
 
   private void processChangeInList(@Nullable ContentRevision beforeRevision,
                                    @Nullable ContentRevision afterRevision,
-                                   @NotNull FileStatus fileStatus,
-                                   @NotNull Status status) throws SVNException {
+                                   @Nonnull FileStatus fileStatus,
+                                   @Nonnull Status status) throws SVNException {
     Change change = createChange(beforeRevision, afterRevision, fileStatus, status);
 
     myChangelistBuilder.processChangeInList(change, SvnUtil.getChangelistName(status), SvnVcs.getKey());
   }
 
-  private void checkSwitched(@NotNull FilePath filePath, @NotNull Status status, @NotNull FileStatus convertedStatus) {
+  private void checkSwitched(@Nonnull FilePath filePath, @Nonnull Status status, @Nonnull FileStatus convertedStatus) {
     if (status.isSwitched() || (convertedStatus == FileStatus.SWITCHED)) {
       final VirtualFile virtualFile = filePath.getVirtualFile();
       if (virtualFile == null) return;
@@ -292,7 +300,7 @@ class SvnChangeProviderContext implements StatusReceiver {
    *
    * @param filePath the path of a changed file.
    */
-  private void loadEntriesFile(@NotNull FilePath filePath) {
+  private void loadEntriesFile(@Nonnull FilePath filePath) {
     final FilePath parentPath = filePath.getParentPath();
     if (parentPath == null) {
       return;
@@ -303,7 +311,7 @@ class SvnChangeProviderContext implements StatusReceiver {
     }
   }
 
-  private void refreshDotSvnAndEntries(@NotNull FilePath filePath) {
+  private void refreshDotSvnAndEntries(@Nonnull FilePath filePath) {
     final File svn = new File(filePath.getPath(), SvnUtil.SVN_ADMIN_DIR_NAME);
 
     filesToRefresh.add(svn);
@@ -312,11 +320,11 @@ class SvnChangeProviderContext implements StatusReceiver {
 
   // seems here we can only have a tree conflict; which can be marked on either path (?)
   // .. ok try to merge states
-  @NotNull
-  Change createMovedChange(@NotNull ContentRevision before,
-                           @NotNull ContentRevision after,
+  @Nonnull
+  Change createMovedChange(@Nonnull ContentRevision before,
+                           @Nonnull ContentRevision after,
                            @Nullable Status copiedStatus,
-                           @NotNull Status deletedStatus) throws SVNException {
+                           @Nonnull Status deletedStatus) throws SVNException {
     // todo no convertion needed for the contents status?
     ConflictedSvnChange change =
       new ConflictedSvnChange(before, after, ConflictState.mergeState(getState(copiedStatus), getState(deletedStatus)),
@@ -330,11 +338,11 @@ class SvnChangeProviderContext implements StatusReceiver {
     return change;
   }
 
-  @NotNull
+  @Nonnull
   private Change createChange(@Nullable ContentRevision before,
                               @Nullable ContentRevision after,
-                              @NotNull FileStatus fStatus,
-                              @NotNull Status svnStatus)
+                              @Nonnull FileStatus fStatus,
+                              @Nonnull Status svnStatus)
     throws SVNException {
     ConflictedSvnChange change =
       new ConflictedSvnChange(before, after, fStatus, getState(svnStatus), after == null ? before.getFile() : after.getFile());
@@ -346,7 +354,7 @@ class SvnChangeProviderContext implements StatusReceiver {
     return change;
   }
 
-  private void patchWithPropertyChange(@NotNull Change change, @NotNull Status svnStatus, @Nullable Status deletedStatus)
+  private void patchWithPropertyChange(@Nonnull Change change, @Nonnull Status svnStatus, @Nullable Status deletedStatus)
     throws SVNException {
     if (svnStatus.isProperty(StatusType.STATUS_CONFLICTED, StatusType.CHANGED, StatusType.STATUS_ADDED, StatusType.STATUS_DELETED,
                              StatusType.STATUS_MODIFIED, StatusType.STATUS_REPLACED, StatusType.MERGED)) {
@@ -354,8 +362,8 @@ class SvnChangeProviderContext implements StatusReceiver {
     }
   }
 
-  @NotNull
-  private Change createPropertyChange(@NotNull Change change, @NotNull Status svnStatus, @Nullable Status deletedStatus)
+  @Nonnull
+  private Change createPropertyChange(@Nonnull Change change, @Nonnull Status svnStatus, @Nullable Status deletedStatus)
     throws SVNException {
     final File ioFile = ChangesUtil.getFilePath(change).getIOFile();
     final File beforeFile = deletedStatus != null ? deletedStatus.getFile() : ioFile;
@@ -374,7 +382,7 @@ class SvnChangeProviderContext implements StatusReceiver {
   }
 
   @Nullable
-  private ContentRevision createPropertyRevision(@NotNull Change change, @NotNull File file, boolean isBeforeRevision)
+  private ContentRevision createPropertyRevision(@Nonnull Change change, @Nonnull File file, boolean isBeforeRevision)
     throws SVNException {
     FilePath path = ChangesUtil.getFilePath(change);
     ContentRevision contentRevision = isBeforeRevision ? change.getBeforeRevision() : change.getAfterRevision();
@@ -388,7 +396,7 @@ class SvnChangeProviderContext implements StatusReceiver {
     return revision != null ? revision.getRevisionNumber().asString() : null;
   }
 
-  @NotNull
+  @Nonnull
   private ConflictState getState(@Nullable Status svnStatus) {
     ConflictState result = svnStatus != null ? ConflictState.from(svnStatus) : ConflictState.none;
 

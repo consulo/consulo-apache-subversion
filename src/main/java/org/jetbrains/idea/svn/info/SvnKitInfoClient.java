@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.info;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNException;
@@ -40,7 +40,7 @@ public class SvnKitInfoClient extends BaseSvnClient implements InfoClient {
   }
 
   @Override
-  public Info doInfo(@NotNull File path, @Nullable SVNRevision revision) throws SvnBindException {
+  public Info doInfo(@Nonnull File path, @Nullable SVNRevision revision) throws SvnBindException {
     try {
       return Info.create(getClient().doInfo(path, revision));
     }
@@ -50,7 +50,7 @@ public class SvnKitInfoClient extends BaseSvnClient implements InfoClient {
   }
 
   @Override
-  public Info doInfo(@NotNull SvnTarget target, @Nullable SVNRevision revision) throws SvnBindException {
+  public Info doInfo(@Nonnull SvnTarget target, @Nullable SVNRevision revision) throws SvnBindException {
     assertUrl(target);
 
     try {
@@ -62,7 +62,7 @@ public class SvnKitInfoClient extends BaseSvnClient implements InfoClient {
   }
 
   @Override
-  public void doInfo(@NotNull Collection<File> paths, @Nullable InfoConsumer handler) throws SvnBindException {
+  public void doInfo(@Nonnull Collection<File> paths, @Nullable InfoConsumer handler) throws SvnBindException {
     throw new UnsupportedOperationException();
   }
 }

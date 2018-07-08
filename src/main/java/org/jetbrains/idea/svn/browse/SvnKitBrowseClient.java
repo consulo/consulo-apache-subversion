@@ -17,8 +17,8 @@ package org.jetbrains.idea.svn.browse;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -33,7 +33,7 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
  */
 public class SvnKitBrowseClient extends BaseSvnClient implements BrowseClient {
   @Override
-  public void list(@NotNull SvnTarget target,
+  public void list(@Nonnull SvnTarget target,
                    @Nullable SVNRevision revision,
                    @Nullable Depth depth,
                    @Nullable DirectoryEntryConsumer handler) throws VcsException {
@@ -57,7 +57,7 @@ public class SvnKitBrowseClient extends BaseSvnClient implements BrowseClient {
   }
 
   @Override
-  public long createDirectory(@NotNull SvnTarget target, @NotNull String message, boolean makeParents) throws VcsException {
+  public long createDirectory(@Nonnull SvnTarget target, @Nonnull String message, boolean makeParents) throws VcsException {
     assertUrl(target);
 
     try {
@@ -71,7 +71,7 @@ public class SvnKitBrowseClient extends BaseSvnClient implements BrowseClient {
     }
   }
 
-  @NotNull
+  @Nonnull
   private SVNLogClient getLogClient() {
     ISVNAuthenticationManager authManager = myIsActive
                                             ? myVcs.getSvnConfiguration().getInteractiveManager(myVcs)
@@ -87,9 +87,10 @@ public class SvnKitBrowseClient extends BaseSvnClient implements BrowseClient {
 
   public static class SkipEmptyNameDirectoriesHandler implements ISVNDirEntryHandler {
 
-    @NotNull private final DirectoryEntryConsumer handler;
+    @Nonnull
+	private final DirectoryEntryConsumer handler;
 
-    public SkipEmptyNameDirectoriesHandler(@NotNull DirectoryEntryConsumer handler) {
+    public SkipEmptyNameDirectoriesHandler(@Nonnull DirectoryEntryConsumer handler) {
       this.handler = handler;
     }
 
@@ -100,7 +101,7 @@ public class SvnKitBrowseClient extends BaseSvnClient implements BrowseClient {
       }
     }
 
-    private static boolean isEmptyNameDirectory(@NotNull SVNDirEntry dirEntry) {
+    private static boolean isEmptyNameDirectory(@Nonnull SVNDirEntry dirEntry) {
       return SVNNodeKind.DIR.equals(dirEntry.getKind()) && StringUtil.isEmpty(dirEntry.getName());
     }
   }

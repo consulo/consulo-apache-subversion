@@ -15,8 +15,16 @@
  */
 package org.jetbrains.idea.svn.update;
 
+import java.util.LinkedHashMap;
+
+import javax.annotation.Nonnull;
+import javax.swing.JComponent;
+
+import org.jetbrains.idea.svn.SvnConfiguration;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.api.Depth;
+import org.tmatesoft.svn.core.wc.SVNRevision;
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.options.Configurable;
@@ -24,16 +32,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.actions.VcsContext;
-import com.intellij.openapi.vcs.update.*;
+import com.intellij.openapi.vcs.update.AbstractCommonUpdateAction;
+import com.intellij.openapi.vcs.update.ActionInfo;
+import com.intellij.openapi.vcs.update.FileGroup;
+import com.intellij.openapi.vcs.update.ScopeInfo;
+import com.intellij.openapi.vcs.update.UpdateEnvironment;
+import com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialog;
 import com.intellij.openapi.wm.WindowManager;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.svn.SvnConfiguration;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.api.Depth;
-import org.tmatesoft.svn.core.wc.SVNRevision;
-
-import javax.swing.*;
-import java.util.LinkedHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,7 +56,7 @@ public class AutoSvnUpdater extends AbstractCommonUpdateAction {
     myRoots = roots;
   }
 
-  public static void run(@NotNull AutoSvnUpdater updater, @NotNull String title) {
+  public static void run(@Nonnull AutoSvnUpdater updater, @Nonnull String title) {
     JComponent frame = WindowManager.getInstance().getIdeFrame(updater.myProject).getComponent();
 
     updater.getTemplatePresentation().setText(title);
@@ -61,7 +66,7 @@ public class AutoSvnUpdater extends AbstractCommonUpdateAction {
   }
 
   @Override
-  protected void actionPerformed(@NotNull VcsContext context) {
+  protected void actionPerformed(@Nonnull VcsContext context) {
     final SvnConfiguration configuration17 = SvnConfiguration.getInstance(myProject);
     configuration17.setForceUpdate(false);
     configuration17.setUpdateLockOnDemand(false);
@@ -73,7 +78,7 @@ public class AutoSvnUpdater extends AbstractCommonUpdateAction {
     super.actionPerformed(context);
   }
 
-  protected void configureUpdateRootInfo(@NotNull FilePath root, @NotNull UpdateRootInfo info) {
+  protected void configureUpdateRootInfo(@Nonnull FilePath root, @Nonnull UpdateRootInfo info) {
     info.setRevision(SVNRevision.HEAD);
     info.setUpdateToRevision(false);
   }

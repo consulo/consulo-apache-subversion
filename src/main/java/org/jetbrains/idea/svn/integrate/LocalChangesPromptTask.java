@@ -25,8 +25,8 @@ import com.intellij.openapi.vcs.changes.LocalChangeList;
 import com.intellij.openapi.vcs.changes.shelf.ShelveChangesManager;
 import com.intellij.util.FilePathByPathComparator;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 
 import java.io.File;
@@ -50,11 +50,12 @@ import static org.tmatesoft.svn.core.internal.util.SVNPathUtil.getRelativePath;
 public class LocalChangesPromptTask extends BaseMergeTask {
 
   @Nullable private final List<SvnChangeList> myChangeListsToMerge;
-  @NotNull private final Runnable myCallback;
+  @Nonnull
+  private final Runnable myCallback;
 
-  public LocalChangesPromptTask(@NotNull QuickMerge mergeProcess,
+  public LocalChangesPromptTask(@Nonnull QuickMerge mergeProcess,
                                 @Nullable List<SvnChangeList> changeListsToMerge,
-                                @NotNull Runnable callback) {
+                                @Nonnull Runnable callback) {
     super(mergeProcess);
     myChangeListsToMerge = changeListsToMerge;
     myCallback = callback;
@@ -101,7 +102,7 @@ public class LocalChangesPromptTask extends BaseMergeTask {
     }
   }
 
-  private void shelveChanges(@NotNull Intersection intersection) throws VcsException {
+  private void shelveChanges(@Nonnull Intersection intersection) throws VcsException {
     try {
       getApplication().invokeAndWait(() -> FileDocumentManager.getInstance().saveAllDocuments());
 
@@ -119,15 +120,15 @@ public class LocalChangesPromptTask extends BaseMergeTask {
   }
 
   @Nullable
-  private Intersection getChangesIntersection(@NotNull List<LocalChangeList> localChangeLists,
-                                              @NotNull List<SvnChangeList> changeListsToMerge) {
+  private Intersection getChangesIntersection(@Nonnull List<LocalChangeList> localChangeLists,
+                                              @Nonnull List<SvnChangeList> changeListsToMerge) {
     Set<FilePath> pathsToMerge = collectPaths(changeListsToMerge);
 
     return !changeListsToMerge.isEmpty() ? getChangesIntersection(localChangeLists, change -> hasPathToMerge(change, pathsToMerge)) : null;
   }
 
-  @NotNull
-  private Set<FilePath> collectPaths(@NotNull List<SvnChangeList> lists) {
+  @Nonnull
+  private Set<FilePath> collectPaths(@Nonnull List<SvnChangeList> lists) {
     return lists.stream()
       .flatMap(list -> list.getAffectedPaths().stream())
       .map(this::getLocalPath)
@@ -136,13 +137,13 @@ public class LocalChangesPromptTask extends BaseMergeTask {
       .collect(toSet());
   }
 
-  @NotNull
-  private static Intersection getAllChangesIntersection(@NotNull List<LocalChangeList> localChangeLists) {
+  @Nonnull
+  private static Intersection getAllChangesIntersection(@Nonnull List<LocalChangeList> localChangeLists) {
     return getChangesIntersection(localChangeLists, alwaysTrue());
   }
 
-  @NotNull
-  private static Intersection getChangesIntersection(@NotNull List<LocalChangeList> changeLists, @NotNull Condition<Change> filter) {
+  @Nonnull
+  private static Intersection getChangesIntersection(@Nonnull List<LocalChangeList> changeLists, @Nonnull Condition<Change> filter) {
     Intersection result = new Intersection();
 
     for (LocalChangeList changeList : changeLists) {
@@ -156,7 +157,7 @@ public class LocalChangesPromptTask extends BaseMergeTask {
     return result;
   }
 
-  private static boolean hasPathToMerge(@NotNull Change change, @NotNull Set<FilePath> pathsToMerge) {
+  private static boolean hasPathToMerge(@Nonnull Change change, @Nonnull Set<FilePath> pathsToMerge) {
     FilePath beforePath = getBeforePath(change);
     FilePath afterPath = getAfterPath(change);
 

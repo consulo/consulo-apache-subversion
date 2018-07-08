@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.api.BaseNodeDescription;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -33,13 +33,13 @@ public class LogEntryPath extends BaseNodeDescription {
   private final String myCopyPath;
   private final long myCopyRevision;
 
-  @NotNull
-  public static LogEntryPath.Builder create(@NotNull SVNLogEntryPath path) {
+  @Nonnull
+  public static LogEntryPath.Builder create(@Nonnull SVNLogEntryPath path) {
     return new LogEntryPath.Builder().setPath(path.getPath()).setType(path.getType()).setCopyFromPath(
       path.getCopyPath()).setCopyFromRevision(path.getCopyRevision()).setKind(NodeKind.from(path.getKind()));
   }
 
-  public LogEntryPath(@NotNull LogEntryPath.Builder builder) {
+  public LogEntryPath(@Nonnull LogEntryPath.Builder builder) {
     super(builder.kind);
     myPath = builder.path;
     myType = CommandUtil.getStatusChar(builder.action);
@@ -63,7 +63,7 @@ public class LogEntryPath extends BaseNodeDescription {
     return myType;
   }
 
-  @NotNull
+  @Nonnull
   public NodeKind getKind() {
     return myKind;
   }
@@ -94,37 +94,37 @@ public class LogEntryPath extends BaseNodeDescription {
       return path;
     }
 
-    @NotNull
-    public Builder setKind(@NotNull NodeKind kind) {
+    @Nonnull
+    public Builder setKind(@Nonnull NodeKind kind) {
       this.kind = kind;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setType(char type) {
       this.action = String.valueOf(type);
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setCopyFromPath(String copyFromPath) {
       this.copyFromPath = copyFromPath;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setCopyFromRevision(long copyFromRevision) {
       this.copyFromRevision = copyFromRevision;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setPath(String path) {
       this.path = path;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public LogEntryPath build() {
       return new LogEntryPath(this);
     }

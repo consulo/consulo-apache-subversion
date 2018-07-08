@@ -19,8 +19,9 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.net.ssl.CertificateManager;
 import com.intellij.util.net.ssl.ClientOnlyTrustManager;
 import org.apache.http.client.utils.URIBuilder;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
@@ -43,11 +44,14 @@ public class CertificateTrustManager extends ClientOnlyTrustManager {
 
   private static final Logger LOG = Logger.getInstance(CertificateTrustManager.class);
 
-  @NotNull private final AuthenticationService myAuthenticationService;
-  @NotNull private final SVNURL myRepositoryUrl;
-  @NotNull private final String myRealm;
+  @Nonnull
+  private final AuthenticationService myAuthenticationService;
+  @Nonnull
+  private final SVNURL myRepositoryUrl;
+  @Nonnull
+  private final String myRealm;
 
-  public CertificateTrustManager(@NotNull AuthenticationService authenticationService, @NotNull SVNURL repositoryUrl) {
+  public CertificateTrustManager(@Nonnull AuthenticationService authenticationService, @Nonnull SVNURL repositoryUrl) {
     myAuthenticationService = authenticationService;
     myRepositoryUrl = repositoryUrl;
     myRealm = new URIBuilder()
@@ -73,13 +77,13 @@ public class CertificateTrustManager extends ClientOnlyTrustManager {
     }
   }
 
-  private boolean checkPassive(@NotNull X509Certificate certificate) throws CertificateEncodingException {
+  private boolean checkPassive(@Nonnull X509Certificate certificate) throws CertificateEncodingException {
     Object cachedData = SvnConfiguration.RUNTIME_AUTH_CACHE.getDataWithLowerCheck("svn.ssl.server", myRealm);
 
     return certificate.equals(cachedData);
   }
 
-  private static boolean isAcceptedByIdea(@NotNull X509Certificate[] chain, String authType) {
+  private static boolean isAcceptedByIdea(@Nonnull X509Certificate[] chain, String authType) {
     boolean result;
 
     try {
@@ -94,7 +98,7 @@ public class CertificateTrustManager extends ClientOnlyTrustManager {
     return result;
   }
 
-  private void checkActive(@NotNull X509Certificate certificate) throws CertificateException {
+  private void checkActive(@Nonnull X509Certificate certificate) throws CertificateException {
     boolean isStorageEnabled =
       myAuthenticationService.getAuthenticationManager().getHostOptionsProvider().getHostOptions(myRepositoryUrl).isAuthStorageEnabled();
     int result = myAuthenticationService.getAuthenticationManager().getInnerProvider()
@@ -112,7 +116,7 @@ public class CertificateTrustManager extends ClientOnlyTrustManager {
     }
   }
 
-  private void acknowledge(@NotNull X509Certificate certificate) throws CertificateEncodingException {
+  private void acknowledge(@Nonnull X509Certificate certificate) throws CertificateEncodingException {
     myAuthenticationService.getVcs().getSvnConfiguration().acknowledge("cmd.ssl.server", myRealm, certificate);
   }
 

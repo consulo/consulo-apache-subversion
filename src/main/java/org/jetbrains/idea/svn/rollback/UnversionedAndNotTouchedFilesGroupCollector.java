@@ -25,8 +25,8 @@ import com.intellij.openapi.vcs.changes.EmptyChangelistBuilder;
 import com.intellij.openapi.vcs.changes.FilePathsHelper;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -51,11 +51,11 @@ public class UnversionedAndNotTouchedFilesGroupCollector extends EmptyChangelist
     toFromTo(file);
   }
 
-  public void markRename(@NotNull final File beforeFile, @NotNull final File afterFile) {
+  public void markRename(@Nonnull final File beforeFile, @Nonnull final File afterFile) {
     myToBeDeleted.add(Couple.of(beforeFile, afterFile));
   }
 
-  public ThroughRenameInfo findToFile(@NotNull final FilePath file, @Nullable final File firstTo) {
+  public ThroughRenameInfo findToFile(@Nonnull final FilePath file, @Nullable final File firstTo) {
     final String path = FilePathsHelper.convertPath(file);
     if (myAlsoReverted.contains(path)) return null;
     final NavigableMap<String, File> head = myRenames.headMap(path, true);

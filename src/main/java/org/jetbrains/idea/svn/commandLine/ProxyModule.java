@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.commandLine;
 
 import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.IdeaSVNConfigFile;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationManager;
@@ -30,18 +30,18 @@ import java.net.Proxy;
  */
 public class ProxyModule extends BaseCommandRuntimeModule {
 
-  public ProxyModule(@NotNull CommandRuntime runtime) {
+  public ProxyModule(@Nonnull CommandRuntime runtime) {
     super(runtime);
   }
 
   @Override
-  public void onStart(@NotNull Command command) throws SvnBindException {
+  public void onStart(@Nonnull Command command) throws SvnBindException {
     if (myAuthenticationService.haveDataForTmpConfig() && !CommandRuntime.isLocal(command)) {
       setupProxy(command);
     }
   }
 
-  private void setupProxy(@NotNull Command command) {
+  private void setupProxy(@Nonnull Command command) {
     SVNURL repositoryUrl = command.requireRepositoryUrl();
     Proxy proxy = AuthenticationService.getIdeaDefinedProxy(repositoryUrl);
 
@@ -56,8 +56,8 @@ public class ProxyModule extends BaseCommandRuntimeModule {
     }
   }
 
-  @NotNull
-  private String ensureGroupForHost(@NotNull Command command, @NotNull String host) {
+  @Nonnull
+  private String ensureGroupForHost(@Nonnull Command command, @Nonnull String host) {
     IdeaSVNConfigFile configFile = new IdeaSVNConfigFile(myAuthenticationService.getSpecialConfigDir());
     String groupName = SvnAuthenticationManager.getGroupForHost(host, configFile);
 

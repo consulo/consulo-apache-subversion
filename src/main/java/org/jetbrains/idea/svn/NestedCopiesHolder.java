@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn;
 
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Set;
 
@@ -24,7 +24,7 @@ public class NestedCopiesHolder {
 
   private final Set<NestedCopyInfo> mySet = ContainerUtil.newHashSet();
 
-  public synchronized void add(@NotNull final Set<NestedCopyInfo> data) {
+  public synchronized void add(@Nonnull final Set<NestedCopyInfo> data) {
     mySet.addAll(data);
   }
 

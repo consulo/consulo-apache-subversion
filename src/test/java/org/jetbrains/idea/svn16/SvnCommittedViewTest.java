@@ -24,13 +24,12 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.history.SvnRepositoryLocation;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -250,7 +249,7 @@ public class SvnCommittedViewTest extends Svn16TestCase {
     @Nullable
     public final String myOriginText;
 
-    protected Data(@NotNull final String localPath, @NotNull final FileStatus status, @Nullable final String originText) {
+    protected Data(@Nonnull final String localPath, @Nonnull final FileStatus status, @Nullable final String originText) {
       myLocalPath = localPath;
       myStatus = status;
       myOriginText = originText;

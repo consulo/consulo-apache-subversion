@@ -5,7 +5,7 @@ import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vcs.LineHandlerHelper;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Iterator;
 
@@ -17,15 +17,18 @@ public class ResultBuilderNotifier extends ProcessAdapter {
   /**
    * the partial line from stdout stream
    */
-  @NotNull private final StringBuilder myStdoutLine = new StringBuilder();
+  @Nonnull
+  private final StringBuilder myStdoutLine = new StringBuilder();
   /**
    * the partial line from stderr stream
    */
-  @NotNull private final StringBuilder myStderrLine = new StringBuilder();
+  @Nonnull
+  private final StringBuilder myStderrLine = new StringBuilder();
 
-  @NotNull private final LineCommandListener myResultBuilder;
+  @Nonnull
+  private final LineCommandListener myResultBuilder;
 
-  public ResultBuilderNotifier(@NotNull LineCommandListener resultBuilder) {
+  public ResultBuilderNotifier(@Nonnull LineCommandListener resultBuilder) {
     myResultBuilder = resultBuilder;
   }
 

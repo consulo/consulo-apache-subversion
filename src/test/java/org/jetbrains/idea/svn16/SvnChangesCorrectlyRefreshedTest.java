@@ -15,6 +15,16 @@
  */
 package org.jetbrains.idea.svn16;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import org.junit.Assert;
+import org.junit.Test;
 import com.intellij.openapi.fileEditor.impl.LoadTextUtil;
 import com.intellij.openapi.vcs.VcsConfiguration;
 import com.intellij.openapi.vcs.VcsException;
@@ -28,15 +38,6 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.vcs.DuringChangeListManagerUpdateTestScheme;
-import org.jetbrains.annotations.Nullable;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 public class SvnChangesCorrectlyRefreshedTest extends Svn16TestCase {
   private ChangeListManager clManager;

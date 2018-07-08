@@ -20,8 +20,9 @@ import com.intellij.openapi.vcs.impl.VcsRootIterator;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNException;
@@ -34,16 +35,18 @@ import java.util.List;
 
 public class ForNestedRootChecker {
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final VcsRootIterator myRootIterator;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final VcsRootIterator myRootIterator;
 
-  public ForNestedRootChecker(@NotNull SvnVcs vcs) {
+  public ForNestedRootChecker(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
     myRootIterator = new VcsRootIterator(vcs.getProject(), vcs);
   }
 
-  @NotNull
-  public List<Node> getAllNestedWorkingCopies(@NotNull VirtualFile root) {
+  @Nonnull
+  public List<Node> getAllNestedWorkingCopies(@Nonnull VirtualFile root) {
     LinkedList<Node> result = ContainerUtil.newLinkedList();
     LinkedList<VirtualFile> workItems = ContainerUtil.newLinkedList();
 
@@ -77,14 +80,20 @@ public class ForNestedRootChecker {
 
   private static class VcsFileResolver {
 
-    @NotNull private final SvnVcs myVcs;
-    @NotNull private final VirtualFile myFile;
-    @NotNull private final File myIoFile;
-    @NotNull private final VirtualFile myRoot;
-    @Nullable private Info myInfo;
-    @Nullable private SvnBindException myError;
+    @Nonnull
+	private final SvnVcs myVcs;
+    @Nonnull
+	private final VirtualFile myFile;
+    @Nonnull
+	private final File myIoFile;
+    @Nonnull
+	private final VirtualFile myRoot;
+    @Nullable
+	private Info myInfo;
+    @Nullable
+	private SvnBindException myError;
 
-    private VcsFileResolver(@NotNull SvnVcs vcs, @NotNull VirtualFile file, @NotNull VirtualFile root) {
+    private VcsFileResolver(@Nonnull SvnVcs vcs, @Nonnull VirtualFile file, @Nonnull VirtualFile root) {
       myVcs = vcs;
       myFile = file;
       myIoFile = VfsUtilCore.virtualToIoFile(file);

@@ -15,7 +15,8 @@
  */
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
@@ -24,10 +25,12 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
 */
 public abstract class BaseRepositoryProvider implements RepositoryProvider {
 
-  @NotNull protected final SvnVcs myVcs;
-  @NotNull protected final SvnTarget myTarget;
+  @Nonnull
+  protected final SvnVcs myVcs;
+  @Nonnull
+  protected final SvnTarget myTarget;
 
-  public BaseRepositoryProvider(@NotNull SvnVcs vcs, @NotNull SvnTarget target) {
+  public BaseRepositoryProvider(@Nonnull SvnVcs vcs, @Nonnull SvnTarget target) {
     myVcs = vcs;
     myTarget = target;
   }

@@ -17,13 +17,14 @@ package org.jetbrains.idea.svn.mergeinfo;
 
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Map;
 
 public class MergeInfoCached {
 
-  @NotNull private final Map<Long, SvnMergeInfoCache.MergeCheckResult> myMap;
+  @Nonnull
+  private final Map<Long, SvnMergeInfoCache.MergeCheckResult> myMap;
   private final long myCopyRevision;
 
   public MergeInfoCached() {
@@ -31,22 +32,22 @@ public class MergeInfoCached {
     myCopyRevision = -1;
   }
 
-  public MergeInfoCached(@NotNull Map<Long, SvnMergeInfoCache.MergeCheckResult> map, long copyRevision) {
+  public MergeInfoCached(@Nonnull Map<Long, SvnMergeInfoCache.MergeCheckResult> map, long copyRevision) {
     myMap = ContainerUtil.newHashMap(map);
     myCopyRevision = copyRevision;
   }
 
-  @NotNull
+  @Nonnull
   public Map<Long, SvnMergeInfoCache.MergeCheckResult> getMap() {
     return myMap;
   }
 
-  @NotNull
+  @Nonnull
   public MergeInfoCached copy() {
     return new MergeInfoCached(myMap, myCopyRevision);
   }
 
-  public boolean copiedAfter(@NotNull CommittedChangeList list) {
+  public boolean copiedAfter(@Nonnull CommittedChangeList list) {
     return myCopyRevision != -1 && myCopyRevision >= list.getNumber();
   }
 }

@@ -40,8 +40,8 @@ import com.intellij.util.proxy.CommonProxy;
 import com.intellij.util.ui.UIUtil;
 import com.trilead.ssh2.auth.AgentProxy;
 import org.intellij.lang.annotations.MagicConstant;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.config.ProxyGroup;
 import org.jetbrains.idea.svn.config.SvnServerFileKeys;
@@ -724,7 +724,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
   // 30 seconds
   private final static int DEFAULT_READ_TIMEOUT = 30 * 1000;
 
-  public int getReadTimeout(@NotNull SVNURL url) {
+  public int getReadTimeout(@Nonnull SVNURL url) {
     String protocol = url.getProtocol();
     if (HTTP.equals(protocol) || HTTPS.equals(protocol)) {
       String host = url.getHost();
@@ -745,7 +745,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     return 0;
   }
 
-  public int getConnectTimeout(@NotNull SVNURL url) {
+  public int getConnectTimeout(@Nonnull SVNURL url) {
     String protocol = url.getProtocol();
     if (SVN_SSH.equals(protocol)) {
       return (int)getConfig().getSshConnectionTimeout();
@@ -758,12 +758,12 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
   }
 
   @Override
-  public int getReadTimeout(@NotNull SVNRepository repository) {
+  public int getReadTimeout(@Nonnull SVNRepository repository) {
     return getReadTimeout(repository.getLocation());
   }
 
   @Override
-  public int getConnectTimeout(@NotNull SVNRepository repository) {
+  public int getConnectTimeout(@Nonnull SVNRepository repository) {
     return getConnectTimeout(repository.getLocation());
   }
 

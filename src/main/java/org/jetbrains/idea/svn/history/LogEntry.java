@@ -16,8 +16,8 @@
 package org.jetbrains.idea.svn.history;
 
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNLogEntryPath;
 
@@ -37,7 +37,8 @@ public class LogEntry {
   @Nullable private final Date myDate;
   private final String myMessage;
   private final String myAuthor;
-  @NotNull private final Map<String, LogEntryPath> myChangedPaths;
+  @Nonnull
+  private final Map<String, LogEntryPath> myChangedPaths;
   private boolean myHasChildren;
 
   @Nullable
@@ -60,7 +61,7 @@ public class LogEntry {
     return result;
   }
 
-  public LogEntry(@NotNull LogEntry.Builder builder) {
+  public LogEntry(@Nonnull LogEntry.Builder builder) {
     myRevision = builder.revision;
     myChangedPaths = toImmutable(builder.changedPaths);
     myAuthor = builder.author;
@@ -69,8 +70,8 @@ public class LogEntry {
     myHasChildren = builder.hasChildren();
   }
 
-  @NotNull
-  private static Map<String, LogEntryPath> toImmutable(@NotNull List<LogEntryPath.Builder> paths) {
+  @Nonnull
+  private static Map<String, LogEntryPath> toImmutable(@Nonnull List<LogEntryPath.Builder> paths) {
     ContainerUtil.ImmutableMapBuilder<String, LogEntryPath> builder = ContainerUtil.immutableMapBuilder();
 
     for (LogEntryPath.Builder path : paths) {
@@ -80,7 +81,7 @@ public class LogEntry {
     return builder.build();
   }
 
-  @NotNull
+  @Nonnull
   public Map<String, LogEntryPath> getChangedPaths() {
     return myChangedPaths;
   }
@@ -130,7 +131,7 @@ public class LogEntry {
     @XmlElement(name = "logentry")
     private List<LogEntry.Builder> childEntries = ContainerUtil.newArrayList();
 
-    @NotNull
+    @Nonnull
     public List<LogEntry.Builder> getChildEntries() {
       return childEntries;
     }
@@ -139,31 +140,31 @@ public class LogEntry {
       return !childEntries.isEmpty();
     }
 
-    @NotNull
+    @Nonnull
     public Builder setRevision(long revision) {
       this.revision = revision;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setAuthor(String author) {
       this.author = author;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setDate(Date date) {
       this.date = date;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setMessage(String message) {
       this.message = message;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setHasChildren(boolean hasChildren) {
       // probably LogEntry interface will be changed and child entries will be specified explicitly later, but for now just use such "fake"
       // implementation for setting "hasChildren" value
@@ -174,13 +175,13 @@ public class LogEntry {
       return this;
     }
 
-    @NotNull
-    public Builder addPath(@NotNull LogEntryPath.Builder path) {
+    @Nonnull
+    public Builder addPath(@Nonnull LogEntryPath.Builder path) {
       changedPaths.add(path);
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public LogEntry build() {
       return new LogEntry(this);
     }

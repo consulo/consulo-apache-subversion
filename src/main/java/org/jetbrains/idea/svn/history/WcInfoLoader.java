@@ -19,8 +19,8 @@ import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vcs.RepositoryLocation;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -38,18 +38,19 @@ import java.util.List;
 
 public class WcInfoLoader {
 
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final SvnVcs myVcs;
   /**
    * filled when showing for selected location
    */
   @Nullable private final RepositoryLocation myLocation;
 
-  public WcInfoLoader(@NotNull SvnVcs vcs, @Nullable RepositoryLocation location) {
+  public WcInfoLoader(@Nonnull SvnVcs vcs, @Nullable RepositoryLocation location) {
     myVcs = vcs;
     myLocation = location;
   }
 
-  @NotNull
+  @Nonnull
   public List<WCInfoWithBranches> loadRoots() {
     List<WCInfoWithBranches> result = ContainerUtil.newArrayList();
 
@@ -61,7 +62,7 @@ public class WcInfoLoader {
   }
 
   @Nullable
-  public WCInfoWithBranches reloadInfo(@NotNull WCInfoWithBranches info) {
+  public WCInfoWithBranches reloadInfo(@Nonnull WCInfoWithBranches info) {
     File file = info.getRootInfo().getIoFile();
     RootUrlInfo rootInfo = myVcs.getSvnFileUrlMapping().getWcRootForFilePath(file);
 
@@ -69,7 +70,7 @@ public class WcInfoLoader {
   }
 
   @Nullable
-  private WCInfoWithBranches createInfo(@NotNull WCInfo info) {
+  private WCInfoWithBranches createInfo(@Nonnull WCInfo info) {
     if (!info.getFormat().supportsMergeInfo()) {
       return null;
     }
@@ -87,8 +88,8 @@ public class WcInfoLoader {
     return rootForUrl != null ? createInfoWithBranches(info, rootForUrl) : null;
   }
 
-  @NotNull
-  private WCInfoWithBranches createInfoWithBranches(@NotNull WCInfo info, @NotNull RootUrlInfo rootUrlInfo) {
+  @Nonnull
+  private WCInfoWithBranches createInfoWithBranches(@Nonnull WCInfo info, @Nonnull RootUrlInfo rootUrlInfo) {
     SvnBranchConfigurationNew configuration =
       SvnBranchConfigurationManager.getInstance(myVcs.getProject()).get(rootUrlInfo.getVirtualFile());
     Ref<WCInfoWithBranches.Branch> workingCopyBranch = Ref.create();
@@ -116,10 +117,10 @@ public class WcInfoLoader {
     return new WCInfoWithBranches(info, branches, rootUrlInfo.getRoot(), workingCopyBranch.get());
   }
 
-  private static void add(@NotNull String url,
-                          @NotNull String branchUrl,
-                          @NotNull List<WCInfoWithBranches.Branch> branches,
-                          @NotNull Ref<WCInfoWithBranches.Branch> workingCopyBranch) {
+  private static void add(@Nonnull String url,
+                          @Nonnull String branchUrl,
+                          @Nonnull List<WCInfoWithBranches.Branch> branches,
+                          @Nonnull Ref<WCInfoWithBranches.Branch> workingCopyBranch) {
     WCInfoWithBranches.Branch branch = new WCInfoWithBranches.Branch(branchUrl);
 
     if (!SVNPathUtil.isAncestor(branchUrl, url)) {

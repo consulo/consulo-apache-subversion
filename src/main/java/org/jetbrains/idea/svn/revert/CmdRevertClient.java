@@ -4,8 +4,8 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.Convertor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.*;
 import org.jetbrains.idea.svn.commandLine.Command;
 import org.jetbrains.idea.svn.commandLine.CommandExecutor;
@@ -29,7 +29,7 @@ public class CmdRevertClient extends BaseSvnClient implements RevertClient {
   private static final Pattern CHANGED_PATH = Pattern.compile(STATUS + PATH + OPTIONAL_COMMENT);
 
   @Override
-  public void revert(@NotNull Collection<File> paths, @Nullable Depth depth, @Nullable ProgressTracker handler) throws VcsException {
+  public void revert(@Nonnull Collection<File> paths, @Nullable Depth depth, @Nullable ProgressTracker handler) throws VcsException {
     if (!ContainerUtil.isEmpty(paths)) {
       Command command = newCommand(SvnCommandName.revert);
 
@@ -48,7 +48,7 @@ public class CmdRevertClient extends BaseSvnClient implements RevertClient {
 
   private static class RevertStatusConvertor implements Convertor<Matcher, ProgressEvent> {
 
-    public ProgressEvent convert(@NotNull Matcher matcher) {
+    public ProgressEvent convert(@Nonnull Matcher matcher) {
       String statusMessage = matcher.group(1);
       String path = matcher.group(2);
 
@@ -56,7 +56,7 @@ public class CmdRevertClient extends BaseSvnClient implements RevertClient {
     }
 
     @Nullable
-    public static EventAction createAction(@NotNull String code) {
+    public static EventAction createAction(@Nonnull String code) {
       EventAction result = null;
 
       if ("Reverted".equals(code)) {

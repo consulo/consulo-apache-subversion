@@ -23,12 +23,12 @@ import java.awt.Dimension;
 import java.util.List;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.tree.TreePath;
 
-import org.jetbrains.annotations.NotNull;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.actions.EditSourceAction;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -54,18 +54,21 @@ import com.intellij.util.ui.components.BorderLayoutPanel;
 
 public class IntersectingLocalChangesPanel {
 
-  @NotNull private final BorderLayoutPanel myPanel;
-  @NotNull private final List<FilePath> myFiles;
-  @NotNull private final Project myProject;
+  @Nonnull
+  private final BorderLayoutPanel myPanel;
+  @Nonnull
+  private final List<FilePath> myFiles;
+  @Nonnull
+  private final Project myProject;
 
-  public IntersectingLocalChangesPanel(@NotNull Project project, @NotNull List<FilePath> files, @NotNull String text) {
+  public IntersectingLocalChangesPanel(@Nonnull Project project, @Nonnull List<FilePath> files, @Nonnull String text) {
     myProject = project;
     myFiles = files;
     myPanel = createPanel(createLabel(text), createTree());
   }
 
-  @NotNull
-  private BorderLayoutPanel createPanel(@NotNull JLabel label, @NotNull JTree tree) {
+  @Nonnull
+  private BorderLayoutPanel createPanel(@Nonnull JLabel label, @Nonnull JTree tree) {
     BorderLayoutPanel panel = JBUI.Panels.simplePanel();
 
     panel.setBackground(UIUtil.getTextFieldBackground());
@@ -89,11 +92,11 @@ public class IntersectingLocalChangesPanel {
     return panel;
   }
 
-  @NotNull
+  @Nonnull
   private SimpleTree createTree() {
     SimpleTree tree = new SimpleTree(TreeModelBuilder.buildFromFilePaths(myProject, true, myFiles)) {
       @Override
-      protected void configureUiHelper(@NotNull TreeUIHelper helper) {
+      protected void configureUiHelper(@Nonnull TreeUIHelper helper) {
         super.configureUiHelper(helper);
         helper.installEditSourceOnDoubleClick(this);
         helper.installEditSourceOnEnterKeyHandler(this);
@@ -106,8 +109,8 @@ public class IntersectingLocalChangesPanel {
     return tree;
   }
 
-  @NotNull
-  private static JBLabel createLabel(@NotNull String text) {
+  @Nonnull
+  private static JBLabel createLabel(@Nonnull String text) {
     JBLabel label = new JBLabel(text) {
       @Override
       public Dimension getPreferredSize() {
@@ -123,10 +126,10 @@ public class IntersectingLocalChangesPanel {
   }
 
   @SuppressWarnings("SameParameterValue")
-  public static void showInVersionControlToolWindow(@NotNull Project project,
-                                                    @NotNull String title,
-                                                    @NotNull List<FilePath> files,
-                                                    @NotNull String prompt) {
+  public static void showInVersionControlToolWindow(@Nonnull Project project,
+                                                    @Nonnull String title,
+                                                    @Nonnull List<FilePath> files,
+                                                    @Nonnull String prompt) {
     IntersectingLocalChangesPanel intersectingPanel = new IntersectingLocalChangesPanel(project, files, prompt);
     Content content = ContentFactory.SERVICE.getInstance().createContent(intersectingPanel.myPanel, title, true);
     ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.VCS);

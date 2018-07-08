@@ -21,8 +21,8 @@ import com.intellij.openapi.vcs.VcsException;
 import org.jetbrains.idea.svn.SmallMapSerializer;
 import com.intellij.util.io.DataExternalizer;
 import com.intellij.util.io.EnumeratorStringDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.history.CopyData;
 import org.jetbrains.idea.svn.history.FirstInBranch;
@@ -42,11 +42,14 @@ public class SvnBranchPointsCalculator {
 
   private static final Logger LOG = Logger.getInstance(SvnBranchPointsCalculator.class);
 
-  @NotNull private final SmallMapSerializer<String, TreeMap<String, BranchCopyData>> myPersistentMap;
-  @NotNull private final Object myPersistenceLock = new Object();
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final SmallMapSerializer<String, TreeMap<String, BranchCopyData>> myPersistentMap;
+  @Nonnull
+  private final Object myPersistenceLock = new Object();
+  @Nonnull
+  private final SvnVcs myVcs;
 
-  public SvnBranchPointsCalculator(@NotNull SvnVcs vcs) {
+  public SvnBranchPointsCalculator(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
     File directory = new File(new File(PathManager.getSystemPath(), "vcs"), "svn_copy_sources");
     directory.mkdirs();
@@ -55,7 +58,7 @@ public class SvnBranchPointsCalculator {
   }
 
   @Nullable
-  public WrapperInvertor getBestHit(@NotNull String repoUrl, @NotNull String sourceUrl, @NotNull String targetUrl) {
+  public WrapperInvertor getBestHit(@Nonnull String repoUrl, @Nonnull String sourceUrl, @Nonnull String targetUrl) {
     synchronized (myPersistenceLock) {
       WrapperInvertor result = null;
       TreeMap<String, BranchCopyData> map = myPersistentMap.get(repoUrl);
@@ -86,7 +89,7 @@ public class SvnBranchPointsCalculator {
     }
   }
 
-  private void persist(@NotNull String repoUrl, @NotNull BranchCopyData data) {
+  private void persist(@Nonnull String repoUrl, @Nonnull BranchCopyData data) {
     // todo - rewrite of rather big piece; consider rewriting
     synchronized (myPersistenceLock) {
       TreeMap<String, BranchCopyData> map = myPersistentMap.get(repoUrl);
@@ -100,13 +103,13 @@ public class SvnBranchPointsCalculator {
   }
 
   @Nullable
-  private static BranchCopyData getBranchData(@NotNull NavigableMap<String, BranchCopyData> map, @NotNull String url) {
+  private static BranchCopyData getBranchData(@Nonnull NavigableMap<String, BranchCopyData> map, @Nonnull String url) {
     Map.Entry<String, BranchCopyData> branchData = map.floorEntry(url);
     return branchData != null && url.startsWith(branchData.getKey()) ? branchData.getValue() : null;
   }
 
   private static class BranchDataExternalizer implements DataExternalizer<TreeMap<String, BranchCopyData>> {
-    public void save(@NotNull DataOutput out, @NotNull TreeMap<String, BranchCopyData> value) throws IOException {
+    public void save(@Nonnull DataOutput out, @Nonnull TreeMap<String, BranchCopyData> value) throws IOException {
       out.writeInt(value.size());
       for (Map.Entry<String, BranchCopyData> entry : value.entrySet()) {
         out.writeUTF(entry.getKey());
@@ -114,15 +117,15 @@ public class SvnBranchPointsCalculator {
       }
     }
 
-    private static void save(@NotNull DataOutput out, @NotNull BranchCopyData value) throws IOException {
+    private static void save(@Nonnull DataOutput out, @Nonnull BranchCopyData value) throws IOException {
       out.writeUTF(value.getSource());
       out.writeUTF(value.getTarget());
       out.writeLong(value.getSourceRevision());
       out.writeLong(value.getTargetRevision());
     }
 
-    @NotNull
-    public TreeMap<String, BranchCopyData> read(@NotNull DataInput in) throws IOException {
+    @Nonnull
+    public TreeMap<String, BranchCopyData> read(@Nonnull DataInput in) throws IOException {
       TreeMap<String, BranchCopyData> result = newTreeMap();
       int size = in.readInt();
 
@@ -133,8 +136,8 @@ public class SvnBranchPointsCalculator {
       return result;
     }
 
-    @NotNull
-    private static BranchCopyData readCopyPoint(@NotNull DataInput in) throws IOException {
+    @Nonnull
+    private static BranchCopyData readCopyPoint(@Nonnull DataInput in) throws IOException {
       String sourceUrl = in.readUTF();
       String targetUrl = in.readUTF();
       long sourceRevision = in.readLong();
@@ -176,7 +179,7 @@ public class SvnBranchPointsCalculator {
   }
 
   @Nullable
-  public WrapperInvertor calculateCopyPoint(@NotNull SVNURL repoUrl, @NotNull String sourceUrl, @NotNull String targetUrl)
+  public WrapperInvertor calculateCopyPoint(@Nonnull SVNURL repoUrl, @Nonnull String sourceUrl, @Nonnull String targetUrl)
     throws VcsException {
     WrapperInvertor result = getBestHit(repoUrl.toDecodedString(), sourceUrl, targetUrl);
 
@@ -199,9 +202,9 @@ public class SvnBranchPointsCalculator {
     return result;
   }
 
-  private static void logCopyData(@NotNull String repoUrl,
-                                  @NotNull String sourceUrl,
-                                  @NotNull String targetUrl,
+  private static void logCopyData(@Nonnull String repoUrl,
+                                  @Nonnull String sourceUrl,
+                                  @Nonnull String targetUrl,
                                   @Nullable WrapperInvertor inverter) {
     if (LOG.isDebugEnabled()) {
       LOG.debug("repoURL: " + repoUrl + ", sourceUrl:" + sourceUrl + ", targetUrl: " + targetUrl + ", inverter: " + inverter);

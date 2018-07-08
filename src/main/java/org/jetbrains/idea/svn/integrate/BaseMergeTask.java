@@ -19,22 +19,25 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.ThrowableConsumer;
 import com.intellij.util.ThrowableRunnable;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public abstract class BaseMergeTask implements ThrowableRunnable<VcsException>, ThrowableConsumer<ProgressIndicator, VcsException> {
 
-  @NotNull protected final QuickMerge myMergeProcess;
-  @NotNull protected final MergeContext myMergeContext;
-  @NotNull protected final QuickMergeInteraction myInteraction;
+  @Nonnull
+  protected final QuickMerge myMergeProcess;
+  @Nonnull
+  protected final MergeContext myMergeContext;
+  @Nonnull
+  protected final QuickMergeInteraction myInteraction;
 
-  public BaseMergeTask(@NotNull QuickMerge mergeProcess) {
+  public BaseMergeTask(@Nonnull QuickMerge mergeProcess) {
     myMergeProcess = mergeProcess;
     myMergeContext = mergeProcess.getMergeContext();
     myInteraction = mergeProcess.getInteraction();
   }
 
   @Override
-  public void consume(@NotNull ProgressIndicator indicator) throws VcsException {
+  public void consume(@Nonnull ProgressIndicator indicator) throws VcsException {
     run();
   }
 

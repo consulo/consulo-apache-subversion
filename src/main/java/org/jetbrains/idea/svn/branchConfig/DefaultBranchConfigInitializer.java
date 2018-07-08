@@ -22,8 +22,9 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -48,11 +49,14 @@ public class DefaultBranchConfigInitializer implements Runnable {
   @NonNls private static final String DEFAULT_BRANCHES_NAME = "branches";
   @NonNls private static final String DEFAULT_TAGS_NAME = "tags";
 
-  @NotNull private final Project myProject;
-  @NotNull private final NewRootBunch myBunch;
-  @NotNull private final VirtualFile myRoot;
+  @Nonnull
+  private final Project myProject;
+  @Nonnull
+  private final NewRootBunch myBunch;
+  @Nonnull
+  private final VirtualFile myRoot;
 
-  public DefaultBranchConfigInitializer(@NotNull Project project, @NotNull NewRootBunch bunch, @NotNull VirtualFile root) {
+  public DefaultBranchConfigInitializer(@Nonnull Project project, @Nonnull NewRootBunch bunch, @Nonnull VirtualFile root) {
     myProject = project;
     myRoot = root;
     myBunch = bunch;
@@ -91,8 +95,8 @@ public class DefaultBranchConfigInitializer implements Runnable {
     return result;
   }
 
-  @NotNull
-  private static SvnBranchConfigurationNew getDefaultConfiguration(@NotNull SvnVcs vcs, @NotNull SVNURL url)
+  @Nonnull
+  private static SvnBranchConfigurationNew getDefaultConfiguration(@Nonnull SvnVcs vcs, @Nonnull SVNURL url)
     throws SVNException, VcsException {
     SvnBranchConfigurationNew result = new SvnBranchConfigurationNew();
     result.setTrunkUrl(url.toString());
@@ -108,7 +112,7 @@ public class DefaultBranchConfigInitializer implements Runnable {
   }
 
   @Nullable
-  private static SVNURL getBranchLocationsParent(@NotNull SVNURL url) throws SVNException {
+  private static SVNURL getBranchLocationsParent(@Nonnull SVNURL url) throws SVNException {
     while (!hasEmptyName(url) && !hasDefaultName(url)) {
       url = url.removePathTail();
     }
@@ -116,11 +120,11 @@ public class DefaultBranchConfigInitializer implements Runnable {
     return hasDefaultName(url) ? url.removePathTail() : null;
   }
 
-  private static boolean hasEmptyName(@NotNull SVNURL url) {
+  private static boolean hasEmptyName(@Nonnull SVNURL url) {
     return StringUtil.isEmpty(SVNPathUtil.tail(url.getPath()));
   }
 
-  private static boolean hasDefaultName(@NotNull SVNURL url) {
+  private static boolean hasDefaultName(@Nonnull SVNURL url) {
     String name = SVNPathUtil.tail(url.getPath());
 
     return name.equalsIgnoreCase(DEFAULT_TRUNK_NAME) ||
@@ -128,8 +132,8 @@ public class DefaultBranchConfigInitializer implements Runnable {
            name.equalsIgnoreCase(DEFAULT_TAGS_NAME);
   }
 
-  @NotNull
-  private static DirectoryEntryConsumer createHandler(@NotNull final SvnBranchConfigurationNew result, @NotNull final SVNURL rootPath) {
+  @Nonnull
+  private static DirectoryEntryConsumer createHandler(@Nonnull final SvnBranchConfigurationNew result, @Nonnull final SVNURL rootPath) {
     return new DirectoryEntryConsumer() {
 
       @Override

@@ -23,8 +23,8 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.WaitForProgressToShow;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNCancelException;
@@ -42,16 +42,20 @@ public abstract class ElementWithBranchComparer {
 
   private static final Logger LOG = Logger.getInstance(ElementWithBranchComparer.class);
 
-  @NotNull protected final Project myProject;
-  @NotNull protected final SvnVcs myVcs;
-  @NotNull protected final VirtualFile myVirtualFile;
-  @NotNull protected final String myBranchUrl;
+  @Nonnull
+  protected final Project myProject;
+  @Nonnull
+  protected final SvnVcs myVcs;
+  @Nonnull
+  protected final VirtualFile myVirtualFile;
+  @Nonnull
+  protected final String myBranchUrl;
   protected final long myBranchRevision;
   protected SVNURL myElementUrl;
 
-  ElementWithBranchComparer(@NotNull Project project,
-                            @NotNull VirtualFile virtualFile,
-                            @NotNull String branchUrl,
+  ElementWithBranchComparer(@Nonnull Project project,
+                            @Nonnull VirtualFile virtualFile,
+                            @Nonnull String branchUrl,
                             long branchRevision) {
     myProject = project;
     myVcs = SvnVcs.getInstance(myProject);
@@ -63,7 +67,7 @@ public abstract class ElementWithBranchComparer {
   public void run() {
     new Task.Modal(myProject, getTitle(), true) {
       @Override
-      public void run(@NotNull ProgressIndicator indicator) {
+      public void run(@Nonnull ProgressIndicator indicator) {
         try {
           beforeCompare();
           myElementUrl = resolveElementUrl();

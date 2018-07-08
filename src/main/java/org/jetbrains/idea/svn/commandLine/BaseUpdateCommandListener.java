@@ -2,8 +2,9 @@ package org.jetbrains.idea.svn.commandLine;
 
 import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.openapi.util.Key;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.ProgressEvent;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.tmatesoft.svn.core.SVNException;
@@ -16,16 +17,16 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class BaseUpdateCommandListener extends LineCommandAdapter {
 
-  @NotNull
+  @Nonnull
   private final UpdateOutputLineConverter converter;
 
   @Nullable
   private final ProgressTracker handler;
 
-  @NotNull
+  @Nonnull
   private final AtomicReference<SVNException> exception;
 
-  public BaseUpdateCommandListener(@NotNull File base, @Nullable ProgressTracker handler) {
+  public BaseUpdateCommandListener(@Nonnull File base, @Nullable ProgressTracker handler) {
     this.handler = handler;
     this.converter = new UpdateOutputLineConverter(base);
     exception = new AtomicReference<>();
@@ -62,6 +63,6 @@ public class BaseUpdateCommandListener extends LineCommandAdapter {
     }
   }
 
-  protected void beforeHandler(@NotNull ProgressEvent event) {
+  protected void beforeHandler(@Nonnull ProgressEvent event) {
   }
 }

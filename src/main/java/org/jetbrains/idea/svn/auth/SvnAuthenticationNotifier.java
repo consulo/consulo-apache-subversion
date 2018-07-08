@@ -42,8 +42,8 @@ import com.intellij.util.Consumer;
 import com.intellij.util.ThreeState;
 import com.intellij.util.net.HttpConfigurable;
 import com.intellij.util.proxy.CommonProxy;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.ClientFactory;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -201,7 +201,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
     }
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public SVNURL getKey(final AuthenticationRequest obj) {
     // !!! wc's URL
@@ -226,7 +226,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
   /**
    * Bases on presence of notifications!
    */
-  public ThreeState isAuthenticatedFor(@NotNull VirtualFile vf, @Nullable ClientFactory factory) {
+  public ThreeState isAuthenticatedFor(@Nonnull VirtualFile vf, @Nullable ClientFactory factory) {
     final WorkingCopy wcCopy = myRootsToWorkingCopies.getWcRoot(vf);
     if (wcCopy == null) return ThreeState.UNSURE;
 
@@ -245,7 +245,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
     return calculatedResult ? ThreeState.YES : ThreeState.NO;
   }
 
-  private static boolean passiveValidation(@NotNull ClientFactory factory, @NotNull SVNURL url) {
+  private static boolean passiveValidation(@Nonnull ClientFactory factory, @Nonnull SVNURL url) {
     Info info = null;
 
     try {
@@ -257,7 +257,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
     return info != null;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getNotificationContent(AuthenticationRequest obj) {
     return "<a href=\"\">Click to fix.</a> Not logged In to Subversion '" + obj.getRealm() + "' (" + obj.getUrl().toDecodedString() + ")";
@@ -460,7 +460,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
     }, ModalityState.NON_MODAL, project.getDisposed());
   }
 
-  public static void clearAuthenticationCache(@NotNull final Project project, final Component component, final String configDirPath) {
+  public static void clearAuthenticationCache(@Nonnull final Project project, final Component component, final String configDirPath) {
     if (configDirPath != null) {
       int result;
       if (component == null) {
@@ -479,7 +479,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
     }
   }
 
-  public static void clearAuthenticationDirectory(@NotNull SvnConfiguration configuration) {
+  public static void clearAuthenticationDirectory(@Nonnull SvnConfiguration configuration) {
     final File authDir = new File(configuration.getConfigurationDirectory(), "auth");
     if (authDir.exists()) {
       final Runnable process = new Runnable() {
@@ -492,7 +492,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
           }
           final File[] files = authDir.listFiles(new FilenameFilter() {
             @Override
-            public boolean accept(@NotNull File dir, @NotNull String name) {
+            public boolean accept(@Nonnull File dir, @Nonnull String name) {
               return ourAuthKinds.contains(name);
             }
           });

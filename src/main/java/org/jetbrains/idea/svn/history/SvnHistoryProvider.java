@@ -40,8 +40,8 @@ import com.intellij.util.ThrowableConsumer;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.StatusText;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.info.Info;
@@ -82,7 +82,7 @@ public class SvnHistoryProvider
   }
 
   @Override
-  public boolean canShowHistoryFor(@NotNull VirtualFile file) {
+  public boolean canShowHistoryFor(@Nonnull VirtualFile file) {
     return true;
   }
 
@@ -179,8 +179,8 @@ public class SvnHistoryProvider
 
   @Override
   public SvnHistorySession createFromCachedData(Boolean aBoolean,
-                                               @NotNull List<VcsFileRevision> revisions,
-                                               @NotNull FilePath filePath,
+                                               @Nonnull List<VcsFileRevision> revisions,
+                                               @Nonnull FilePath filePath,
                                                VcsRevisionNumber currentRevision) {
     return new SvnHistorySession(myVcs, revisions, filePath, aBoolean, currentRevision, false, ! filePath.isNonLocal());
   }
@@ -668,13 +668,14 @@ public class SvnHistoryProvider
 
   private static class RevisionMergeSourceInfo {
 
-    @NotNull private final VcsFileRevision revision;
+    @Nonnull
+	private final VcsFileRevision revision;
 
-    private RevisionMergeSourceInfo(@NotNull VcsFileRevision revision) {
+    private RevisionMergeSourceInfo(@Nonnull VcsFileRevision revision) {
       this.revision = revision;
     }
 
-    @NotNull
+    @Nonnull
     public SvnFileRevision getRevision() {
       return (SvnFileRevision)revision;
     }
@@ -751,7 +752,7 @@ public class SvnHistoryProvider
     }
 
     @Override
-    public boolean onClick(@NotNull MouseEvent e, int clickCount) {
+    public boolean onClick(@Nonnull MouseEvent e, int clickCount) {
       if (e.getButton() == 1 && !e.isPopupTrigger()) {
         Object tag = getTagAt(e);
         if (tag == myTag) {

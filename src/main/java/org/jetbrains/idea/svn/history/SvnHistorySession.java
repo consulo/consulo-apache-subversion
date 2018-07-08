@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.history;
 
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.history.*;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.info.Info;

@@ -1,8 +1,9 @@
 package org.jetbrains.idea.svn.annotate;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.jetbrains.idea.svn.diff.DiffOptions;
 import org.tmatesoft.svn.core.wc.SVNRevision;
@@ -13,9 +14,9 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
  */
 public interface AnnotateClient extends SvnClient {
 
-  void annotate(@NotNull SvnTarget target,
-                @NotNull SVNRevision startRevision,
-                @NotNull SVNRevision endRevision,
+  void annotate(@Nonnull SvnTarget target,
+                @Nonnull SVNRevision startRevision,
+                @Nonnull SVNRevision endRevision,
                 boolean includeMergedRevisions,
                 @Nullable DiffOptions diffOptions,
                 @Nullable AnnotationConsumer handler) throws VcsException;

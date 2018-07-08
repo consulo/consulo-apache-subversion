@@ -20,7 +20,7 @@ import com.intellij.openapi.vcs.changes.VcsDirtyScope;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,12 +29,15 @@ import java.util.Set;
 
 public class SvnScopeZipper implements Runnable {
 
-  @NotNull private final VcsDirtyScope myIn;
-  @NotNull private final List<FilePath> myRecursiveDirs;
+  @Nonnull
+  private final VcsDirtyScope myIn;
+  @Nonnull
+  private final List<FilePath> myRecursiveDirs;
   // instead of set and heavy equals of file path
-  @NotNull private final Map<String, MyDirNonRecursive> myNonRecursiveDirs;
+  @Nonnull
+  private final Map<String, MyDirNonRecursive> myNonRecursiveDirs;
 
-  public SvnScopeZipper(@NotNull VcsDirtyScope in) {
+  public SvnScopeZipper(@Nonnull VcsDirtyScope in) {
     myIn = in;
     myRecursiveDirs = ContainerUtil.newArrayList(in.getRecursivelyDirtyDirectories());
     myNonRecursiveDirs = ContainerUtil.newHashMap();
@@ -65,8 +68,8 @@ public class SvnScopeZipper implements Runnable {
     }
   }
 
-  @NotNull
-  private MyDirNonRecursive createOrGet(@NotNull FilePath parent) {
+  @Nonnull
+  private MyDirNonRecursive createOrGet(@Nonnull FilePath parent) {
     String key = getKey(parent);
     MyDirNonRecursive result = myNonRecursiveDirs.get(key);
 
@@ -78,41 +81,43 @@ public class SvnScopeZipper implements Runnable {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   public List<FilePath> getRecursiveDirs() {
     return myRecursiveDirs;
   }
 
-  @NotNull
+  @Nonnull
   public Map<String, MyDirNonRecursive> getNonRecursiveDirs() {
     return myNonRecursiveDirs;
   }
 
-  public static String getKey(@NotNull FilePath path) {
+  public static String getKey(@Nonnull FilePath path) {
     return path.getPresentableUrl();
   }
 
   static class MyDirNonRecursive {
 
-    @NotNull private final FilePath myDir;
+    @Nonnull
+	private final FilePath myDir;
     // instead of set and heavy equals of file path
-    @NotNull private final Map<String, FilePath> myChildren;
+    @Nonnull
+	private final Map<String, FilePath> myChildren;
 
-    private MyDirNonRecursive(@NotNull FilePath dir) {
+    private MyDirNonRecursive(@Nonnull FilePath dir) {
       myDir = dir;
       myChildren = ContainerUtil.newHashMap();
     }
 
-    public void add(@NotNull FilePath path) {
+    public void add(@Nonnull FilePath path) {
       myChildren.put(getKey(path), path);
     }
 
-    @NotNull
+    @Nonnull
     public Collection<FilePath> getChildrenList() {
       return myChildren.values();
     }
 
-    @NotNull
+    @Nonnull
     public FilePath getDir() {
       return myDir;
     }

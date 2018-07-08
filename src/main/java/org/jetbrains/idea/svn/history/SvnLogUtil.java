@@ -21,7 +21,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNURL;
@@ -56,7 +56,7 @@ public class SvnLogUtil implements SvnLogLoader {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   private LogEntryConsumer createLogHandler(final SVNRevision fromIncluding,
                                                final SVNRevision toIncluding,
                                                final boolean includingYoungest,

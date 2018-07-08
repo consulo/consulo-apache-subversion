@@ -1,6 +1,7 @@
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.tmatesoft.svn.core.SVNURL;
 
 /**
@@ -8,13 +9,14 @@ import org.tmatesoft.svn.core.SVNURL;
  */
 public class Repository {
 
-  @NotNull private final SVNURL myUrl;
+  @Nonnull
+  private final SVNURL myUrl;
 
-  public Repository(@NotNull SVNURL url) {
+  public Repository(@Nonnull SVNURL url) {
     myUrl = url;
   }
 
-  @NotNull
+  @Nonnull
   public SVNURL getUrl() {
     return myUrl;
   }

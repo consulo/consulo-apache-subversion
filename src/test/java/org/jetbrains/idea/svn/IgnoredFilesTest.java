@@ -15,6 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
+import java.io.File;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import com.intellij.ide.startup.impl.StartupManagerImpl;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.util.io.FileUtil;
@@ -30,12 +36,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.TempDirTestFixture;
 import com.intellij.util.ui.UIUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.File;
+import consulo.ui.UIAccess;
 
 /**
  * Here we check the situation when there's no working copy - nevertheless we think that ignored on IDEA level files should be
@@ -67,7 +68,7 @@ public class IgnoredFilesTest extends Svn17TestCase {
 
           initProject(myClientRoot, IgnoredFilesTest.this.getTestName());
 
-          ((StartupManagerImpl)StartupManager.getInstance(myProject)).runPostStartupActivities();
+          ((StartupManagerImpl)StartupManager.getInstance(myProject)).runPostStartupActivities(UIAccess.get());
 
           myChangeListManager = ChangeListManager.getInstance(myProject);
           myVcs = SvnVcs.getInstance(myProject);

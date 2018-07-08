@@ -17,9 +17,9 @@ package org.jetbrains.idea.svn.history;
 
 import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
 import com.intellij.openapi.vcs.versionBrowser.StandardVersionFilterComponent;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

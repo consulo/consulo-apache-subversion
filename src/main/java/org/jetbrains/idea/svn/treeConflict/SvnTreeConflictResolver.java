@@ -23,8 +23,8 @@ import com.intellij.openapi.vcs.changes.ChangesUtil;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -47,12 +47,16 @@ import java.util.Set;
 */
 public class SvnTreeConflictResolver {
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final FilePath myPath;
-  @Nullable private final FilePath myRevertPath;
-  @NotNull private final VcsDirtyScopeManager myDirtyScopeManager;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final FilePath myPath;
+  @Nullable
+  private final FilePath myRevertPath;
+  @Nonnull
+  private final VcsDirtyScopeManager myDirtyScopeManager;
 
-  public SvnTreeConflictResolver(@NotNull SvnVcs vcs, @NotNull FilePath path, @Nullable FilePath revertPath) {
+  public SvnTreeConflictResolver(@Nonnull SvnVcs vcs, @Nonnull FilePath path, @Nullable FilePath revertPath) {
     myVcs = vcs;
     myPath = path;
     myRevertPath = revertPath;
@@ -73,7 +77,7 @@ public class SvnTreeConflictResolver {
     }
   }
 
-  private void pathDirty(@NotNull FilePath path) {
+  private void pathDirty(@Nonnull FilePath path) {
     VirtualFile validParent = ChangesUtil.findValidParentAccurately(path);
 
     if (validParent != null) {
@@ -130,8 +134,8 @@ public class SvnTreeConflictResolver {
     }
   }
 
-  @NotNull
-  private Set<File> getDescendantsWithAddedStatus(@NotNull File ioFile) throws SvnBindException {
+  @Nonnull
+  private Set<File> getDescendantsWithAddedStatus(@Nonnull File ioFile) throws SvnBindException {
     final Set<File> result = ContainerUtil.newHashSet();
     StatusClient statusClient = myVcs.getFactory(ioFile).createStatusClient();
 
@@ -148,11 +152,11 @@ public class SvnTreeConflictResolver {
     return result;
   }
 
-  private void revert(@NotNull File file) throws VcsException {
+  private void revert(@Nonnull File file) throws VcsException {
     myVcs.getFactory(file).createRevertClient().revert(Collections.singletonList(file), Depth.INFINITY, null);
   }
 
-  private void updateFile(@NotNull File file, @NotNull SVNRevision revision) throws SvnBindException {
+  private void updateFile(@Nonnull File file, @Nonnull SVNRevision revision) throws SvnBindException {
     boolean useParentAsTarget = !file.exists();
     File target = useParentAsTarget ? file.getParentFile() : file;
 

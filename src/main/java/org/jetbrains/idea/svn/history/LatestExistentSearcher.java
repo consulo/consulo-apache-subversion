@@ -19,8 +19,9 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnFileUrlMapping;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -40,13 +41,16 @@ public class LatestExistentSearcher {
 
   private long myStartNumber;
   private boolean myStartExistsKnown;
-  @NotNull private final SVNURL myUrl;
-  @NotNull private final SVNURL myRepositoryUrl;
-  @NotNull private final String myRelativeUrl;
+  @Nonnull
+  private final SVNURL myUrl;
+  @Nonnull
+  private final SVNURL myRepositoryUrl;
+  @Nonnull
+  private final String myRelativeUrl;
   private final SvnVcs myVcs;
   private long myEndNumber;
 
-  public LatestExistentSearcher(final SvnVcs vcs, @NotNull SVNURL url, @NotNull SVNURL repositoryUrl) {
+  public LatestExistentSearcher(final SvnVcs vcs, @Nonnull SVNURL url, @Nonnull SVNURL repositoryUrl) {
     this(0, -1, false, vcs, url, repositoryUrl);
   }
 
@@ -54,8 +58,8 @@ public class LatestExistentSearcher {
                                 final long endNumber,
                                 final boolean startExistsKnown,
                                 final SvnVcs vcs,
-                                @NotNull SVNURL url,
-                                @NotNull SVNURL repositoryUrl) {
+                                @Nonnull SVNURL url,
+                                @Nonnull SVNURL repositoryUrl) {
     myStartNumber = startNumber;
     myEndNumber = endNumber;
     myStartExistsKnown = startExistsKnown;
@@ -92,8 +96,8 @@ public class LatestExistentSearcher {
     return latest.get().longValue();
   }
 
-  @NotNull
-  private LogEntryConsumer createHandler(@NotNull final Ref<Long> latest) {
+  @Nonnull
+  private LogEntryConsumer createHandler(@Nonnull final Ref<Long> latest) {
     return new LogEntryConsumer() {
       @Override
       public void consume(final LogEntry logEntry) throws SVNException {
@@ -156,7 +160,7 @@ public class LatestExistentSearcher {
     return url;
   }
 
-  private boolean existsInRevision(@NotNull SVNURL url, long revisionNumber) throws SvnBindException {
+  private boolean existsInRevision(@Nonnull SVNURL url, long revisionNumber) throws SvnBindException {
     SVNRevision revision = SVNRevision.create(revisionNumber);
     Info info = null;
 

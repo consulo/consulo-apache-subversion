@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.conflict;
 
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Map;
 
@@ -47,7 +47,8 @@ public enum ConflictReason {
   MOVED_AWAY("moved-away"),
   MOVED_HERE("moved-here");
 
-  @NotNull private static final Map<String, ConflictReason> ourAllReasons = ContainerUtil.newHashMap();
+  @Nonnull
+  private static final Map<String, ConflictReason> ourAllReasons = ContainerUtil.newHashMap();
 
   static {
     for (ConflictReason reason : ConflictReason.values()) {
@@ -55,10 +56,12 @@ public enum ConflictReason {
     }
   }
 
-  @NotNull private final String myKey;
-  @NotNull private final String[] myOtherKeys;
+  @Nonnull
+  private final String myKey;
+  @Nonnull
+  private final String[] myOtherKeys;
 
-  ConflictReason(@NotNull String key, @NotNull String... otherKeys) {
+  ConflictReason(@Nonnull String key, @Nonnull String... otherKeys) {
     myKey = key;
     myOtherKeys = otherKeys;
   }
@@ -68,7 +71,7 @@ public enum ConflictReason {
     return myKey;
   }
 
-  private static void register(@NotNull ConflictReason reason) {
+  private static void register(@Nonnull ConflictReason reason) {
     ourAllReasons.put(reason.myKey, reason);
 
     for (String key : reason.myOtherKeys) {
@@ -76,8 +79,8 @@ public enum ConflictReason {
     }
   }
 
-  @NotNull
-  public static ConflictReason from(@NotNull String reasonName) {
+  @Nonnull
+  public static ConflictReason from(@Nonnull String reasonName) {
     ConflictReason result = ourAllReasons.get(reasonName);
 
     if (result == null) {

@@ -36,6 +36,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
@@ -45,8 +46,7 @@ import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -219,7 +219,7 @@ public class CopiesPanel {
     return myRefreshLabel;
   }
 
-  private void updateList(@NotNull final List<WCInfo> infoList, @NotNull final List<WorkingCopyFormat> supportedFormats) {
+  private void updateList(@Nonnull final List<WCInfo> infoList, @Nonnull final List<WorkingCopyFormat> supportedFormats) {
     myPanel.removeAll();
     final Insets nullIndent = new Insets(1, 3, 1, 0);
     final GridBagConstraints gb =
@@ -306,7 +306,7 @@ public class CopiesPanel {
   }
 
   @SuppressWarnings("MethodMayBeStatic")
-  private String formatWc(@NotNull WCInfo info, @NotNull Collection<WorkingCopyFormat> upgradeFormats) {
+  private String formatWc(@Nonnull WCInfo info, @Nonnull Collection<WorkingCopyFormat> upgradeFormats) {
     final StringBuilder sb = new StringBuilder().append("<html><head>").append(UIUtil.getCssFontDeclaration(UIUtil.getLabelFont()))
       .append("</head><body><table bgColor=\"").append(ColorUtil.toHex(UIUtil.getPanelBackground())).append("\">");
 
@@ -352,7 +352,7 @@ public class CopiesPanel {
     return sb.toString();
   }
 
-  @NotNull
+  @Nonnull
   private List<WorkingCopyFormat> getSupportedFormats() {
     List<WorkingCopyFormat> result = ContainerUtil.newArrayList();
     ClientFactory factory = myVcs.getFactory();
@@ -369,7 +369,7 @@ public class CopiesPanel {
     return result;
   }
 
-  public static Set<WorkingCopyFormat> getUpgradeFormats(@NotNull WCInfo info, @NotNull List<WorkingCopyFormat> supportedFormats) {
+  public static Set<WorkingCopyFormat> getUpgradeFormats(@Nonnull WCInfo info, @Nonnull List<WorkingCopyFormat> supportedFormats) {
     Set<WorkingCopyFormat> canUpgradeTo = EnumSet.noneOf(WorkingCopyFormat.class);
 
     for (WorkingCopyFormat format : supportedFormats) {
@@ -382,12 +382,12 @@ public class CopiesPanel {
     return canUpgradeTo;
   }
 
-  private void mergeFrom(@NotNull final WCInfo wcInfo, @NotNull final VirtualFile root, @Nullable final Component mergeLabel) {
+  private void mergeFrom(@Nonnull final WCInfo wcInfo, @Nonnull final VirtualFile root, @Nullable final Component mergeLabel) {
     SelectBranchPopup.showForBranchRoot(myProject, root, new SelectBranchPopup.BranchSelectedCallback() {
       @Override
       public void branchSelected(Project project,
-                                 @NotNull SvnBranchConfigurationNew configuration,
-                                 @NotNull String branchUrl,
+                                 @Nonnull SvnBranchConfigurationNew configuration,
+                                 @Nonnull String branchUrl,
                                  long revision) {
         String workingCopyUrlInSelectedBranch = getCorrespondingUrlInOtherBranch(configuration, wcInfo.getUrl(), branchUrl);
         MergeContext mergeContext = new MergeContext(myVcs, workingCopyUrlInSelectedBranch, wcInfo, SVNPathUtil.tail(branchUrl), root);
@@ -397,10 +397,10 @@ public class CopiesPanel {
     }, "Select branch", mergeLabel);
   }
 
-  @NotNull
-  private static String getCorrespondingUrlInOtherBranch(@NotNull SvnBranchConfigurationNew configuration,
-                                                         @NotNull SVNURL url,
-                                                         @NotNull String otherBranchUrl) {
+  @Nonnull
+  private static String getCorrespondingUrlInOtherBranch(@Nonnull SvnBranchConfigurationNew configuration,
+                                                         @Nonnull SVNURL url,
+                                                         @Nonnull String otherBranchUrl) {
     return SVNPathUtil.append(otherBranchUrl, configuration.getRelativeUrl(url.toDecodedString()));
   }
 
@@ -431,7 +431,7 @@ public class CopiesPanel {
     });
   }
 
-  private void changeFormat(@NotNull final WCInfo wcInfo, @NotNull final Collection<WorkingCopyFormat> supportedFormats) {
+  private void changeFormat(@Nonnull final WCInfo wcInfo, @Nonnull final Collection<WorkingCopyFormat> supportedFormats) {
     ChangeFormatDialog dialog = new ChangeFormatDialog(myProject, new File(wcInfo.getPath()), false, !wcInfo.isIsWcRoot());
 
     dialog.setSupported(supportedFormats);
@@ -474,7 +474,7 @@ public class CopiesPanel {
     }
   }
 
-  private static void registerHelp(@NotNull JComponent component) {
+  private static void registerHelp(@Nonnull JComponent component) {
     DataManager.registerDataProvider(component, new DataProvider() {
       @Nullable
       @Override
@@ -603,14 +603,14 @@ public class CopiesPanel {
     private static final String TITLE = "";
     private static final String DESCRIPTION = SvnBundle.message("subversion.roots.detection.errors.found.description");
 
-    private ErrorsFoundNotification(@NotNull final Project project) {
+    private ErrorsFoundNotification(@Nonnull final Project project) {
       super(NOTIFICATION_GROUP.getDisplayId(), TITLE, DESCRIPTION, NotificationType.ERROR, createListener(project));
     }
 
-    private static NotificationListener.Adapter createListener(@NotNull final Project project) {
+    private static NotificationListener.Adapter createListener(@Nonnull final Project project) {
       return new NotificationListener.Adapter() {
         @Override
-        protected void hyperlinkActivated(@NotNull Notification notification, @NotNull HyperlinkEvent event) {
+        protected void hyperlinkActivated(@Nonnull Notification notification, @Nonnull HyperlinkEvent event) {
           if (FIX_ACTION.equals(event.getDescription())) {
             WorkingCopiesContent.show(project);
           }

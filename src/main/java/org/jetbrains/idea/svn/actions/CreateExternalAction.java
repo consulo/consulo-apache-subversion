@@ -24,8 +24,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.*;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnProgressCanceller;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -54,7 +54,7 @@ public class CreateExternalAction extends DumbAwareAction {
   }
 
   @Override
-  public void actionPerformed(@NotNull AnActionEvent e) {
+  public void actionPerformed(@Nonnull AnActionEvent e) {
     Project project = e.getRequiredData(CommonDataKeys.PROJECT);
     VirtualFile file = notNull(getIfSingle(e.getData(VcsDataKeys.VIRTUAL_FILE_STREAM)));
     SelectCreateExternalTargetDialog dialog = new SelectCreateExternalTargetDialog(project, file);
@@ -66,14 +66,14 @@ public class CreateExternalAction extends DumbAwareAction {
 
       new Task.Backgroundable(project, "Creating External") {
         @Override
-        public void run(@NotNull ProgressIndicator indicator) {
+        public void run(@Nonnull ProgressIndicator indicator) {
           doInBackground(project, file, url, checkout, target);
         }
       }.queue();
     }
   }
 
-  private static void doInBackground(@NotNull Project project, @NotNull VirtualFile file, String url, boolean checkout, String target) {
+  private static void doInBackground(@Nonnull Project project, @Nonnull VirtualFile file, String url, boolean checkout, String target) {
     SvnVcs vcs = SvnVcs.getInstance(project);
     VcsDirtyScopeManager dirtyScopeManager = VcsDirtyScopeManager.getInstance(project);
     File ioFile = virtualToIoFile(file);
@@ -94,7 +94,7 @@ public class CreateExternalAction extends DumbAwareAction {
     }
   }
 
-  public static void addToExternalProperty(@NotNull SvnVcs vcs, @NotNull File ioFile, String target, String url) throws VcsException {
+  public static void addToExternalProperty(@Nonnull SvnVcs vcs, @Nonnull File ioFile, String target, String url) throws VcsException {
     ClientFactory factory = vcs.getFactory(ioFile);
     PropertyValue propertyValue =
       factory.createPropertyClient().getProperty(SvnTarget.fromFile(ioFile), SvnPropertyKeys.SVN_EXTERNALS, false, SVNRevision.UNDEFINED);
@@ -117,7 +117,7 @@ public class CreateExternalAction extends DumbAwareAction {
   }
 
   @Override
-  public void update(@NotNull AnActionEvent e) {
+  public void update(@Nonnull AnActionEvent e) {
     Project project = e.getProject();
     boolean visible = project != null && isSvnActive(project);
     boolean enabled = visible && isEnabled(project, getIfSingle(e.getData(VcsDataKeys.VIRTUAL_FILE_STREAM)));
@@ -126,11 +126,11 @@ public class CreateExternalAction extends DumbAwareAction {
     e.getPresentation().setEnabled(enabled);
   }
 
-  private static boolean isSvnActive(@NotNull Project project) {
+  private static boolean isSvnActive(@Nonnull Project project) {
     return ProjectLevelVcsManager.getInstance(project).checkVcsIsActive(SvnVcs.VCS_NAME);
   }
 
-  private static boolean isEnabled(@NotNull Project project, @Nullable VirtualFile file) {
+  private static boolean isEnabled(@Nonnull Project project, @Nullable VirtualFile file) {
     return file != null &&
            file.isDirectory() &&
            getVcsForFile(file, project) instanceof SvnVcs &&

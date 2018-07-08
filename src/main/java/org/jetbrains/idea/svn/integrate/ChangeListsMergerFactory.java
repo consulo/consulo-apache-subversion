@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.integrate;
 
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.update.UpdateEventHandler;
 import org.tmatesoft.svn.core.SVNURL;
@@ -27,12 +27,13 @@ import java.util.List;
 
 public class ChangeListsMergerFactory implements MergerFactory {
 
-  @NotNull protected final List<CommittedChangeList> myChangeLists;
+  @Nonnull
+  protected final List<CommittedChangeList> myChangeLists;
   private final boolean myRecordOnly;
   private final boolean myInvertRange;
   private final boolean myGroupSequentialChangeLists;
 
-  public ChangeListsMergerFactory(@NotNull List<? extends CommittedChangeList> changeLists,
+  public ChangeListsMergerFactory(@Nonnull List<? extends CommittedChangeList> changeLists,
                                   boolean recordOnly,
                                   boolean invertRange,
                                   boolean groupSequentialChangeLists) {

@@ -31,7 +31,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -144,7 +144,7 @@ public class CreateBranchOrTagAction extends BasicAction {
     }
   }
 
-  private static boolean dirExists(@NotNull final SvnVcs vcs, @NotNull final SVNURL url) throws SvnBindException {
+  private static boolean dirExists(@Nonnull final SvnVcs vcs, @Nonnull final SVNURL url) throws SvnBindException {
     final Ref<SvnBindException> excRef = new Ref<>();
     final Ref<Boolean> resultRef = new Ref<>(Boolean.TRUE);
 

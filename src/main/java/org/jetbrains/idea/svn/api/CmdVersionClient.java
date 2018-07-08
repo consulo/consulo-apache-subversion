@@ -2,7 +2,7 @@ package org.jetbrains.idea.svn.api;
 
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.util.Version;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.commandLine.Command;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.commandLine.SvnCommandName;
@@ -18,13 +18,13 @@ public class CmdVersionClient extends BaseSvnClient implements VersionClient {
   private static final Pattern VERSION = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)");
   private static final int COMMAND_TIMEOUT = 30 * 1000;
 
-  @NotNull
+  @Nonnull
   @Override
   public Version getVersion() throws SvnBindException {
     return parseVersion(runCommand(true));
   }
 
-  @NotNull
+  @Nonnull
   public ProcessOutput runCommand(boolean quiet) throws SvnBindException {
     Command command = new Command(SvnCommandName.version);
     if (quiet) {
@@ -34,8 +34,8 @@ public class CmdVersionClient extends BaseSvnClient implements VersionClient {
     return newRuntime(myVcs).runLocal(command, COMMAND_TIMEOUT).getProcessOutput();
   }
 
-  @NotNull
-  private static Version parseVersion(@NotNull ProcessOutput output) throws SvnBindException {
+  @Nonnull
+  private static Version parseVersion(@Nonnull ProcessOutput output) throws SvnBindException {
     // TODO: This or similar check should likely go to CommandRuntime - to be applied for all commands
     if (output.isTimeout()) {
       throw new SvnBindException(String.format("Exit code: %d, Error: %s", output.getExitCode(), output.getStderr()));
@@ -44,8 +44,8 @@ public class CmdVersionClient extends BaseSvnClient implements VersionClient {
     return parseVersion(output.getStdout());
   }
 
-  @NotNull
-  public static Version parseVersion(@NotNull String versionText) throws SvnBindException {
+  @Nonnull
+  public static Version parseVersion(@Nonnull String versionText) throws SvnBindException {
     Version result = null;
     Exception cause = null;
 
@@ -68,7 +68,7 @@ public class CmdVersionClient extends BaseSvnClient implements VersionClient {
     return result;
   }
 
-  private static int getInt(@NotNull String value) {
+  private static int getInt(@Nonnull String value) {
     return Integer.parseInt(value);
   }
 }

@@ -15,8 +15,7 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import org.jetbrains.annotations.Nullable;
-
+import javax.annotation.Nullable;
 import javax.swing.tree.TreeNode;
 import java.util.List;
 

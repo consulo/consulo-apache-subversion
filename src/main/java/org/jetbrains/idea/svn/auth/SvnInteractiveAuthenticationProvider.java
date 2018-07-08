@@ -28,8 +28,8 @@ import com.jcraft.jsch.agentproxy.AgentProxyException;
 import com.jcraft.jsch.agentproxy.Connector;
 import com.jcraft.jsch.agentproxy.ConnectorFactory;
 import com.jcraft.jsch.agentproxy.TrileadAgentProxy;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -187,7 +187,7 @@ public class SvnInteractiveAuthenticationProvider implements ISVNAuthenticationP
     return result;
   }
 
-  private static void setTitle(@NotNull DialogWrapper dialog, @Nullable SVNErrorMessage errorMessage) {
+  private static void setTitle(@Nonnull DialogWrapper dialog, @Nullable SVNErrorMessage errorMessage) {
     dialog.setTitle(errorMessage == null
                     ? SvnBundle.message("dialog.title.authentication.required")
                     : SvnBundle.message("dialog.title.authentication.required.was.failed"));
@@ -227,7 +227,7 @@ public class SvnInteractiveAuthenticationProvider implements ISVNAuthenticationP
     return result[0];
   }
 
-  private static void showAndWait(@NotNull Runnable command) {
+  private static void showAndWait(@Nonnull Runnable command) {
     WaitForProgressToShow.runOrInvokeAndWaitAboveProgress(command, ModalityState.any());
   }
 

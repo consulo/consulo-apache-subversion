@@ -26,7 +26,7 @@ import com.intellij.ui.components.JBList;
 import com.intellij.util.ui.AdjustComponentWhenShown;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -83,7 +83,7 @@ public class MultipleRootEditorWithSplitter extends JPanel {
     myList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     myList.setCellRenderer(new ColoredListCellRenderer(){
-      protected void customizeCellRenderer(@NotNull JList list, Object value, int index, boolean selected, boolean hasFocus) {
+      protected void customizeCellRenderer(@Nonnull JList list, Object value, int index, boolean selected, boolean hasFocus) {
         if (value instanceof FilePath) {
           final FilePath path = ((FilePath)value);
           if (path.getVirtualFile() != null) {

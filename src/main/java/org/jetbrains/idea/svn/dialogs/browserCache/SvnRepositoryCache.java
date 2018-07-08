@@ -17,12 +17,13 @@ package org.jetbrains.idea.svn.dialogs.browserCache;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.util.containers.SoftHashMap;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 public class SvnRepositoryCache {
   private final Map<String, List<DirectoryEntry>> myMap;

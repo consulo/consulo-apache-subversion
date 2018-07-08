@@ -17,28 +17,34 @@ package org.jetbrains.idea.svn;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.UriUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.tmatesoft.svn.core.SVNURL;
 
 import java.io.File;
 
 public class RootUrlInfo implements RootUrlPair {
 
-  @NotNull private final String myRepositoryUrl;
-  @NotNull private final WorkingCopyFormat myFormat;
-  @NotNull private final Node myNode;
+  @Nonnull
+  private final String myRepositoryUrl;
+  @Nonnull
+  private final WorkingCopyFormat myFormat;
+  @Nonnull
+  private final Node myNode;
   // vcs root
-  @NotNull private final VirtualFile myRoot;
-  @Nullable private volatile NestedCopyType myType;
+  @Nonnull
+  private final VirtualFile myRoot;
+  @Nullable
+  private volatile NestedCopyType myType;
 
-  public RootUrlInfo(@NotNull final Node node, @NotNull final WorkingCopyFormat format, @NotNull final VirtualFile root) {
+  public RootUrlInfo(@Nonnull final Node node, @Nonnull final WorkingCopyFormat format, @Nonnull final VirtualFile root) {
     this(node, format, root, null);
   }
 
-  public RootUrlInfo(@NotNull final Node node,
-                     @NotNull final WorkingCopyFormat format,
-                     @NotNull final VirtualFile root,
+  public RootUrlInfo(@Nonnull final Node node,
+                     @Nonnull final WorkingCopyFormat format,
+                     @Nonnull final VirtualFile root,
                      @Nullable final NestedCopyType type) {
     myNode = node;
     myFormat = format;
@@ -47,58 +53,58 @@ public class RootUrlInfo implements RootUrlPair {
     myType = type;
   }
 
-  @NotNull
+  @Nonnull
   public Node getNode() {
     return myNode;
   }
 
-  @NotNull
+  @Nonnull
   public String getRepositoryUrl() {
     return myRepositoryUrl;
   }
 
-  @NotNull
+  @Nonnull
   public SVNURL getRepositoryUrlUrl() {
     return myNode.getRepositoryRootUrl();
   }
 
-  @NotNull
+  @Nonnull
   public String getAbsoluteUrl() {
     return getAbsoluteUrlAsUrl().toString();
   }
 
-  @NotNull
+  @Nonnull
   public SVNURL getAbsoluteUrlAsUrl() {
     return myNode.getUrl();
   }
 
-  @NotNull
+  @Nonnull
   public WorkingCopyFormat getFormat() {
     return myFormat;
   }
 
-  @NotNull
+  @Nonnull
   public File getIoFile() {
     return myNode.getIoFile();
   }
 
-  @NotNull
+  @Nonnull
   public String getPath() {
     return getIoFile().getAbsolutePath();
   }
 
   // vcs root
-  @NotNull
+  @Nonnull
   public VirtualFile getRoot() {
     return myRoot;
   }
 
-  @NotNull
+  @Nonnull
   public VirtualFile getVirtualFile() {
     return myNode.getFile();
   }
 
-  @NotNull
+  @Nonnull
   public String getUrl() {
     return getAbsoluteUrl();
   }

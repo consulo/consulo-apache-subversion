@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.status;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressTracker;
@@ -49,14 +49,14 @@ public class SvnKitStatusClient extends BaseSvnClient implements StatusClient {
   }
 
   @Override
-  public long doStatus(@NotNull File path,
+  public long doStatus(@Nonnull File path,
                        @Nullable SVNRevision revision,
-                       @NotNull Depth depth,
+                       @Nonnull Depth depth,
                        boolean remote,
                        boolean reportAll,
                        boolean includeIgnored,
                        boolean collectParentExternals,
-                       @NotNull final StatusConsumer handler,
+                       @Nonnull final StatusConsumer handler,
                        @Nullable Collection changeLists) throws SvnBindException {
     try {
       return getStatusClient()
@@ -74,7 +74,7 @@ public class SvnKitStatusClient extends BaseSvnClient implements StatusClient {
 
   @Override
   @Nullable
-  public Status doStatus(@NotNull File path, boolean remote) throws SvnBindException {
+  public Status doStatus(@Nonnull File path, boolean remote) throws SvnBindException {
     try {
       return Status.create(getStatusClient().doStatus(path, remote));
     }
@@ -83,13 +83,13 @@ public class SvnKitStatusClient extends BaseSvnClient implements StatusClient {
     }
   }
 
-  @NotNull
+  @Nonnull
   private SVNStatusClient getStatusClient() {
     // if either provider or handler is specified - we reuse same status client for all further doStatus() calls
     return myHandler != null || myProvider != null ? ensureStatusClient() : myVcs.getSvnKitManager().createStatusClient();
   }
 
-  @NotNull
+  @Nonnull
   private SVNStatusClient ensureStatusClient() {
     if (myStatusClient == null) {
       myStatusClient = myVcs.getSvnKitManager().createStatusClient();

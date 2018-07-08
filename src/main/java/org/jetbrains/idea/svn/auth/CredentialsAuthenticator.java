@@ -16,8 +16,9 @@
 package org.jetbrains.idea.svn.auth;
 
 import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
@@ -40,7 +41,7 @@ class CredentialsAuthenticator extends AbstractAuthenticator {
   private String myRealm2;
   private SVNAuthentication myAuthentication;
 
-  CredentialsAuthenticator(@NotNull AuthenticationService authenticationService, @NotNull SVNURL url, @Nullable String realm) {
+  CredentialsAuthenticator(@Nonnull AuthenticationService authenticationService, @Nonnull SVNURL url, @Nullable String realm) {
     super(authenticationService, url, realm == null ? url.getHost() : realm);
   }
 

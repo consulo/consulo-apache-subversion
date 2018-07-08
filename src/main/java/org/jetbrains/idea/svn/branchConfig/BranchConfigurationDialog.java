@@ -26,8 +26,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.*;
 import com.intellij.ui.components.JBList;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -52,17 +52,20 @@ public class BranchConfigurationDialog extends DialogWrapper {
   private JPanel myTopPanel;
   private TextFieldWithBrowseButton myTrunkLocationTextField;
   private JBList<String> myBranchLocationsList;
-  @NotNull private final MyListModel myBranchLocationsModel;
+  @Nonnull
+  private final MyListModel myBranchLocationsModel;
   private JPanel myListPanel;
   private JLabel myErrorPrompt;
-  @NotNull private final NewRootBunch mySvnBranchConfigManager;
-  @NotNull private final VirtualFile myRoot;
+  @Nonnull
+  private final NewRootBunch mySvnBranchConfigManager;
+  @Nonnull
+  private final VirtualFile myRoot;
 
-  public BranchConfigurationDialog(@NotNull Project project,
-                                   @NotNull SvnBranchConfigurationNew configuration,
-                                   @NotNull SVNURL rootUrl,
-                                   @NotNull VirtualFile root,
-                                   @NotNull String url) {
+  public BranchConfigurationDialog(@Nonnull Project project,
+                                   @Nonnull SvnBranchConfigurationNew configuration,
+                                   @Nonnull SVNURL rootUrl,
+                                   @Nonnull VirtualFile root,
+                                   @Nonnull String url) {
     super(project, true);
     myRoot = root;
     init();
@@ -96,8 +99,8 @@ public class BranchConfigurationDialog extends DialogWrapper {
     myListPanel.add(wrapLocationsWithToolbar(project, rootUrl), BorderLayout.CENTER);
   }
 
-  @NotNull
-  private JPanel wrapLocationsWithToolbar(@NotNull Project project, @NotNull SVNURL rootUrl) {
+  @Nonnull
+  private JPanel wrapLocationsWithToolbar(@Nonnull Project project, @Nonnull SVNURL rootUrl) {
     return ToolbarDecorator.createDecorator(myBranchLocationsList)
       .setAddAction(new AnActionButtonRunnable() {
 
@@ -166,7 +169,7 @@ public class BranchConfigurationDialog extends DialogWrapper {
     }
 
     @Nullable
-    private SVNURL parseUrl(@NotNull String url) {
+    private SVNURL parseUrl(@Nonnull String url) {
       SVNURL result = null;
 
       try {
@@ -191,7 +194,7 @@ public class BranchConfigurationDialog extends DialogWrapper {
     return "Subversion.BranchConfigurationDialog";
   }
 
-  public static void configureBranches(@NotNull Project project, @Nullable VirtualFile file) {
+  public static void configureBranches(@Nonnull Project project, @Nullable VirtualFile file) {
     if (file == null) {
       return;
     }
@@ -210,15 +213,16 @@ public class BranchConfigurationDialog extends DialogWrapper {
   }
 
   private static class MyListModel extends AbstractListModel<String> {
-    @NotNull private final SvnBranchConfigurationNew myConfiguration;
+    @Nonnull
+	private final SvnBranchConfigurationNew myConfiguration;
     private List<String> myBranchUrls;
 
-    public MyListModel(@NotNull SvnBranchConfigurationNew configuration) {
+    public MyListModel(@Nonnull SvnBranchConfigurationNew configuration) {
       myConfiguration = configuration;
       myBranchUrls = myConfiguration.getBranchUrls();
     }
 
-    @NotNull
+    @Nonnull
     public SvnBranchConfigurationNew getConfiguration() {
       return myConfiguration;
     }

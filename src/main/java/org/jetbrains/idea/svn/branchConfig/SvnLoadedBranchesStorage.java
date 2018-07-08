@@ -22,8 +22,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.io.DataExternalizer;
 import com.intellij.util.io.EnumeratorStringDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -90,7 +90,7 @@ public class SvnLoadedBranchesStorage {
   private DataExternalizer<Map<String, Collection<SvnBranchItem>>> createExternalizer() {
     return new DataExternalizer<Map<String, Collection<SvnBranchItem>>>() {
       @Override
-      public void save(@NotNull DataOutput out, Map<String, Collection<SvnBranchItem>> value) throws IOException {
+      public void save(@Nonnull DataOutput out, Map<String, Collection<SvnBranchItem>> value) throws IOException {
         out.writeInt(value.size());
         ArrayList<String> keys = new ArrayList<>(value.keySet());
         Collections.sort(keys);
@@ -108,7 +108,7 @@ public class SvnLoadedBranchesStorage {
       }
 
       @Override
-      public Map<String, Collection<SvnBranchItem>> read(@NotNull DataInput in) throws IOException {
+      public Map<String, Collection<SvnBranchItem>> read(@Nonnull DataInput in) throws IOException {
         final HashMap<String, Collection<SvnBranchItem>> map = new HashMap<>();
         int mapSize = in.readInt();
         for (int i = 0; i < mapSize; i++) {

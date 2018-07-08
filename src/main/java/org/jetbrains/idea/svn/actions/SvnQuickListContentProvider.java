@@ -21,8 +21,8 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.actions.VcsQuickListContentProvider;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class SvnQuickListContentProvider implements VcsQuickListContentProvider 
     return Collections.singletonList(action);
   }
 
-  public boolean replaceVcsActionsFor(@NotNull AbstractVcs activeVcs, @Nullable DataContext dataContext) {
+  public boolean replaceVcsActionsFor(@Nonnull AbstractVcs activeVcs, @Nullable DataContext dataContext) {
     return false;
   }
 

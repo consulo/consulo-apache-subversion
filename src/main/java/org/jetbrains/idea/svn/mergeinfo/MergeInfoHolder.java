@@ -23,8 +23,9 @@ import com.intellij.openapi.vcs.changes.committed.DecoratorManager;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.dialogs.WCInfoWithBranches;
 import org.jetbrains.idea.svn.history.RootsAndBranches;
 import org.jetbrains.idea.svn.history.SvnChangeList;
@@ -34,18 +35,23 @@ import java.util.Map;
 
 public class MergeInfoHolder {
 
-  @NotNull private final DecoratorManager myManager;
-  @NotNull private final SvnMergeInfoCache myMergeInfoCache;
-  @NotNull private final RootsAndBranches myMainPanel;
-  @NotNull private final SvnMergeInfoRootPanelManual myPanel;
+  @Nonnull
+  private final DecoratorManager myManager;
+  @Nonnull
+  private final SvnMergeInfoCache myMergeInfoCache;
+  @Nonnull
+  private final RootsAndBranches myMainPanel;
+  @Nonnull
+  private final SvnMergeInfoRootPanelManual myPanel;
 
   // used ONLY when refresh is triggered
-  @NotNull private final Map<Couple<String>, MergeInfoCached> myCachedMap;
+  @Nonnull
+  private final Map<Couple<String>, MergeInfoCached> myCachedMap;
 
-  public MergeInfoHolder(@NotNull Project project,
-                         @NotNull DecoratorManager manager,
-                         @NotNull RootsAndBranches mainPanel,
-                         @NotNull SvnMergeInfoRootPanelManual panel) {
+  public MergeInfoHolder(@Nonnull Project project,
+                         @Nonnull DecoratorManager manager,
+                         @Nonnull RootsAndBranches mainPanel,
+                         @Nonnull SvnMergeInfoRootPanelManual panel) {
     myManager = manager;
     myMainPanel = mainPanel;
     myPanel = panel;
@@ -68,12 +74,12 @@ public class MergeInfoHolder {
     return isEnabledAndConfigured(ignoreEnabled) && getCurrentCache() == null;
   }
 
-  @NotNull
-  private static Couple<String> createKey(@NotNull WCInfoWithBranches root, @NotNull WCInfoWithBranches.Branch branch) {
+  @Nonnull
+  private static Couple<String> createKey(@Nonnull WCInfoWithBranches root, @Nonnull WCInfoWithBranches.Branch branch) {
     return Couple.of(root.getPath(), branch.getUrl());
   }
 
-  @NotNull
+  @Nonnull
   public ListMergeStatus refresh(final boolean ignoreEnabled) {
     final CommittedChangeListsListener refresher = createRefresher(ignoreEnabled);
     if (refresher != null) {
@@ -102,7 +108,8 @@ public class MergeInfoHolder {
 
   private class MyRefresher implements CommittedChangeListsListener {
 
-    @NotNull private final WCInfoWithBranches myRefreshedRoot;
+    @Nonnull
+	private final WCInfoWithBranches myRefreshedRoot;
     private final WCInfoWithBranches.Branch myRefreshedBranch;
     private final String myBranchPath;
 
@@ -145,7 +152,7 @@ public class MergeInfoHolder {
     }
   }
 
-  @NotNull
+  @Nonnull
   public ListMergeStatus check(final CommittedChangeList list, final boolean ignoreEnabled) {
     ListMergeStatus result;
 
@@ -162,8 +169,8 @@ public class MergeInfoHolder {
     return result;
   }
 
-  @NotNull
-  public ListMergeStatus check(@NotNull CommittedChangeList list, @NotNull MergeInfoCached state, boolean isCached) {
+  @Nonnull
+  public ListMergeStatus check(@Nonnull CommittedChangeList list, @Nonnull MergeInfoCached state, boolean isCached) {
     SvnMergeInfoCache.MergeCheckResult mergeCheckResult = state.getMap().get(list.getNumber());
     ListMergeStatus result = state.copiedAfter(list) ? ListMergeStatus.COMMON : ListMergeStatus.from(mergeCheckResult);
 

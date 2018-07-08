@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.status.StatusType;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 import org.tmatesoft.svn.core.SVNURL;
@@ -34,8 +34,10 @@ public class ProgressEvent {
   private final long myRevision;
   private final SVNURL myURL;
 
-  @NotNull private final StatusType myContentsStatus;
-  @NotNull private final StatusType myPropertiesStatus;
+  @Nonnull
+  private final StatusType myContentsStatus;
+  @Nonnull
+  private final StatusType myPropertiesStatus;
   private final SVNErrorMessage myErrorMessage;
   private final EventAction myAction;
 
@@ -85,7 +87,7 @@ public class ProgressEvent {
     return myAction;
   }
 
-  @NotNull
+  @Nonnull
   public StatusType getContentsStatus() {
     return myContentsStatus;
   }
@@ -94,7 +96,7 @@ public class ProgressEvent {
     return myErrorMessage;
   }
 
-  @NotNull
+  @Nonnull
   public StatusType getPropertiesStatus() {
     return myPropertiesStatus;
   }

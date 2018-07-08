@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.Svn17TestCase;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.junit.Test;
@@ -111,8 +111,8 @@ public class FirstInBranchTest extends Svn17TestCase {
     assertBranchPoint(child2BranchUrl, child1BranchUrl, myHeadRevision, myHeadRevision + 1);
   }
 
-  @NotNull
-  private String createBranch(@NotNull String branchName, @NotNull String sourceUrl) throws IOException {
+  @Nonnull
+  private String createBranch(@Nonnull String branchName, @Nonnull String sourceUrl) throws IOException {
     String branchUrl = myBranchesUrl + "/" + branchName;
 
     runInAndVerifyIgnoreOutput("copy", "-m", branchName, sourceUrl, branchUrl);
@@ -120,7 +120,7 @@ public class FirstInBranchTest extends Svn17TestCase {
     return branchUrl;
   }
 
-  private void assertBranchPoint(@NotNull String sourceUrl, @NotNull String targetUrl, long sourceRevision, long targetRevision)
+  private void assertBranchPoint(@Nonnull String sourceUrl, @Nonnull String targetUrl, long sourceRevision, long targetRevision)
     throws Exception {
     CopyData branchTrunk = new FirstInBranch(myVcs, myRepositoryUrl, targetUrl, sourceUrl).run();
     assertBranchPoint(branchTrunk, sourceRevision, targetRevision, true);

@@ -30,7 +30,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.IconUtil;
 import com.intellij.util.PlatformIcons;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnUtil;

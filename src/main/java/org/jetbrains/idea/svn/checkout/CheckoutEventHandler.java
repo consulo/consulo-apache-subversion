@@ -15,12 +15,13 @@
  */
 package org.jetbrains.idea.svn.checkout;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.StatusBar;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.EventAction;
@@ -31,13 +32,15 @@ import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 
 public class CheckoutEventHandler implements ProgressTracker {
-  @Nullable private final ProgressIndicator myIndicator;
+  @Nullable
+  private final ProgressIndicator myIndicator;
   private int myExternalsCount;
-  @NotNull private final SvnVcs myVCS;
+  @Nonnull
+  private final SvnVcs myVCS;
   private final boolean myIsExport;
   private int myCnt;
 
-  public CheckoutEventHandler(@NotNull SvnVcs vcs, boolean isExport, @Nullable ProgressIndicator indicator) {
+  public CheckoutEventHandler(@Nonnull SvnVcs vcs, boolean isExport, @Nullable ProgressIndicator indicator) {
     myIndicator = indicator;
     myVCS = vcs;
     myExternalsCount = 1;
@@ -81,7 +84,7 @@ public class CheckoutEventHandler implements ProgressTracker {
     }
   }
 
-  private void progress(@NotNull String text) {
+  private void progress(@Nonnull String text) {
     if (myIndicator != null) {
       myIndicator.checkCanceled();
       myIndicator.setText(text);
@@ -91,7 +94,7 @@ public class CheckoutEventHandler implements ProgressTracker {
     }
   }
 
-  private void progress2(@NotNull String text) {
+  private void progress2(@Nonnull String text) {
     if (myIndicator != null) {
       myIndicator.checkCanceled();
       myIndicator.setText2(text);

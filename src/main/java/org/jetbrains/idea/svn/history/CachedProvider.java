@@ -18,11 +18,12 @@ package org.jetbrains.idea.svn.history;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.committed.ChangesBunch;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public abstract class CachedProvider implements BunchProvider {
   private final Iterator<ChangesBunch> myIterator;

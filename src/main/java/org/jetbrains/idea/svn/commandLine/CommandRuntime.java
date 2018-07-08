@@ -20,8 +20,8 @@ import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnApplicationSettings;
 import org.jetbrains.idea.svn.SvnProgressCanceller;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -39,12 +39,15 @@ public class CommandRuntime {
 
   private static final Logger LOG = Logger.getInstance(CommandRuntime.class);
 
-  @NotNull private final AuthenticationService myAuthenticationService;
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final List<CommandRuntimeModule> myModules;
+  @Nonnull
+  private final AuthenticationService myAuthenticationService;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final List<CommandRuntimeModule> myModules;
   private final String exePath;
 
-  public CommandRuntime(@NotNull SvnVcs vcs, @NotNull AuthenticationService authenticationService) {
+  public CommandRuntime(@Nonnull SvnVcs vcs, @Nonnull AuthenticationService authenticationService) {
     myVcs = vcs;
     myAuthenticationService = authenticationService;
 
@@ -57,8 +60,8 @@ public class CommandRuntime {
     myModules.add(new SshTunnelRuntimeModule(this));
   }
 
-  @NotNull
-  public CommandExecutor runWithAuthenticationAttempt(@NotNull Command command) throws SvnBindException {
+  @Nonnull
+  public CommandExecutor runWithAuthenticationAttempt(@Nonnull Command command) throws SvnBindException {
     try {
       onStart(command);
 
@@ -75,8 +78,8 @@ public class CommandRuntime {
     }
   }
 
-  @NotNull
-  public CommandExecutor runLocal(@NotNull Command command, int timeout) throws SvnBindException {
+  @Nonnull
+  public CommandExecutor runLocal(@Nonnull Command command, int timeout) throws SvnBindException {
     if (command.getWorkingDirectory() == null) {
       command.setWorkingDirectory(CommandParametersResolutionModule.getDefaultWorkingDirectory(myVcs.getProject()));
     }
@@ -89,7 +92,7 @@ public class CommandRuntime {
     return executor;
   }
 
-  private void onStart(@NotNull Command command) throws SvnBindException {
+  private void onStart(@Nonnull Command command) throws SvnBindException {
     // TODO: Actually command handler should be used as canceller, but currently all handlers use same cancel logic -
     // TODO: - just check progress indicator
     command.setCanceller(new SvnProgressCanceller());
@@ -99,7 +102,7 @@ public class CommandRuntime {
     }
   }
 
-  private boolean onAfterCommand(@NotNull CommandExecutor executor, @NotNull Command command) throws SvnBindException {
+  private boolean onAfterCommand(@Nonnull CommandExecutor executor, @Nonnull Command command) throws SvnBindException {
     boolean repeat = false;
 
     // TODO: synchronization does not work well in all cases - sometimes exit code is not yet set and null returned - fix synchronization
@@ -117,7 +120,7 @@ public class CommandRuntime {
     return repeat;
   }
 
-  private static void handleSuccess(@NotNull CommandExecutor executor) {
+  private static void handleSuccess(@Nonnull CommandExecutor executor) {
     // could be situations when exit code = 0, but there is info "warning" in error stream for instance, for "svn status"
     // on non-working copy folder
     if (!StringUtil.isEmptyOrSpaces(executor.getErrorOutput())) {
@@ -175,14 +178,14 @@ public class CommandRuntime {
     myAuthenticationService.reset();
   }
 
-  private static void logNullExitCode(@NotNull CommandExecutor executor, @Nullable Integer exitCode) {
+  private static void logNullExitCode(@Nonnull CommandExecutor executor, @Nullable Integer exitCode) {
     if (exitCode == null) {
       LOG.info("Null exit code returned, but not errors detected " + executor.getCommandText());
     }
   }
 
   @Nullable
-  private AuthCallbackCase createCallback(@NotNull final String errText, @Nullable final SVNURL url, boolean isUnderTerminal) {
+  private AuthCallbackCase createCallback(@Nonnull final String errText, @Nullable final SVNURL url, boolean isUnderTerminal) {
     List<AuthCallbackCase> authCases = ContainerUtil.newArrayList();
 
     if (isUnderTerminal) {
@@ -210,7 +213,7 @@ public class CommandRuntime {
     });
   }
 
-  private void cleanup(@NotNull CommandExecutor executor, @NotNull File workingDirectory) throws SvnBindException {
+  private void cleanup(@Nonnull CommandExecutor executor, @Nonnull File workingDirectory) throws SvnBindException {
     if (executor.getCommandName().isWriteable()) {
       File wcRoot = SvnUtil.getWorkingCopyRootNew(workingDirectory);
 
@@ -228,8 +231,8 @@ public class CommandRuntime {
     }
   }
 
-  @NotNull
-  private CommandExecutor newExecutor(@NotNull Command command) {
+  @Nonnull
+  private CommandExecutor newExecutor(@Nonnull Command command) {
     final CommandExecutor executor;
 
     if (!myVcs.getSvnConfiguration().isRunUnderTerminal() || isLocal(command)) {
@@ -248,14 +251,14 @@ public class CommandRuntime {
     return executor;
   }
 
-  @NotNull
-  private TerminalExecutor newTerminalExecutor(@NotNull Command command) {
+  @Nonnull
+  private TerminalExecutor newTerminalExecutor(@Nonnull Command command) {
     return SystemInfo.isWindows
            ? new WinTerminalExecutor(exePath, command)
            : new TerminalExecutor(exePath, command);
   }
 
-  public static boolean isLocal(@NotNull Command command) {
+  public static boolean isLocal(@Nonnull Command command) {
     return SvnCommandName.version.equals(command.getName()) ||
            SvnCommandName.cleanup.equals(command.getName()) ||
            SvnCommandName.add.equals(command.getName()) ||
@@ -268,12 +271,12 @@ public class CommandRuntime {
            command.isLocalInfo() || command.isLocalStatus() || command.isLocalProperty() || command.isLocalCat();
   }
 
-  @NotNull
+  @Nonnull
   public AuthenticationService getAuthenticationService() {
     return myAuthenticationService;
   }
 
-  @NotNull
+  @Nonnull
   public SvnVcs getVcs() {
     return myVcs;
   }

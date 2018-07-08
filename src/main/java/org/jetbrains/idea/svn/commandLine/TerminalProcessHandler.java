@@ -22,7 +22,7 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.io.BaseOutputReader;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnUtil;
 
 import java.util.List;
@@ -39,11 +39,11 @@ public class TerminalProcessHandler extends SvnProcessHandler {
   private final StringBuilder outputLine = new StringBuilder();
   private final StringBuilder errorLine = new StringBuilder();
 
-  public TerminalProcessHandler(@NotNull Process process, @NotNull String commandLine, boolean forceUtf8, boolean forceBinary) {
+  public TerminalProcessHandler(@Nonnull Process process, @Nonnull String commandLine, boolean forceUtf8, boolean forceBinary) {
     super(process, commandLine, forceUtf8, forceBinary);
   }
 
-  public void addInteractiveListener(@NotNull InteractiveCommandListener listener) {
+  public void addInteractiveListener(@Nonnull InteractiveCommandListener listener) {
     myInteractiveListeners.add(listener);
   }
 
@@ -58,7 +58,7 @@ public class TerminalProcessHandler extends SvnProcessHandler {
     process.destroy();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected BaseOutputReader.Options readerOptions() {
     return BaseOutputReader.Options.BLOCKING;
@@ -107,17 +107,17 @@ public class TerminalProcessHandler extends SvnProcessHandler {
     return result;
   }
 
-  @NotNull
-  protected String filterCombinedText(@NotNull String currentLine) {
+  @Nonnull
+  protected String filterCombinedText(@Nonnull String currentLine) {
     return currentLine;
   }
 
-  @NotNull
-  protected String filterText(@NotNull String text) {
+  @Nonnull
+  protected String filterText(@Nonnull String text) {
     return text;
   }
 
-  private void notify(@NotNull String text, @NotNull Key outputType, @NotNull StringBuilder lastLine) {
+  private void notify(@Nonnull String text, @Nonnull Key outputType, @Nonnull StringBuilder lastLine) {
     // text is not more than one line - either one line or part of the line
     if (StringUtil.endsWith(text, "\n")) {
       // we have full line - notify listeners
@@ -129,8 +129,8 @@ public class TerminalProcessHandler extends SvnProcessHandler {
     }
   }
 
-  @NotNull
-  protected Key resolveOutputType(@NotNull String line, @NotNull Key outputType) {
+  @Nonnull
+  protected Key resolveOutputType(@Nonnull String line, @Nonnull Key outputType) {
     Key result = outputType;
 
     if (!ProcessOutputTypes.SYSTEM.equals(outputType)) {
@@ -143,7 +143,7 @@ public class TerminalProcessHandler extends SvnProcessHandler {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   private StringBuilder getLastLineFor(Key outputType) {
     if (ProcessOutputTypes.STDERR.equals(outputType)) {
       return errorLine;

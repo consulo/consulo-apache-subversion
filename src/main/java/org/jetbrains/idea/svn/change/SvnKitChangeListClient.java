@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.change;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -16,7 +16,7 @@ import java.io.File;
 public class SvnKitChangeListClient extends BaseSvnClient implements ChangeListClient {
 
   @Override
-  public void add(@NotNull String changeList, @NotNull File path, @Nullable String[] changeListsToOperate) throws VcsException {
+  public void add(@Nonnull String changeList, @Nonnull File path, @Nullable String[] changeListsToOperate) throws VcsException {
     try {
       myVcs.getSvnKitManager().createChangelistClient()
         .doAddToChangelist(new File[]{path}, SVNDepth.EMPTY, changeList, changeListsToOperate);
@@ -27,7 +27,7 @@ public class SvnKitChangeListClient extends BaseSvnClient implements ChangeListC
   }
 
   @Override
-  public void remove(@NotNull File path) throws VcsException {
+  public void remove(@Nonnull File path) throws VcsException {
     try {
       myVcs.getSvnKitManager().createChangelistClient().doRemoveFromChangelist(new File[]{path}, SVNDepth.EMPTY, null);
     }

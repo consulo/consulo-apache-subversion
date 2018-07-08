@@ -33,8 +33,8 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangesUtil;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.changes.CurrentContentRevision;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBaseContentRevision;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -65,7 +65,7 @@ import static com.intellij.util.containers.ContainerUtil.exists;
 public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
 
   @Override
-  public void update(@NotNull AnActionEvent e) {
+  public void update(@Nonnull AnActionEvent e) {
     Change[] changes = e.getData(VcsDataKeys.CHANGES);
     boolean showAction = checkThatChangesAreUnderSvn(changes);
 
@@ -82,7 +82,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
   }
 
   @Override
-  public void actionPerformed(@NotNull AnActionEvent e) {
+  public void actionPerformed(@Nonnull AnActionEvent e) {
     Change[] changes = e.getData(VcsDataKeys.CHANGE_LEAD_SELECTION);
 
     if (checkThatChangesAreUnderSvn(changes)) {
@@ -105,7 +105,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
       myErrorTitle = errorTitle;
     }
 
-    public void run(@NotNull final ProgressIndicator indicator) {
+    public void run(@Nonnull final ProgressIndicator indicator) {
       final SvnVcs vcs = SvnVcs.getInstance(myProject);
 
       try {
@@ -145,8 +145,8 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     }
   }
 
-  @NotNull
-  private static SVNRevision getBeforeRevisionValue(@NotNull Change change) throws SVNException {
+  @Nonnull
+  private static SVNRevision getBeforeRevisionValue(@Nonnull Change change) throws SVNException {
     ContentRevision beforeRevision = change.getBeforeRevision();
     if (beforeRevision != null) {
       return ((SvnRevisionNumber)beforeRevision.getRevisionNumber()).getRevision();
@@ -156,8 +156,8 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     }
   }
 
-  @NotNull
-  private static SVNRevision getAfterRevisionValue(@NotNull Change change) throws SVNException {
+  @Nonnull
+  private static SVNRevision getAfterRevisionValue(@Nonnull Change change) throws SVNException {
     ContentRevision afterRevision = change.getAfterRevision();
     if (afterRevision != null) {
       // CurrentContentRevision will be here, for instance, if invoked from changes dialog for "Compare with Branch" action
@@ -170,8 +170,8 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     }
   }
 
-  @NotNull
-  private static String getDiffWindowTitle(@NotNull Change change) {
+  @Nonnull
+  private static String getDiffWindowTitle(@Nonnull Change change) {
     if (change.isMoved() || change.isRenamed()) {
       final FilePath beforeFilePath = ChangesUtil.getBeforePath(change);
       final FilePath afterFilePath = ChangesUtil.getAfterPath(change);
@@ -184,7 +184,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     }
   }
 
-  private static int compareRevisions(@NotNull SVNRevision revision1, @NotNull SVNRevision revision2) {
+  private static int compareRevisions(@Nonnull SVNRevision revision1, @Nonnull SVNRevision revision2) {
     if (revision1.equals(revision2)) {
       return 0;
     }
@@ -204,15 +204,15 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     return revision1.getNumber() > revision2.getNumber() ? 1 : -1;
   }
 
-  @NotNull
+  @Nonnull
   private static String revisionToString(@Nullable SVNRevision revision) {
     return revision == null ? "not exists" : revision.toString();
   }
 
   private final static String ourPropertiesDelimiter = "\n";
 
-  @NotNull
-  private static List<PropertyData> getPropertyList(@NotNull SvnVcs vcs,
+  @Nonnull
+  private static List<PropertyData> getPropertyList(@Nonnull SvnVcs vcs,
                                                     @Nullable final ContentRevision contentRevision,
                                                     @Nullable final SVNRevision revision)
   throws SVNException, VcsException {
@@ -232,14 +232,14 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     return getPropertyList(vcs, target, revision);
   }
 
-  @NotNull
-  public static List<PropertyData> getPropertyList(@NotNull SvnVcs vcs, @NotNull final SVNURL url, @Nullable final SVNRevision revision)
+  @Nonnull
+  public static List<PropertyData> getPropertyList(@Nonnull SvnVcs vcs, @Nonnull final SVNURL url, @Nullable final SVNRevision revision)
     throws VcsException {
     return getPropertyList(vcs, SvnTarget.fromURL(url, revision), revision);
   }
 
-  @NotNull
-  public static List<PropertyData> getPropertyList(@NotNull SvnVcs vcs, @NotNull final File ioFile, @Nullable final SVNRevision revision)
+  @Nonnull
+  public static List<PropertyData> getPropertyList(@Nonnull SvnVcs vcs, @Nonnull final File ioFile, @Nullable final SVNRevision revision)
     throws SVNException {
     try {
       return getPropertyList(vcs, SvnTarget.fromFile(ioFile, revision), revision);
@@ -249,8 +249,8 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     }
   }
 
-  @NotNull
-  private static List<PropertyData> getPropertyList(@NotNull SvnVcs vcs, @NotNull SvnTarget target, @Nullable SVNRevision revision)
+  @Nonnull
+  private static List<PropertyData> getPropertyList(@Nonnull SvnVcs vcs, @Nonnull SvnTarget target, @Nullable SVNRevision revision)
     throws VcsException {
     final List<PropertyData> lines = new ArrayList<>();
     final PropertyConsumer propertyHandler = createHandler(revision, lines);
@@ -260,8 +260,8 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     return lines;
   }
 
-  @NotNull
-  private static PropertyConsumer createHandler(SVNRevision revision, @NotNull final List<PropertyData> lines) {
+  @Nonnull
+  private static PropertyConsumer createHandler(SVNRevision revision, @Nonnull final List<PropertyData> lines) {
     final ProgressIndicator indicator = ProgressManager.getInstance().getProgressIndicator();
     if (indicator != null) {
       indicator.checkCanceled();
@@ -281,7 +281,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
         // revision properties here
       }
 
-      private void registerProperty(@NotNull PropertyData property) {
+      private void registerProperty(@Nonnull PropertyData property) {
         if (indicator != null) {
           indicator.checkCanceled();
           indicator.setText2(SvnBundle.message("show.properties.diff.progress.text2.property.information", property.getName()));
@@ -291,8 +291,8 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     };
   }
 
-  @NotNull
-  public static String toSortedStringPresentation(@NotNull List<PropertyData> lines) {
+  @Nonnull
+  public static String toSortedStringPresentation(@Nonnull List<PropertyData> lines) {
     StringBuilder sb = new StringBuilder();
 
     Collections.sort(lines, Comparator.comparing(PropertyData::getName));
@@ -304,7 +304,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     return sb.toString();
   }
 
-  private static void addPropertyPresentation(@NotNull PropertyData property, @NotNull StringBuilder sb) {
+  private static void addPropertyPresentation(@Nonnull PropertyData property, @Nonnull StringBuilder sb) {
     if (sb.length() != 0) {
       sb.append(ourPropertiesDelimiter);
     }

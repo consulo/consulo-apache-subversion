@@ -18,14 +18,15 @@ package org.jetbrains.idea.svn.update;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.util.FilePathByPathComparator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.DepthCombo;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -105,7 +106,7 @@ public abstract class AbstractSvnUpdatePanel {
   }
 
   @Nullable
-  private SVNURL getUrlFor(@NotNull final FilePath root) {
+  private SVNURL getUrlFor(@Nonnull final FilePath root) {
     final Info info = myVCS.getInfo(root.getIOFile());
     return info != null ? info.getURL() : null;
   }

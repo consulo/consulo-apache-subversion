@@ -22,7 +22,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.NotNullFunction;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -37,7 +37,8 @@ import java.io.File;
 public class SvnRepositoryLocation implements RepositoryLocation {
 
   private final String myURL;
-  @Nullable private final FilePath myRoot;
+  @Nullable
+  private final FilePath myRoot;
 
   public SvnRepositoryLocation(final String url) {
     this(url, null);

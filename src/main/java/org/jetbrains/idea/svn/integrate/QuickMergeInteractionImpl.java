@@ -22,7 +22,7 @@ import com.intellij.openapi.vcs.AbstractVcsHelper;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.dialogs.IntersectingLocalChangesPanel;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.mergeinfo.MergeChecker;
@@ -39,17 +39,20 @@ import static org.jetbrains.idea.svn.integrate.ToBeMergedDialog.MERGE_ALL_CODE;
 
 public class QuickMergeInteractionImpl implements QuickMergeInteraction {
 
-  @NotNull private final MergeContext myMergeContext;
-  @NotNull private final Project myProject;
-  @NotNull private final String myTitle;
+  @Nonnull
+  private final MergeContext myMergeContext;
+  @Nonnull
+  private final Project myProject;
+  @Nonnull
+  private final String myTitle;
 
-  public QuickMergeInteractionImpl(@NotNull MergeContext mergeContext) {
+  public QuickMergeInteractionImpl(@Nonnull MergeContext mergeContext) {
     myMergeContext = mergeContext;
     myProject = mergeContext.getProject();
     myTitle = mergeContext.getTitle();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public QuickMergeContentsVariants selectMergeVariant() {
     QuickMergeWayOptionsPanel panel = new QuickMergeWayOptionsPanel();
@@ -68,7 +71,7 @@ public class QuickMergeInteractionImpl implements QuickMergeInteraction {
   }
 
   @Override
-  public boolean shouldReintegrate(@NotNull String targetUrl) {
+  public boolean shouldReintegrate(@Nonnull String targetUrl) {
     return prompt("<html><body>You are going to reintegrate changes.<br><br>This will make branch '" +
                   myMergeContext.getSourceUrl() +
                   "' <b>no longer usable for further work</b>." +
@@ -76,10 +79,10 @@ public class QuickMergeInteractionImpl implements QuickMergeInteraction {
                   ") changes,<br>nor can this branch be properly reintegrated to trunk again.<br><br>Are you sure?</body></html>");
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public SelectMergeItemsResult selectMergeItems(@NotNull List<SvnChangeList> lists,
-                                                 @NotNull MergeChecker mergeChecker,
+  public SelectMergeItemsResult selectMergeItems(@Nonnull List<SvnChangeList> lists,
+                                                 @Nonnull MergeChecker mergeChecker,
                                                  boolean allStatusesCalculated,
                                                  boolean allListsLoaded) {
     ToBeMergedDialog dialog =
@@ -92,7 +95,7 @@ public class QuickMergeInteractionImpl implements QuickMergeInteraction {
     return new SelectMergeItemsResult(resultCode, selectedLists);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public LocalChangesAction selectLocalChangesAction(boolean mergeAll) {
     LocalChangesAction[] possibleResults;
@@ -111,26 +114,26 @@ public class QuickMergeInteractionImpl implements QuickMergeInteraction {
   }
 
   @Override
-  public void showIntersectedLocalPaths(@NotNull List<FilePath> paths) {
+  public void showIntersectedLocalPaths(@Nonnull List<FilePath> paths) {
     IntersectingLocalChangesPanel.showInVersionControlToolWindow(myProject, myTitle + ", local changes intersection",
       paths, "The following file(s) have local changes that will intersect with merge changes:");
   }
 
   @Override
-  public void showErrors(@NotNull String message, @NotNull List<VcsException> exceptions) {
+  public void showErrors(@Nonnull String message, @Nonnull List<VcsException> exceptions) {
     AbstractVcsHelper.getInstance(myProject).showErrors(exceptions, message);
   }
 
   @Override
-  public void showErrors(@NotNull String message, boolean isError) {
+  public void showErrors(@Nonnull String message, boolean isError) {
     VcsBalloonProblemNotifier.showOverChangesView(myProject, message, isError ? MessageType.ERROR : MessageType.WARNING);
   }
 
-  private boolean prompt(@NotNull String question) {
+  private boolean prompt(@Nonnull String question) {
     return showOkCancelDialog(myProject, question, myTitle, getQuestionIcon()) == OK;
   }
 
-  @NotNull
+  @Nonnull
   private static QuickMergeContentsVariants toMergeVariant(int exitCode) {
     switch (exitCode) {
       case MERGE_ALL_CODE:

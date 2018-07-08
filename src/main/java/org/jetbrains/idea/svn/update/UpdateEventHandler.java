@@ -23,7 +23,7 @@ import com.intellij.openapi.vcs.update.UpdatedFiles;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.Stack;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnFileUrlMapping;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -52,7 +52,8 @@ public class UpdateEventHandler implements ProgressTracker {
   private UpdatedFiles myUpdatedFiles;
   private int myExternalsCount;
   private final SvnVcs myVCS;
-  @Nullable private final SvnUpdateContext mySequentialUpdatesContext;
+  @Nullable
+  private final SvnUpdateContext mySequentialUpdatesContext;
   private final Map<File, SVNURL> myUrlToCheckForSwitch;
   // pair.first - group id, pair.second - file path
   // Stack is used to correctly handle cases when updates of externals occur during ordinary update, because these inner updates could have

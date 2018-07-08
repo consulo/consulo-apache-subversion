@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.containers.MultiMap;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.*;
 
@@ -31,7 +31,7 @@ public class NativeLogReader {
   private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.NativeLogReader");
 
   private final static MultiMap<Thread, CallInfo> ourCallLog = new MultiMap<Thread, CallInfo>() {
-    @NotNull
+    @Nonnull
     @Override
     protected Collection<CallInfo> createCollection() {
       return new ArrayList<>(2);
@@ -40,7 +40,7 @@ public class NativeLogReader {
   private final static Set<Thread> ourTrackedThreads = Collections.synchronizedSet(new HashSet<Thread>());
   private final static Object ourLock = new Object();
 
-  public static void putInfo(@NotNull final CallInfo callInfo) {
+  public static void putInfo(@Nonnull final CallInfo callInfo) {
     if (ourTrackedThreads.size() > 1000) {
       for (CallInfo info : ourCallLog.values()) {
         LOG.info(SvnNativeCallsTranslator.defaultMessage(info));
@@ -88,13 +88,13 @@ public class NativeLogReader {
     private final int myResultCode;
     private final String myStrResultCode;
 
-    public CallInfo(@NotNull String functionName, int resultCode) {
+    public CallInfo(@Nonnull String functionName, int resultCode) {
       myFunctionName = functionName;
       myResultCode = resultCode;
       myStrResultCode = String.valueOf(resultCode);
     }
 
-    public CallInfo(@NotNull String functionName, @NotNull String resultCode) {
+    public CallInfo(@Nonnull String functionName, @Nonnull String resultCode) {
       myFunctionName = functionName;
       myResultCode = 0;
       myStrResultCode = resultCode;

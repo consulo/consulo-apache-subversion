@@ -22,8 +22,8 @@ import com.intellij.openapi.ui.MultiLineLabelUI;
 import com.intellij.ui.components.JBLoadingPanel;
 import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.tmatesoft.svn.core.internal.wc.SVNFileUtil;
@@ -59,7 +59,7 @@ public class UpgradeFormatDialog extends DialogWrapper  {
     }
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction()};
   }
@@ -69,7 +69,7 @@ public class UpgradeFormatDialog extends DialogWrapper  {
     return "svn.upgradeDialog";
   }
 
-  public void setData(@NotNull final WorkingCopyFormat selectedFormat) {
+  public void setData(@Nonnull final WorkingCopyFormat selectedFormat) {
     for (JRadioButton button : formatButtons) {
       if (selectedFormat == getFormat(button)) {
         button.setSelected(true);
@@ -78,7 +78,7 @@ public class UpgradeFormatDialog extends DialogWrapper  {
     }
   }
 
-  public void setSupported(@NotNull Collection<WorkingCopyFormat> supported) {
+  public void setSupported(@Nonnull Collection<WorkingCopyFormat> supported) {
     for (JRadioButton button : formatButtons) {
       button.setEnabled(supported.contains(getFormat(button)));
     }
@@ -149,10 +149,10 @@ public class UpgradeFormatDialog extends DialogWrapper  {
     return myLoadingPanel;
   }
 
-  private void registerFormat(@NotNull WorkingCopyFormat format,
-                              @NotNull String label,
-                              @NotNull JPanel panel,
-                              @NotNull GridBagConstraints gb) {
+  private void registerFormat(@Nonnull WorkingCopyFormat format,
+                              @Nonnull String label,
+                              @Nonnull JPanel panel,
+                              @Nonnull GridBagConstraints gb) {
     JRadioButton button = new JRadioButton(SvnBundle.message("radio.configure." + label + ".auto." + getKey(format) + "format"));
     button.putClientProperty("format", format);
 
@@ -163,7 +163,7 @@ public class UpgradeFormatDialog extends DialogWrapper  {
     formatButtons.add(button);
   }
 
-  private static String getKey(@NotNull WorkingCopyFormat format) {
+  private static String getKey(@Nonnull WorkingCopyFormat format) {
     return String.format("%d%d", format.getVersion().major, format.getVersion().minor);
   }
 
@@ -180,14 +180,14 @@ public class UpgradeFormatDialog extends DialogWrapper  {
     return true;
   }
 
-  @NotNull
-  private static WorkingCopyFormat getFormat(@NotNull JRadioButton button) {
+  @Nonnull
+  private static WorkingCopyFormat getFormat(@Nonnull JRadioButton button) {
     Object format = button.getClientProperty("format");
 
     return format instanceof WorkingCopyFormat ? (WorkingCopyFormat)format : WorkingCopyFormat.UNKNOWN;
   }
 
-  @NotNull
+  @Nonnull
   public WorkingCopyFormat getUpgradeMode() {
     WorkingCopyFormat result = WorkingCopyFormat.UNKNOWN;
 

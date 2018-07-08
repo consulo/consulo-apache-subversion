@@ -20,8 +20,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.ObjectsConvertor;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.Convertor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -158,7 +158,7 @@ public class SvnBranchConfigurationNew {
   }
 
   @Nullable
-  public SVNURL getWorkingBranch(@NotNull SVNURL someUrl) throws SvnBindException {
+  public SVNURL getWorkingBranch(@Nonnull SVNURL someUrl) throws SvnBindException {
     String baseUrl = getBaseUrl(someUrl.toString());
     return baseUrl == null ? null : SvnUtil.createUrl(baseUrl);
   }

@@ -19,8 +19,8 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -38,14 +38,15 @@ import java.util.List;
 
 public class PointMerger extends Merger {
 
-  @NotNull private final List<Change> mySelectedChanges;
+  @Nonnull
+  private final List<Change> mySelectedChanges;
 
   public PointMerger(final SvnVcs vcs,
                      CommittedChangeList selectedChangeList,
                      final File target,
                      final UpdateEventHandler handler,
                      final SVNURL currentBranchUrl,
-                     @NotNull List<Change> selectedChanges,
+                     @Nonnull List<Change> selectedChanges,
                      String branchName) {
     super(vcs, ContainerUtil.newArrayList(selectedChangeList), target, handler, currentBranchUrl, branchName);
 
@@ -70,7 +71,7 @@ public class PointMerger extends Merger {
     }
   }
 
-  private void merge(@NotNull SvnRepositoryContentRevision before, @NotNull SvnRepositoryContentRevision after) throws VcsException {
+  private void merge(@Nonnull SvnRepositoryContentRevision before, @Nonnull SvnRepositoryContentRevision after) throws VcsException {
     MergeClient client = myVcs.getFactory(myTarget).createMergeClient();
     SvnTarget source1 = before.toTarget();
     SvnTarget source2 = after.toTarget();
@@ -80,14 +81,14 @@ public class PointMerger extends Merger {
                  myHandler);
   }
 
-  private void delete(@NotNull SvnRepositoryContentRevision revision) throws VcsException {
+  private void delete(@Nonnull SvnRepositoryContentRevision revision) throws VcsException {
     DeleteClient client = myVcs.getFactory(myTarget).createDeleteClient();
     File localPath = getLocalPath(revision.getFullPath());
 
     client.delete(localPath, false, mySvnConfig.isMergeDryRun(), myHandler);
   }
 
-  private void add(@NotNull SvnRepositoryContentRevision revision) throws VcsException {
+  private void add(@Nonnull SvnRepositoryContentRevision revision) throws VcsException {
     // todo dry run
     CopyMoveClient client = myVcs.getFactory(myTarget).createCopyMoveClient();
     File localPath = getLocalPath(revision.getFullPath());
@@ -95,8 +96,8 @@ public class PointMerger extends Merger {
     client.copy(revision.toTarget(), localPath, revision.getRevisionNumber().getRevision(), true, myHandler);
   }
 
-  @NotNull
-  private File getLocalPath(@NotNull String fullUrl) {
+  @Nonnull
+  private File getLocalPath(@Nonnull String fullUrl) {
     return SvnUtil.fileFromUrl(myTarget, myCurrentBranchUrl.toString(), fullUrl);
   }
 

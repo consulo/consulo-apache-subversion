@@ -42,8 +42,8 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.Convertor;
 import com.intellij.util.containers.MultiMap;
 import gnu.trove.THashSet;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -63,9 +63,10 @@ import java.util.List;
 public class SvnCheckinEnvironment implements CheckinEnvironment {
 
   private static final Logger LOG = Logger.getInstance(SvnCheckinEnvironment.class);
-  @NotNull private final SvnVcs mySvnVcs;
+  @Nonnull
+  private final SvnVcs mySvnVcs;
 
-  public SvnCheckinEnvironment(@NotNull SvnVcs svnVcs) {
+  public SvnCheckinEnvironment(@Nonnull SvnVcs svnVcs) {
     mySvnVcs = svnVcs;
   }
 
@@ -84,7 +85,7 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
     return null;
   }
 
-  private void doCommit(@NotNull Collection<FilePath> committables,
+  private void doCommit(@Nonnull Collection<FilePath> committables,
                         String comment,
                         List<VcsException> exception,
                         final Set<String> feedback) {
@@ -102,11 +103,11 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
     }
   }
 
-  private void doCommitOneRepo(@NotNull Collection<FilePath> committables,
+  private void doCommitOneRepo(@Nonnull Collection<FilePath> committables,
                                String comment,
                                List<VcsException> exception,
                                final Set<String> feedback,
-                               @NotNull WorkingCopyFormat format)
+                               @Nonnull WorkingCopyFormat format)
   throws VcsException {
     if (committables.isEmpty()) {
       return;
@@ -150,8 +151,8 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
     }
   }
 
-  @NotNull
-  private Collection<FilePath> getCommitables(@NotNull List<Change> changes) {
+  @Nonnull
+  private Collection<FilePath> getCommitables(@Nonnull List<Change> changes) {
     THashSet<FilePath> result = ContainerUtil.newTroveSet(ChangesUtil.FILE_PATH_BY_PATH_ONLY_HASHING_STRATEGY);
 
     ChangesUtil.getAllPaths(changes.stream()).forEach(path -> {
@@ -163,7 +164,7 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
     return result;
   }
 
-  private void addParents(@NotNull Collection<FilePath> paths, @NotNull FilePath path) {
+  private void addParents(@Nonnull Collection<FilePath> paths, @Nonnull FilePath path) {
     FilePath parent = path;
 
     while ((parent = parent.getParentPath()) != null && isAddedOrReplaced(parent)) {
@@ -171,14 +172,14 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
     }
   }
 
-  private boolean isAddedOrReplaced(@NotNull FilePath file) {
+  private boolean isAddedOrReplaced(@Nonnull FilePath file) {
     Status status = getStatus(file);
 
     return status != null && status.is(StatusType.STATUS_ADDED, StatusType.STATUS_REPLACED);
   }
 
   @Nullable
-  private Status getStatus(@NotNull FilePath file) {
+  private Status getStatus(@Nonnull FilePath file) {
     Status result = null;
 
     try {
@@ -197,7 +198,7 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
 
   public List<VcsException> commit(List<Change> changes,
                                    final String preparedComment,
-                                   @NotNull NullableFunction<Object, Object> parametersHolder,
+                                   @Nonnull NullableFunction<Object, Object> parametersHolder,
                                    final Set<String> feedback) {
     final List<VcsException> exception = new ArrayList<>();
     final Collection<FilePath> committables = getCommitables(changes);
@@ -244,11 +245,11 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
     return scheduleUnversionedFilesForAddition(mySvnVcs, files);
   }
 
-  public static List<VcsException> scheduleUnversionedFilesForAddition(@NotNull SvnVcs vcs, List<VirtualFile> files) {
+  public static List<VcsException> scheduleUnversionedFilesForAddition(@Nonnull SvnVcs vcs, List<VirtualFile> files) {
     return scheduleUnversionedFilesForAddition(vcs, files, false);
   }
 
-  public static List<VcsException> scheduleUnversionedFilesForAddition(@NotNull SvnVcs vcs, List<VirtualFile> files, final boolean recursive) {
+  public static List<VcsException> scheduleUnversionedFilesForAddition(@Nonnull SvnVcs vcs, List<VirtualFile> files, final boolean recursive) {
     Collections.sort(files, FilePathComparator.getInstance());
 
     ProgressTracker eventHandler = new SvnProgressCanceller() {
@@ -292,10 +293,13 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
 
   private class KeepLocksComponent implements RefreshableOnComponent {
 
-    @NotNull private final JCheckBox myKeepLocksBox;
+    @Nonnull
+	private final JCheckBox myKeepLocksBox;
     private boolean myIsKeepLocks;
-    @NotNull private final JPanel myPanel;
-    @NotNull private final JCheckBox myAutoUpdate;
+    @Nonnull
+	private final JPanel myPanel;
+    @Nonnull
+	private final JCheckBox myAutoUpdate;
 
     public KeepLocksComponent() {
 

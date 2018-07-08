@@ -32,7 +32,7 @@ import com.intellij.ui.PopupHandler;
 import com.intellij.util.ui.GridBag;
 import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserDialog;

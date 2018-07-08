@@ -22,7 +22,7 @@ import com.intellij.openapi.vcs.changes.committed.RepositoryLocationGroup;
 import com.intellij.openapi.vcs.changes.committed.VcsCommittedListsZipper;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.containers.MultiMap;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNURL;
@@ -39,9 +39,10 @@ public class SvnCommittedListsZipper implements VcsCommittedListsZipper {
 
   private static final Logger LOG = Logger.getInstance(SvnCommittedListsZipper.class);
 
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final SvnVcs myVcs;
 
-  public SvnCommittedListsZipper(@NotNull SvnVcs vcs) {
+  public SvnCommittedListsZipper(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
   }
 

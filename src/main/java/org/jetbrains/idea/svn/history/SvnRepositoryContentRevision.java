@@ -32,8 +32,9 @@ import com.intellij.openapi.vcs.changes.ByteBackedContentRevision;
 import com.intellij.openapi.vcs.impl.ContentRevisionCache;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
@@ -47,21 +48,22 @@ import static com.intellij.util.ObjectUtils.notNull;
 
 public class SvnRepositoryContentRevision extends SvnBaseContentRevision implements ByteBackedContentRevision {
 
-  @NotNull private final String myPath;
+  @Nonnull
+  private final String myPath;
   private final long myRevision;
 
-  public SvnRepositoryContentRevision(@NotNull SvnVcs vcs, @NotNull FilePath remotePath, @Nullable FilePath localPath, long revision) {
+  public SvnRepositoryContentRevision(@Nonnull SvnVcs vcs, @Nonnull FilePath remotePath, @Nullable FilePath localPath, long revision) {
     super(vcs, notNull(localPath, remotePath));
     myPath = FileUtil.toSystemIndependentName(remotePath.getPath());
     myRevision = revision;
   }
 
-  @NotNull
+  @Nonnull
   public String getContent() throws VcsException {
     return ContentRevisionCache.getAsString(getContentAsBytes(), myFile, null);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public byte[] getContentAsBytes() throws VcsException {
     try {
@@ -76,7 +78,7 @@ public class SvnRepositoryContentRevision extends SvnBaseContentRevision impleme
     }
   }
 
-  @NotNull
+  @Nonnull
   protected ByteArrayOutputStream loadContent() throws VcsException {
     final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     ContentLoader loader = new ContentLoader(myPath, buffer, myRevision);
@@ -95,30 +97,30 @@ public class SvnRepositoryContentRevision extends SvnBaseContentRevision impleme
     return buffer;
   }
 
-  @NotNull
+  @Nonnull
   public SvnRevisionNumber getRevisionNumber() {
     return new SvnRevisionNumber(SVNRevision.create(myRevision));
   }
 
-  public static SvnRepositoryContentRevision create(@NotNull SvnVcs vcs,
-                                                    @NotNull String repositoryRoot,
-                                                    @NotNull String path,
+  public static SvnRepositoryContentRevision create(@Nonnull SvnVcs vcs,
+                                                    @Nonnull String repositoryRoot,
+                                                    @Nonnull String path,
                                                     @Nullable FilePath localPath,
                                                     long revision) {
     return create(vcs, SvnUtil.appendMultiParts(repositoryRoot, path), localPath, revision);
   }
 
-  public static SvnRepositoryContentRevision createForRemotePath(@NotNull SvnVcs vcs,
-                                                                 @NotNull String repositoryRoot,
-                                                                 @NotNull String path,
+  public static SvnRepositoryContentRevision createForRemotePath(@Nonnull SvnVcs vcs,
+                                                                 @Nonnull String repositoryRoot,
+                                                                 @Nonnull String path,
                                                                  boolean isDirectory,
                                                                  long revision) {
     FilePath remotePath = VcsUtil.getFilePathOnNonLocal(SvnUtil.appendMultiParts(repositoryRoot, path), isDirectory);
     return create(vcs, remotePath, remotePath, revision);
   }
 
-  public static SvnRepositoryContentRevision create(@NotNull SvnVcs vcs,
-                                                    @NotNull String fullPath,
+  public static SvnRepositoryContentRevision create(@Nonnull SvnVcs vcs,
+                                                    @Nonnull String fullPath,
                                                     @Nullable FilePath localPath,
                                                     long revision) {
     // TODO: Check if isDirectory = false always true for this method calls
@@ -127,8 +129,8 @@ public class SvnRepositoryContentRevision extends SvnBaseContentRevision impleme
     return create(vcs, remotePath, localPath == null ? remotePath : localPath, revision);
   }
 
-  public static SvnRepositoryContentRevision create(@NotNull SvnVcs vcs,
-                                                    @NotNull FilePath remotePath,
+  public static SvnRepositoryContentRevision create(@Nonnull SvnVcs vcs,
+                                                    @Nonnull FilePath remotePath,
                                                     @Nullable FilePath localPath,
                                                     long revision) {
     return remotePath.getFileType().isBinary()
@@ -176,16 +178,16 @@ public class SvnRepositoryContentRevision extends SvnBaseContentRevision impleme
     }
   }
 
-  @NotNull
+  @Nonnull
   public String getFullPath() {
     return myPath;
   }
 
-  public String getRelativePath(@NotNull String repositoryUrl) {
+  public String getRelativePath(@Nonnull String repositoryUrl) {
     return SvnUtil.getRelativePath(repositoryUrl, myPath);
   }
 
-  @NotNull
+  @Nonnull
   public SvnTarget toTarget() throws SvnBindException {
     return SvnTarget.fromURL(SvnUtil.createUrl(getFullPath()), getRevisionNumber().getRevision());
   }

@@ -20,8 +20,8 @@ import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.MultiLineLabelUI;
 import com.intellij.ui.CollectionComboBoxModel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 
 import javax.swing.*;
@@ -37,12 +37,13 @@ import static org.jetbrains.idea.svn.SvnBundle.message;
 import static org.jetbrains.idea.svn.SvnUtil.createUrl;
 
 public class AddRepositoryLocationDialog extends DialogWrapper {
-  @NotNull private final List<String> myPreviousLocations;
+  @Nonnull
+  private final List<String> myPreviousLocations;
   private JComboBox myCombo;
   private String mySelected;
   private JTextField myComboField;
 
-  public AddRepositoryLocationDialog(@NotNull Project project, @NotNull List<String> values) {
+  public AddRepositoryLocationDialog(@Nonnull Project project, @Nonnull List<String> values) {
     super(project, true);
     myPreviousLocations = sorted(values);
 
@@ -143,7 +144,7 @@ public class AddRepositoryLocationDialog extends DialogWrapper {
     super.doOKAction();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction()};

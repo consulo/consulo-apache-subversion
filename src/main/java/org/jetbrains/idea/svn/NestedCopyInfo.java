@@ -15,25 +15,32 @@
  */
 package org.jetbrains.idea.svn;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.SVNURL;
 
 /**
  * @author Konstantin Kolosovsky.
  */
 public class NestedCopyInfo {
-  @NotNull private final VirtualFile myFile;
-  @Nullable private SVNURL myUrl;
-  @NotNull private WorkingCopyFormat myFormat;
-  @NotNull private final NestedCopyType myType;
-  @Nullable private SVNURL myRootURL;
+  @Nonnull
+  private final VirtualFile myFile;
+  @Nullable
+  private SVNURL myUrl;
+  @Nonnull
+  private WorkingCopyFormat myFormat;
+  @Nonnull
+  private final NestedCopyType myType;
+  @Nullable
+  private SVNURL myRootURL;
 
-  public NestedCopyInfo(@NotNull final VirtualFile file,
+  public NestedCopyInfo(@Nonnull final VirtualFile file,
                         @Nullable final SVNURL url,
-                        @NotNull final WorkingCopyFormat format,
-                        @NotNull final NestedCopyType type,
+                        @Nonnull final WorkingCopyFormat format,
+                        @Nonnull final NestedCopyType type,
                         @Nullable SVNURL rootURL) {
     myFile = file;
     myUrl = url;
@@ -51,11 +58,11 @@ public class NestedCopyInfo {
     return myRootURL;
   }
 
-  public void setFormat(@NotNull WorkingCopyFormat format) {
+  public void setFormat(@Nonnull WorkingCopyFormat format) {
     myFormat = format;
   }
 
-  @NotNull
+  @Nonnull
   public VirtualFile getFile() {
     return myFile;
   }
@@ -65,12 +72,12 @@ public class NestedCopyInfo {
     return myUrl;
   }
 
-  @NotNull
+  @Nonnull
   public WorkingCopyFormat getFormat() {
     return myFormat;
   }
 
-  @NotNull
+  @Nonnull
   public NestedCopyType getType() {
     return myType;
   }

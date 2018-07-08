@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.history;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 public interface BunchProvider {
   long getEarliestRevision();

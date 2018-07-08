@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.diff;
 
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
@@ -33,8 +33,8 @@ public interface DiffClient extends SvnClient {
    * @param target1 Should always be url.
    * @param target2 Could be either url or file. And should be directory if file.
    */
-  @NotNull
-  List<Change> compare(@NotNull SvnTarget target1, @NotNull SvnTarget target2) throws VcsException;
+  @Nonnull
+  List<Change> compare(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2) throws VcsException;
 
-  void unifiedDiff(@NotNull SvnTarget target1, @NotNull SvnTarget target2, @NotNull OutputStream output) throws VcsException;
+  void unifiedDiff(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2, @Nonnull OutputStream output) throws VcsException;
 }

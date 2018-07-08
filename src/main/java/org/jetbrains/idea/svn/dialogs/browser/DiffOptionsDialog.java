@@ -32,13 +32,13 @@ import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.DocumentAdapter;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
 import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.TreeSelectionEvent;

@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.checkin;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.api.SvnClient;
 
 import java.io.File;
@@ -27,6 +27,6 @@ import java.util.List;
  */
 public interface CheckinClient extends SvnClient {
 
-  @NotNull
-  CommitInfo[] commit(@NotNull List<File> paths, @NotNull String comment) throws VcsException;
+  @Nonnull
+  CommitInfo[] commit(@Nonnull List<File> paths, @Nonnull String comment) throws VcsException;
 }

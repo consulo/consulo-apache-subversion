@@ -15,8 +15,9 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNURL;
@@ -25,7 +26,8 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 import java.io.File;
 
 public class UpdateRootInfo {
-  @Nullable private SVNURL myUrl;
+  @Nullable
+  private SVNURL myUrl;
   private SVNRevision myRevision;
   private boolean myUpdateToSpecifiedRevision = false;
 
@@ -49,7 +51,7 @@ public class UpdateRootInfo {
     return myUpdateToSpecifiedRevision;
   }
 
-  public void setUrl(@NotNull SVNURL url) {
+  public void setUrl(@Nonnull SVNURL url) {
     myUrl = url;
   }
 

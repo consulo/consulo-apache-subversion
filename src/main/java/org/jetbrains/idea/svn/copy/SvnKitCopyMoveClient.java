@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.copy;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.checkin.CommitEventHandler;
@@ -24,7 +24,7 @@ public class SvnKitCopyMoveClient extends BaseSvnClient implements CopyMoveClien
   private static final int INVALID_REVISION = -1;
 
   @Override
-  public void copy(@NotNull File src, @NotNull File dst, boolean makeParents, boolean isMove) throws VcsException {
+  public void copy(@Nonnull File src, @Nonnull File dst, boolean makeParents, boolean isMove) throws VcsException {
     final SVNCopySource copySource = new SVNCopySource(isMove ? SVNRevision.UNDEFINED : SVNRevision.WORKING, SVNRevision.WORKING, src);
 
     try {
@@ -36,12 +36,12 @@ public class SvnKitCopyMoveClient extends BaseSvnClient implements CopyMoveClien
   }
 
   @Override
-  public long copy(@NotNull SvnTarget source,
-                   @NotNull SvnTarget destination,
+  public long copy(@Nonnull SvnTarget source,
+                   @Nonnull SvnTarget destination,
                    @Nullable SVNRevision revision,
                    boolean makeParents,
                    boolean isMove,
-                   @NotNull String message,
+                   @Nonnull String message,
                    @Nullable CommitEventHandler handler) throws VcsException {
 
     if (!destination.isURL()) {
@@ -65,8 +65,8 @@ public class SvnKitCopyMoveClient extends BaseSvnClient implements CopyMoveClien
   }
 
   @Override
-  public void copy(@NotNull SvnTarget source,
-                   @NotNull File destination,
+  public void copy(@Nonnull SvnTarget source,
+                   @Nonnull File destination,
                    @Nullable SVNRevision revision,
                    boolean makeParents,
                    @Nullable ProgressTracker handler) throws VcsException {
@@ -81,8 +81,8 @@ public class SvnKitCopyMoveClient extends BaseSvnClient implements CopyMoveClien
     }
   }
 
-  @NotNull
-  private static SVNCopySource createCopySource(@NotNull SvnTarget source, @Nullable SVNRevision revision) {
+  @Nonnull
+  private static SVNCopySource createCopySource(@Nonnull SvnTarget source, @Nullable SVNRevision revision) {
     return source.isFile()
            ? new SVNCopySource(source.getPegRevision(), revision, source.getFile())
            : new SVNCopySource(source.getPegRevision(), revision, source.getURL());

@@ -21,7 +21,7 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.history.SvnRepositoryLocation;
@@ -115,7 +115,7 @@ public class SvnRevisionPanel extends JPanel {
     return myHead.isSelected() ? SVNRevision.HEAD.toString() : myRevisionField.getText();
   }
 
-  @NotNull
+  @Nonnull
   public SVNRevision getRevision() throws ConfigurationException {
 
     if (myHead.isSelected()) return SVNRevision.HEAD;

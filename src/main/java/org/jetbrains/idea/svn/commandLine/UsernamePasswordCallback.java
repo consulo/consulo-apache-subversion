@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.commandLine;
 
 import com.intellij.openapi.util.registry.Registry;
 import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
@@ -44,7 +44,7 @@ public class UsernamePasswordCallback extends AuthCallbackCase {
 
   protected SVNAuthentication myAuthentication;
 
-  UsernamePasswordCallback(@NotNull AuthenticationService authenticationService, SVNURL url) {
+  UsernamePasswordCallback(@Nonnull AuthenticationService authenticationService, SVNURL url) {
     super(authenticationService, url);
   }
 
@@ -77,7 +77,7 @@ public class UsernamePasswordCallback extends AuthCallbackCase {
   }
 
   @Override
-  public void updateParameters(@NotNull Command command) {
+  public void updateParameters(@Nonnull Command command) {
     if (myAuthentication instanceof SVNPasswordAuthentication) {
       SVNPasswordAuthentication auth = (SVNPasswordAuthentication)myAuthentication;
 

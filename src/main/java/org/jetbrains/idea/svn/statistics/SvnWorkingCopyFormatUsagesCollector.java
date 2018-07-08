@@ -22,7 +22,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -37,13 +37,13 @@ public class SvnWorkingCopyFormatUsagesCollector extends AbstractApplicationUsag
 
   private static final String GROUP_ID = "svn working copy format";
 
-  @NotNull
+  @Nonnull
   public GroupDescriptor getGroupId() {
     return GroupDescriptor.create(GROUP_ID, GroupDescriptor.HIGHER_PRIORITY);
   }
 
-  @NotNull
-  public Set<UsageDescriptor> getProjectUsages(@NotNull Project project) {
+  @Nonnull
+  public Set<UsageDescriptor> getProjectUsages(@Nonnull Project project) {
     SvnVcs vcs = SvnVcs.getInstance(project);
 
     // do not track roots with errors (SvnFileUrlMapping.getErrorRoots()) as they are "not usable" until errors are resolved

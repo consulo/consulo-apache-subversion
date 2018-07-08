@@ -19,8 +19,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
@@ -59,7 +59,7 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 	// grouped; if there are several mappings one under another, will return the upmost
 	private final SvnMapping myMoreRealMapping;
 	private final List<RootUrlInfo> myErrorRoots;
-	@NotNull
+	@Nonnull
 	private final MyRootsHelper myRootsHelper;
 	private final Project myProject;
 	private final NestedCopiesHolder myNestedCopiesHolder;
@@ -68,20 +68,20 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 
 	private static class MyRootsHelper
 	{
-		@NotNull
+		@Nonnull
 		private final static ThreadLocal<Boolean> ourInProgress = ThreadLocal.withInitial(() -> Boolean.FALSE);
-		@NotNull
+		@Nonnull
 		private final Project myProject;
-		@NotNull
+		@Nonnull
 		private final ProjectLevelVcsManager myVcsManager;
 
-		private MyRootsHelper(@NotNull Project project, @NotNull ProjectLevelVcsManager vcsManager)
+		private MyRootsHelper(@Nonnull Project project, @Nonnull ProjectLevelVcsManager vcsManager)
 		{
 			myProject = project;
 			myVcsManager = vcsManager;
 		}
 
-		@NotNull
+		@Nonnull
 		public VirtualFile[] execute()
 		{
 			try
@@ -151,7 +151,7 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 	}
 
 	@Nullable
-	public File getLocalPath(@NotNull String url)
+	public File getLocalPath(@Nonnull String url)
 	{
 		synchronized(myMonitor)
 		{
@@ -236,8 +236,8 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 		}
 	}
 
-	@NotNull
-	public List<VirtualFile> convertRoots(@NotNull List<VirtualFile> result)
+	@Nonnull
+	public List<VirtualFile> convertRoots(@Nonnull List<VirtualFile> result)
 	{
 		if(MyRootsHelper.isInProgress())
 		{
@@ -288,7 +288,7 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 		}
 	}
 
-	public void applyDetectionResult(@NotNull SvnRootsDetector.Result result)
+	public void applyDetectionResult(@Nonnull SvnRootsDetector.Result result)
 	{
 		new NewRootsApplier(result).apply();
 	}
@@ -296,14 +296,14 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 	private class NewRootsApplier
 	{
 
-		@NotNull
+		@Nonnull
 		private final SvnRootsDetector.Result myResult;
-		@NotNull
+		@Nonnull
 		private final SvnMapping myNewMapping;
-		@NotNull
+		@Nonnull
 		private final SvnMapping myNewFilteredMapping;
 
-		private NewRootsApplier(@NotNull SvnRootsDetector.Result result)
+		private NewRootsApplier(@Nonnull SvnRootsDetector.Result result)
 		{
 			myResult = result;
 			myNewMapping = new SvnMapping();
@@ -392,7 +392,7 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	public VirtualFile[] getNotFilteredRoots()
 	{
 		return myRootsHelper.execute();
@@ -503,7 +503,7 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 	{
 	}
 
-	@NotNull
+	@Nonnull
 	public String getComponentName()
 	{
 		return "SvnFileUrlMappingImpl";

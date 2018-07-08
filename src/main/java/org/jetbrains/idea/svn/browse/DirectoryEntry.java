@@ -16,8 +16,8 @@
 package org.jetbrains.idea.svn.browse;
 
 import com.intellij.util.ObjectUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseNodeDescription;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.checkin.CommitInfo;
@@ -32,13 +32,14 @@ import java.util.Date;
 public class DirectoryEntry extends BaseNodeDescription implements Comparable<DirectoryEntry> {
 
   private final String myName;
-  @NotNull private final CommitInfo myCommitInfo;
+  @Nonnull
+  private final CommitInfo myCommitInfo;
   private final String myPath;
   private final SVNURL myUrl;
   private final SVNURL myRepositoryRoot;
 
-  @NotNull
-  public static DirectoryEntry create(@NotNull SVNDirEntry entry) {
+  @Nonnull
+  public static DirectoryEntry create(@Nonnull SVNDirEntry entry) {
     return new DirectoryEntry(entry.getURL(), entry.getRepositoryRoot(), entry.getName(), NodeKind.from(entry.getKind()),
                               new CommitInfo.Builder(entry.getRevision(), entry.getDate(), entry.getAuthor()).build(),
                               entry.getRelativePath());
@@ -47,7 +48,7 @@ public class DirectoryEntry extends BaseNodeDescription implements Comparable<Di
   public DirectoryEntry(SVNURL url,
                         SVNURL repositoryRoot,
                         String name,
-                        @NotNull NodeKind kind,
+                        @Nonnull NodeKind kind,
                         @Nullable CommitInfo commitInfo,
                         String path) {
     super(kind);
@@ -70,7 +71,7 @@ public class DirectoryEntry extends BaseNodeDescription implements Comparable<Di
     return myName;
   }
 
-  @NotNull
+  @Nonnull
   public NodeKind getKind() {
     return myKind;
   }
@@ -92,7 +93,7 @@ public class DirectoryEntry extends BaseNodeDescription implements Comparable<Di
   }
 
   @Override
-  public int compareTo(@NotNull DirectoryEntry o) {
+  public int compareTo(@Nonnull DirectoryEntry o) {
     int result = getKind().compareTo(o.getKind());
 
     return result != 0 ? result : myUrl.toString().compareTo(o.getUrl().toString());

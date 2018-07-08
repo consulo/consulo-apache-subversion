@@ -21,7 +21,7 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.changes.FilePathsHelper;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnChangeProvider;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -35,16 +35,19 @@ import java.util.*;
 */
 public class ChangesChecker {
 
-  @NotNull private final SuperfluousRemover myForAdds;
-  @NotNull private final SuperfluousRemover myForDeletes;
+  @Nonnull
+  private final SuperfluousRemover myForAdds;
+  @Nonnull
+  private final SuperfluousRemover myForDeletes;
   private final List<File> myForEdits;
 
   private final SvnChangeProvider myChangeProvider;
-  @NotNull private final UnversionedAndNotTouchedFilesGroupCollector myCollector;
+  @Nonnull
+  private final UnversionedAndNotTouchedFilesGroupCollector myCollector;
 
   private final List<VcsException> myExceptions;
 
-  ChangesChecker(@NotNull SvnVcs vcs, @NotNull UnversionedAndNotTouchedFilesGroupCollector collector) {
+  ChangesChecker(@Nonnull SvnVcs vcs, @Nonnull UnversionedAndNotTouchedFilesGroupCollector collector) {
     myChangeProvider = (SvnChangeProvider)vcs.getChangeProvider();
     myCollector = collector;
     myForAdds = new SuperfluousRemover(true);
@@ -102,12 +105,12 @@ public class ChangesChecker {
     }
   }
 
-  @NotNull
+  @Nonnull
   public Collection<File> getForAdds() {
     return myForAdds.getParentPaths();
   }
 
-  @NotNull
+  @Nonnull
   public Collection<File> getForDeletes() {
     return myForDeletes.getParentPaths();
   }
@@ -116,7 +119,7 @@ public class ChangesChecker {
     return myExceptions;
   }
 
-  @NotNull
+  @Nonnull
   public List<File> getForEdits() {
     return myForEdits;
   }

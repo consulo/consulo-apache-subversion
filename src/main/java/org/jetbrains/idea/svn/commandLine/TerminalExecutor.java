@@ -22,7 +22,7 @@ import com.intellij.execution.configurations.PtyCommandLine;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -35,11 +35,11 @@ public class TerminalExecutor extends CommandExecutor {
 
   private final List<InteractiveCommandListener> myInteractiveListeners = ContainerUtil.createLockFreeCopyOnWriteList();
 
-  public TerminalExecutor(@NotNull @NonNls String exePath, @NotNull Command command) {
+  public TerminalExecutor(@Nonnull @NonNls String exePath, @Nonnull Command command) {
     super(exePath, command);
   }
 
-  public void addInteractiveListener(@NotNull InteractiveCommandListener listener) {
+  public void addInteractiveListener(@Nonnull InteractiveCommandListener listener) {
     myInteractiveListeners.add(listener);
   }
 
@@ -57,7 +57,7 @@ public class TerminalExecutor extends CommandExecutor {
     super.startHandlingStreams();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected SvnProcessHandler createProcessHandler() {
     return new TerminalProcessHandler(myProcess, myCommandLine.getCommandLineString(), needsUtf8Output(), false);
@@ -66,7 +66,7 @@ public class TerminalExecutor extends CommandExecutor {
   /**
    * TODO: remove this when separate streams for output and errors are implemented for Unix.
    */
-  @NotNull
+  @Nonnull
   @Override
   public ByteArrayOutputStream getBinaryOutput() {
     if (this instanceof WinTerminalExecutor) {
@@ -81,13 +81,13 @@ public class TerminalExecutor extends CommandExecutor {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected GeneralCommandLine createCommandLine() {
     return new PtyCommandLine();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Process createProcess() throws ExecutionException {
     List<String> parameters = escapeArguments(buildParameters());
@@ -95,13 +95,13 @@ public class TerminalExecutor extends CommandExecutor {
     return createProcess(parameters);
   }
 
-  @NotNull
+  @Nonnull
   protected List<String> buildParameters() {
     return CommandLineUtil.toCommandLine(myCommandLine.getExePath(), myCommandLine.getParametersList().getList());
   }
 
-  @NotNull
-  protected Process createProcess(@NotNull List<String> parameters) throws ExecutionException {
+  @Nonnull
+  protected Process createProcess(@Nonnull List<String> parameters) throws ExecutionException {
     try {
       return ((PtyCommandLine)myCommandLine).startProcessWithPty(parameters, false);
     }
@@ -117,8 +117,8 @@ public class TerminalExecutor extends CommandExecutor {
     LOG.info("Terminal output " + ((TerminalProcessHandler)myHandler).getTerminalOutput());
   }
 
-  @NotNull
-  protected List<String> escapeArguments(@NotNull List<String> arguments) {
+  @Nonnull
+  protected List<String> escapeArguments(@Nonnull List<String> arguments) {
     return arguments;
   }
 }

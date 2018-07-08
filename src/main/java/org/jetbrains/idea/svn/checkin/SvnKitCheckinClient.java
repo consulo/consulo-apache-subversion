@@ -22,7 +22,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
@@ -41,9 +41,9 @@ public class SvnKitCheckinClient extends BaseSvnClient implements CheckinClient 
 
   private static final Logger LOG = Logger.getInstance(SvnKitCheckinClient.class);
 
-  @NotNull
+  @Nonnull
   @Override
-  public CommitInfo[] commit(@NotNull List<File> paths, @NotNull String comment) throws VcsException {
+  public CommitInfo[] commit(@Nonnull List<File> paths, @Nonnull String comment) throws VcsException {
     File[] pathsToCommit = ArrayUtil.toObjectArray(paths, File.class);
     boolean keepLocks = myVcs.getSvnConfiguration().isKeepLocks();
     SVNCommitPacket[] commitPackets = null;
@@ -81,8 +81,8 @@ public class SvnKitCheckinClient extends BaseSvnClient implements CheckinClient 
     return convert(results);
   }
 
-  @NotNull
-  private static CommitInfo[] convert(@NotNull SVNCommitInfo[] infos) {
+  @Nonnull
+  private static CommitInfo[] convert(@Nonnull SVNCommitInfo[] infos) {
     return ContainerUtil.map(infos, new Function<SVNCommitInfo, CommitInfo>() {
       @Override
       public CommitInfo fun(SVNCommitInfo info) {

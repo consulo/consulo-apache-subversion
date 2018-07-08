@@ -23,8 +23,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.ui.DocumentAdapter;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -85,7 +85,7 @@ public class SetPropertyDialog extends DialogWrapper {
     HelpManager.getInstance().invokeHelp(HELP_ID);
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction(), getHelpAction()};
   }
@@ -167,7 +167,7 @@ public class SetPropertyDialog extends DialogWrapper {
   }
 
   @Nullable
-  private PropertyValue getProperty(@NotNull File file, @NotNull String name) {
+  private PropertyValue getProperty(@Nonnull File file, @Nonnull String name) {
     PropertyValue result;
 
     try {

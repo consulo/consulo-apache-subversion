@@ -17,8 +17,8 @@ package org.jetbrains.idea.svn;
 
 import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.SVNURL;
 
 import java.io.File;
@@ -29,7 +29,7 @@ public interface SvnFileUrlMapping extends AbstractVcs.RootsConvertor {
   SVNURL getUrlForFile(final File file);
 
   @Nullable
-  File getLocalPath(@NotNull String url);
+  File getLocalPath(@Nonnull String url);
 
   @Nullable
   RootUrlInfo getWcRootForUrl(final String url);

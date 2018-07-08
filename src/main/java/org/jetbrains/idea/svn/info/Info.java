@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.info;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseNodeDescription;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.NodeKind;
@@ -40,26 +40,31 @@ public class Info extends BaseNodeDescription {
   private final File myFile;
   private final String myPath;
   private final SVNURL myURL;
-  @NotNull private final SVNRevision myRevision;
+  @Nonnull
+  private final SVNRevision myRevision;
   private final SVNURL myRepositoryRootURL;
   private final String myRepositoryUUID;
   private final SVNRevision myCommittedRevision;
   private final Date myCommittedDate;
   private final String myAuthor;
-  @Nullable private final Lock myLock;
+  @Nullable
+  private final Lock myLock;
   private final boolean myIsRemote;
   private final String mySchedule;
   private final SVNURL myCopyFromURL;
   private final SVNRevision myCopyFromRevision;
-  @Nullable private final File myConflictOldFile;
+  @Nullable
+  private final File myConflictOldFile;
   @Nullable private final File myConflictNewFile;
-  @Nullable private final File myConflictWrkFile;
-  @Nullable private final File myPropConflictFile;
+  @Nullable
+  private final File myConflictWrkFile;
+  @Nullable
+  private final File myPropConflictFile;
   private final Depth myDepth;
   @Nullable private final TreeConflictDescription myTreeConflict;
 
-  @NotNull
-  public static Info create(@NotNull SVNInfo info) {
+  @Nonnull
+  public static Info create(@Nonnull SVNInfo info) {
     Info result;
 
     if (info.isRemote()) {
@@ -83,7 +88,7 @@ public class Info extends BaseNodeDescription {
               SVNURL url,
               SVNURL rootURL,
               long revision,
-              @NotNull NodeKind kind,
+              @Nonnull NodeKind kind,
               String uuid,
               long committedRevision,
               String committedDate,
@@ -130,8 +135,8 @@ public class Info extends BaseNodeDescription {
 
   public Info(String path,
               SVNURL url,
-              @NotNull SVNRevision revision,
-              @NotNull NodeKind kind,
+              @Nonnull SVNRevision revision,
+              @Nonnull NodeKind kind,
               String uuid,
               SVNURL reposRootURL,
               long committedRevision,
@@ -213,7 +218,7 @@ public class Info extends BaseNodeDescription {
     return myIsRemote;
   }
 
-  @NotNull
+  @Nonnull
   public NodeKind getKind() {
     return myKind;
   }
@@ -240,7 +245,7 @@ public class Info extends BaseNodeDescription {
     return myRepositoryUUID;
   }
 
-  @NotNull
+  @Nonnull
   public SVNRevision getRevision() {
     return myRevision;
   }

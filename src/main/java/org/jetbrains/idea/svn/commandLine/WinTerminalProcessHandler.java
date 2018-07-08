@@ -15,10 +15,11 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.io.BaseOutputReader;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Konstantin Kolosovsky.
@@ -29,7 +30,7 @@ public class WinTerminalProcessHandler extends TerminalProcessHandler {
   private static final String NON_CSI_ESCAPE_CODE = "\u001B.[@-_]";
   private static final String CSI_ESCAPE_CODE = "\u001B\\[(.*?)[@-~]";
 
-  public WinTerminalProcessHandler(@NotNull Process process, @NotNull String commandLine, boolean forceUtf8, boolean forceBinary) {
+  public WinTerminalProcessHandler(@Nonnull Process process, @Nonnull String commandLine, boolean forceUtf8, boolean forceBinary) {
     super(process, commandLine, forceUtf8, forceBinary);
   }
 
@@ -38,7 +39,7 @@ public class WinTerminalProcessHandler extends TerminalProcessHandler {
     return true;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected BaseOutputReader.Options readerOptions() {
     // Currently, when blocking policy is used, reading stops when nothing was actually read (stream ended).
@@ -48,9 +49,9 @@ public class WinTerminalProcessHandler extends TerminalProcessHandler {
     return BaseOutputReader.Options.NON_BLOCKING;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected String filterCombinedText(@NotNull String currentLine) {
+  protected String filterCombinedText(@Nonnull String currentLine) {
     // for windows platform output is assumed in format suitable for terminal emulator
     // for instance, same text could be returned twice with '\r' symbol in between (so in emulator output we'll still see correct
     // text without duplication)
@@ -58,9 +59,9 @@ public class WinTerminalProcessHandler extends TerminalProcessHandler {
     return removeAllBeforeCaretReturn(currentLine);
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected String filterText(@NotNull String text) {
+  protected String filterText(@Nonnull String text) {
     // filter terminal escape codes - they are presented in the output for windows platform
     text = text.replaceAll(CSI_ESCAPE_CODE, "").replaceAll(NON_CSI_ESCAPE_CODE, "");
     // trim leading '\r' symbols - as they break xml parsing logic
@@ -69,14 +70,14 @@ public class WinTerminalProcessHandler extends TerminalProcessHandler {
     return text;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected Key resolveOutputType(@NotNull String line, @NotNull Key outputType) {
+  protected Key resolveOutputType(@Nonnull String line, @Nonnull Key outputType) {
     return outputType;
   }
 
-  @NotNull
-  private static String removeAllBeforeCaretReturn(@NotNull String line) {
+  @Nonnull
+  private static String removeAllBeforeCaretReturn(@Nonnull String line) {
     int caretReturn = line.lastIndexOf("\r");
 
     while (caretReturn >= 0) {

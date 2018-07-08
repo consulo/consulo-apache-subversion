@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
 import org.jetbrains.idea.svn.integrate.MergerFactory;
@@ -24,7 +24,6 @@ import org.jetbrains.idea.svn.integrate.SelectedCommittedStuffChecker;
 import org.jetbrains.idea.svn.integrate.SvnIntegrateChangesActionPerformer;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
@@ -39,9 +38,9 @@ public abstract class AbstractIntegrateChangesAction<T extends SelectedCommitted
     myCheckUseCase = checkUseCase;
   }
 
-  @NotNull
+  @Nonnull
   protected abstract MergerFactory createMergerFactory(final T checker);
-  @NotNull
+  @Nonnull
   protected abstract T createChecker();
 
   public final void update(final AnActionEvent e) {

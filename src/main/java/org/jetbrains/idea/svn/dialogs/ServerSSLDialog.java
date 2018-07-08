@@ -19,7 +19,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.ScrollPaneFactory;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
 import org.tmatesoft.svn.core.internal.util.SVNSSLUtil;
@@ -35,16 +35,17 @@ import java.security.cert.X509Certificate;
  */
 public class ServerSSLDialog extends DialogWrapper {
 
-  @NotNull private final String myCertificateInfo;
+  @Nonnull
+  private final String myCertificateInfo;
   private Action myTempAction;
   private int myResult;
   @NonNls public static final String ALGORITHM_SHA1 = "SHA1";
 
-  public ServerSSLDialog(final Project project, @NotNull X509Certificate cert, boolean store) {
+  public ServerSSLDialog(final Project project, @Nonnull X509Certificate cert, boolean store) {
     this(project, getServerCertificateInfo(cert), store);
   }
 
-  public ServerSSLDialog(final Project project, @NotNull String certificateInfo, boolean store) {
+  public ServerSSLDialog(final Project project, @Nonnull String certificateInfo, boolean store) {
     super(project, true);
     myCertificateInfo = certificateInfo;
     myResult = ISVNAuthenticationProvider.REJECTED;
@@ -60,7 +61,7 @@ public class ServerSSLDialog extends DialogWrapper {
     return false;
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getTempAction(), getCancelAction()};
   }
@@ -106,8 +107,8 @@ public class ServerSSLDialog extends DialogWrapper {
     return panel;
   }
 
-  @NotNull
-  private static String getFingerprint(@NotNull X509Certificate cert) {
+  @Nonnull
+  private static String getFingerprint(@Nonnull X509Certificate cert) {
     byte[] data = null;
 
     try {
@@ -120,8 +121,8 @@ public class ServerSSLDialog extends DialogWrapper {
   }
 
   @SuppressWarnings({"HardCodedStringLiteral", "StringBufferReplaceableByString"})
-  @NotNull
-  private static String getServerCertificateInfo(@NotNull X509Certificate cert) {
+  @Nonnull
+  private static String getServerCertificateInfo(@Nonnull X509Certificate cert) {
     return new StringBuilder()
       .append(" - Subject: ")
       .append(cert.getSubjectDN().getName())

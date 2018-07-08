@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.conflict;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseNodeDescription;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.tmatesoft.svn.core.SVNURL;
@@ -43,7 +43,7 @@ public class ConflictVersion extends BaseNodeDescription {
     return result;
   }
 
-  public ConflictVersion(SVNURL repositoryRoot, String path, long pegRevision, @NotNull NodeKind kind) {
+  public ConflictVersion(SVNURL repositoryRoot, String path, long pegRevision, @Nonnull NodeKind kind) {
     super(kind);
     myRepositoryRoot = repositoryRoot;
     myPath = path;
@@ -62,12 +62,12 @@ public class ConflictVersion extends BaseNodeDescription {
     return myPegRevision;
   }
 
-  @NotNull
+  @Nonnull
   public NodeKind getKind() {
     return myKind;
   }
 
-  @NotNull
+  @Nonnull
   public String toPresentableString() {
     StringBuilder urlBuilder = new StringBuilder();
 
@@ -78,7 +78,7 @@ public class ConflictVersion extends BaseNodeDescription {
     return "(" + getKind() + ") " + urlBuilder + "@" + getPegRevision();
   }
 
-  @NotNull
+  @Nonnull
   public static String toPresentableString(@Nullable ConflictVersion version) {
     return version == null ? "" : version.toPresentableString();
   }

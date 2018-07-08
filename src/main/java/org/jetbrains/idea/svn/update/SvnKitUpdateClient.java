@@ -15,8 +15,9 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressTracker;
@@ -36,7 +37,8 @@ import java.io.File;
  */
 public class SvnKitUpdateClient extends BaseSvnClient implements UpdateClient {
 
-  @Nullable protected ProgressTracker myDispatcher;
+  @Nullable
+  protected ProgressTracker myDispatcher;
   protected boolean myIgnoreExternals;
   protected boolean myLocksOnDemand;
 
@@ -81,7 +83,7 @@ public class SvnKitUpdateClient extends BaseSvnClient implements UpdateClient {
     myIgnoreExternals = ignoreExternals;
   }
 
-  @NotNull
+  @Nonnull
   private SVNUpdateClient getClient() {
     SVNUpdateClient client = myVcs.getSvnKitManager().createUpdateClient();
 

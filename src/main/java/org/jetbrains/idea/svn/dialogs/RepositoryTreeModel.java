@@ -18,12 +18,13 @@ package org.jetbrains.idea.svn.dialogs;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.util.NotNullFunction;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.browserCache.*;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nullable;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import java.util.Enumeration;
@@ -38,7 +39,7 @@ public class RepositoryTreeModel extends DefaultTreeModel implements Disposable 
   private final RepositoryBrowserComponent myBrowser;
   private NotNullFunction<RepositoryBrowserComponent, Expander> myDefaultExpanderFactory;
 
-  public RepositoryTreeModel(@NotNull SvnVcs vcs, boolean showFiles, final RepositoryBrowserComponent browser) {
+  public RepositoryTreeModel(@Nonnull SvnVcs vcs, boolean showFiles, final RepositoryBrowserComponent browser) {
     super(null);
     myVCS = vcs;
     myIsShowFiles = showFiles;
@@ -122,12 +123,12 @@ public class RepositoryTreeModel extends DefaultTreeModel implements Disposable 
     return myCacheLoader;
   }
 
-  @NotNull
+  @Nonnull
   public Expander getLazyLoadingExpander() {
     return myDefaultExpanderFactory.fun(myBrowser);
   }
 
-  @NotNull
+  @Nonnull
   public Expander getSelectionKeepingExpander() {
     return new KeepingSelectionExpander(myBrowser);
   }

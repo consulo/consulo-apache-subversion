@@ -18,8 +18,9 @@ package org.jetbrains.idea.svn.commandLine;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.Stack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.EventAction;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -71,7 +72,8 @@ public class UpdateOutputLineConverter {
       ourCheckedOutExternal, ourExportComplete};
 
   private final File myBase;
-  @NotNull private final Stack<File> myRootsUnderProcessing;
+  @Nonnull
+  private final Stack<File> myRootsUnderProcessing;
 
   public UpdateOutputLineConverter(File base) {
     myBase = base;
@@ -113,15 +115,15 @@ public class UpdateOutputLineConverter {
     return parseNormalString(line);
   }
 
-  @NotNull
-  private static ProgressEvent createEvent(File file, @NotNull EventAction action) {
+  @Nonnull
+  private static ProgressEvent createEvent(File file, @Nonnull EventAction action) {
     return createEvent(file, -1, action, null);
   }
 
-  @NotNull
+  @Nonnull
   private static ProgressEvent createEvent(File file,
                                            long revision,
-                                           @NotNull EventAction action,
+                                           @Nonnull EventAction action,
                                            @Nullable SVNErrorMessage error) {
     return new ProgressEvent(file, revision, null, null, action, error, null);
   }
@@ -193,7 +195,7 @@ public class UpdateOutputLineConverter {
   }
 
   @Nullable
-  private File parseForPath(@NotNull String line) {
+  private File parseForPath(@Nonnull String line) {
     File result = null;
     int start = line.indexOf('\'');
 

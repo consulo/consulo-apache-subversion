@@ -17,8 +17,8 @@ package org.jetbrains.idea.svn.integrate;
 
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.LocalChangeList;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -28,20 +28,22 @@ import static com.intellij.util.containers.ContainerUtil.*;
 
 public class Intersection {
 
-  @NotNull private final Map<String, String> myListComments = newHashMap();
-  @NotNull private final Map<String, List<Change>> myChangesByLists = newHashMap();
+  @Nonnull
+  private final Map<String, String> myListComments = newHashMap();
+  @Nonnull
+  private final Map<String, List<Change>> myChangesByLists = newHashMap();
 
-  public void add(@NotNull LocalChangeList list, @NotNull Change change) {
+  public void add(@Nonnull LocalChangeList list, @Nonnull Change change) {
     myChangesByLists.computeIfAbsent(list.getName(), key -> newArrayList()).add(change);
     myListComments.put(list.getName(), notNull(list.getComment(), list.getName()));
   }
 
-  @NotNull
-  public String getComment(@NotNull String listName) {
+  @Nonnull
+  public String getComment(@Nonnull String listName) {
     return myListComments.get(listName);
   }
 
-  @NotNull
+  @Nonnull
   public Map<String, List<Change>> getChangesByLists() {
     return myChangesByLists;
   }
@@ -50,7 +52,7 @@ public class Intersection {
     return myChangesByLists.isEmpty();
   }
 
-  @NotNull
+  @Nonnull
   public List<Change> getAllChanges() {
     return concat(myChangesByLists.values());
   }

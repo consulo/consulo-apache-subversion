@@ -16,8 +16,8 @@
 package org.jetbrains.idea.svn.annotate;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.checkin.CommitInfo;
 import org.jetbrains.idea.svn.commandLine.CommandExecutor;
@@ -41,9 +41,9 @@ import java.util.List;
 public class CmdAnnotateClient extends BaseSvnClient implements AnnotateClient {
 
   @Override
-  public void annotate(@NotNull SvnTarget target,
-                       @NotNull SVNRevision startRevision,
-                       @NotNull SVNRevision endRevision,
+  public void annotate(@Nonnull SvnTarget target,
+                       @Nonnull SVNRevision startRevision,
+                       @Nonnull SVNRevision endRevision,
                        boolean includeMergedRevisions,
                        @Nullable DiffOptions diffOptions,
                        @Nullable final AnnotationConsumer handler) throws VcsException {
@@ -59,7 +59,7 @@ public class CmdAnnotateClient extends BaseSvnClient implements AnnotateClient {
     parseOutput(command.getOutput(), handler);
   }
 
-  public void parseOutput(@NotNull String output, @Nullable AnnotationConsumer handler) throws VcsException {
+  public void parseOutput(@Nonnull String output, @Nullable AnnotationConsumer handler) throws VcsException {
     try {
       BlameInfo info = CommandUtil.parse(output, BlameInfo.class);
 
@@ -74,7 +74,7 @@ public class CmdAnnotateClient extends BaseSvnClient implements AnnotateClient {
     }
   }
 
-  private static void invokeHandler(@NotNull AnnotationConsumer handler, @NotNull LineEntry entry) throws SVNException {
+  private static void invokeHandler(@Nonnull AnnotationConsumer handler, @Nonnull LineEntry entry) throws SVNException {
     if (entry.commit != null) {
       // line numbers in our api start from 0 - not from 1 like in svn output
       handler.consume(entry.lineNumber - 1, entry.commit.build(), entry.mergedCommit());

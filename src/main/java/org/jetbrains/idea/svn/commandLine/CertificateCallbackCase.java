@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.commandLine;
 
 import com.intellij.openapi.util.registry.Registry;
 import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
@@ -34,7 +34,7 @@ public class CertificateCallbackCase extends AuthCallbackCase {
 
   private boolean accepted;
 
-  CertificateCallbackCase(@NotNull AuthenticationService authenticationService, SVNURL url) {
+  CertificateCallbackCase(@Nonnull AuthenticationService authenticationService, SVNURL url) {
     super(authenticationService, url);
   }
 
@@ -91,7 +91,7 @@ public class CertificateCallbackCase extends AuthCallbackCase {
   }
 
   @Override
-  public void updateParameters(@NotNull Command command) {
+  public void updateParameters(@Nonnull Command command) {
     if (accepted) {
       command.put("--trust-server-cert");
       // force --non-interactive as it is required by --trust-server-cert, but --non-interactive is not default mode for 1.7 or earlier
@@ -99,11 +99,11 @@ public class CertificateCallbackCase extends AuthCallbackCase {
     }
   }
 
-  public static boolean isValidButUntrustedCertificate(@NotNull String error) {
+  public static boolean isValidButUntrustedCertificate(@Nonnull String error) {
     return error.contains(CERTIFICATE_VERIFICATION_FAILED_ISSUER_NOT_TRUSTED);
   }
 
-  public static boolean isCertificateVerificationFailed(@NotNull String error) {
+  public static boolean isCertificateVerificationFailed(@Nonnull String error) {
     return error.contains(CERTIFICATE_VERIFICATION_FAILED);
   }
 

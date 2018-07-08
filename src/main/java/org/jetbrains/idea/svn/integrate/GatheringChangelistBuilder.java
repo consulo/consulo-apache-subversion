@@ -27,8 +27,9 @@ import com.intellij.openapi.vcs.changes.EmptyChangelistBuilder;
 import com.intellij.openapi.vcs.update.UpdatedFilesReverseSide;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.properties.PropertyValue;
@@ -44,12 +45,16 @@ public class GatheringChangelistBuilder extends EmptyChangelistBuilder {
 
   private static final Logger LOG = Logger.getInstance(GatheringChangelistBuilder.class);
 
-  @NotNull private final Set<VirtualFile> myCheckSet;
-  @NotNull private final List<Change> myChanges;
-  @NotNull private final UpdatedFilesReverseSide myFiles;
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final Set<VirtualFile> myCheckSet;
+  @Nonnull
+  private final List<Change> myChanges;
+  @Nonnull
+  private final UpdatedFilesReverseSide myFiles;
+  @Nonnull
+  private final SvnVcs myVcs;
 
-  public GatheringChangelistBuilder(@NotNull SvnVcs vcs, @NotNull UpdatedFilesReverseSide files) {
+  public GatheringChangelistBuilder(@Nonnull SvnVcs vcs, @Nonnull UpdatedFilesReverseSide files) {
     myVcs = vcs;
     myFiles = files;
     myChanges = ContainerUtil.newArrayList();
@@ -116,7 +121,7 @@ public class GatheringChangelistBuilder extends EmptyChangelistBuilder {
     return true;
   }
 
-  @NotNull
+  @Nonnull
   public List<Change> getChanges() {
     return myChanges;
   }

@@ -34,7 +34,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -255,7 +255,7 @@ public class CreateBranchOrTagDialog extends DialogWrapper {
     getOKAction().setEnabled(isOKActionEnabled());
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction(), getHelpAction()};
   }

@@ -15,11 +15,13 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
@@ -30,11 +32,12 @@ import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
 public class SvnIntegrateChangesActionPerformer implements SelectBranchPopup.BranchSelectedCallback {
   private final SvnVcs myVcs;
-  @NotNull private final MergerFactory myMergerFactory;
+  @Nonnull
+  private final MergerFactory myMergerFactory;
 
   private final SVNURL myCurrentBranch;
 
-  public SvnIntegrateChangesActionPerformer(final Project project, final SVNURL currentBranchUrl, @NotNull MergerFactory mergerFactory) {
+  public SvnIntegrateChangesActionPerformer(final Project project, final SVNURL currentBranchUrl, @Nonnull MergerFactory mergerFactory) {
     myVcs = SvnVcs.getInstance(project);
     myCurrentBranch = currentBranchUrl;
     myMergerFactory = mergerFactory;
@@ -65,7 +68,7 @@ public class SvnIntegrateChangesActionPerformer implements SelectBranchPopup.Bra
       .selectWorkingCopy(myVcs.getProject(), myCurrentBranch, url, true, selectedLocalBranchPath, dialogTitle);
   }
 
-  private void runIntegrate(@NotNull String url, @NotNull WorkingCopyInfo workingCopy, @NotNull SVNURL workingCopyUrl) {
+  private void runIntegrate(@Nonnull String url, @Nonnull WorkingCopyInfo workingCopy, @Nonnull SVNURL workingCopyUrl) {
     SVNURL sourceUrl = correctSourceUrl(url, workingCopyUrl.toString());
 
     if (sourceUrl != null) {
@@ -79,7 +82,7 @@ public class SvnIntegrateChangesActionPerformer implements SelectBranchPopup.Bra
   }
 
   @Nullable
-  private SVNURL correctSourceUrl(@NotNull String targetUrl, @NotNull String realTargetUrl) {
+  private SVNURL correctSourceUrl(@Nonnull String targetUrl, @Nonnull String realTargetUrl) {
     try {
       if (realTargetUrl.length() > targetUrl.length()) {
         if (realTargetUrl.startsWith(targetUrl)) {

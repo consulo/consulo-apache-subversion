@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.copy;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.jetbrains.idea.svn.checkin.CommitEventHandler;
@@ -16,7 +16,7 @@ import java.io.File;
  */
 public interface CopyMoveClient extends SvnClient {
 
-  void copy(@NotNull File src, @NotNull File dst, boolean makeParents, boolean isMove) throws VcsException;
+  void copy(@Nonnull File src, @Nonnull File dst, boolean makeParents, boolean isMove) throws VcsException;
 
   /**
    * @param source
@@ -29,16 +29,16 @@ public interface CopyMoveClient extends SvnClient {
    * @return new revision number
    * @throws VcsException
    */
-  long copy(@NotNull SvnTarget source,
-            @NotNull SvnTarget destination,
+  long copy(@Nonnull SvnTarget source,
+            @Nonnull SvnTarget destination,
             @Nullable SVNRevision revision,
             boolean makeParents,
             boolean isMove,
-            @NotNull String message,
+            @Nonnull String message,
             @Nullable CommitEventHandler handler) throws VcsException;
 
-  void copy(@NotNull SvnTarget source,
-            @NotNull File destination,
+  void copy(@Nonnull SvnTarget source,
+            @Nonnull File destination,
             @Nullable SVNRevision revision,
             boolean makeParents,
             @Nullable ProgressTracker handler) throws VcsException;

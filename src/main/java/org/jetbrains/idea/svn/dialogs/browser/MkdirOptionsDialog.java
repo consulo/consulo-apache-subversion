@@ -21,7 +21,7 @@ import com.intellij.openapi.vcs.VcsConfiguration;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 

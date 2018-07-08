@@ -19,7 +19,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.tmatesoft.svn.core.SVNURL;
 
@@ -37,7 +37,7 @@ public class ProxyCallback extends AuthCallbackCase {
 
   private PasswordAuthentication myProxyAuthentication;
 
-  ProxyCallback(@NotNull AuthenticationService authenticationService, SVNURL url) {
+  ProxyCallback(@Nonnull AuthenticationService authenticationService, SVNURL url) {
     super(authenticationService, url);
   }
 
@@ -71,7 +71,7 @@ public class ProxyCallback extends AuthCallbackCase {
   }
 
   @Override
-  public void updateParameters(@NotNull Command command) {
+  public void updateParameters(@Nonnull Command command) {
     // TODO: This is quite messy logic for determining group for host - either ProxyCallback could be unified with ProxyModule
     // TODO: or group name resolved in ProxyModule could be saved in Command instance.
     // TODO: This will be done later after corresponding refactorings.
@@ -92,8 +92,8 @@ public class ProxyCallback extends AuthCallbackCase {
     }
   }
 
-  @NotNull
-  private static String getHostGroup(@NotNull String proxyHostParameter) {
+  @Nonnull
+  private static String getHostGroup(@Nonnull String proxyHostParameter) {
     int start = proxyHostParameter.indexOf(":");
     int finish = proxyHostParameter.indexOf(":", start + 1);
 

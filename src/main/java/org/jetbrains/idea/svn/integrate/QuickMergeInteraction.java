@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.integrate;
 
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.mergeinfo.MergeChecker;
 
@@ -25,25 +25,25 @@ import java.util.List;
 
 public interface QuickMergeInteraction {
 
-  @NotNull
+  @Nonnull
   QuickMergeContentsVariants selectMergeVariant();
 
   boolean shouldContinueSwitchedRootFound();
 
-  boolean shouldReintegrate(@NotNull String targetUrl);
+  boolean shouldReintegrate(@Nonnull String targetUrl);
 
-  @NotNull
-  SelectMergeItemsResult selectMergeItems(@NotNull List<SvnChangeList> lists,
-                                          @NotNull MergeChecker mergeChecker,
+  @Nonnull
+  SelectMergeItemsResult selectMergeItems(@Nonnull List<SvnChangeList> lists,
+                                          @Nonnull MergeChecker mergeChecker,
                                           boolean allStatusesCalculated,
                                           boolean allListsLoaded);
 
-  @NotNull
+  @Nonnull
   LocalChangesAction selectLocalChangesAction(boolean mergeAll);
 
-  void showIntersectedLocalPaths(@NotNull List<FilePath> paths);
+  void showIntersectedLocalPaths(@Nonnull List<FilePath> paths);
 
-  void showErrors(@NotNull String message, @NotNull List<VcsException> exceptions);
+  void showErrors(@Nonnull String message, @Nonnull List<VcsException> exceptions);
 
-  void showErrors(@NotNull String message, boolean isError);
+  void showErrors(@Nonnull String message, boolean isError);
 }

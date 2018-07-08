@@ -15,15 +15,17 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Set;
 
 import static com.intellij.util.containers.ContainerUtil.newHashSet;
 
 public class QuantitySelection<T> {
-  @NotNull private final Group<T> mySelected;
-  @NotNull private final Group<T> myUnselected;
+  @Nonnull
+  private final Group<T> mySelected;
+  @Nonnull
+  private final Group<T> myUnselected;
 
   public QuantitySelection(boolean startFromSelectAll) {
     mySelected = new Group<>();
@@ -61,12 +63,12 @@ public class QuantitySelection<T> {
     mySelected.setAll();
   }
 
-  @NotNull
+  @Nonnull
   public Set<T> getSelected() {
     return mySelected.getItems();
   }
 
-  @NotNull
+  @Nonnull
   public Set<T> getUnselected() {
     return myUnselected.getItems();
   }
@@ -81,7 +83,8 @@ public class QuantitySelection<T> {
 
   private static class Group<T> {
     private boolean myAll;
-    @NotNull private final Set<T> myItems = newHashSet();
+    @Nonnull
+	private final Set<T> myItems = newHashSet();
 
     public void add(T t) {
       myItems.add(t);
@@ -102,7 +105,7 @@ public class QuantitySelection<T> {
       myItems.clear();
     }
 
-    @NotNull
+    @Nonnull
     public Set<T> getItems() {
       return myItems;
     }

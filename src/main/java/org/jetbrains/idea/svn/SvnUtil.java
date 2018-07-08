@@ -47,8 +47,8 @@ import com.intellij.util.containers.Convertor;
 import com.intellij.util.containers.MultiMap;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.EventAction;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -110,7 +110,7 @@ public class SvnUtil {
   private SvnUtil() { }
 
   @Nullable
-  public static SVNErrorMessage parseWarning(@NotNull String text) {
+  public static SVNErrorMessage parseWarning(@Nonnull String text) {
     Matcher matcher = WARNING_PATTERN.matcher(text);
     SVNErrorMessage error = null;
 
@@ -127,7 +127,7 @@ public class SvnUtil {
     return isSvnVersioned(SvnVcs.getInstance(project), parent);
   }
 
-  public static boolean isSvnVersioned(final @NotNull SvnVcs vcs, File parent) {
+  public static boolean isSvnVersioned(final @Nonnull SvnVcs vcs, File parent) {
     final Info info = vcs.getInfo(parent);
 
     return info != null;
@@ -180,7 +180,7 @@ public class SvnUtil {
     return info != null && info.getURL() != null ? info.getURL().toString() : null;
   }
 
-  public static void doLockFiles(Project project, final SvnVcs activeVcs, @NotNull final File[] ioFiles) throws VcsException {
+  public static void doLockFiles(Project project, final SvnVcs activeVcs, @Nonnull final File[] ioFiles) throws VcsException {
     final String lockMessage;
     final boolean force;
     // TODO[yole]: check for shift pressed
@@ -320,24 +320,24 @@ public class SvnUtil {
     }
   }
 
-  @NotNull
-  public static MultiMap<Pair<SVNURL, WorkingCopyFormat>, Change> splitChangesIntoWc(@NotNull SvnVcs vcs, @NotNull List<Change> changes) {
+  @Nonnull
+  public static MultiMap<Pair<SVNURL, WorkingCopyFormat>, Change> splitChangesIntoWc(@Nonnull SvnVcs vcs, @Nonnull List<Change> changes) {
     return splitIntoRepositoriesMap(vcs, changes, new Convertor<Change, FilePath>() {
       @Override
-      public FilePath convert(@NotNull Change change) {
+      public FilePath convert(@Nonnull Change change) {
         return ChangesUtil.getFilePath(change);
       }
     });
   }
 
-  @NotNull
-  public static <T> MultiMap<Pair<SVNURL, WorkingCopyFormat>, T> splitIntoRepositoriesMap(@NotNull final SvnVcs vcs,
-                                                                                          @NotNull Collection<T> items,
-                                                                                          @NotNull final Convertor<T, FilePath> converter) {
+  @Nonnull
+  public static <T> MultiMap<Pair<SVNURL, WorkingCopyFormat>, T> splitIntoRepositoriesMap(@Nonnull final SvnVcs vcs,
+                                                                                          @Nonnull Collection<T> items,
+                                                                                          @Nonnull final Convertor<T, FilePath> converter) {
     return ContainerUtil.groupBy(items, new NotNullFunction<T, Pair<SVNURL, WorkingCopyFormat>>() {
-      @NotNull
+      @Nonnull
       @Override
-      public Pair<SVNURL, WorkingCopyFormat> fun(@NotNull T item) {
+      public Pair<SVNURL, WorkingCopyFormat> fun(@Nonnull T item) {
         RootUrlInfo path = vcs.getSvnFileUrlMapping().getWcRootForFilePath(converter.convert(item).getIOFile());
 
         return path == null ? UNKNOWN_REPOSITORY_AND_FORMAT : Pair.create(path.getRepositoryUrlUrl(), path.getFormat());
@@ -351,7 +351,7 @@ public class SvnUtil {
    * @param path
    * @return
    */
-  @NotNull
+  @Nonnull
   public static WorkingCopyFormat getFormat(final File path) {
     WorkingCopyFormat result = null;
     File dbFile = resolveDatabase(path);
@@ -467,7 +467,7 @@ public class SvnUtil {
     return workingCopyRoot;
   }
 
-  @NotNull
+  @Nonnull
   public static File fileFromUrl(final File baseDir, final String baseUrl, final String fullUrl) {
     assert fullUrl.startsWith(baseUrl);
 
@@ -486,7 +486,7 @@ public class SvnUtil {
   }
 
   @Nullable
-  public static SVNURL getBranchForUrl(@NotNull SvnVcs vcs, @NotNull VirtualFile vcsRoot, @NotNull String urlValue) {
+  public static SVNURL getBranchForUrl(@Nonnull SvnVcs vcs, @Nonnull VirtualFile vcsRoot, @Nonnull String urlValue) {
     SVNURL url = null;
 
     try {
@@ -500,7 +500,7 @@ public class SvnUtil {
   }
 
   @Nullable
-  public static SVNURL getBranchForUrl(@NotNull SvnVcs vcs, @NotNull VirtualFile vcsRoot, @NotNull SVNURL url) {
+  public static SVNURL getBranchForUrl(@Nonnull SvnVcs vcs, @Nonnull VirtualFile vcsRoot, @Nonnull SVNURL url) {
     SVNURL result = null;
     SvnBranchConfigurationNew configuration = SvnBranchConfigurationManager.getInstance(vcs.getProject()).get(vcsRoot);
 
@@ -514,7 +514,7 @@ public class SvnUtil {
     return result;
   }
 
-  public static boolean checkRepositoryVersion15(@NotNull SvnVcs vcs, @NotNull String url) {
+  public static boolean checkRepositoryVersion15(@Nonnull SvnVcs vcs, @Nonnull String url) {
     // Merge info tracking is supported in repositories since svn 1.5 (June 2008) - see http://subversion.apache.org/docs/release-notes/.
     // But still some users use 1.4 repositories and currently we need to know if repository supports merge info for some code flows.
 
@@ -532,7 +532,7 @@ public class SvnUtil {
   }
 
   @Nullable
-  public static Status getStatus(@NotNull final SvnVcs vcs, @NotNull final File file) {
+  public static Status getStatus(@Nonnull final SvnVcs vcs, @Nonnull final File file) {
     try {
       return vcs.getFactory(file).createStatusClient().doStatus(file, false);
     }
@@ -541,7 +541,7 @@ public class SvnUtil {
     }
   }
 
-  @NotNull
+  @Nonnull
   public static Depth getDepth(final SvnVcs vcs, final File file) {
     Info info = vcs.getInfo(file);
 
@@ -657,26 +657,26 @@ public class SvnUtil {
     return current;
   }
 
-  public static String getRelativeUrl(@NotNull String parentUrl, @NotNull String childUrl) {
+  public static String getRelativeUrl(@Nonnull String parentUrl, @Nonnull String childUrl) {
     return FileUtilRt.getRelativePath(parentUrl, childUrl, '/', true);
   }
 
-  public static String getRelativePath(@NotNull String parentPath, @NotNull String childPath) {
+  public static String getRelativePath(@Nonnull String parentPath, @Nonnull String childPath) {
     return  FileUtilRt.getRelativePath(FileUtil.toSystemIndependentName(parentPath), FileUtil.toSystemIndependentName(childPath), '/');
   }
 
-  @NotNull
+  @Nonnull
   @Contract(pure = true)
-  public static String ensureStartSlash(@NotNull String path) {
+  public static String ensureStartSlash(@Nonnull String path) {
     return StringUtil.startsWithChar(path, '/') ? path : '/' + path;
   }
 
-  @NotNull
-  public static String join(@NotNull final String... parts) {
+  @Nonnull
+  public static String join(@Nonnull final String... parts) {
     return StringUtil.join(parts, "/");
   }
 
-  public static String appendMultiParts(@NotNull final String base, @NotNull final String subPath) {
+  public static String appendMultiParts(@Nonnull final String base, @Nonnull final String subPath) {
     if (StringUtil.isEmpty(subPath)) return base;
     final List<String> parts = StringUtil.split(subPath.replace('\\', '/'), "/", true);
     String result = base;
@@ -686,7 +686,7 @@ public class SvnUtil {
     return result;
   }
 
-  public static SVNURL appendMultiParts(@NotNull final SVNURL base, @NotNull final String subPath) throws SVNException {
+  public static SVNURL appendMultiParts(@Nonnull final SVNURL base, @Nonnull final String subPath) throws SVNException {
     if (StringUtil.isEmpty(subPath)) return base;
     final List<String> parts = StringUtil.split(subPath.replace('\\', '/'), "/", true);
     SVNURL result = base;
@@ -696,13 +696,13 @@ public class SvnUtil {
     return result;
   }
 
-  @NotNull
-  public static SVNURL removePathTail(@NotNull SVNURL url) throws SvnBindException {
+  @Nonnull
+  public static SVNURL removePathTail(@Nonnull SVNURL url) throws SvnBindException {
     return createUrl(SVNPathUtil.removeTail(url.toDecodedString()));
   }
 
-  @NotNull
-  public static SVNRevision getHeadRevision(@NotNull SvnVcs vcs, @NotNull SVNURL url) throws SvnBindException {
+  @Nonnull
+  public static SVNRevision getHeadRevision(@Nonnull SvnVcs vcs, @Nonnull SVNURL url) throws SvnBindException {
     Info info = vcs.getInfo(url, SVNRevision.HEAD);
 
     if (info == null) {
@@ -715,15 +715,15 @@ public class SvnUtil {
     return info.getRevision();
   }
 
-  public static byte[] getFileContents(@NotNull final SvnVcs vcs,
-                                       @NotNull final SvnTarget target,
+  public static byte[] getFileContents(@Nonnull final SvnVcs vcs,
+                                       @Nonnull final SvnTarget target,
                                        @Nullable final SVNRevision revision,
                                        @Nullable final SVNRevision pegRevision)
     throws VcsException {
     return vcs.getFactory(target).createContentClient().getContent(target, revision, pegRevision);
   }
 
-  public static boolean hasDefaultPort(@NotNull SVNURL result) {
+  public static boolean hasDefaultPort(@Nonnull SVNURL result) {
     return !result.hasPort() || SVNURL.getDefaultPortNumber(result.getProtocol()) == result.getPort();
   }
 
@@ -731,17 +731,17 @@ public class SvnUtil {
    * When creating SVNURL with default port, some negative value should be specified as port number, otherwise specified port value (even
    * if equals to default) will occur in toString() result.
    */
-  public static int resolvePort(@NotNull SVNURL url) {
+  public static int resolvePort(@Nonnull SVNURL url) {
     return !hasDefaultPort(url) ? url.getPort() : DEFAULT_PORT_INDICATOR;
   }
 
-  @NotNull
-  public static SVNURL createUrl(@NotNull String url) throws SvnBindException {
+  @Nonnull
+  public static SVNURL createUrl(@Nonnull String url) throws SvnBindException {
     return createUrl(url, true);
   }
 
-  @NotNull
-  public static SVNURL createUrl(@NotNull String url, boolean encoded) throws SvnBindException {
+  @Nonnull
+  public static SVNURL createUrl(@Nonnull String url, boolean encoded) throws SvnBindException {
     try {
       SVNURL result = encoded ? SVNURL.parseURIEncoded(url) : SVNURL.parseURIDecoded(url);
 
@@ -758,8 +758,8 @@ public class SvnUtil {
     }
   }
 
-  @NotNull
-  public static SVNURL parseUrl(@NotNull String url) {
+  @Nonnull
+  public static SVNURL parseUrl(@Nonnull String url) {
     try {
       return SVNURL.parseURIEncoded(url);
     }
@@ -768,8 +768,8 @@ public class SvnUtil {
     }
   }
 
-  @NotNull
-  public static SVNURL append(@NotNull SVNURL parent, @NotNull String child) throws SvnBindException {
+  @Nonnull
+  public static SVNURL append(@Nonnull SVNURL parent, @Nonnull String child) throws SvnBindException {
     try {
       return parent.appendPath(child, false);
     }
@@ -785,13 +785,13 @@ public class SvnUtil {
   }
 
   @Nullable
-  public static String getChangelistName(@NotNull final Status status) {
+  public static String getChangelistName(@Nonnull final Status status) {
     // no explicit check on working copy format supports change lists as they are supported from svn 1.5
     // and anyway status.getChangelistName() should just return null if change lists are not supported.
     return status.getKind().isFile() ? status.getChangelistName() : null;
   }
 
-  public static boolean isUnversionedOrNotFound(@NotNull SvnBindException e) {
+  public static boolean isUnversionedOrNotFound(@Nonnull SvnBindException e) {
     return e.contains(SVNErrorCode.WC_PATH_NOT_FOUND) ||
            e.contains(SVNErrorCode.UNVERSIONED_RESOURCE) ||
            e.contains(SVNErrorCode.WC_NOT_WORKING_COPY) ||
@@ -802,13 +802,13 @@ public class SvnUtil {
   }
 
   // TODO: Create custom Target class and implement append there
-  @NotNull
-  public static SvnTarget append(@NotNull SvnTarget target, @NotNull String path) throws SvnBindException {
+  @Nonnull
+  public static SvnTarget append(@Nonnull SvnTarget target, @Nonnull String path) throws SvnBindException {
     return append(target, path, false);
   }
 
-  @NotNull
-  public static SvnTarget append(@NotNull SvnTarget target, @NotNull String path, boolean checkAbsolute) throws SvnBindException {
+  @Nonnull
+  public static SvnTarget append(@Nonnull SvnTarget target, @Nonnull String path, boolean checkAbsolute) throws SvnBindException {
     SvnTarget result;
 
     if (target.isFile()) {
@@ -827,8 +827,8 @@ public class SvnUtil {
     return result;
   }
 
-  @NotNull
-  public static File resolvePath(@NotNull File base, @NotNull String path) {
+  @Nonnull
+  public static File resolvePath(@Nonnull File base, @Nonnull String path) {
     File result = new File(path);
 
     if (!result.isAbsolute()) {
@@ -844,15 +844,16 @@ public class SvnUtil {
    * <p/>
    * Current utility method fixes this case.
    */
-  @NotNull
-  public static String toDecodedString(@NotNull SvnTarget target) {
+  @Nonnull
+  public static String toDecodedString(@Nonnull SvnTarget target) {
     return target.isFile() ? target.getFile().getPath() : target.getURL().toDecodedString();
   }
 
   private static class WorkingCopyFormatOperation implements FileUtilRt.RepeatableIOOperation<WorkingCopyFormat, RuntimeException> {
-    @NotNull private final File myDbFile;
+    @Nonnull
+	private final File myDbFile;
 
-    public WorkingCopyFormatOperation(@NotNull File dbFile) {
+    public WorkingCopyFormatOperation(@Nonnull File dbFile) {
       myDbFile = dbFile;
     }
 
@@ -895,9 +896,10 @@ public class SvnUtil {
 
   private static class SqLiteJdbcWorkingCopyFormatOperation
     implements FileUtilRt.RepeatableIOOperation<WorkingCopyFormat, RuntimeException> {
-    @NotNull private final File myDbFile;
+    @Nonnull
+	private final File myDbFile;
 
-    public SqLiteJdbcWorkingCopyFormatOperation(@NotNull File dbFile) {
+    public SqLiteJdbcWorkingCopyFormatOperation(@Nonnull File dbFile) {
       myDbFile = dbFile;
     }
 
@@ -945,13 +947,13 @@ public class SvnUtil {
 
   private static class SqLiteDb extends SqlJetDb {
 
-    private SqLiteDb(@NotNull File file, boolean writable) {
+    private SqLiteDb(@Nonnull File file, boolean writable) {
       super(file, writable);
     }
 
     @SuppressWarnings("MethodOverridesStaticMethodOfSuperclass")
-    @NotNull
-    public static SqLiteDb open(@NotNull File file, boolean write) throws SqlJetException {
+    @Nonnull
+    public static SqLiteDb open(@Nonnull File file, boolean write) throws SqlJetException {
       final SqLiteDb db = new SqLiteDb(file, write);
       db.open();
       return db;
@@ -975,7 +977,7 @@ public class SvnUtil {
     /**
      * See {@link SqlJetEngine#readSchema()} for reference.
      */
-    @NotNull
+    @Nonnull
     private String getDbSchema() {
       String result = "";
 
@@ -1001,7 +1003,7 @@ public class SvnUtil {
     /**
      * See {@link SqlJetSchema#init()} for reference.
      */
-    @NotNull
+    @Nonnull
     private String readDbSchema() throws SqlJetException {
       StringBuilder result = new StringBuilder();
       ISqlJetBtreeSchemaTable table = new SqlJetBtreeSchemaTable(btree, false);

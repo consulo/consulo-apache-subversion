@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.internal.wc.admin.SVNAdminAreaFactory;
 import org.tmatesoft.svn.core.internal.wc2.SvnWcGeneration;
@@ -25,21 +25,21 @@ import java.io.File;
 
 public class SvnFormatSelector {
 
-  @NotNull
+  @Nonnull
   public static WorkingCopyFormat findRootAndGetFormat(final File path) {
     File root = SvnUtil.getWorkingCopyRootNew(path);
 
     return root != null ? getWorkingCopyFormat(root) : WorkingCopyFormat.UNKNOWN;
   }
 
-  @NotNull
+  @Nonnull
   public static WorkingCopyFormat getWorkingCopyFormat(final File path) {
     WorkingCopyFormat format = SvnUtil.getFormat(path);
 
     return WorkingCopyFormat.UNKNOWN.equals(format) ? detectWithSvnKit(path) : format;
   }
 
-  @NotNull
+  @Nonnull
   private static WorkingCopyFormat detectWithSvnKit(File path) {
     try {
       final SvnWcGeneration svnWcGeneration = SvnOperationFactory.detectWcGeneration(path, true);

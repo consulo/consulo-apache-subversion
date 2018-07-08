@@ -15,15 +15,16 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.util.NotNullFunction;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
 import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
 
 public class UrlOpeningExpander extends AbstractOpeningExpander {
   private final String myUrl;
 
-  UrlOpeningExpander(@NotNull final RepositoryBrowserComponent browser, final String selectionPath, @NotNull final String url) {
+  UrlOpeningExpander(@Nonnull final RepositoryBrowserComponent browser, final String selectionPath, @Nonnull final String url) {
     super(browser, selectionPath);
     myUrl = (url.endsWith("/")) ? url.substring(0, url.length() - 1) : url;
   }
@@ -55,7 +56,7 @@ public class UrlOpeningExpander extends AbstractOpeningExpander {
       mySelectionUrl = selectionUrl;
     }
 
-    @NotNull
+    @Nonnull
     public Expander fun(final RepositoryBrowserComponent repositoryBrowserComponent) {
       return new UrlOpeningExpander(repositoryBrowserComponent, mySelectionUrl, myUrl);
     }

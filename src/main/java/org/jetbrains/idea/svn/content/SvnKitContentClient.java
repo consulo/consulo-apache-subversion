@@ -3,8 +3,8 @@ package org.jetbrains.idea.svn.content;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.impl.ContentRevisionCache;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
@@ -21,7 +21,7 @@ import java.io.OutputStream;
 public class SvnKitContentClient extends BaseSvnClient implements ContentClient {
 
   @Override
-  public byte[] getContent(@NotNull SvnTarget target, @Nullable SVNRevision revision, @Nullable SVNRevision pegRevision)
+  public byte[] getContent(@Nonnull SvnTarget target, @Nullable SVNRevision revision, @Nullable SVNRevision pegRevision)
     throws VcsException, FileTooBigRuntimeException {
     final int maxSize = VcsUtil.getMaxVcsLoadedFileSize();
     ByteArrayOutputStream buffer = new ByteArrayOutputStream() {

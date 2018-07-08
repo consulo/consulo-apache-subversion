@@ -18,7 +18,7 @@ package org.jetbrains.idea.svn.history;
 import com.intellij.openapi.util.Pair;
 import com.intellij.util.Consumer;
 import com.intellij.util.ThrowableConsumer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNException;
 
 import java.util.List;
@@ -29,9 +29,10 @@ import java.util.List;
 public class MergeSourceHierarchyBuilder implements ThrowableConsumer<Pair<LogEntry, Integer>, SVNException> {
 
   private LogHierarchyNode myCurrentHierarchy;
-  @NotNull private final Consumer<LogHierarchyNode> myConsumer;
+  @Nonnull
+  private final Consumer<LogHierarchyNode> myConsumer;
 
-  public MergeSourceHierarchyBuilder(@NotNull Consumer<LogHierarchyNode> consumer) {
+  public MergeSourceHierarchyBuilder(@Nonnull Consumer<LogHierarchyNode> consumer) {
     myConsumer = consumer;
   }
 

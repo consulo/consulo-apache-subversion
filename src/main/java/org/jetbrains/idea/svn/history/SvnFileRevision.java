@@ -26,8 +26,9 @@ import com.intellij.openapi.vcs.history.VcsFileRevision;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.impl.ContentRevisionCache;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -93,7 +94,7 @@ public class SvnFileRevision implements VcsFileRevision {
     myMergeSources = new ArrayList<>();
   }
 
-  @NotNull
+  @Nonnull
   public CommitInfo getCommitInfo() {
     return new CommitInfo.Builder(myRevisionNumber.getRevision().getNumber(), myDate, myAuthor).build();
   }
@@ -107,7 +108,7 @@ public class SvnFileRevision implements VcsFileRevision {
   }
 
 
-  @NotNull
+  @Nonnull
   public VcsRevisionNumber getRevisionNumber() {
     return myRevisionNumber;
   }

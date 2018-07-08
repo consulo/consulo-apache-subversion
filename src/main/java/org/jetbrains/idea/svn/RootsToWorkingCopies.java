@@ -21,8 +21,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
@@ -72,7 +72,7 @@ public class RootsToWorkingCopies implements VcsListener {
 
   private void addRoot(final VirtualFile root) {
     myQueue.run(new Task.Backgroundable(myProject, "Looking for '" + root.getPath() + "' working copy root", false) {
-      public void run(@NotNull ProgressIndicator indicator) {
+      public void run(@Nonnull ProgressIndicator indicator) {
         calculateRoot(root);
       }
     });
@@ -99,7 +99,7 @@ public class RootsToWorkingCopies implements VcsListener {
   }
 
   @Nullable
-  public WorkingCopy getWcRoot(@NotNull VirtualFile root) {
+  public WorkingCopy getWcRoot(@Nonnull VirtualFile root) {
     assert (! ApplicationManager.getApplication().isDispatchThread()) || ApplicationManager.getApplication().isUnitTestMode();
 
     synchronized (myLock) {
@@ -111,7 +111,7 @@ public class RootsToWorkingCopies implements VcsListener {
   }
 
   @Nullable
-  private WorkingCopy calculateRoot(@NotNull VirtualFile root) {
+  private WorkingCopy calculateRoot(@Nonnull VirtualFile root) {
     File workingCopyRoot = SvnUtil.getWorkingCopyRootNew(new File(root.getPath()));
     WorkingCopy workingCopy = null;
 
@@ -126,7 +126,7 @@ public class RootsToWorkingCopies implements VcsListener {
     return registerWorkingCopy(root, workingCopy);
   }
 
-  private WorkingCopy registerWorkingCopy(@NotNull VirtualFile root, @Nullable WorkingCopy resolvedWorkingCopy) {
+  private WorkingCopy registerWorkingCopy(@Nonnull VirtualFile root, @Nullable WorkingCopy resolvedWorkingCopy) {
     synchronized (myLock) {
       if (resolvedWorkingCopy == null) {
         myRootMapping.remove(root);

@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.networking;
 
 import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -33,7 +33,7 @@ public class SSLProtocolExceptionParser {
   private byte myFieldValue;
   private String myFieldName;
 
-  public SSLProtocolExceptionParser(@NotNull String message) {
+  public SSLProtocolExceptionParser(@Nonnull String message) {
     myMessage = message;
   }
 

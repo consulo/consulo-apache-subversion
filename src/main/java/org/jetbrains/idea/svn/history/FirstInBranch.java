@@ -21,8 +21,8 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
@@ -38,12 +38,16 @@ public class FirstInBranch {
 
   private static final Logger LOG = Logger.getInstance(FirstInBranch.class);
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final String myAbsoluteBranchUrl;
-  @NotNull private final String myAbsoluteTrunkUrl;
-  @NotNull private final SVNURL myRepositoryRoot;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final String myAbsoluteBranchUrl;
+  @Nonnull
+  private final String myAbsoluteTrunkUrl;
+  @Nonnull
+  private final SVNURL myRepositoryRoot;
 
-  public FirstInBranch(@NotNull SvnVcs vcs, @NotNull SVNURL repositoryRoot, @NotNull String branchUrl, @NotNull String trunkUrl) {
+  public FirstInBranch(@Nonnull SvnVcs vcs, @Nonnull SVNURL repositoryRoot, @Nonnull String branchUrl, @Nonnull String trunkUrl) {
     myVcs = vcs;
     myRepositoryRoot = repositoryRoot;
     myAbsoluteBranchUrl = branchUrl;
@@ -62,7 +66,7 @@ public class FirstInBranch {
   }
 
   @Nullable
-  private CopyData find(@NotNull BranchPoint trunk, @NotNull BranchPoint branch, boolean isBranchFromTrunk) throws VcsException {
+  private CopyData find(@Nonnull BranchPoint trunk, @Nonnull BranchPoint branch, boolean isBranchFromTrunk) throws VcsException {
     CopyData result = null;
 
     debug(trunk, branch, isBranchFromTrunk);
@@ -107,18 +111,19 @@ public class FirstInBranch {
     }
   }
 
-  private void debug(@NotNull BranchPoint trunk, @NotNull BranchPoint branch, boolean isBranchFromTrunk) {
+  private void debug(@Nonnull BranchPoint trunk, @Nonnull BranchPoint branch, boolean isBranchFromTrunk) {
     if (LOG.isDebugEnabled()) {
       LOG.debug("Searching branch point for " + join(immutableList(trunk, branch, isBranchFromTrunk), ", "));
     }
   }
 
   private class BranchPoint {
-    @NotNull private final SvnTarget myTarget;
+    @Nonnull
+	private final SvnTarget myTarget;
     @Nullable private LogEntry myEntry;
     @Nullable private LogEntryPath myPath;
 
-    private BranchPoint(@NotNull SvnTarget target) {
+    private BranchPoint(@Nonnull SvnTarget target) {
       myTarget = target;
     }
 
@@ -142,7 +147,7 @@ public class FirstInBranch {
       }
     }
 
-    @NotNull
+    @Nonnull
     private Pair<LogEntry, LogEntryPath> getCopyPoint() throws VcsException {
       HistoryClient client = myVcs.getFactory(myTarget).createHistoryClient();
       Ref<LogEntry> entry = Ref.create();
@@ -167,7 +172,7 @@ public class FirstInBranch {
       return notNull(myPath).getCopyPath() != null;
     }
 
-    @NotNull
+    @Nonnull
     private String copyPath() throws VcsException {
       init();
       return notNull(myPath).getCopyPath();
@@ -178,12 +183,12 @@ public class FirstInBranch {
       return notNull(myPath).getCopyRevision();
     }
 
-    @NotNull
+    @Nonnull
     private SvnTarget copyTarget() throws VcsException {
       return SvnTarget.fromURL(append(myRepositoryRoot, copyPath()), SVNRevision.create(copyRevision()));
     }
 
-    @NotNull
+    @Nonnull
     private String relativePath() {
       return ensureStartSlash(getRelativeUrl(myRepositoryRoot.toDecodedString(), myTarget.getURL().toDecodedString()));
     }
@@ -193,7 +198,7 @@ public class FirstInBranch {
       return notNull(myEntry).getRevision();
     }
 
-    @NotNull
+    @Nonnull
     private CopyData toCopyData(boolean isBranchFromTrunk) throws VcsException {
       return new CopyData(copyRevision(), revision(), isBranchFromTrunk);
     }

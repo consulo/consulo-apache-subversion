@@ -32,8 +32,8 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.Processor;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressEvent;
 import org.jetbrains.idea.svn.api.ProgressTracker;
@@ -55,17 +55,24 @@ import java.util.LinkedList;
 public class SvnRecursiveStatusWalker {
   private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.SvnRecursiveStatusWalker");
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final Project myProject;
-  @NotNull private final ProjectLevelVcsManager myVcsManager;
-  @NotNull private final ChangeListManager myChangeListManager;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final Project myProject;
+  @Nonnull
+  private final ProjectLevelVcsManager myVcsManager;
+  @Nonnull
+  private final ChangeListManager myChangeListManager;
   @Nullable private final ProgressIndicator myProgress;
-  @NotNull private final StatusReceiver myReceiver;
-  @NotNull private final LinkedList<MyItem> myQueue;
-  @NotNull private final MyHandler myHandler;
+  @Nonnull
+  private final StatusReceiver myReceiver;
+  @Nonnull
+  private final LinkedList<MyItem> myQueue;
+  @Nonnull
+  private final MyHandler myHandler;
   @Nullable private ISVNStatusFileProvider myFileProvider;
 
-  public SvnRecursiveStatusWalker(@NotNull SvnVcs vcs, @NotNull StatusReceiver receiver, @Nullable ProgressIndicator progress) {
+  public SvnRecursiveStatusWalker(@Nonnull SvnVcs vcs, @Nonnull StatusReceiver receiver, @Nullable ProgressIndicator progress) {
     myVcs = vcs;
     myProject = vcs.getProject();
     myVcsManager = ProjectLevelVcsManager.getInstance(myProject);
@@ -80,7 +87,7 @@ public class SvnRecursiveStatusWalker {
     myFileProvider = fileProvider;
   }
 
-  public void go(@NotNull FilePath rootPath, @NotNull Depth depth) throws SvnBindException {
+  public void go(@Nonnull FilePath rootPath, @Nonnull Depth depth) throws SvnBindException {
     myQueue.add(createItem(rootPath, depth, false));
 
     while (!myQueue.isEmpty()) {
@@ -101,7 +108,7 @@ public class SvnRecursiveStatusWalker {
     }
   }
 
-  private void processDirectory(@NotNull MyItem item) throws SvnBindException {
+  private void processDirectory(@Nonnull MyItem item) throws SvnBindException {
     File ioFile = item.getPath().getIOFile();
 
     myHandler.setCurrentItem(item);
@@ -113,7 +120,7 @@ public class SvnRecursiveStatusWalker {
     }
   }
 
-  private void processFile(@NotNull MyItem item) throws SvnBindException {
+  private void processFile(@Nonnull MyItem item) throws SvnBindException {
     try {
       myReceiver.process(item.getPath(), item.getClient().doStatus(item.getPath().getIOFile(), false));
     }
@@ -128,7 +135,7 @@ public class SvnRecursiveStatusWalker {
     }
   }
 
-  public boolean isIgnoredByVcs(@NotNull final VirtualFile vFile) {
+  public boolean isIgnoredByVcs(@Nonnull final VirtualFile vFile) {
     return ApplicationManager.getApplication().runReadAction(new Computable<Boolean>() {
       @Override
       public Boolean compute() {
@@ -138,11 +145,11 @@ public class SvnRecursiveStatusWalker {
     });
   }
 
-  public boolean isIgnoredIdeaLevel(@NotNull VirtualFile vFile) {
+  public boolean isIgnoredIdeaLevel(@Nonnull VirtualFile vFile) {
     return myChangeListManager.isIgnoredFile(vFile);
   }
 
-  private void handleStatusException(@NotNull MyItem item, @NotNull SvnBindException e) throws SvnBindException {
+  private void handleStatusException(@Nonnull MyItem item, @Nonnull SvnBindException e) throws SvnBindException {
     if (e.contains(SVNErrorCode.WC_NOT_DIRECTORY) || e.contains(SVNErrorCode.WC_NOT_FILE) || e.contains(SVNErrorCode.WC_PATH_NOT_FOUND)) {
       final VirtualFile virtualFile = item.getPath().getVirtualFile();
       if (virtualFile != null && !isIgnoredByVcs(virtualFile)) {
@@ -160,29 +167,32 @@ public class SvnRecursiveStatusWalker {
   }
 
   private static class MyItem {
-    @NotNull private final FilePath myPath;
-    @NotNull private final Depth myDepth;
-    @NotNull private final StatusClient myStatusClient;
+    @Nonnull
+	private final FilePath myPath;
+    @Nonnull
+	private final Depth myDepth;
+    @Nonnull
+	private final StatusClient myStatusClient;
     private final boolean myIsInnerCopyRoot;
 
-    private MyItem(@NotNull FilePath path, @NotNull Depth depth, boolean isInnerCopyRoot, @NotNull StatusClient statusClient) {
+    private MyItem(@Nonnull FilePath path, @Nonnull Depth depth, boolean isInnerCopyRoot, @Nonnull StatusClient statusClient) {
       myPath = path;
       myDepth = depth;
       myStatusClient = statusClient;
       myIsInnerCopyRoot = isInnerCopyRoot;
     }
 
-    @NotNull
+    @Nonnull
     public FilePath getPath() {
       return myPath;
     }
 
-    @NotNull
+    @Nonnull
     public Depth getDepth() {
       return myDepth;
     }
 
-    @NotNull
+    @Nonnull
     public StatusClient getClient() {
       return myStatusClient;
     }
@@ -192,7 +202,7 @@ public class SvnRecursiveStatusWalker {
     }
   }
 
-  private void processRecursively(@NotNull VirtualFile vFile, @NotNull Depth prevDepth) {
+  private void processRecursively(@Nonnull VirtualFile vFile, @Nonnull Depth prevDepth) {
     if (Depth.EMPTY.equals(prevDepth)) return;
     if (isIgnoredIdeaLevel(vFile)) {
       myReceiver.processIgnored(vFile);
@@ -251,14 +261,14 @@ public class SvnRecursiveStatusWalker {
     FileUtil.processFilesRecursively(ioFile, processor, directoryFilter);
   }
 
-  @NotNull
-  private MyItem createItem(@NotNull FilePath path, @NotNull Depth depth, boolean isInnerCopyRoot) {
+  @Nonnull
+  private MyItem createItem(@Nonnull FilePath path, @Nonnull Depth depth, boolean isInnerCopyRoot) {
     StatusClient statusClient = myVcs.getFactory(path.getIOFile()).createStatusClient(myFileProvider, createEventHandler());
 
     return new MyItem(path, depth, isInnerCopyRoot, statusClient);
   }
 
-  @NotNull
+  @Nonnull
   public ProgressTracker createEventHandler() {
     return new ProgressTracker() {
       @Override
@@ -276,7 +286,7 @@ public class SvnRecursiveStatusWalker {
     private MyItem myCurrentItem;
     private boolean myMetCurrentItem;
 
-    public void setCurrentItem(@NotNull MyItem currentItem) {
+    public void setCurrentItem(@Nonnull MyItem currentItem) {
       myCurrentItem = currentItem;
       myMetCurrentItem = false;
     }
@@ -303,7 +313,7 @@ public class SvnRecursiveStatusWalker {
       return result;
     }
 
-    public void processCurrentItem(@NotNull Status status) {
+    public void processCurrentItem(@Nonnull Status status) {
       StatusType nodeStatus = status.getNodeStatus();
       FilePath path = myCurrentItem.getPath();
       VirtualFile vf = path.getVirtualFile();

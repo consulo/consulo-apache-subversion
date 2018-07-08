@@ -20,8 +20,8 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
 import com.intellij.util.Consumer;
 import com.intellij.util.PairFunction;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.history.LogHierarchyNode;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.history.SvnCommittedChangesProvider;
@@ -44,14 +44,17 @@ public class MergeCalculatorTask extends BaseMergeTask {
   private final static int BUNCH_SIZE = 100;
 
   @Nullable private final SvnBranchPointsCalculator.WrapperInvertor myCopyPoint;
-  @NotNull private final OneShotMergeInfoHelper myMergeChecker;
-  @NotNull private final List<SvnChangeList> myChangeLists;
-  @NotNull private final Consumer<MergeCalculatorTask> myCallback;
+  @Nonnull
+  private final OneShotMergeInfoHelper myMergeChecker;
+  @Nonnull
+  private final List<SvnChangeList> myChangeLists;
+  @Nonnull
+  private final Consumer<MergeCalculatorTask> myCallback;
   private boolean myAllListsLoaded;
 
-  public MergeCalculatorTask(@NotNull QuickMerge mergeProcess,
+  public MergeCalculatorTask(@Nonnull QuickMerge mergeProcess,
                              @Nullable SvnBranchPointsCalculator.WrapperInvertor copyPoint,
-                             @NotNull Consumer<MergeCalculatorTask> callback) {
+                             @Nonnull Consumer<MergeCalculatorTask> callback) {
     super(mergeProcess);
     myCopyPoint = copyPoint;
     myCallback = callback;
@@ -66,12 +69,12 @@ public class MergeCalculatorTask extends BaseMergeTask {
     return myAllListsLoaded;
   }
 
-  @NotNull
+  @Nonnull
   public MergeChecker getMergeChecker() {
     return myMergeChecker;
   }
 
-  @NotNull
+  @Nonnull
   public List<SvnChangeList> getChangeLists() {
     return myChangeLists;
   }
@@ -100,7 +103,7 @@ public class MergeCalculatorTask extends BaseMergeTask {
     }
   }
 
-  @NotNull
+  @Nonnull
   private List<Pair<SvnChangeList, LogHierarchyNode>> getChangeListsAfter(long revision) throws VcsException {
     ChangeBrowserSettings settings = new ChangeBrowserSettings();
     settings.CHANGE_AFTER = Long.toString(revision);
@@ -109,8 +112,8 @@ public class MergeCalculatorTask extends BaseMergeTask {
     return getChangeLists(myMergeContext, settings, revision, -1, Pair::create);
   }
 
-  @NotNull
-  private List<SvnChangeList> getNotMergedChangeLists(@NotNull List<Pair<SvnChangeList, LogHierarchyNode>> changeLists) {
+  @Nonnull
+  private List<SvnChangeList> getNotMergedChangeLists(@Nonnull List<Pair<SvnChangeList, LogHierarchyNode>> changeLists) {
     List<SvnChangeList> result = newArrayList();
 
     progress("Collecting not merged revisions");
@@ -126,8 +129,8 @@ public class MergeCalculatorTask extends BaseMergeTask {
     return result;
   }
 
-  @NotNull
-  public static Pair<List<SvnChangeList>, Boolean> loadChangeLists(@NotNull MergeContext mergeContext, long beforeRevision, int size)
+  @Nonnull
+  public static Pair<List<SvnChangeList>, Boolean> loadChangeLists(@Nonnull MergeContext mergeContext, long beforeRevision, int size)
     throws VcsException {
     ChangeBrowserSettings settings = new ChangeBrowserSettings();
     if (beforeRevision > 0) {
@@ -147,12 +150,12 @@ public class MergeCalculatorTask extends BaseMergeTask {
     return configuredSize != null ? configuredSize : size > 0 ? size : BUNCH_SIZE;
   }
 
-  @NotNull
-  private static <T> List<T> getChangeLists(@NotNull MergeContext mergeContext,
-                                            @NotNull ChangeBrowserSettings settings,
+  @Nonnull
+  private static <T> List<T> getChangeLists(@Nonnull MergeContext mergeContext,
+                                            @Nonnull ChangeBrowserSettings settings,
                                             long revisionToExclude,
                                             int size,
-                                            @NotNull PairFunction<SvnChangeList, LogHierarchyNode, T> resultProvider) throws VcsException {
+                                            @Nonnull PairFunction<SvnChangeList, LogHierarchyNode, T> resultProvider) throws VcsException {
     List<T> result = newArrayList();
 
     ((SvnCommittedChangesProvider)mergeContext.getVcs().getCommittedChangesProvider())

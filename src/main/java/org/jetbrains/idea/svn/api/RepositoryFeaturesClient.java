@@ -15,8 +15,9 @@
  */
 package org.jetbrains.idea.svn.api;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
 import org.tmatesoft.svn.core.SVNURL;
 
 /**
@@ -24,5 +25,5 @@ import org.tmatesoft.svn.core.SVNURL;
  */
 public interface RepositoryFeaturesClient extends SvnClient {
 
-  boolean supportsMergeTracking(@NotNull SVNURL url) throws VcsException;
+  boolean supportsMergeTracking(@Nonnull SVNURL url) throws VcsException;
 }

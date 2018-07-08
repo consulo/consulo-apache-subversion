@@ -26,7 +26,7 @@ import com.intellij.openapi.vcs.AbstractVcsHelper;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -59,7 +59,7 @@ public class CleanupWorker {
     final SvnVcs vcs = SvnVcs.getInstance(myProject);
 
     final Task.Backgroundable task = new Task.Backgroundable(myProject, SvnBundle.message(myTitleKey), true) {
-      public void run(@NotNull final ProgressIndicator indicator) {
+      public void run(@Nonnull final ProgressIndicator indicator) {
         indicator.setIndeterminate(true);
         VirtualFile currentRoot;
         for (VirtualFile root : myRoots) {

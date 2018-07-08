@@ -29,7 +29,7 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ArrayUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -58,7 +58,7 @@ public class MarkResolvedAction extends BasicAction {
     return false;
   }
 
-  protected boolean isEnabled(Project project, @NotNull SvnVcs vcs, VirtualFile file) {
+  protected boolean isEnabled(Project project, @Nonnull SvnVcs vcs, VirtualFile file) {
     if (file.isDirectory()) {
       return SvnStatusUtil.isUnderControl(project, file);
     }

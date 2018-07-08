@@ -27,7 +27,7 @@ import com.intellij.openapi.vcs.changes.ChangeListManager;
 import com.intellij.openapi.vcs.changes.LocalChangeList;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -50,12 +50,13 @@ public class SvnFormatWorker extends Task.Backgroundable {
 
   private List<Throwable> myExceptions;
   private final Project myProject;
-  @NotNull private final WorkingCopyFormat myNewFormat;
+  @Nonnull
+  private final WorkingCopyFormat myNewFormat;
   private final List<WCInfo> myWcInfos;
   private List<LocalChangeList> myBeforeChangeLists;
   private final SvnVcs myVcs;
 
-  public SvnFormatWorker(final Project project, @NotNull final WorkingCopyFormat newFormat, final List<WCInfo> wcInfos) {
+  public SvnFormatWorker(final Project project, @Nonnull final WorkingCopyFormat newFormat, final List<WCInfo> wcInfos) {
     super(project, SvnBundle.message("action.change.wcopy.format.task.title"), false, DEAF);
     myProject = project;
     myNewFormat = newFormat;
@@ -64,7 +65,7 @@ public class SvnFormatWorker extends Task.Backgroundable {
     myVcs = SvnVcs.getInstance(myProject);
   }
 
-  public SvnFormatWorker(final Project project, @NotNull final WorkingCopyFormat newFormat, final WCInfo wcInfo) {
+  public SvnFormatWorker(final Project project, @Nonnull final WorkingCopyFormat newFormat, final WCInfo wcInfo) {
     this(project, newFormat, Collections.singletonList(wcInfo));
   }
 
@@ -93,7 +94,7 @@ public class SvnFormatWorker extends Task.Backgroundable {
     }
   }
 
-  public void run(@NotNull final ProgressIndicator indicator) {
+  public void run(@Nonnull final ProgressIndicator indicator) {
     ProjectLevelVcsManager.getInstanceChecked(myProject).startBackgroundVcsOperation();
     indicator.setIndeterminate(true);
     final boolean supportsChangelists = myNewFormat.supportsChangelists();
@@ -131,8 +132,8 @@ public class SvnFormatWorker extends Task.Backgroundable {
     }
   }
 
-  @NotNull
-  private ClientFactory getFactory(@NotNull File path, @NotNull WorkingCopyFormat format) throws VcsException {
+  @Nonnull
+  private ClientFactory getFactory(@Nonnull File path, @Nonnull WorkingCopyFormat format) throws VcsException {
     ClientFactory factory = myVcs.getFactory(path);
     ClientFactory otherFactory = myVcs.getOtherFactory(factory);
     List<WorkingCopyFormat> factoryFormats = factory.createUpgradeClient().getSupportedFormats();
@@ -141,7 +142,7 @@ public class SvnFormatWorker extends Task.Backgroundable {
     return factoryFormats.contains(format) || !otherFactoryFormats.contains(format) ? factory : otherFactory;
   }
 
-  public static List<WorkingCopyFormat> getOtherFactoryFormats(@NotNull ClientFactory otherFactory) {
+  public static List<WorkingCopyFormat> getOtherFactoryFormats(@Nonnull ClientFactory otherFactory) {
     List<WorkingCopyFormat> result;
 
     try {
@@ -155,9 +156,9 @@ public class SvnFormatWorker extends Task.Backgroundable {
     return result;
   }
 
-  private static ProgressTracker createUpgradeHandler(@NotNull final ProgressIndicator indicator,
-                                                       @NotNull final String cleanupMessage,
-                                                       @NotNull final String upgradeMessage) {
+  private static ProgressTracker createUpgradeHandler(@Nonnull final ProgressIndicator indicator,
+                                                       @Nonnull final String cleanupMessage,
+                                                       @Nonnull final String upgradeMessage) {
     return new ProgressTracker() {
       @Override
       public void consume(ProgressEvent event) throws SVNException {

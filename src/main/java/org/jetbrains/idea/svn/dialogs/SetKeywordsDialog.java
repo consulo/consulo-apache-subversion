@@ -22,10 +22,11 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Function;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.properties.PropertyValue;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -51,8 +52,10 @@ public class SetKeywordsDialog extends DialogWrapper {
     .put("Author", "LastChangedBy")
     .build();
 
-  @Nullable private final PropertyValue myKeywordsValue;
-  @NotNull private final List<JCheckBox> myKeywordOptions;
+  @Nullable
+  private final PropertyValue myKeywordsValue;
+  @Nonnull
+  private final List<JCheckBox> myKeywordOptions;
 
   protected SetKeywordsDialog(Project project, @Nullable PropertyValue keywordsValue) {
     super(project, false);
@@ -68,14 +71,14 @@ public class SetKeywordsDialog extends DialogWrapper {
   public String getKeywords() {
     List<JCheckBox> selectedKeywords = ContainerUtil.filter(myKeywordOptions, new Condition<JCheckBox>() {
       @Override
-      public boolean value(@NotNull JCheckBox keywordOption) {
+      public boolean value(@Nonnull JCheckBox keywordOption) {
         return keywordOption.isSelected();
       }
     });
 
     return StringUtil.nullize(StringUtil.join(selectedKeywords, new Function<JCheckBox, String>() {
       @Override
-      public String fun(@NotNull JCheckBox keywordOption) {
+      public String fun(@Nonnull JCheckBox keywordOption) {
         return keywordOption.getText();
       }
     }, " "));
@@ -118,7 +121,7 @@ public class SetKeywordsDialog extends DialogWrapper {
    * TODO: Subversion 1.8 also allow defining custom keywords (in "svn:keywords" property value). But currently it is unnecessary for this
    * TODO: dialog.
    */
-  @NotNull
+  @Nonnull
   private static Set<String> parseKeywords(@Nullable PropertyValue keywordsValue) {
     Set<String> result = ContainerUtil.newHashSet();
 

@@ -25,7 +25,7 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.rollback.DefaultRollbackEnvironment;
 import com.intellij.openapi.vcs.rollback.RollbackProgressListener;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.info.Info;
@@ -54,9 +54,9 @@ public class SvnRollbackEnvironment extends DefaultRollbackEnvironment {
     return SvnBundle.message("action.name.revert");
   }
 
-  public void rollbackChanges(@NotNull List<Change> changes,
-                              @NotNull List<VcsException> exceptions,
-                              @NotNull RollbackProgressListener listener) {
+  public void rollbackChanges(@Nonnull List<Change> changes,
+                              @Nonnull List<VcsException> exceptions,
+                              @Nonnull RollbackProgressListener listener) {
     listener.indeterminate();
 
     for (Map.Entry<Pair<SVNURL, WorkingCopyFormat>, Collection<Change>> entry : SvnUtil.splitChangesIntoWc(mySvnVcs, changes).entrySet()) {
@@ -67,9 +67,9 @@ public class SvnRollbackEnvironment extends DefaultRollbackEnvironment {
     }
   }
 
-  private void rollbackGroupForWc(@NotNull List<Change> changes,
-                                  @NotNull List<VcsException> exceptions,
-                                  @NotNull RollbackProgressListener listener) {
+  private void rollbackGroupForWc(@Nonnull List<Change> changes,
+                                  @Nonnull List<VcsException> exceptions,
+                                  @Nonnull RollbackProgressListener listener) {
     final UnversionedAndNotTouchedFilesGroupCollector collector = new UnversionedAndNotTouchedFilesGroupCollector();
     final ChangesChecker checker = new ChangesChecker(mySvnVcs, collector);
 
@@ -90,9 +90,9 @@ public class SvnRollbackEnvironment extends DefaultRollbackEnvironment {
     }
   }
 
-  public void rollbackMissingFileDeletion(@NotNull List<FilePath> filePaths,
-                                          @NotNull List<VcsException> exceptions,
-                                          @NotNull RollbackProgressListener listener) {
+  public void rollbackMissingFileDeletion(@Nonnull List<FilePath> filePaths,
+                                          @Nonnull List<VcsException> exceptions,
+                                          @Nonnull RollbackProgressListener listener) {
     for (FilePath filePath : filePaths) {
       listener.accept(filePath);
       try {
@@ -107,7 +107,7 @@ public class SvnRollbackEnvironment extends DefaultRollbackEnvironment {
     }
   }
 
-  private void revertFileOrDir(@NotNull FilePath filePath) throws SVNException, VcsException {
+  private void revertFileOrDir(@Nonnull FilePath filePath) throws SVNException, VcsException {
     File file = filePath.getIOFile();
     Info info = mySvnVcs.getInfo(file);
     if (info != null) {
@@ -127,17 +127,17 @@ public class SvnRollbackEnvironment extends DefaultRollbackEnvironment {
     }
   }
 
-  private void doRevert(@NotNull File path, boolean recursive) throws VcsException {
+  private void doRevert(@Nonnull File path, boolean recursive) throws VcsException {
     mySvnVcs.getFactory(path).createRevertClient().revert(Collections.singletonList(path), Depth.allOrFiles(recursive), null);
   }
 
-  private boolean is17OrGreaterCopy(@NotNull File file, @NotNull Info info) throws VcsException {
+  private boolean is17OrGreaterCopy(@Nonnull File file, @Nonnull Info info) throws VcsException {
     WorkingCopy copy = mySvnVcs.getRootsToWorkingCopies().getMatchingCopy(info.getURL());
 
     return copy != null ? copy.is17Copy() : mySvnVcs.getWorkingCopyFormat(file).isOrGreater(WorkingCopyFormat.ONE_DOT_SEVEN);
   }
 
-  public static boolean isMoveRenameReplace(@NotNull Change c) {
+  public static boolean isMoveRenameReplace(@Nonnull Change c) {
     if (c.getAfterRevision() == null || c.getBeforeRevision() == null) return false;
 
     return c.isIsReplaced() ||

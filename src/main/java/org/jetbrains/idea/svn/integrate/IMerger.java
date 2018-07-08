@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.integrate;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import java.io.File;
 

@@ -15,25 +15,27 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MultiLineLabelUI;
-import com.intellij.openapi.util.Couple;
-import com.intellij.openapi.vcs.RepositoryLocation;
-import com.intellij.openapi.vcs.changes.committed.*;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.util.NotNullFunction;
-import com.intellij.util.messages.Topic;
-import com.intellij.util.ui.JBUI;
-import icons.SvnIcons;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.actions.AbstractIntegrateChangesAction;
@@ -44,22 +46,43 @@ import org.jetbrains.idea.svn.integrate.SelectedChangeListsChecker;
 import org.jetbrains.idea.svn.integrate.SelectedCommittedStuffChecker;
 import org.jetbrains.idea.svn.mergeinfo.ListMergeStatus;
 import org.jetbrains.idea.svn.mergeinfo.MergeInfoHolder;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionPlaces;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.actionSystem.ToggleAction;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MultiLineLabelUI;
+import com.intellij.openapi.util.Couple;
+import com.intellij.openapi.vcs.RepositoryLocation;
+import com.intellij.openapi.vcs.changes.committed.ChangeListFilteringStrategy;
+import com.intellij.openapi.vcs.changes.committed.CommittedChangeListDecorator;
+import com.intellij.openapi.vcs.changes.committed.CommittedChangeListsListener;
+import com.intellij.openapi.vcs.changes.committed.CommittedChangesFilterKey;
+import com.intellij.openapi.vcs.changes.committed.CommittedChangesFilterPriority;
+import com.intellij.openapi.vcs.changes.committed.DecoratorManager;
+import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
+import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.util.NotNullFunction;
+import com.intellij.util.messages.Topic;
+import com.intellij.util.ui.JBUI;
+import icons.SvnIcons;
 
 public class RootsAndBranches implements CommittedChangeListDecorator {
   private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.history.RootsAndBranches");
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final Project myProject;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final Project myProject;
   private final DecoratorManager myManager;
   private final RepositoryLocation myLocation;
   private JPanel myPanel;
@@ -98,7 +121,7 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
     return myMergePanels.get(key.endsWith(File.separator) ? key.substring(0, key.length() - 1) : key + File.separator);
   }
 
-  public RootsAndBranches(@NotNull SvnVcs vcs, @NotNull DecoratorManager manager, final RepositoryLocation location) {
+  public RootsAndBranches(@Nonnull SvnVcs vcs, @Nonnull DecoratorManager manager, final RepositoryLocation location) {
     myVcs = vcs;
     myProject = vcs.getProject();
     myManager = manager;
@@ -188,7 +211,7 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
   
   private void createPanels(final RepositoryLocation location, final Runnable afterRefresh) {
     final Task.Backgroundable backgroundable = new Task.Backgroundable(myProject, "Subversion: loading working copies data..", false) {
-      public void run(@NotNull final ProgressIndicator indicator) {
+      public void run(@Nonnull final ProgressIndicator indicator) {
         indicator.setIndeterminate(true);
         final Map<String, SvnMergeInfoRootPanelManual> panels = new HashMap<>();
         final Map<String, MergeInfoHolder> holders = new HashMap<>();
@@ -268,8 +291,8 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
         }
         final SvnMergeInfoRootPanelManual panel = new SvnMergeInfoRootPanelManual(myProject,
                                                                                   new NotNullFunction<WCInfoWithBranches, WCInfoWithBranches>() {
-                                                                                    @NotNull
-                                                                                    public WCInfoWithBranches fun(@NotNull WCInfoWithBranches wcInfoWithBranches) {
+                                                                                    @Nonnull
+                                                                                    public WCInfoWithBranches fun(@Nonnull WCInfoWithBranches wcInfoWithBranches) {
                                                                                       final WCInfoWithBranches newInfo =
                                                                                         myDataLoader.reloadInfo(wcInfoWithBranches);
                                                                                       if (newInfo == null) {
@@ -318,8 +341,8 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
     return svnGroup;
   }
 
-  @NotNull
-  private MergeInfoHolder createHolder(@NotNull SvnMergeInfoRootPanelManual panel) {
+  @Nonnull
+  private MergeInfoHolder createHolder(@Nonnull SvnMergeInfoRootPanelManual panel) {
     return new MergeInfoHolder(myProject, myManager, this, panel);
   }
 
@@ -517,12 +540,12 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
       myDescription = message("action.mark.list.as.%s.description");
     }
 
-    @NotNull
+    @Nonnull
     protected MergerFactory createMergerFactory(SelectedChangeListsChecker checker) {
       return new ChangeListsMergerFactory(checker.getSelectedLists(), true, !myMarkAsMerged, false);
     }
 
-    @NotNull
+    @Nonnull
     protected SelectedChangeListsChecker createChecker() {
       return new SelectedChangeListsChecker();
     }
@@ -558,8 +581,8 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
       return myText;
     }
 
-    @NotNull
-    private String message(@NotNull String key) {
+    @Nonnull
+    private String message(@Nonnull String key) {
       return SvnBundle.message(String.format(key, myMarkAsMerged ? "merged" : "not.merged"));
     }
   }
@@ -572,12 +595,12 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
       myIntegrate = integrate;
     }
 
-    @NotNull
+    @Nonnull
     protected MergerFactory createMergerFactory(final SelectedChangeListsChecker checker) {
       return new ChangeListsMergerFactory(checker.getSelectedLists(), false, !myIntegrate, false);
     }
 
-    @NotNull
+    @Nonnull
     protected SelectedChangeListsChecker createChecker() {
       return new SelectedChangeListsChecker();
     }
@@ -708,7 +731,7 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
     public void appendFilterBase(List<CommittedChangeList> changeLists) {
     }
 
-    @NotNull
+    @Nonnull
     public List<CommittedChangeList> filterChangeLists(final List<CommittedChangeList> changeLists) {
       if ((! myFilterAlien.isSelected(null)) && (! myFilterNotMerged.isSelected(null)) && (! myFilterMerged.isSelected(null))) {
         return changeLists;

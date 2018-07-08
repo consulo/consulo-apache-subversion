@@ -1,8 +1,9 @@
 package org.jetbrains.idea.svn.change;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -20,7 +21,7 @@ import java.util.List;
 public class CmdChangeListClient extends BaseSvnClient implements ChangeListClient {
 
   @Override
-  public void add(@NotNull String changeList, @NotNull File path, @Nullable String[] changeListsToOperate) throws VcsException {
+  public void add(@Nonnull String changeList, @Nonnull File path, @Nullable String[] changeListsToOperate) throws VcsException {
     List<String> parameters = new ArrayList<>();
 
     parameters.add(changeList);
@@ -36,7 +37,7 @@ public class CmdChangeListClient extends BaseSvnClient implements ChangeListClie
   }
 
   @Override
-  public void remove(@NotNull File path) throws VcsException {
+  public void remove(@Nonnull File path) throws VcsException {
     List<String> parameters = new ArrayList<>();
 
     parameters.add("--remove");

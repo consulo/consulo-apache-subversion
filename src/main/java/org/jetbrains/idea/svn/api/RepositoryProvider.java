@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 /**
 * @author Konstantin Kolosovsky.

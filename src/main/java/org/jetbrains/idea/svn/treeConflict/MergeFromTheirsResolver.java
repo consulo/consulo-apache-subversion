@@ -49,8 +49,8 @@ import com.intellij.util.Consumer;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.MultiMap;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.concurrency.AsyncPromise;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnContentRevision;
@@ -85,25 +85,34 @@ import static java.util.stream.Collectors.toMap;
 import static org.jetbrains.idea.svn.SvnBundle.message;
 
 public class MergeFromTheirsResolver extends BackgroundTaskGroup {
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final TreeConflictDescription myDescription;
-  @NotNull private final Change myChange;
-  @NotNull private final FilePath myOldFilePath;
-  @NotNull private final FilePath myNewFilePath;
-  @NotNull private final String myOldPresentation;
-  @NotNull private final String myNewPresentation;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final TreeConflictDescription myDescription;
+  @Nonnull
+  private final Change myChange;
+  @Nonnull
+  private final FilePath myOldFilePath;
+  @Nonnull
+  private final FilePath myNewFilePath;
+  @Nonnull
+  private final String myOldPresentation;
+  @Nonnull
+  private final String myNewPresentation;
   private final SvnRevisionNumber myCommittedRevision;
   private Boolean myAdd;
 
-  @NotNull private final List<Change> myTheirsChanges;
-  @NotNull private final List<Change> myTheirsBinaryChanges;
+  @Nonnull
+  private final List<Change> myTheirsChanges;
+  @Nonnull
+  private final List<Change> myTheirsBinaryChanges;
   private List<TextFilePatch> myTextPatches;
   private final VirtualFile myBaseForPatch;
   private boolean myThereAreCreations;
 
-  public MergeFromTheirsResolver(@NotNull SvnVcs vcs,
-                                 @NotNull TreeConflictDescription description,
-                                 @NotNull Change change,
+  public MergeFromTheirsResolver(@Nonnull SvnVcs vcs,
+                                 @Nonnull TreeConflictDescription description,
+                                 @Nonnull Change change,
                                  SvnRevisionNumber revision) {
     super(vcs.getProject(), TreeConflictRefreshablePanel.TITLE);
     myVcs = vcs;
@@ -169,7 +178,7 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
   }
 
   @CalledInAwt
-  private void selectPatchesInApplyPatchDialog(@NotNull Consumer<VcsException> callback) throws VcsException {
+  private void selectPatchesInApplyPatchDialog(@Nonnull Consumer<VcsException> callback) throws VcsException {
     LocalChangeList changeList = ChangeListManager.getInstance(myVcs.getProject()).getChangeList(myChange);
     TreeConflictApplyTheirsPatchExecutor patchExecutor = new TreeConflictApplyTheirsPatchExecutor(myVcs, myBaseForPatch);
     ApplyPatchDifferentiatedDialog dialog = new ApplyPatchDifferentiatedDialog(
@@ -182,11 +191,13 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
   }
 
   private class TreeConflictApplyTheirsPatchExecutor implements ApplyPatchExecutor<TextFilePatchInProgress> {
-    @NotNull private final SvnVcs myVcs;
+    @Nonnull
+	private final SvnVcs myVcs;
     private final VirtualFile myBaseDir;
-    @NotNull private final AsyncPromise<VcsException> myPromise;
+    @Nonnull
+	private final AsyncPromise<VcsException> myPromise;
 
-    public TreeConflictApplyTheirsPatchExecutor(@NotNull SvnVcs vcs, final VirtualFile baseDir) {
+    public TreeConflictApplyTheirsPatchExecutor(@Nonnull SvnVcs vcs, final VirtualFile baseDir) {
       myVcs = vcs;
       myBaseDir = baseDir;
       myPromise = new AsyncPromise<>();
@@ -198,8 +209,8 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
     }
 
     @Override
-    public void apply(@NotNull List<FilePatch> remaining,
-                      @NotNull MultiMap<VirtualFile, TextFilePatchInProgress> patchGroupsToApply,
+    public void apply(@Nonnull List<FilePatch> remaining,
+                      @Nonnull MultiMap<VirtualFile, TextFilePatchInProgress> patchGroupsToApply,
                       @Nullable LocalChangeList localList,
                       @Nullable String fileName,
                       @Nullable ThrowableComputable<Map<String, Map<String, CharSequence>>, PatchSyntaxException> additionalInfo) {
@@ -255,7 +266,7 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
     for (Change change : myTheirsBinaryChanges) {
       RunResult result = new WriteAction() {
         @Override
-        protected void run(@NotNull Result result) throws Throwable {
+        protected void run(@Nonnull Result result) throws Throwable {
           dirtyPaths.add(getFilePath(change));
           try {
             applyBinaryChange(change);
@@ -273,7 +284,7 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
     VcsDirtyScopeManager.getInstance(myVcs.getProject()).filePathsDirty(dirtyPaths, null);
   }
 
-  private void processBinaryChangeError(@NotNull Throwable error) throws VcsException {
+  private void processBinaryChangeError(@Nonnull Throwable error) throws VcsException {
     if (error instanceof VcsException) {
       VcsException vcsError = (VcsException)error;
       if (vcsError.isWarning()) {
@@ -288,7 +299,7 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
     }
   }
 
-  private static void applyBinaryChange(@NotNull Change change) throws IOException, VcsException {
+  private static void applyBinaryChange(@Nonnull Change change) throws IOException, VcsException {
     if (change.getAfterRevision() == null) {
       FilePath path = notNull(change.getBeforeRevision()).getFile();
       VirtualFile file = LocalFileSystem.getInstance().refreshAndFindFileByPath(path.getPath());
@@ -315,7 +326,7 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
   }
 
   @Nullable
-  private Collection<FilePath> chooseBinaryFiles(@NotNull List<Change> changes, @NotNull Set<FilePath> paths) {
+  private Collection<FilePath> chooseBinaryFiles(@Nonnull List<Change> changes, @Nonnull Set<FilePath> paths) {
     String singleMessage = "";
     if (changes.size() == 1) {
       FileStatus status = changes.get(0).getFileStatus();
@@ -348,8 +359,8 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
   }
 
   @CalledInAwt
-  @NotNull
-  private List<Change> convertPaths(@NotNull List<Change> changes) throws VcsException {
+  @Nonnull
+  private List<Change> convertPaths(@Nonnull List<Change> changes) throws VcsException {
     initAddOption();
 
     List<Change> result = newArrayList();
@@ -368,20 +379,20 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
   }
 
   @Nullable
-  private ContentRevision convertAfterRevision(@NotNull Change change, @Nullable ContentRevision revision) throws VcsException {
+  private ContentRevision convertAfterRevision(@Nonnull Change change, @Nullable ContentRevision revision) throws VcsException {
     if (revision == null) return null;
     return myAdd && (change.getBeforeRevision() == null || change.isMoved() || change.isRenamed()) ? revision : toSimpleRevision(revision,
                                                                                                                                  true);
   }
 
-  @NotNull
-  private SimpleContentRevision toSimpleRevision(@NotNull ContentRevision revision, boolean rebasePath) throws VcsException {
+  @Nonnull
+  private SimpleContentRevision toSimpleRevision(@Nonnull ContentRevision revision, boolean rebasePath) throws VcsException {
     return new SimpleContentRevision(revision.getContent(),
                                      rebasePath ? rebasePath(myOldFilePath, myNewFilePath, revision.getFile()) : myNewFilePath,
                                      revision.getRevisionNumber().asString());
   }
 
-  private static boolean isUnderOldDir(@NotNull Change change, @NotNull FilePath path) {
+  private static boolean isUnderOldDir(@Nonnull Change change, @Nonnull FilePath path) {
     FilePath beforePath = getBeforePath(change);
     FilePath afterPath = getAfterPath(change);
 
@@ -389,8 +400,8 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
            afterPath != null && isAncestor(path.getPath(), afterPath.getPath(), true);
   }
 
-  @NotNull
-  private static FilePath rebasePath(@NotNull FilePath oldBase, @NotNull FilePath newBase, @NotNull FilePath path) {
+  @Nonnull
+  private static FilePath rebasePath(@Nonnull FilePath oldBase, @Nonnull FilePath newBase, @Nonnull FilePath path) {
     String relativePath = notNull(getRelativePath(oldBase.getPath(), path.getPath(), '/'));
     return VcsUtil.getFilePath(newBase.getPath() + "/" + relativePath, path.isDirectory());
   }
@@ -433,8 +444,8 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
     }
   }
 
-  @NotNull
-  private List<SvnChangeList> loadSvnChangeListsForPatch(@NotNull TreeConflictDescription description) throws VcsException {
+  @Nonnull
+  private List<SvnChangeList> loadSvnChangeListsForPatch(@Nonnull TreeConflictDescription description) throws VcsException {
     long max = description.getSourceRightVersion().getPegRevision();
     long min = description.getSourceLeftVersion().getPegRevision();
     SvnRepositoryLocation location = new SvnRepositoryLocation(description.getSourceRightVersion().getRepositoryRoot().toString());
@@ -492,7 +503,7 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
                  return true;
                }
 
-               @NotNull
+               @Nonnull
                @Override
                public String getDoNotShowMessage() {
                  return CommonBundle.message("dialog.options.do.not.ask");
@@ -500,7 +511,7 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup {
              }).show();
   }
 
-  private static boolean containAdditions(@NotNull List<Change> changes) {
+  private static boolean containAdditions(@Nonnull List<Change> changes) {
     return changes.stream().anyMatch(change -> change.getBeforeRevision() == null || change.isMoved() || change.isRenamed());
   }
 }

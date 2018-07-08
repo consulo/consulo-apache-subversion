@@ -22,7 +22,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -140,7 +140,7 @@ public class LiveProvider implements BunchProvider {
     return new Fragment(Origin.LIVE, list, true, true, null);
   }
 
-  private static boolean isElementNotFound(@NotNull VcsException e) {
+  private static boolean isElementNotFound(@Nonnull VcsException e) {
     return e instanceof SvnBindException && ((SvnBindException)e).contains(SVNErrorCode.FS_NOT_FOUND);
   }
 

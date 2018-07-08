@@ -16,10 +16,11 @@
 package org.jetbrains.idea.svn.lock;
 
 import com.intellij.openapi.vcs.changes.LogicalLock;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import org.tmatesoft.svn.core.SVNLock;
 
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 
@@ -33,7 +34,8 @@ public class Lock {
   private final String myOwner;
   private final String myComment;
   private final Date myCreationDate;
-  @Nullable private final Date myExpirationDate;
+  @Nullable
+  private final Date myExpirationDate;
 
   @Nullable
   public static Lock create(@Nullable SVNLock lock) {
@@ -47,7 +49,7 @@ public class Lock {
     return result;
   }
 
-  public Lock(@NotNull Lock.Builder builder) {
+  public Lock(@Nonnull Lock.Builder builder) {
     myOwner = builder.owner;
     myComment = builder.comment;
     myCreationDate = builder.created;
@@ -71,7 +73,7 @@ public class Lock {
     return myOwner;
   }
 
-  @NotNull
+  @Nonnull
   public LogicalLock toLogicalLock(boolean isLocal) {
     return new LogicalLock(isLocal, myOwner, myComment, myCreationDate, myExpirationDate);
   }
@@ -94,39 +96,40 @@ public class Lock {
     private Date created;
 
     @XmlElement(name = "expires")
-    @Nullable private Date expires;
+    @Nullable
+	private Date expires;
 
-    @NotNull
+    @Nonnull
     public Builder setToken(String token) {
       this.token = token;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setOwner(String owner) {
       this.owner = owner;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setComment(String comment) {
       this.comment = comment;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setCreationDate(Date creationDate) {
       this.created = creationDate;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Builder setExpirationDate(@Nullable Date expirationDate) {
       this.expires = expirationDate;
       return this;
     }
 
-    @NotNull
+    @Nonnull
     public Lock build() {
       return new Lock(this);
     }

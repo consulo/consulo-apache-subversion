@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.auth;
 
 import com.intellij.openapi.util.text.StringUtil;
 import org.intellij.lang.annotations.MagicConstant;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.*;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
 import org.tmatesoft.svn.core.auth.SVNAuthentication;
@@ -41,7 +41,7 @@ class SSLServerCertificateAuthenticator extends AbstractAuthenticator {
   private int myResult;
   private SVNAuthentication myAuthentication;
 
-  SSLServerCertificateAuthenticator(@NotNull AuthenticationService authenticationService, @NotNull SVNURL url, String realm) {
+  SSLServerCertificateAuthenticator(@Nonnull AuthenticationService authenticationService, @Nonnull SVNURL url, String realm) {
     super(authenticationService, url, realm);
   }
 
@@ -111,8 +111,8 @@ class SSLServerCertificateAuthenticator extends AbstractAuthenticator {
     return true;
   }
 
-  @NotNull
-  private Certificate createCertificate(@NotNull String stored) throws SVNException {
+  @Nonnull
+  private Certificate createCertificate(@Nonnull String stored) throws SVNException {
     CertificateFactory factory;
     try {
       factory = CertificateFactory.getInstance("X509");

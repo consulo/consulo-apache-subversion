@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.lock;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.EventAction;
@@ -25,7 +25,7 @@ import java.util.List;
 public class CmdLockClient extends BaseSvnClient implements LockClient {
 
   @Override
-  public void lock(@NotNull File file, boolean force, @NotNull String message, @Nullable ProgressTracker handler) throws VcsException {
+  public void lock(@Nonnull File file, boolean force, @Nonnull String message, @Nullable ProgressTracker handler) throws VcsException {
     List<String> parameters = prepareParameters(file, force);
 
     parameters.add("--message");
@@ -36,14 +36,14 @@ public class CmdLockClient extends BaseSvnClient implements LockClient {
   }
 
   @Override
-  public void unlock(@NotNull File file, boolean force, @Nullable ProgressTracker handler) throws VcsException {
+  public void unlock(@Nonnull File file, boolean force, @Nullable ProgressTracker handler) throws VcsException {
     List<String> parameters = prepareParameters(file, force);
 
     CommandExecutor command = execute(myVcs, SvnTarget.fromFile(file), SvnCommandName.unlock, parameters, null);
     handleCommandCompletion(command, file, EventAction.UNLOCKED, EventAction.UNLOCK_FAILED, handler);
   }
 
-  private static List<String> prepareParameters(@NotNull File file, boolean force) {
+  private static List<String> prepareParameters(@Nonnull File file, boolean force) {
     List<String> parameters = new ArrayList<>();
 
     CommandUtil.put(parameters, file);
@@ -52,10 +52,10 @@ public class CmdLockClient extends BaseSvnClient implements LockClient {
     return parameters;
   }
 
-  private static void handleCommandCompletion(@NotNull CommandExecutor command,
-                                              @NotNull File file,
-                                              @NotNull EventAction success,
-                                              @NotNull EventAction failure,
+  private static void handleCommandCompletion(@Nonnull CommandExecutor command,
+                                              @Nonnull File file,
+                                              @Nonnull EventAction success,
+                                              @Nonnull EventAction failure,
                                               @Nullable ProgressTracker handler) throws VcsException {
     // just warning appears in output when can not lock/unlock file for some reason (like, that file is already locked)
     SVNErrorMessage error = SvnUtil.parseWarning(command.getErrorOutput());
@@ -68,8 +68,8 @@ public class CmdLockClient extends BaseSvnClient implements LockClient {
     }
   }
 
-  private static void invokeHandler(@NotNull File file,
-                                    @NotNull EventAction action,
+  private static void invokeHandler(@Nonnull File file,
+                                    @Nonnull EventAction action,
                                     @Nullable ProgressTracker handler,
                                     @Nullable SVNErrorMessage error)
     throws SVNException {
@@ -78,7 +78,7 @@ public class CmdLockClient extends BaseSvnClient implements LockClient {
     }
   }
 
-  private static ProgressEvent createEvent(@NotNull File file, @NotNull EventAction action, @Nullable SVNErrorMessage error) {
+  private static ProgressEvent createEvent(@Nonnull File file, @Nonnull EventAction action, @Nullable SVNErrorMessage error) {
     return new ProgressEvent(file, -1, null, null, action, error, null);
   }
 }

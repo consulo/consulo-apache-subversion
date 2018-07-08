@@ -16,8 +16,8 @@
 package org.jetbrains.idea.svn.update;
 
 import com.intellij.openapi.util.io.FileUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.EventAction;
@@ -52,7 +52,7 @@ public class CmdUpdateClient extends SvnKitUpdateClient {
   private static final Pattern ourExceptionPattern = Pattern.compile("svn: E(\\d{6}): .+");
   private static final String ourAuthenticationRealm = "Authentication realm:";
 
-  private void checkWorkingCopy(@NotNull File path) throws SvnBindException {
+  private void checkWorkingCopy(@Nonnull File path) throws SvnBindException {
     final Info info = myFactory.createInfoClient().doInfo(path, SVNRevision.UNDEFINED);
 
     if (info == null || info.getURL() == null) {
@@ -60,7 +60,7 @@ public class CmdUpdateClient extends SvnKitUpdateClient {
     }
   }
 
-  private long[] run(@NotNull File path, @NotNull List<String> parameters, @NotNull SvnCommandName command) throws SvnBindException {
+  private long[] run(@Nonnull File path, @Nonnull List<String> parameters, @Nonnull SvnCommandName command) throws SvnBindException {
     File base = path.isDirectory() ? path : path.getParentFile();
 
     final AtomicReference<long[]> updatedToRevision = new AtomicReference<>();
@@ -81,7 +81,7 @@ public class CmdUpdateClient extends SvnKitUpdateClient {
       final long[] myRevisions = new long[paths.length];
 
       @Override
-      protected void beforeHandler(@NotNull ProgressEvent event) {
+      protected void beforeHandler(@Nonnull ProgressEvent event) {
         if (EventAction.UPDATE_COMPLETED.equals(event.getAction())) {
           final long eventRevision = event.getRevision();
           for (int i = 0; i < paths.length; i++) {
@@ -102,7 +102,7 @@ public class CmdUpdateClient extends SvnKitUpdateClient {
     };
   }
 
-  private static void fillParameters(@NotNull List<String> parameters,
+  private static void fillParameters(@Nonnull List<String> parameters,
                                      @Nullable SVNRevision revision,
                                      @Nullable Depth depth,
                                      boolean depthIsSticky,

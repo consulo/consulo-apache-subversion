@@ -20,8 +20,8 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.containers.ContainerUtil;
 import org.apache.log4j.Level;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNException;
 
@@ -41,7 +41,7 @@ public class SvnExceptionLogFilter implements RareLogger.LogFilter {
                 SVNErrorCode.WC_NOT_DIRECTORY, SVNErrorCode.WC_PATH_NOT_FOUND);
 
   @Override
-  public Object getKey(@NotNull Level level, @NonNls String message, @Nullable Throwable t, @NonNls String... details) {
+  public Object getKey(@Nonnull Level level, @NonNls String message, @Nullable Throwable t, @NonNls String... details) {
     SVNException e = getSvnException(t);
     boolean shouldFilter = e != null && ourLogRarelyCodes.contains(e.getErrorMessage().getErrorCode());
 
@@ -49,7 +49,7 @@ public class SvnExceptionLogFilter implements RareLogger.LogFilter {
   }
 
   @Override
-  @NotNull
+  @Nonnull
   public Integer getAllowedLoggingInterval(Level level, String message, Throwable t, String[] details) {
     SVNException e = getSvnException(t);
     boolean shouldFilter = e != null && ourLogRarelyCodes.contains(e.getErrorMessage().getErrorCode());

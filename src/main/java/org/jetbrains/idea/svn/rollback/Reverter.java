@@ -21,7 +21,7 @@ import com.intellij.openapi.vcs.rollback.RollbackProgressListener;
 import com.intellij.util.Processor;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnFileSystemListener;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -46,13 +46,14 @@ import java.util.*;
 */
 public class Reverter {
 
-  @NotNull private final SvnVcs myVcs;
+  @Nonnull
+  private final SvnVcs myVcs;
   private final ProgressTracker myHandler;
   private final List<VcsException> myExceptions;
   private final List<CopiedAsideInfo> myFromToModified;
   private final Map<File, PropertiesMap> myProperties;
 
-  Reverter(@NotNull SvnVcs vcs, @NotNull RollbackProgressListener listener, @NotNull List<VcsException> exceptions) {
+  Reverter(@Nonnull SvnVcs vcs, @Nonnull RollbackProgressListener listener, @Nonnull List<VcsException> exceptions) {
     myVcs = vcs;
     myHandler = createRevertHandler(exceptions, listener);
     myExceptions = exceptions;
@@ -60,7 +61,7 @@ public class Reverter {
     myProperties = ContainerUtil.newHashMap();
   }
 
-  public void revert(@NotNull Collection<File> files, boolean recursive) {
+  public void revert(@Nonnull Collection<File> files, boolean recursive) {
     if (files.isEmpty()) return;
 
     File target = files.iterator().next();
@@ -73,7 +74,7 @@ public class Reverter {
     }
   }
 
-  public void moveRenamesToTmp(@NotNull UnversionedAndNotTouchedFilesGroupCollector collector) {
+  public void moveRenamesToTmp(@Nonnull UnversionedAndNotTouchedFilesGroupCollector collector) {
     try {
       // copy also directories here - for moving with svn
       // also, maybe still use just patching? -> well-tested thing, only deletion of folders might suffer
@@ -182,7 +183,7 @@ public class Reverter {
     }
   }
 
-  private void processRevertError(@NotNull VcsException e) {
+  private void processRevertError(@Nonnull VcsException e) {
     if (e.getCause() instanceof SVNException) {
       SVNException cause = (SVNException)e.getCause();
 
@@ -195,9 +196,9 @@ public class Reverter {
     }
   }
 
-  @NotNull
-  private static ProgressTracker createRevertHandler(@NotNull final List<VcsException> exceptions,
-                                                     @NotNull final RollbackProgressListener listener) {
+  @Nonnull
+  private static ProgressTracker createRevertHandler(@Nonnull final List<VcsException> exceptions,
+                                                     @Nonnull final RollbackProgressListener listener) {
     return new ProgressTracker() {
       public void consume(ProgressEvent event) {
         if (event.getAction() == EventAction.REVERT) {
@@ -217,9 +218,9 @@ public class Reverter {
     };
   }
 
-  @NotNull
-  private static PropertyConsumer createPropertyHandler(@NotNull final Map<File, PropertiesMap> properties,
-                                                        @NotNull final UnversionedAndNotTouchedFilesGroupCollector collector) {
+  @Nonnull
+  private static PropertyConsumer createPropertyHandler(@Nonnull final Map<File, PropertiesMap> properties,
+                                                        @Nonnull final UnversionedAndNotTouchedFilesGroupCollector collector) {
     return new PropertyConsumer() {
       @Override
       public void handleProperty(File path, PropertyData property) throws SVNException {

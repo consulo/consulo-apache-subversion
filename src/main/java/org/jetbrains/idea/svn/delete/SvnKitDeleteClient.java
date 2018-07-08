@@ -1,8 +1,9 @@
 package org.jetbrains.idea.svn.delete;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -19,7 +20,7 @@ import java.io.File;
 public class SvnKitDeleteClient extends BaseSvnClient implements DeleteClient {
 
   @Override
-  public void delete(@NotNull File path, boolean force, boolean dryRun, @Nullable ProgressTracker handler) throws VcsException {
+  public void delete(@Nonnull File path, boolean force, boolean dryRun, @Nullable ProgressTracker handler) throws VcsException {
     SVNWCClient client = myVcs.getSvnKitManager().createWCClient();
     client.setEventHandler(toEventHandler(handler));
 
@@ -32,7 +33,7 @@ public class SvnKitDeleteClient extends BaseSvnClient implements DeleteClient {
   }
 
   @Override
-  public long delete(@NotNull SVNURL url, @NotNull String message) throws VcsException {
+  public long delete(@Nonnull SVNURL url, @Nonnull String message) throws VcsException {
     try {
       SVNCommitInfo commitInfo = myVcs.getSvnKitManager().createCommitClient().doDelete(new SVNURL[]{url}, message);
 

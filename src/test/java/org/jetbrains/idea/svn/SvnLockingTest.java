@@ -15,13 +15,10 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.idea.Bombed;
-import com.intellij.openapi.application.PathManager;
-import com.intellij.openapi.application.PluginPathManager;
-import com.intellij.util.TimeoutUtil;
-import com.intellij.util.concurrency.Semaphore;
-import junit.framework.Assert;
-import junit.framework.TestCase;
+import java.io.File;
+import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.tmatesoft.sqljet.core.SqlJetException;
@@ -34,10 +31,12 @@ import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.wc.ISVNRepositoryPool;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNWCClient;
-
-import java.io.File;
-import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.intellij.idea.Bombed;
+import com.intellij.openapi.application.PathManager;
+import com.intellij.util.TimeoutUtil;
+import com.intellij.util.concurrency.Semaphore;
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,7 +54,7 @@ public class SvnLockingTest extends TestCase {
   public void setUp() throws Exception {
     super.setUp();
     //PlatformTestCase.initPlatformLangPrefix();
-    File pluginRoot = new File(PluginPathManager.getPluginHomePath("svn4idea"));
+    File pluginRoot = new File("svn4idea");
     if (!pluginRoot.isDirectory()) {
       // try standalone mode
       Class aClass = Svn17TestCase.class;

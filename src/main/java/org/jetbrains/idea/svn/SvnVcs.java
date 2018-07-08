@@ -25,9 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.actions.CleanupWorker;
 import org.jetbrains.idea.svn.actions.SvnMergeProvider;
 import org.jetbrains.idea.svn.annotate.SvnAnnotationProvider;
@@ -166,16 +167,16 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 
 	private SvnCheckoutProvider myCheckoutProvider;
 
-	@NotNull
+	@Nonnull
 	private final ClientFactory cmdClientFactory;
-	@NotNull
+	@Nonnull
 	private final ClientFactory svnKitClientFactory;
-	@NotNull
+	@Nonnull
 	private final SvnKitManager svnKitManager;
 
 	private final boolean myLogExceptions;
 
-	public SvnVcs(@NotNull Project project, MessageBus bus, SvnConfiguration svnConfiguration, final SvnLoadedBranchesStorage storage)
+	public SvnVcs(@Nonnull Project project, MessageBus bus, SvnConfiguration svnConfiguration, final SvnLoadedBranchesStorage storage)
 	{
 		super(project, VCS_NAME);
 
@@ -382,7 +383,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		}
 	}
 
-	private void correctListForRevision(@NotNull final ProjectLevelVcsManager plVcsManager, @Nullable final ContentRevision revision, @NotNull final String name)
+	private void correctListForRevision(@Nonnull final ProjectLevelVcsManager plVcsManager, @Nullable final ContentRevision revision, @Nonnull final String name)
 	{
 		if(revision != null)
 		{
@@ -527,7 +528,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public ChangeProvider getChangeProvider()
 	{
 		if(myChangeProvider == null)
@@ -581,7 +582,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public CheckinEnvironment createCheckinEnvironment()
 	{
 		if(myCheckinEnvironment == null)
@@ -592,7 +593,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public RollbackEnvironment createRollbackEnvironment()
 	{
 		if(myRollbackEnvironment == null)
@@ -717,36 +718,36 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 	}
 
 	@Nullable
-	public Info getInfo(@NotNull SVNURL url, SVNRevision pegRevision, SVNRevision revision) throws SvnBindException
+	public Info getInfo(@Nonnull SVNURL url, SVNRevision pegRevision, SVNRevision revision) throws SvnBindException
 	{
 		return getFactory().createInfoClient().doInfo(SvnTarget.fromURL(url, pegRevision), revision);
 	}
 
 	@Nullable
-	public Info getInfo(@NotNull SVNURL url, SVNRevision revision) throws SvnBindException
+	public Info getInfo(@Nonnull SVNURL url, SVNRevision revision) throws SvnBindException
 	{
 		return getInfo(url, SVNRevision.UNDEFINED, revision);
 	}
 
 	@Nullable
-	public Info getInfo(@NotNull final VirtualFile file)
+	public Info getInfo(@Nonnull final VirtualFile file)
 	{
 		return getInfo(new File(file.getPath()));
 	}
 
 	@Nullable
-	public Info getInfo(@NotNull String path)
+	public Info getInfo(@Nonnull String path)
 	{
 		return getInfo(new File(path));
 	}
 
 	@Nullable
-	public Info getInfo(@NotNull File ioFile)
+	public Info getInfo(@Nonnull File ioFile)
 	{
 		return getInfo(ioFile, SVNRevision.UNDEFINED);
 	}
 
-	public void collectInfo(@NotNull Collection<File> files, @Nullable InfoConsumer handler)
+	public void collectInfo(@Nonnull Collection<File> files, @Nullable InfoConsumer handler)
 	{
 		File first = ContainerUtil.getFirstItem(files);
 
@@ -786,7 +787,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 	}
 
 	@Nullable
-	public Info getInfo(@NotNull File ioFile, @NotNull SVNRevision revision)
+	public Info getInfo(@Nonnull File ioFile, @Nonnull SVNRevision revision)
 	{
 		Info result = null;
 
@@ -802,7 +803,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		return result;
 	}
 
-	private void handleInfoException(@NotNull SvnBindException e)
+	private void handleInfoException(@Nonnull SvnBindException e)
 	{
 		if(!myLogExceptions || SvnUtil.isUnversionedOrNotFound(e) ||
 				// do not log working copy format vs client version inconsistencies as errors
@@ -816,14 +817,14 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		}
 	}
 
-	@NotNull
-	public WorkingCopyFormat getWorkingCopyFormat(@NotNull File ioFile)
+	@Nonnull
+	public WorkingCopyFormat getWorkingCopyFormat(@Nonnull File ioFile)
 	{
 		return getWorkingCopyFormat(ioFile, true);
 	}
 
-	@NotNull
-	public WorkingCopyFormat getWorkingCopyFormat(@NotNull File ioFile, boolean useMapping)
+	@Nonnull
+	public WorkingCopyFormat getWorkingCopyFormat(@Nonnull File ioFile, boolean useMapping)
 	{
 		WorkingCopyFormat format = WorkingCopyFormat.UNKNOWN;
 
@@ -836,7 +837,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		return WorkingCopyFormat.UNKNOWN.equals(format) ? SvnFormatSelector.findRootAndGetFormat(ioFile) : format;
 	}
 
-	public boolean isWcRoot(@NotNull FilePath filePath)
+	public boolean isWcRoot(@Nonnull FilePath filePath)
 	{
 		boolean isWcRoot = false;
 		VirtualFile file = filePath.getVirtualFile();
@@ -860,7 +861,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 
 
 	@Override
-	@NotNull
+	@Nonnull
 	public CommittedChangesProvider<SvnChangeList, ChangeBrowserSettings> getCommittedChangesProvider()
 	{
 		if(myCommittedChangesProvider == null)
@@ -894,7 +895,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		return SvnUtil.seemsLikeVersionedDir(dir);
 	}
 
-	@NotNull
+	@Nonnull
 	public SvnFileUrlMapping getSvnFileUrlMapping()
 	{
 		if(myMapping == null)
@@ -966,9 +967,9 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		return true;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
-	public <S> List<S> filterUniqueRoots(@NotNull List<S> in, @NotNull Function<S, VirtualFile> convertor)
+	public <S> List<S> filterUniqueRoots(@Nonnull List<S> in, @Nonnull Function<S, VirtualFile> convertor)
 	{
 		if(in.size() <= 1)
 		{
@@ -1064,7 +1065,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 	}
 
 	@Override
-	public boolean isVcsBackgroundOperationsAllowed(@NotNull VirtualFile root)
+	public boolean isVcsBackgroundOperationsAllowed(@Nonnull VirtualFile root)
 	{
 		ClientFactory factory = getFactory(VfsUtilCore.virtualToIoFile(root));
 
@@ -1092,13 +1093,13 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		return myCheckoutProvider;
 	}
 
-	@NotNull
+	@Nonnull
 	public SvnKitManager getSvnKitManager()
 	{
 		return svnKitManager;
 	}
 
-	@NotNull
+	@Nonnull
 	private WorkingCopyFormat getProjectRootFormat()
 	{
 		return !getProject().isDefault() ? getWorkingCopyFormat(new File(getProject().getBaseDir().getPath())) : WorkingCopyFormat.UNKNOWN;
@@ -1115,32 +1116,32 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 	 *
 	 * @return
 	 */
-	@NotNull
+	@Nonnull
 	public ClientFactory getFactory()
 	{
 		return getFactory(getProjectRootFormat(), false);
 	}
 
-	@NotNull
-	public ClientFactory getFactory(@NotNull WorkingCopyFormat format)
+	@Nonnull
+	public ClientFactory getFactory(@Nonnull WorkingCopyFormat format)
 	{
 		return getFactory(format, false);
 	}
 
-	@NotNull
-	public ClientFactory getFactory(@NotNull File file)
+	@Nonnull
+	public ClientFactory getFactory(@Nonnull File file)
 	{
 		return getFactory(file, true);
 	}
 
-	@NotNull
-	public ClientFactory getFactory(@NotNull File file, boolean useMapping)
+	@Nonnull
+	public ClientFactory getFactory(@Nonnull File file, boolean useMapping)
 	{
 		return getFactory(getWorkingCopyFormat(file, useMapping), true);
 	}
 
-	@NotNull
-	private ClientFactory getFactory(@NotNull WorkingCopyFormat format, boolean useProjectRootForUnknown)
+	@Nonnull
+	private ClientFactory getFactory(@Nonnull WorkingCopyFormat format, boolean useProjectRootForUnknown)
 	{
 		boolean is18OrGreater = format.isOrGreater(WorkingCopyFormat.ONE_DOT_EIGHT);
 		boolean isUnknown = WorkingCopyFormat.UNKNOWN.equals(format);
@@ -1149,43 +1150,43 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 				getFactoryFromSettings()));
 	}
 
-	@NotNull
-	public ClientFactory getFactory(@NotNull SvnTarget target)
+	@Nonnull
+	public ClientFactory getFactory(@Nonnull SvnTarget target)
 	{
 		return target.isFile() ? getFactory(target.getFile()) : getFactory();
 	}
 
-	@NotNull
+	@Nonnull
 	public ClientFactory getFactoryFromSettings()
 	{
 		return myConfiguration.isCommandLine() ? cmdClientFactory : svnKitClientFactory;
 	}
 
-	@NotNull
+	@Nonnull
 	public ClientFactory getOtherFactory()
 	{
 		return myConfiguration.isCommandLine() ? svnKitClientFactory : cmdClientFactory;
 	}
 
-	@NotNull
-	public ClientFactory getOtherFactory(@NotNull ClientFactory factory)
+	@Nonnull
+	public ClientFactory getOtherFactory(@Nonnull ClientFactory factory)
 	{
 		return factory.equals(cmdClientFactory) ? svnKitClientFactory : cmdClientFactory;
 	}
 
-	@NotNull
+	@Nonnull
 	public ClientFactory getCommandLineFactory()
 	{
 		return cmdClientFactory;
 	}
 
-	@NotNull
+	@Nonnull
 	public ClientFactory getSvnKitFactory()
 	{
 		return svnKitClientFactory;
 	}
 
-	@NotNull
+	@Nonnull
 	public WorkingCopyFormat getLowestSupportedFormatForCommandLine()
 	{
 		WorkingCopyFormat result;
@@ -1202,7 +1203,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		return result;
 	}
 
-	public boolean isSupportedByCommandLine(@NotNull WorkingCopyFormat format)
+	public boolean isSupportedByCommandLine(@Nonnull WorkingCopyFormat format)
 	{
 		return format.isOrGreater(getLowestSupportedFormatForCommandLine());
 	}

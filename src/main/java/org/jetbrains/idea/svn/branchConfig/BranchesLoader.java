@@ -20,7 +20,7 @@ import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.browse.BrowseClient;
@@ -39,18 +39,23 @@ import java.util.List;
  * @author Konstantin Kolosovsky.
  */
 public class BranchesLoader implements Runnable {
-  @NotNull private final Project myProject;
-  @NotNull private final NewRootBunch myBunch;
-  @NotNull private final VirtualFile myRoot;
-  @NotNull private final String myUrl;
-  @NotNull private final InfoReliability myInfoReliability;
+  @Nonnull
+  private final Project myProject;
+  @Nonnull
+  private final NewRootBunch myBunch;
+  @Nonnull
+  private final VirtualFile myRoot;
+  @Nonnull
+  private final String myUrl;
+  @Nonnull
+  private final InfoReliability myInfoReliability;
   private final boolean myPassive;
 
-  public BranchesLoader(@NotNull Project project,
-                        @NotNull NewRootBunch bunch,
-                        @NotNull String url,
-                        @NotNull InfoReliability infoReliability,
-                        @NotNull VirtualFile root,
+  public BranchesLoader(@Nonnull Project project,
+                        @Nonnull NewRootBunch bunch,
+                        @Nonnull String url,
+                        @Nonnull InfoReliability infoReliability,
+                        @Nonnull VirtualFile root,
                         boolean passive) {
     myProject = project;
     myBunch = bunch;
@@ -70,7 +75,7 @@ public class BranchesLoader implements Runnable {
     }
   }
 
-  @NotNull
+  @Nonnull
   public List<SvnBranchItem> loadBranches() throws SVNException, VcsException {
     SvnVcs vcs = SvnVcs.getInstance(myProject);
     SVNURL branchesUrl = SVNURL.parseURIEncoded(myUrl);
@@ -91,8 +96,8 @@ public class BranchesLoader implements Runnable {
     }
   }
 
-  @NotNull
-  private static DirectoryEntryConsumer createConsumer(@NotNull final List<SvnBranchItem> result) {
+  @Nonnull
+  private static DirectoryEntryConsumer createConsumer(@Nonnull final List<SvnBranchItem> result) {
     return new DirectoryEntryConsumer() {
 
       @Override

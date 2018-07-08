@@ -18,8 +18,9 @@ package org.jetbrains.idea.svn.history;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnFileUrlMapping;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
@@ -34,16 +35,17 @@ public class SvnCopyPathTracker {
 
   private static final Logger LOG = Logger.getInstance(SvnCopyPathTracker.class);
 
-  @NotNull private String myCurrentPath;
+  @Nonnull
+  private String myCurrentPath;
   private String myRepositoryRoot;
   private boolean myHadChanged;
 
-  public SvnCopyPathTracker(@NotNull String repositoryUrl, @NotNull String relativeUrl) {
+  public SvnCopyPathTracker(@Nonnull String repositoryUrl, @Nonnull String relativeUrl) {
     myRepositoryRoot = repositoryUrl;
     myCurrentPath = relativeUrl;
   }
 
-  public void accept(@NotNull final LogEntry entry) {
+  public void accept(@Nonnull final LogEntry entry) {
     final Map changedPaths = entry.getChangedPaths();
     if (changedPaths == null) return;
 

@@ -13,36 +13,37 @@ import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProducer;
 import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProvider;
 import com.intellij.util.ThreeState;
 import com.intellij.vcsUtil.UIVcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 
 public class SvnPhantomChangeDiffRequestProvider implements ChangeDiffRequestProvider {
-  @NotNull
+  @Nonnull
   @Override
-  public ThreeState isEquals(@NotNull Change change1, @NotNull Change change2) {
+  public ThreeState isEquals(@Nonnull Change change1, @Nonnull Change change2) {
     return ThreeState.UNSURE;
   }
 
   @Override
-  public boolean canCreate(@Nullable Project project, @NotNull Change change) {
+  public boolean canCreate(@Nullable Project project, @Nonnull Change change) {
     return change.isPhantom();
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public DiffRequest process(@NotNull ChangeDiffRequestProducer presentable,
-                             @NotNull UserDataHolder context,
-                             @NotNull ProgressIndicator indicator) throws DiffRequestProducerException, ProcessCanceledException {
+  public DiffRequest process(@Nonnull ChangeDiffRequestProducer presentable,
+                             @Nonnull UserDataHolder context,
+                             @Nonnull ProgressIndicator indicator) throws DiffRequestProducerException, ProcessCanceledException {
     indicator.checkCanceled();
     return new SvnPhantomDiffRequest(presentable.getChange());
   }
 
   public static class SvnPhantomDiffRequest extends DiffRequest {
-    @NotNull private final Change myChange;
+    @Nonnull
+	private final Change myChange;
 
-    public SvnPhantomDiffRequest(@NotNull Change change) {
+    public SvnPhantomDiffRequest(@Nonnull Change change) {
       myChange = change;
     }
 
@@ -54,22 +55,22 @@ public class SvnPhantomChangeDiffRequestProvider implements ChangeDiffRequestPro
   }
 
   public static class SvnPhantomDiffTool implements FrameDiffTool {
-    @NotNull
+    @Nonnull
     @Override
     public String getName() {
       return "SVN phantom changes viewer";
     }
 
     @Override
-    public boolean canShow(@NotNull DiffContext context, @NotNull DiffRequest request) {
+    public boolean canShow(@Nonnull DiffContext context, @Nonnull DiffRequest request) {
       return request instanceof SvnPhantomDiffRequest;
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public DiffViewer createComponent(@NotNull DiffContext context, @NotNull DiffRequest request) {
+    public DiffViewer createComponent(@Nonnull DiffContext context, @Nonnull DiffRequest request) {
       return new DiffViewer() {
-        @NotNull
+        @Nonnull
         @Override
         public JComponent getComponent() {
           return UIVcsUtil.infoPanel("Technical record",
@@ -82,7 +83,7 @@ public class SvnPhantomChangeDiffRequestProvider implements ChangeDiffRequestPro
           return null;
         }
 
-        @NotNull
+        @Nonnull
         @Override
         public ToolbarComponents init() {
           return new ToolbarComponents();

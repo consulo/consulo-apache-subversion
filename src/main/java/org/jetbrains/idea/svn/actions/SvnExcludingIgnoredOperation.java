@@ -15,6 +15,8 @@
  */
 package org.jetbrains.idea.svn.actions;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
@@ -24,7 +26,6 @@ import com.intellij.openapi.vcs.changes.ChangeListManager;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.svn.api.Depth;
 
 public class SvnExcludingIgnoredOperation {
@@ -86,7 +87,7 @@ public class SvnExcludingIgnoredOperation {
   private void executeDown(final VirtualFile file) throws VcsException {
     VfsUtilCore.visitChildrenRecursively(file, new VirtualFileVisitor() {
       @Override
-      public boolean visitFile(@NotNull VirtualFile file) {
+      public boolean visitFile(@Nonnull VirtualFile file) {
         try {
           return operation(file);
         }

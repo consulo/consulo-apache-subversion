@@ -18,8 +18,8 @@ package org.jetbrains.idea.svn;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class UniqueRootsFilter {
 
-  public <T extends RootUrlPair> List<T> filter(@NotNull final List<T> list) {
+  public <T extends RootUrlPair> List<T> filter(@Nonnull final List<T> list) {
     List<T> result = new ArrayList<>();
 
     sort(list);
@@ -53,7 +53,7 @@ public class UniqueRootsFilter {
     });
   }
 
-  private static <T extends RootUrlPair> boolean alreadyRegistered(@NotNull final T child, @NotNull List<T> registered) {
+  private static <T extends RootUrlPair> boolean alreadyRegistered(@Nonnull final T child, @Nonnull List<T> registered) {
     return ContainerUtil.exists(registered, new Condition<T>() {
       @Override
       public boolean value(T parent) {
@@ -62,11 +62,11 @@ public class UniqueRootsFilter {
     });
   }
 
-  private static <T extends RootUrlPair> boolean isSamePath(@NotNull T child, @NotNull T parent) {
+  private static <T extends RootUrlPair> boolean isSamePath(@Nonnull T child, @Nonnull T parent) {
     return parent.getVirtualFile().getPath().equals(child.getVirtualFile().getPath());
   }
 
-  private static <T extends RootUrlPair> boolean isSameSupposedUrl(@NotNull T child, @NotNull T parent) {
+  private static <T extends RootUrlPair> boolean isSameSupposedUrl(@Nonnull T child, @Nonnull T parent) {
     boolean result = false;
 
     if (VfsUtilCore.isAncestor(parent.getVirtualFile(), child.getVirtualFile(), true)) {

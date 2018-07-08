@@ -25,7 +25,7 @@ import com.intellij.openapi.vcs.merge.MergeProvider;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.vcsUtil.VcsRunnable;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -55,8 +55,8 @@ public class SvnMergeProvider implements MergeProvider {
     myProject = project;
   }
 
-  @NotNull
-  public MergeData loadRevisions(@NotNull final VirtualFile file) throws VcsException {
+  @Nonnull
+  public MergeData loadRevisions(@Nonnull final VirtualFile file) throws VcsException {
     final MergeData data = new MergeData();
     VcsRunnable runnable = new VcsRunnable() {
       public void run() throws VcsException {
@@ -113,7 +113,7 @@ public class SvnMergeProvider implements MergeProvider {
     return data;
   }
 
-  private ByteArrayOutputStream getBaseRevisionContents(@NotNull SvnVcs vcs, @NotNull VirtualFile file) {
+  private ByteArrayOutputStream getBaseRevisionContents(@Nonnull SvnVcs vcs, @Nonnull VirtualFile file) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     try {
       byte[] contents = SvnUtil.getFileContents(vcs, SvnTarget.fromFile(new File(file.getPath())), SVNRevision.BASE, SVNRevision.UNDEFINED);
@@ -134,7 +134,7 @@ public class SvnMergeProvider implements MergeProvider {
     }
   }
 
-  public void conflictResolvedForFile(@NotNull VirtualFile file) {
+  public void conflictResolvedForFile(@Nonnull VirtualFile file) {
     // TODO: Add possibility to resolve content conflicts separately from property conflicts.
     SvnVcs vcs = SvnVcs.getInstance(myProject);
     File path = new File(file.getPath());
@@ -152,7 +152,7 @@ public class SvnMergeProvider implements MergeProvider {
     }
   }
 
-  public boolean isBinary(@NotNull final VirtualFile file) {
+  public boolean isBinary(@Nonnull final VirtualFile file) {
     SvnVcs vcs = SvnVcs.getInstance(myProject);
 
     try {
@@ -171,7 +171,7 @@ public class SvnMergeProvider implements MergeProvider {
     return false;
   }
 
-  private static boolean isBinaryMimeType(@NotNull String mimeType) {
+  private static boolean isBinaryMimeType(@Nonnull String mimeType) {
     return !mimeType.startsWith("text/");
   }
 }

@@ -20,7 +20,7 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -221,7 +221,7 @@ public class SvnPropertyService {
     }
   }
 
-  private static String getNewPropertyValueForRemove(final Collection<String> data, @NotNull final String propertyValue) {
+  private static String getNewPropertyValueForRemove(final Collection<String> data, @Nonnull final String propertyValue) {
     final StringBuilder sb = new StringBuilder();
     final StringTokenizer st = new StringTokenizer(propertyValue, "\r\n ");
     while (st.hasMoreElements()) {

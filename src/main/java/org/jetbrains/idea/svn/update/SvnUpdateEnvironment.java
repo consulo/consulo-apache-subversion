@@ -21,8 +21,9 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.update.UpdatedFiles;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.info.Info;
@@ -146,7 +147,7 @@ public class SvnUpdateEnvironment extends AbstractSvnUpdateIntegrateEnvironment 
     return true;
   }
 
-  private SVNRevision correctRevision(@NotNull UpdateRootInfo value) throws SvnBindException {
+  private SVNRevision correctRevision(@Nonnull UpdateRootInfo value) throws SvnBindException {
     if (SVNRevision.HEAD.equals(value.getRevision())) {
       // find acual revision to update to (a bug if just say head in switch)
       value.setRevision(SvnUtil.getHeadRevision(myVcs, value.getUrl()));

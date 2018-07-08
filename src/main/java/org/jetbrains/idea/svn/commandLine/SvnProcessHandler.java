@@ -19,8 +19,8 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.util.io.BaseDataReader;
 import com.intellij.util.io.BinaryOutputReader;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -34,9 +34,10 @@ public class SvnProcessHandler extends OSProcessHandler {
 
   private final boolean myForceUtf8;
   private final boolean myForceBinary;
-  @NotNull private final ByteArrayOutputStream myBinaryOutput;
+  @Nonnull
+  private final ByteArrayOutputStream myBinaryOutput;
 
-  public SvnProcessHandler(@NotNull Process process, @NotNull String commandLine, boolean forceUtf8, boolean forceBinary) {
+  public SvnProcessHandler(@Nonnull Process process, @Nonnull String commandLine, boolean forceUtf8, boolean forceBinary) {
     super(process, commandLine);
 
     myForceUtf8 = forceUtf8;
@@ -44,7 +45,7 @@ public class SvnProcessHandler extends OSProcessHandler {
     myBinaryOutput = new ByteArrayOutputStream();
   }
 
-  @NotNull
+  @Nonnull
   public ByteArrayOutputStream getBinaryOutput() {
     return myBinaryOutput;
   }
@@ -55,7 +56,7 @@ public class SvnProcessHandler extends OSProcessHandler {
     return myForceUtf8 ? CharsetToolkit.UTF8_CHARSET : super.getCharset();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected BaseDataReader createOutputDataReader() {
     if (myForceBinary) {
@@ -67,19 +68,19 @@ public class SvnProcessHandler extends OSProcessHandler {
   }
 
   private class SimpleBinaryOutputReader extends BinaryOutputReader {
-    private SimpleBinaryOutputReader(@NotNull InputStream stream, @NotNull SleepingPolicy sleepingPolicy) {
+    private SimpleBinaryOutputReader(@Nonnull InputStream stream, @Nonnull SleepingPolicy sleepingPolicy) {
       super(stream, sleepingPolicy);
       start(myPresentableName);
     }
 
     @Override
-    protected void onBinaryAvailable(@NotNull byte[] data, int size) {
+    protected void onBinaryAvailable(@Nonnull byte[] data, int size) {
       myBinaryOutput.write(data, 0, size);
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    protected Future<?> executeOnPooledThread(@NotNull Runnable runnable) {
+    protected Future<?> executeOnPooledThread(@Nonnull Runnable runnable) {
       return SvnProcessHandler.this.executeOnPooledThread(runnable);
     }
   }

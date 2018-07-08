@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNURL;
@@ -47,8 +47,8 @@ public class NewRootBunch {
     myMap = new HashMap<>();
   }
 
-  public void updateForRoot(@NotNull final VirtualFile root,
-                            @NotNull final InfoStorage<SvnBranchConfigurationNew> config,
+  public void updateForRoot(@Nonnull final VirtualFile root,
+                            @Nonnull final InfoStorage<SvnBranchConfigurationNew> config,
                             boolean reload) {
     synchronized (myLock) {
       final SvnBranchConfigurationNew previous;
@@ -76,8 +76,8 @@ public class NewRootBunch {
     }
   }
 
-  public void updateBranches(@NotNull final VirtualFile root, @NotNull final String branchesParent,
-                             @NotNull final InfoStorage<List<SvnBranchItem>> items) {
+  public void updateBranches(@Nonnull final VirtualFile root, @Nonnull final String branchesParent,
+                             @Nonnull final InfoStorage<List<SvnBranchItem>> items) {
     synchronized (myLock) {
       final InfoStorage<SvnBranchConfigurationNew> existing = myMap.get(root);
       if (existing == null) {
@@ -88,8 +88,8 @@ public class NewRootBunch {
     }
   }
 
-  @NotNull
-  public SvnBranchConfigurationNew getConfig(@NotNull final VirtualFile root) {
+  @Nonnull
+  public SvnBranchConfigurationNew getConfig(@Nonnull final VirtualFile root) {
     synchronized (myLock) {
       final InfoStorage<SvnBranchConfigurationNew> value = myMap.get(root);
       final SvnBranchConfigurationNew result;
@@ -105,9 +105,9 @@ public class NewRootBunch {
     }
   }
 
-  public void reloadBranchesAsync(@NotNull final VirtualFile root,
-                                  @NotNull final String branchLocation,
-                                  @NotNull final InfoReliability reliability) {
+  public void reloadBranchesAsync(@Nonnull final VirtualFile root,
+                                  @Nonnull final String branchLocation,
+                                  @Nonnull final InfoReliability reliability) {
     ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
       @Override
       public void run() {
@@ -116,7 +116,7 @@ public class NewRootBunch {
     });
   }
 
-  public void reloadBranches(@NotNull VirtualFile root, @Nullable SvnBranchConfigurationNew prev, @NotNull SvnBranchConfigurationNew next) {
+  public void reloadBranches(@Nonnull VirtualFile root, @Nullable SvnBranchConfigurationNew prev, @Nonnull SvnBranchConfigurationNew next) {
     final Set<String> oldUrls = (prev == null) ? Collections.<String>emptySet() : new HashSet<>(prev.getBranchUrls());
     final SvnVcs vcs = SvnVcs.getInstance(myProject);
     if (!vcs.isVcsBackgroundOperationsAllowed(root)) return;
@@ -130,15 +130,15 @@ public class NewRootBunch {
     }
   }
 
-  public void reloadBranches(@NotNull VirtualFile root,
-                             @NotNull String branchLocation,
-                             @NotNull InfoReliability reliability,
+  public void reloadBranches(@Nonnull VirtualFile root,
+                             @Nonnull String branchLocation,
+                             @Nonnull InfoReliability reliability,
                              boolean passive) {
     new BranchesLoader(myProject, this, branchLocation, reliability, root, passive).run();
   }
 
   @Nullable
-  public SVNURL getWorkingBranch(@NotNull SVNURL svnurl, @NotNull VirtualFile root) {
+  public SVNURL getWorkingBranch(@Nonnull SVNURL svnurl, @Nonnull VirtualFile root) {
     SVNURL result;
 
     try {

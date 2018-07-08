@@ -15,8 +15,9 @@
  */
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
 
@@ -24,18 +25,19 @@ import java.util.List;
 
 public abstract class Loader {
 
-  @NotNull protected final SvnRepositoryCache myCache;
+  @Nonnull
+  protected final SvnRepositoryCache myCache;
 
-  protected Loader(@NotNull SvnRepositoryCache cache) {
+  protected Loader(@Nonnull SvnRepositoryCache cache) {
     myCache = cache;
   }
 
-  public abstract void load(@NotNull RepositoryTreeNode node, @NotNull Expander afterRefreshExpander);
+  public abstract void load(@Nonnull RepositoryTreeNode node, @Nonnull Expander afterRefreshExpander);
 
-  @NotNull
+  @Nonnull
   protected abstract NodeLoadState getNodeLoadState();
 
-  protected void refreshNodeError(@NotNull RepositoryTreeNode node, @NotNull String text) {
+  protected void refreshNodeError(@Nonnull RepositoryTreeNode node, @Nonnull String text) {
     RepositoryTreeNode existingNode = findExistingNode(node);
 
     if (existingNode != null) {
@@ -43,7 +45,7 @@ public abstract class Loader {
     }
   }
 
-  protected void refreshNode(@NotNull RepositoryTreeNode node, @NotNull List<DirectoryEntry> data, @NotNull Expander expander) {
+  protected void refreshNode(@Nonnull RepositoryTreeNode node, @Nonnull List<DirectoryEntry> data, @Nonnull Expander expander) {
     RepositoryTreeNode existingNode = findExistingNode(node);
 
     if (existingNode != null) {
@@ -54,7 +56,7 @@ public abstract class Loader {
   }
 
   @Nullable
-  private static RepositoryTreeNode findExistingNode(@NotNull RepositoryTreeNode node) {
+  private static RepositoryTreeNode findExistingNode(@Nonnull RepositoryTreeNode node) {
     RepositoryTreeNode result = null;
 
     if (!node.isDisposed()) {

@@ -15,8 +15,8 @@ import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProducer;
 import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProvider;
 import com.intellij.ui.components.panels.Wrapper;
 import com.intellij.util.ThreeState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.ConflictedSvnChange;
 import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
 import org.jetbrains.idea.svn.treeConflict.TreeConflictRefreshablePanel;
@@ -24,9 +24,9 @@ import org.jetbrains.idea.svn.treeConflict.TreeConflictRefreshablePanel;
 import javax.swing.*;
 
 public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProvider {
-  @NotNull
+  @Nonnull
   @Override
-  public ThreeState isEquals(@NotNull Change change1, @NotNull Change change2) {
+  public ThreeState isEquals(@Nonnull Change change1, @Nonnull Change change2) {
     if (change1 instanceof ConflictedSvnChange && change2 instanceof ConflictedSvnChange) {
       if (!change1.isTreeConflict() && !change2.isTreeConflict()) return ThreeState.UNSURE;
       if (!change1.isTreeConflict() || !change2.isTreeConflict()) return ThreeState.NO;
@@ -39,26 +39,27 @@ public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProv
   }
 
   @Override
-  public boolean canCreate(@Nullable Project project, @NotNull Change change) {
+  public boolean canCreate(@Nullable Project project, @Nonnull Change change) {
     return change instanceof ConflictedSvnChange && ((ConflictedSvnChange)change).getConflictState().isTree();
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public DiffRequest process(@NotNull ChangeDiffRequestProducer presentable,
-                             @NotNull UserDataHolder context,
-                             @NotNull ProgressIndicator indicator) throws DiffRequestProducerException, ProcessCanceledException {
+  public DiffRequest process(@Nonnull ChangeDiffRequestProducer presentable,
+                             @Nonnull UserDataHolder context,
+                             @Nonnull ProgressIndicator indicator) throws DiffRequestProducerException, ProcessCanceledException {
     return new SvnTreeConflictDiffRequest(((ConflictedSvnChange)presentable.getChange()));
   }
 
   public static class SvnTreeConflictDiffRequest extends DiffRequest {
-    @NotNull private final ConflictedSvnChange myChange;
+    @Nonnull
+	private final ConflictedSvnChange myChange;
 
-    public SvnTreeConflictDiffRequest(@NotNull ConflictedSvnChange change) {
+    public SvnTreeConflictDiffRequest(@Nonnull ConflictedSvnChange change) {
       myChange = change;
     }
 
-    @NotNull
+    @Nonnull
     public ConflictedSvnChange getChange() {
       return myChange;
     }
@@ -71,33 +72,38 @@ public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProv
   }
 
   public static class SvnTreeConflictDiffTool implements FrameDiffTool {
-    @NotNull
+    @Nonnull
     @Override
     public String getName() {
       return "SVN tree conflict viewer";
     }
 
     @Override
-    public boolean canShow(@NotNull DiffContext context, @NotNull DiffRequest request) {
+    public boolean canShow(@Nonnull DiffContext context, @Nonnull DiffRequest request) {
       return request instanceof SvnTreeConflictDiffRequest;
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public DiffViewer createComponent(@NotNull DiffContext context, @NotNull DiffRequest request) {
+    public DiffViewer createComponent(@Nonnull DiffContext context, @Nonnull DiffRequest request) {
       return new SvnTreeConflictDiffViewer(context, (SvnTreeConflictDiffRequest)request);
     }
   }
 
   private static class SvnTreeConflictDiffViewer implements FrameDiffTool.DiffViewer {
-    @NotNull private final DiffContext myContext;
-    @NotNull private final SvnTreeConflictDiffRequest myRequest;
-    @NotNull private final Wrapper myPanel = new Wrapper();
+    @Nonnull
+	private final DiffContext myContext;
+    @Nonnull
+	private final SvnTreeConflictDiffRequest myRequest;
+    @Nonnull
+	private final Wrapper myPanel = new Wrapper();
 
-    @NotNull private final BackgroundTaskQueue myQueue;
-    @NotNull private final TreeConflictRefreshablePanel myDelegate;
+    @Nonnull
+	private final BackgroundTaskQueue myQueue;
+    @Nonnull
+	private final TreeConflictRefreshablePanel myDelegate;
 
-    public SvnTreeConflictDiffViewer(@NotNull DiffContext context, @NotNull SvnTreeConflictDiffRequest request) {
+    public SvnTreeConflictDiffViewer(@Nonnull DiffContext context, @Nonnull SvnTreeConflictDiffRequest request) {
       myContext = context;
       myRequest = request;
 
@@ -111,7 +117,7 @@ public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProv
       myPanel.setContent(myDelegate.getPanel());
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public JComponent getComponent() {
       return myPanel;
@@ -123,7 +129,7 @@ public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProv
       return myPanel;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public FrameDiffTool.ToolbarComponents init() {
       return new FrameDiffTool.ToolbarComponents();

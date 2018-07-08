@@ -15,16 +15,17 @@
  */
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.
  */
 public abstract class BaseNodeDescription {
 
-  @NotNull protected final NodeKind myKind;
+  @Nonnull
+  protected final NodeKind myKind;
 
-  protected BaseNodeDescription(@NotNull NodeKind kind) {
+  protected BaseNodeDescription(@Nonnull NodeKind kind) {
     myKind = kind;
   }
 

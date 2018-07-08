@@ -18,14 +18,14 @@ package org.jetbrains.idea.svn.actions;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnLocallyDeletedChange;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
@@ -62,7 +62,7 @@ public class MarkLocallyDeletedTreeConflictResolvedAction extends AnAction {
     if (result == Messages.YES) {
       final Ref<VcsException> exception = new Ref<>();
       ProgressManager.getInstance().run(new Task.Backgroundable(project, markText, true) {
-        public void run(@NotNull ProgressIndicator indicator) {
+        public void run(@Nonnull ProgressIndicator indicator) {
           resolveLocallyDeletedTextConflict(locallyDeletedChecker, exception);
         }
       });

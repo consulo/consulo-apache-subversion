@@ -18,8 +18,8 @@ package org.jetbrains.idea.svn.info;
 import com.intellij.openapi.util.Getter;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Consumer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.lock.Lock;
@@ -40,7 +40,8 @@ import java.util.*;
  * Time: 1:00 PM
  */
 public class SvnInfoHandler extends DefaultHandler {
-  @Nullable private final File myBase;
+  @Nullable
+  private final File myBase;
   private final Consumer<org.jetbrains.idea.svn.info.Info> myInfoConsumer;
   private Map<File, org.jetbrains.idea.svn.info.Info> myResultsMap;
   private SvnInfoStructure myPending;
@@ -942,12 +943,12 @@ public class SvnInfoHandler extends DefaultHandler {
       myAwaitedChildrenMultiple = new HashSet<>(Arrays.asList(awaitedChildrenMultiple));
     }
 
-    @NotNull
+    @Nonnull
     public ElementHandlerBase getParent() {
       return parent;
     }
 
-    public void setParent(@NotNull ElementHandlerBase parent) {
+    public void setParent(@Nonnull ElementHandlerBase parent) {
       this.parent = parent;
     }
 

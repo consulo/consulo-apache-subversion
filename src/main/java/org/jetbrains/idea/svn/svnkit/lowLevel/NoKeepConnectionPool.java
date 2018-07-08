@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
 import com.intellij.util.ThrowableConvertor;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.io.SVNRepository;
@@ -30,7 +30,7 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 public class NoKeepConnectionPool implements SvnRepositoryPool {
   private final ThrowableConvertor<SVNURL, SVNRepository, SVNException> myCreator;
 
-  public NoKeepConnectionPool(@NotNull final ThrowableConvertor<SVNURL, SVNRepository, SVNException> creator) {
+  public NoKeepConnectionPool(@Nonnull final ThrowableConvertor<SVNURL, SVNRepository, SVNException> creator) {
     myCreator = creator;
   }
 

@@ -26,8 +26,8 @@ import com.intellij.ui.components.JBRadioButton;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.EnvironmentUtil;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnConfigurationState;
@@ -64,7 +64,7 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
   private String mySshTunnelFromConfig;
   private SvnConfiguration mySvnConfiguration;
 
-  public void load(@NotNull SvnConfiguration svnConfiguration) {
+  public void load(@Nonnull SvnConfiguration svnConfiguration) {
     mySvnConfiguration = svnConfiguration;
 
     init();
@@ -112,7 +112,7 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
     });
   }
 
-  private void registerBrowseDialog(@NotNull TextFieldWithBrowseButton component, @NotNull String dialogTitle) {
+  private void registerBrowseDialog(@Nonnull TextFieldWithBrowseButton component, @Nonnull String dialogTitle) {
     component.addBrowseFolderListener(dialogTitle, null, mySvnConfiguration.getProject(),
                                       FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor());
   }
@@ -127,7 +127,7 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
   }
 
   @Override
-  public void reset(@NotNull SvnConfiguration settings) {
+  public void reset(@Nonnull SvnConfiguration settings) {
     SvnConfigurationState state = settings.getState();
 
     setConnectionChoice(state.sshConnectionType);
@@ -140,7 +140,7 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
   }
 
   @Override
-  public boolean isModified(@NotNull SvnConfiguration settings) {
+  public boolean isModified(@Nonnull SvnConfiguration settings) {
     SvnConfigurationState state = settings.getState();
 
     return !state.sshConnectionType.equals(getConnectionChoice()) ||
@@ -151,7 +151,7 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
   }
 
   @Override
-  public void apply(@NotNull SvnConfiguration settings) {
+  public void apply(@Nonnull SvnConfiguration settings) {
     SvnConfigurationState state = settings.getState();
 
     state.sshConnectionType = getConnectionChoice();
@@ -161,19 +161,19 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
     state.sshPrivateKeyPath = myPrivateKeyPathField.getText();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public JComponent getComponent() {
     return myMainPanel;
   }
 
-  private void setConnectionChoice(@NotNull SvnConfiguration.SshConnectionType value) {
+  private void setConnectionChoice(@Nonnull SvnConfiguration.SshConnectionType value) {
     setSelected(myPasswordChoice, value);
     setSelected(myPrivateKeyChoice, value);
     setSelected(mySubversionConfigChoice, value);
   }
 
-  @NotNull
+  @Nonnull
   private SvnConfiguration.SshConnectionType getConnectionChoice() {
     JBRadioButton selected = myPasswordChoice.isSelected()
                              ? myPasswordChoice
@@ -187,7 +187,7 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
     return (SvnConfiguration.SshConnectionType)selected.getClientProperty("value");
   }
 
-  private void setSshTunnelSetting(@NotNull String tunnelSetting) {
+  private void setSshTunnelSetting(@Nonnull String tunnelSetting) {
     mySshTunnelFromConfig = tunnelSetting;
     mySshTunnelField.setText(tunnelSetting);
 
@@ -215,11 +215,11 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
     myUpdateTunnelButton.setEnabled(!StringUtil.equals(tunnelSetting, mySshTunnelFromConfig));
   }
 
-  private static void register(@NotNull JBRadioButton choice, @NotNull SvnConfiguration.SshConnectionType value) {
+  private static void register(@Nonnull JBRadioButton choice, @Nonnull SvnConfiguration.SshConnectionType value) {
     choice.putClientProperty("value", value);
   }
 
-  private static void setSelected(@NotNull JBRadioButton choice, @NotNull SvnConfiguration.SshConnectionType value) {
+  private static void setSelected(@Nonnull JBRadioButton choice, @Nonnull SvnConfiguration.SshConnectionType value) {
     choice.setSelected(value.equals(choice.getClientProperty("value")));
   }
 

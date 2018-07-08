@@ -42,7 +42,7 @@ import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.ListTableModel;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.components.BorderLayoutPanel;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.mergeinfo.ListMergeStatus;
 import org.jetbrains.idea.svn.mergeinfo.MergeChecker;
@@ -73,8 +73,10 @@ import static org.jetbrains.idea.svn.integrate.MergeCalculatorTask.loadChangeLis
 public class ToBeMergedDialog extends DialogWrapper {
   public static final int MERGE_ALL_CODE = 222;
   private final JPanel myPanel;
-  @NotNull private final MergeContext myMergeContext;
-  @NotNull private final ListTableModel<SvnChangeList> myRevisionsModel;
+  @Nonnull
+  private final MergeContext myMergeContext;
+  @Nonnull
+  private final ListTableModel<SvnChangeList> myRevisionsModel;
   private TableView<SvnChangeList> myRevisionsList;
   private RepositoryChangesBrowser myRepositoryChangesBrowser;
   private Splitter mySplitter;
@@ -90,10 +92,10 @@ public class ToBeMergedDialog extends DialogWrapper {
   private ToBeMergedDialog.MoreXAction myMore100Action;
   private ToBeMergedDialog.MoreXAction myMore500Action;
 
-  public ToBeMergedDialog(@NotNull MergeContext mergeContext,
-                          @NotNull List<SvnChangeList> changeLists,
+  public ToBeMergedDialog(@Nonnull MergeContext mergeContext,
+                          @Nonnull List<SvnChangeList> changeLists,
                           final String title,
-                          @NotNull MergeChecker mergeChecker,
+                          @Nonnull MergeChecker mergeChecker,
                           boolean allStatusesCalculated,
                           boolean allListsLoaded) {
     super(mergeContext.getProject(), true);
@@ -136,7 +138,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     return totalRows > 0 ? myRevisionsModel.getItem(totalRows - 1).getNumber() : 0;
   }
 
-  public void addMoreLists(@NotNull List<SvnChangeList> changeLists) {
+  public void addMoreLists(@Nonnull List<SvnChangeList> changeLists) {
     myRevisionsModel.addRows(changeLists);
     myRevisionsList.revalidate();
     myRevisionsList.repaint();
@@ -155,7 +157,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     myDisposed = true;
   }
 
-  private void refreshListStatus(@NotNull final List<SvnChangeList> changeLists) {
+  private void refreshListStatus(@Nonnull final List<SvnChangeList> changeLists) {
     if (myDisposed) return;
     ApplicationManager.getApplication().executeOnPooledThread(() -> {
       int cnt = 10;
@@ -177,8 +179,8 @@ public class ToBeMergedDialog extends DialogWrapper {
     });
   }
 
-  @NotNull
-  private static ListMergeStatus toListMergeStatus(@NotNull SvnMergeInfoCache.MergeCheckResult mergeCheckResult) {
+  @Nonnull
+  private static ListMergeStatus toListMergeStatus(@Nonnull SvnMergeInfoCache.MergeCheckResult mergeCheckResult) {
     ListMergeStatus result;
 
     switch (mergeCheckResult) {
@@ -196,7 +198,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Action[] createActions() {
     if (myAllStatusesCalculated) {
@@ -212,7 +214,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     }
   }
 
-  @NotNull
+  @Nonnull
   public List<SvnChangeList> getSelected() {
     Set<Long> selected = myWiseSelection.getSelected();
     Set<Long> unselected = myWiseSelection.getUnselected();
@@ -262,7 +264,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     myRevisionsList.setExpandableItemsEnabled(false);
     new TableViewSpeedSearch<SvnChangeList>(myRevisionsList) {
       @Override
-      protected String getItemText(@NotNull SvnChangeList element) {
+      protected String getItemText(@Nonnull SvnChangeList element) {
         return element.getComment();
       }
     };
@@ -271,7 +273,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     myRevisionsList.setShowGrid(false);
     final AbstractBaseTagMouseListener mouseListener = new AbstractBaseTagMouseListener() {
       @Override
-      public Object getTagAt(@NotNull MouseEvent e) {
+      public Object getTagAt(@Nonnull MouseEvent e) {
         JTable table = (JTable)e.getSource();
         int row = table.rowAtPoint(e.getPoint());
         int column = table.columnAtPoint(e.getPoint());
@@ -305,15 +307,15 @@ public class ToBeMergedDialog extends DialogWrapper {
     myPanel.add(mySplitter, BorderLayout.CENTER);
   }
 
-  @NotNull
+  @Nonnull
   private ActionToolbar createToolbar() {
     DefaultActionGroup actions = new DefaultActionGroup(new MySelectAll(), new MyUnselectAll(), myMore100Action, myMore500Action);
 
     return ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, true);
   }
 
-  @NotNull
-  private List<Change> getAlreadyMergedPaths(@NotNull SvnChangeList svnChangeList) {
+  @Nonnull
+  private List<Change> getAlreadyMergedPaths(@Nonnull SvnChangeList svnChangeList) {
     Collection<String> notMerged = myMergeChecker.getNotMergedPaths(svnChangeList);
 
     return isEmpty(notMerged) ? emptyList() : svnChangeList.getAffectedPaths().stream()
@@ -341,7 +343,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     final int checkboxWidth = new JCheckBox().getPreferredSize().width;
     new ClickListener() {
       @Override
-      public boolean onClick(@NotNull MouseEvent e, int clickCount) {
+      public boolean onClick(@Nonnull MouseEvent e, int clickCount) {
         final int idx = myRevisionsList.rowAtPoint(e.getPoint());
         if (idx >= 0) {
           final Rectangle baseRect = myRevisionsList.getCellRect(idx, 0, false);
@@ -370,7 +372,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     });
   }
 
-  private void toggleInclusion(@NotNull SvnChangeList list) {
+  private void toggleInclusion(@Nonnull SvnChangeList list) {
     long number = list.getNumber();
 
     if (myWiseSelection.isSelected(number)) {
@@ -443,7 +445,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     }
 
     @Override
-    public void run(@NotNull ProgressIndicator indicator) {
+    public void run(@Nonnull ProgressIndicator indicator) {
       try {
         Pair<List<SvnChangeList>, Boolean> loadResult = loadChangeLists(myMergeContext, myStartNumber, getBunchSize(myQuantity));
 

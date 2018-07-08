@@ -18,7 +18,7 @@ package org.jetbrains.idea.svn.update;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.update.SequentialUpdatesContext;
 import com.intellij.util.FilePathByPathComparator;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.FilePathUtil;
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.RootUrlInfo;
@@ -39,7 +39,7 @@ public class SvnUpdateContext implements SequentialUpdatesContext {
     myUpdatedExternals = new HashSet<>();
   }
 
-  @NotNull
+  @Nonnull
   public String getMessageWhenInterruptedBeforeStart() {
     // never
     return null;

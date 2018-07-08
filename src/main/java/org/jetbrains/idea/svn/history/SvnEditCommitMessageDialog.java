@@ -19,8 +19,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vcs.ui.CommitMessage;
 import com.intellij.util.ui.JBUI;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;
@@ -33,7 +33,8 @@ import java.awt.*;
  * Time: 2:55 PM
  */
 public class SvnEditCommitMessageDialog extends DialogWrapper {
-  @Nullable private final Project myProject;
+  @Nullable
+  private final Project myProject;
   private final String myOldText;
   private CommitMessage myCommitMessage;
 
@@ -76,7 +77,7 @@ public class SvnEditCommitMessageDialog extends DialogWrapper {
     return myCommitMessage.getEditorField();
   }
 
-  @NotNull
+  @Nonnull
   public String getMessage() {
     return myCommitMessage.getComment();
   }

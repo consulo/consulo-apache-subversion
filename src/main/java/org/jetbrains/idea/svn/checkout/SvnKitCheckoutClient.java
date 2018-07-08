@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.checkout;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
@@ -39,13 +39,13 @@ public class SvnKitCheckoutClient extends BaseSvnClient implements CheckoutClien
   }
 
   @Override
-  public void checkout(@NotNull SvnTarget source,
-                       @NotNull File destination,
+  public void checkout(@Nonnull SvnTarget source,
+                       @Nonnull File destination,
                        @Nullable SVNRevision revision,
                        @Nullable Depth depth,
                        boolean ignoreExternals,
                        boolean force,
-                       @NotNull WorkingCopyFormat format,
+                       @Nonnull WorkingCopyFormat format,
                        @Nullable ProgressTracker handler) throws VcsException {
     assertUrl(source);
     validateFormat(format, getSupportedFormats());
@@ -69,10 +69,10 @@ public class SvnKitCheckoutClient extends BaseSvnClient implements CheckoutClien
    * <p/>
    * See also http://issues.tmatesoft.com/issue/SVNKIT-495 for more details.
    */
-  private static void runCheckout(@NotNull SVNUpdateClient client,
-                                  @NotNull WorkingCopyFormat format,
-                                  @NotNull SvnTarget source,
-                                  @NotNull File destination,
+  private static void runCheckout(@Nonnull SVNUpdateClient client,
+                                  @Nonnull WorkingCopyFormat format,
+                                  @Nonnull SvnTarget source,
+                                  @Nonnull File destination,
                                   @Nullable SVNRevision revision,
                                   @Nullable Depth depth,
                                   boolean force) throws SVNException {
@@ -90,8 +90,8 @@ public class SvnKitCheckoutClient extends BaseSvnClient implements CheckoutClien
     checkoutOperation.run();
   }
 
-  @NotNull
-  private static SvnCheckout createCheckoutOperation(@NotNull SVNUpdateClient client, @NotNull WorkingCopyFormat format) {
+  @Nonnull
+  private static SvnCheckout createCheckoutOperation(@Nonnull SVNUpdateClient client, @Nonnull WorkingCopyFormat format) {
     if (WorkingCopyFormat.ONE_DOT_SIX.equals(format)) {
       client.getOperationsFactory().setPrimaryWcGeneration(SvnWcGeneration.V16);
     }

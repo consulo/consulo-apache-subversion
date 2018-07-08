@@ -16,12 +16,14 @@
 
 package org.jetbrains.idea.svn;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.BinaryContentRevision;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
 /**
@@ -29,7 +31,7 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 */
 class SvnBinaryContentRevision extends SvnContentRevision implements BinaryContentRevision {
 
-  public SvnBinaryContentRevision(@NotNull SvnVcs vcs, @NotNull FilePath file, @NotNull SVNRevision revision, boolean useBaseRevision) {
+  public SvnBinaryContentRevision(@Nonnull SvnVcs vcs, @Nonnull FilePath file, @Nonnull SVNRevision revision, boolean useBaseRevision) {
     super(vcs, file, revision, useBaseRevision);
   }
 

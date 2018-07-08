@@ -18,7 +18,7 @@ package org.jetbrains.idea.svn.diff;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -54,9 +54,9 @@ import java.util.List;
  */
 public class SvnKitDiffClient extends BaseSvnClient implements DiffClient {
 
-  @NotNull
+  @Nonnull
   @Override
-  public List<Change> compare(@NotNull SvnTarget target1, @NotNull SvnTarget target2) throws VcsException {
+  public List<Change> compare(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2) throws VcsException {
     DiffExecutor executor = new DiffExecutor(target1, target2);
 
     try {
@@ -70,7 +70,7 @@ public class SvnKitDiffClient extends BaseSvnClient implements DiffClient {
   }
 
   @Override
-  public void unifiedDiff(@NotNull SvnTarget target1, @NotNull SvnTarget target2, @NotNull OutputStream output) throws VcsException {
+  public void unifiedDiff(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2, @Nonnull OutputStream output) throws VcsException {
     assertUrl(target1);
     assertUrl(target2);
 
@@ -84,17 +84,20 @@ public class SvnKitDiffClient extends BaseSvnClient implements DiffClient {
   }
 
   private class DiffExecutor {
-    @NotNull private final SvnTarget myTarget1;
-    @NotNull private final SvnTarget myTarget2;
-    @NotNull private final List<Change> myChanges;
+    @Nonnull
+	private final SvnTarget myTarget1;
+    @Nonnull
+	private final SvnTarget myTarget2;
+    @Nonnull
+	private final List<Change> myChanges;
 
-    private DiffExecutor(@NotNull SvnTarget target1, @NotNull SvnTarget target2) {
+    private DiffExecutor(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2) {
       this.myTarget1 = target1;
       this.myTarget2 = target2;
       myChanges = ContainerUtil.newArrayList();
     }
 
-    @NotNull
+    @Nonnull
     public List<Change> getChanges() {
       return myChanges;
     }

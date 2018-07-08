@@ -2,8 +2,8 @@ package org.jetbrains.idea.svn.api;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
@@ -30,25 +30,25 @@ public abstract class BaseSvnClient implements SvnClient {
   protected ClientFactory myFactory;
   protected boolean myIsActive;
 
-  @NotNull
+  @Nonnull
   @Override
   public SvnVcs getVcs() {
     return myVcs;
   }
 
   @Override
-  public void setVcs(@NotNull SvnVcs vcs) {
+  public void setVcs(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public ClientFactory getFactory() {
     return myFactory;
   }
 
   @Override
-  public void setFactory(@NotNull ClientFactory factory) {
+  public void setFactory(@Nonnull ClientFactory factory) {
     myFactory = factory;
   }
 
@@ -57,47 +57,47 @@ public abstract class BaseSvnClient implements SvnClient {
     myIsActive = isActive;
   }
 
-  protected void assertUrl(@NotNull SvnTarget target) {
+  protected void assertUrl(@Nonnull SvnTarget target) {
     if (!target.isURL()) {
       throw new IllegalArgumentException("Target should be url " + target);
     }
   }
 
-  protected void assertFile(@NotNull SvnTarget target) {
+  protected void assertFile(@Nonnull SvnTarget target) {
     if (!target.isFile()) {
       throw new IllegalArgumentException("Target should be file " + target);
     }
   }
 
-  protected void assertDirectory(@NotNull SvnTarget target) {
+  protected void assertDirectory(@Nonnull SvnTarget target) {
     assertFile(target);
     if (!target.getFile().isDirectory()) {
       throw new IllegalArgumentException("Target should be directory " + target);
     }
   }
 
-  protected void validateFormat(@NotNull WorkingCopyFormat format, @NotNull Collection<WorkingCopyFormat> supported) throws VcsException {
+  protected void validateFormat(@Nonnull WorkingCopyFormat format, @Nonnull Collection<WorkingCopyFormat> supported) throws VcsException {
     if (!supported.contains(format)) {
       throw new VcsException(
         String.format("%s format is not supported. Supported formats are: %s.", format.getName(), StringUtil.join(supported, ",")));
     }
   }
 
-  @NotNull
-  public CommandExecutor execute(@NotNull SvnVcs vcs,
-                                 @NotNull SvnTarget target,
-                                 @NotNull SvnCommandName name,
-                                 @NotNull List<String> parameters,
+  @Nonnull
+  public CommandExecutor execute(@Nonnull SvnVcs vcs,
+                                 @Nonnull SvnTarget target,
+                                 @Nonnull SvnCommandName name,
+                                 @Nonnull List<String> parameters,
                                  @Nullable LineCommandListener listener) throws SvnBindException {
     return execute(vcs, target, null, name, parameters, listener);
   }
 
-  @NotNull
-  public CommandExecutor execute(@NotNull SvnVcs vcs,
-                                 @NotNull SvnTarget target,
+  @Nonnull
+  public CommandExecutor execute(@Nonnull SvnVcs vcs,
+                                 @Nonnull SvnTarget target,
                                  @Nullable File workingDirectory,
-                                 @NotNull SvnCommandName name,
-                                 @NotNull List<String> parameters,
+                                 @Nonnull SvnCommandName name,
+                                 @Nonnull List<String> parameters,
                                  @Nullable LineCommandListener listener) throws SvnBindException {
     Command command = newCommand(name);
 
@@ -106,11 +106,11 @@ public abstract class BaseSvnClient implements SvnClient {
     return execute(vcs, target, workingDirectory, command, listener);
   }
 
-  @NotNull
-  public CommandExecutor execute(@NotNull SvnVcs vcs,
-                                 @NotNull SvnTarget target,
+  @Nonnull
+  public CommandExecutor execute(@Nonnull SvnVcs vcs,
+                                 @Nonnull SvnTarget target,
                                  @Nullable File workingDirectory,
-                                 @NotNull Command command,
+                                 @Nonnull Command command,
                                  @Nullable LineCommandListener listener) throws SvnBindException {
     command.setTarget(target);
     command.setWorkingDirectory(workingDirectory);
@@ -119,17 +119,17 @@ public abstract class BaseSvnClient implements SvnClient {
     return newRuntime(vcs).runWithAuthenticationAttempt(command);
   }
 
-  @NotNull
-  public Command newCommand(@NotNull SvnCommandName name) {
+  @Nonnull
+  public Command newCommand(@Nonnull SvnCommandName name) {
     return new Command(name);
   }
 
-  @NotNull
-  public CommandRuntime newRuntime(@NotNull SvnVcs vcs) {
+  @Nonnull
+  public CommandRuntime newRuntime(@Nonnull SvnVcs vcs) {
     return new CommandRuntime(vcs, new AuthenticationService(vcs, myIsActive));
   }
 
-  protected static void callHandler(@Nullable ProgressTracker handler, @NotNull ProgressEvent event) throws VcsException {
+  protected static void callHandler(@Nullable ProgressTracker handler, @Nonnull ProgressEvent event) throws VcsException {
     if (handler != null) {
       try {
         handler.consume(event);
@@ -140,8 +140,8 @@ public abstract class BaseSvnClient implements SvnClient {
     }
   }
 
-  @NotNull
-  protected static ProgressEvent createEvent(@NotNull File path, @Nullable EventAction action) {
+  @Nonnull
+  protected static ProgressEvent createEvent(@Nonnull File path, @Nullable EventAction action) {
     return new ProgressEvent(path, 0, null, null, action, null, null);
   }
 
@@ -177,7 +177,7 @@ public abstract class BaseSvnClient implements SvnClient {
     return depth != null ? SVNDepth.fromString(depth.getName()) : null;
   }
 
-  @NotNull
+  @Nonnull
   protected static SVNRevision notNullize(@Nullable SVNRevision revision) {
     return revision != null ? revision : SVNRevision.UNDEFINED;
   }

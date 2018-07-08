@@ -1,8 +1,9 @@
 package org.jetbrains.idea.svn.conflict;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -21,7 +22,7 @@ public class CmdConflictClient extends BaseSvnClient implements ConflictClient {
   // TODO: Add possibility to resolve content, property and tree conflicts separately.
   // TODO: Or rewrite logic to have one "Resolve conflicts" action instead of separate actions for each conflict type.
   @Override
-  public void resolve(@NotNull File path,
+  public void resolve(@Nonnull File path,
                       @Nullable Depth depth,
                       boolean resolveProperty,
                       boolean resolveContent,

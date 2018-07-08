@@ -15,7 +15,8 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.integrate.ChangeSetMergerFactory;
 import org.jetbrains.idea.svn.integrate.MergerFactory;
 import org.jetbrains.idea.svn.integrate.SelectedChangeSetChecker;
@@ -26,12 +27,12 @@ public class IntegrateChangeSetAction extends AbstractIntegrateChangesAction<Sel
     super(true);
   }
 
-  @NotNull
+  @Nonnull
   protected MergerFactory createMergerFactory(SelectedChangeSetChecker checker) {
     return new ChangeSetMergerFactory(checker.getSelectedLists().get(0), checker.getSelectedChanges());
   }
 
-  @NotNull
+  @Nonnull
   protected SelectedChangeSetChecker createChecker() {
     return new SelectedChangeSetChecker();
   }

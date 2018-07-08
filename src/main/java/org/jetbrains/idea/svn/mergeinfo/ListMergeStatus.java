@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.mergeinfo;
 
 import icons.SvnIcons;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 

@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.lock;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -17,7 +17,7 @@ import java.io.File;
 public class SvnKitLockClient extends BaseSvnClient implements LockClient {
 
   @Override
-  public void lock(@NotNull File file, boolean force, @NotNull String message, @Nullable ProgressTracker handler) throws VcsException {
+  public void lock(@Nonnull File file, boolean force, @Nonnull String message, @Nullable ProgressTracker handler) throws VcsException {
     try {
       getClient(handler).doLock(new File[]{file}, force, message);
     }
@@ -27,7 +27,7 @@ public class SvnKitLockClient extends BaseSvnClient implements LockClient {
   }
 
   @Override
-  public void unlock(@NotNull File file, boolean force, @Nullable ProgressTracker handler) throws VcsException {
+  public void unlock(@Nonnull File file, boolean force, @Nullable ProgressTracker handler) throws VcsException {
     try {
       getClient(handler).doUnlock(new File[]{file}, force);
     }
@@ -36,7 +36,7 @@ public class SvnKitLockClient extends BaseSvnClient implements LockClient {
     }
   }
 
-  @NotNull
+  @Nonnull
   private SVNWCClient getClient(@Nullable ProgressTracker handler) {
     SVNWCClient client = myVcs.getSvnKitManager().createWCClient();
 

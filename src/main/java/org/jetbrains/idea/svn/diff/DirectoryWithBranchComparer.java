@@ -22,7 +22,7 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
@@ -39,12 +39,14 @@ import java.util.List;
  */
 public class DirectoryWithBranchComparer extends ElementWithBranchComparer {
 
-  @NotNull private final StringBuilder titleBuilder = new StringBuilder();
-  @NotNull private final List<Change> changes = new ArrayList<>();
+  @Nonnull
+  private final StringBuilder titleBuilder = new StringBuilder();
+  @Nonnull
+  private final List<Change> changes = new ArrayList<>();
 
-  public DirectoryWithBranchComparer(@NotNull Project project,
-                                     @NotNull VirtualFile virtualFile,
-                                     @NotNull String branchUrl,
+  public DirectoryWithBranchComparer(@Nonnull Project project,
+                                     @Nonnull VirtualFile virtualFile,
+                                     @Nonnull String branchUrl,
                                      long branchRevision) {
     super(project, virtualFile, branchUrl, branchRevision);
   }
@@ -60,13 +62,13 @@ public class DirectoryWithBranchComparer extends ElementWithBranchComparer {
     changes.addAll(getClientFactory().createDiffClient().compare(target1, target2));
   }
 
-  @NotNull
+  @Nonnull
   private ClientFactory getClientFactory() {
     return getClientFactory(myVcs, VfsUtilCore.virtualToIoFile(myVirtualFile));
   }
 
-  @NotNull
-  public static ClientFactory getClientFactory(@NotNull SvnVcs vcs, @NotNull File file) {
+  @Nonnull
+  public static ClientFactory getClientFactory(@Nonnull SvnVcs vcs, @Nonnull File file) {
     WorkingCopyFormat format = vcs.getWorkingCopyFormat(file);
 
     // svn 1.7 command line "--summarize" option for "diff" command does not support comparing working copy directories with repository

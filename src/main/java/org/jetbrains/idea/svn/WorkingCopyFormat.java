@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn;
 
 import com.intellij.openapi.util.Version;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.stream.Stream;
 
@@ -34,10 +34,12 @@ public enum WorkingCopyFormat {
   private static final Version ONE_DOT_NINE_VERSION = new Version(1, 9, 0);
 
   private final int myFormat;
-  @NotNull private final String myName;
-  @NotNull private final Version myVersion;
+  @Nonnull
+  private final String myName;
+  @Nonnull
+  private final Version myVersion;
 
-  WorkingCopyFormat(int format, @NotNull String name, @NotNull Version version) {
+  WorkingCopyFormat(int format, @Nonnull String name, @Nonnull Version version) {
     myFormat = format;
     myName = name;
     myVersion = version;
@@ -51,17 +53,17 @@ public enum WorkingCopyFormat {
     return isOrGreater(ONE_DOT_FIVE);
   }
 
-  @NotNull
+  @Nonnull
   public String getName() {
     return myName;
   }
 
-  @NotNull
+  @Nonnull
   public Version getVersion() {
     return myVersion;
   }
 
-  @NotNull
+  @Nonnull
   public static WorkingCopyFormat getInstance(int value) {
     if (INTERNAL_FORMAT_17 == value) {
       return ONE_DOT_SEVEN;
@@ -85,16 +87,16 @@ public enum WorkingCopyFormat {
     return myFormat;
   }
 
-  public boolean isOrGreater(@NotNull WorkingCopyFormat format) {
+  public boolean isOrGreater(@Nonnull WorkingCopyFormat format) {
     return myVersion.isOrGreaterThan(format.getVersion().major, format.getVersion().minor);
   }
 
-  public boolean less(@NotNull WorkingCopyFormat format) {
+  public boolean less(@Nonnull WorkingCopyFormat format) {
     return myVersion.lessThan(format.getVersion().major, format.getVersion().minor);
   }
 
-  @NotNull
-  public static WorkingCopyFormat from(@NotNull Version version) {
+  @Nonnull
+  public static WorkingCopyFormat from(@Nonnull Version version) {
     return version.compareTo(ONE_DOT_NINE_VERSION) >= 0
            ? ONE_DOT_EIGHT
            : Stream.of(values())

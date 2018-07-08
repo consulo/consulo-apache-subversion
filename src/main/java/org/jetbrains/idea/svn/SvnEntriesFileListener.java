@@ -22,7 +22,7 @@ import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileAdapter;
 import com.intellij.openapi.vfs.VirtualFileEvent;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +38,7 @@ public class SvnEntriesFileListener extends VirtualFileAdapter {
     myDirtyScopeManager = VcsDirtyScopeManager.getInstance(myProject);
   }
 
-  public void fileCreated(@NotNull VirtualFileEvent event) {
+  public void fileCreated(@Nonnull VirtualFileEvent event) {
     if (! event.isFromRefresh()) {
       return;
     }
@@ -57,7 +57,7 @@ public class SvnEntriesFileListener extends VirtualFileAdapter {
     myProject.getMessageBus().syncPublisher(VcsAnnotationRefresher.LOCAL_CHANGES_CHANGED).dirtyUnder(parent);
   }
 
-  public void contentsChanged(@NotNull VirtualFileEvent event) {
+  public void contentsChanged(@Nonnull VirtualFileEvent event) {
     if (! event.isFromRefresh()) {
       return;
     }
@@ -86,7 +86,7 @@ public class SvnEntriesFileListener extends VirtualFileAdapter {
     }
   }
 
-  public void fileDeleted(@NotNull VirtualFileEvent event) {
+  public void fileDeleted(@Nonnull VirtualFileEvent event) {
     if (!event.isFromRefresh()) {
       return;
     }

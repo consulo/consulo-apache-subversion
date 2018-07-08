@@ -19,8 +19,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ui.JBUI;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
 import org.tmatesoft.svn.core.internal.util.SVNSSLUtil;
@@ -41,16 +41,16 @@ public class ServerSSHDialog extends DialogWrapper {
   private final String myHost;
   private final String myAlgorithm;
 
-  public ServerSSHDialog(Project project, boolean store, @NotNull final String host, @Nullable final String algorithm,
-                         @NotNull final byte[] fingerprints) {
+  public ServerSSHDialog(Project project, boolean store, @Nonnull final String host, @Nullable final String algorithm,
+                         @Nonnull final byte[] fingerprints) {
     this(project, store, host, algorithm, SVNSSLUtil.getFingerprint(fingerprints, "SHA1"));
   }
 
   public ServerSSHDialog(Project project,
                          boolean store,
-                         @NotNull final String host,
+                         @Nonnull final String host,
                          @Nullable final String algorithm,
-                         @NotNull String fingerprints) {
+                         @Nonnull String fingerprints) {
     super(project, true);
     myStore = store;
     myHost = host;
@@ -69,7 +69,7 @@ public class ServerSSHDialog extends DialogWrapper {
     return false;
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction()};
   }

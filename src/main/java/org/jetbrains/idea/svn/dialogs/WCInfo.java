@@ -15,9 +15,11 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
@@ -28,21 +30,23 @@ import org.tmatesoft.svn.core.SVNURL;
 public class WCInfo {
 
   private final boolean myIsWcRoot;
-  @NotNull private final Depth myStickyDepth;
-  @NotNull private final RootUrlInfo myRootInfo;
+  @Nonnull
+  private final Depth myStickyDepth;
+  @Nonnull
+  private final RootUrlInfo myRootInfo;
 
-  public WCInfo(@NotNull RootUrlInfo rootInfo, boolean isWcRoot, @NotNull Depth stickyDepth) {
+  public WCInfo(@Nonnull RootUrlInfo rootInfo, boolean isWcRoot, @Nonnull Depth stickyDepth) {
     myRootInfo = rootInfo;
     myIsWcRoot = isWcRoot;
     myStickyDepth = stickyDepth;
   }
 
-  @NotNull
+  @Nonnull
   public Depth getStickyDepth() {
     return myStickyDepth;
   }
 
-  @NotNull
+  @Nonnull
   public String getPath() {
     return myRootInfo.getPath();
   }
@@ -52,22 +56,22 @@ public class WCInfo {
     return null;
   }
 
-  @NotNull
+  @Nonnull
   public SVNURL getUrl() {
     return myRootInfo.getAbsoluteUrlAsUrl();
   }
 
-  @NotNull
+  @Nonnull
   public String getRootUrl() {
     return getUrl().toString();
   }
 
-  @NotNull
+  @Nonnull
   public String getRepoUrl() {
     return getRepositoryRoot();
   }
 
-  @NotNull
+  @Nonnull
   public RootUrlInfo getRootInfo() {
     return myRootInfo;
   }
@@ -76,7 +80,7 @@ public class WCInfo {
     return getRootInfo().getNode().hasError();
   }
 
-  @NotNull
+  @Nonnull
   public String getErrorMessage() {
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     SvnBindException error = getRootInfo().getNode().getError();
@@ -84,12 +88,12 @@ public class WCInfo {
     return error != null ? error.getMessage() : "";
   }
 
-  @NotNull
+  @Nonnull
   public WorkingCopyFormat getFormat() {
     return myRootInfo.getFormat();
   }
 
-  @NotNull
+  @Nonnull
   public String getRepositoryRoot() {
     return myRootInfo.getRepositoryUrl();
   }

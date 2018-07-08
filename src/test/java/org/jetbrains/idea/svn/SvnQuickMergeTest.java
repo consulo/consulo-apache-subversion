@@ -25,7 +25,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.SmartList;
 import junit.framework.Assert;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.SvnTestCase;
 import org.jetbrains.idea.svn.branchConfig.InfoReliability;
 import org.jetbrains.idea.svn.branchConfig.InfoStorage;
@@ -331,7 +331,7 @@ public class SvnQuickMergeTest extends Svn17TestCase {
     Assert.assertEquals(FileStatus.MODIFIED, dirChange.getFileStatus());
   }
 
-  private void waitQuickMerge(@NotNull String sourceUrl, @NotNull QuickMergeTestInteraction interaction) throws Exception {
+  private void waitQuickMerge(@Nonnull String sourceUrl, @Nonnull QuickMergeTestInteraction interaction) throws Exception {
     MergeContext mergeContext = new MergeContext(myVcs, sourceUrl, getWcInfo(), SVNPathUtil.tail(sourceUrl), myWorkingCopyDir);
     QuickMerge quickMerge = new QuickMerge(mergeContext, interaction);
 

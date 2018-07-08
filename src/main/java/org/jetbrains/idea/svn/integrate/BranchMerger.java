@@ -17,8 +17,8 @@ package org.jetbrains.idea.svn.integrate;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -93,7 +93,7 @@ public class BranchMerger implements IMerger {
     }
   }
 
-  @NotNull
+  @Nonnull
   private DiffOptions createDiffOptions() {
     return myVcs.getSvnConfiguration().getMergeOptions();
   }
@@ -115,7 +115,7 @@ public class BranchMerger implements IMerger {
     return null;
   }
 
-  @NotNull
+  @Nonnull
   public SVNRevision resolveSourceLatestRevision() {
     SVNRevision result = SVNRevision.HEAD;
 

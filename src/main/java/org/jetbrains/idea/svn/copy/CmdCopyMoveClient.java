@@ -3,8 +3,8 @@ package org.jetbrains.idea.svn.copy;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.checkin.CmdCheckinClient;
@@ -25,7 +25,7 @@ import java.util.List;
 public class CmdCopyMoveClient extends BaseSvnClient implements CopyMoveClient {
 
   @Override
-  public void copy(@NotNull File src, @NotNull File dst, boolean makeParents, boolean isMove) throws VcsException {
+  public void copy(@Nonnull File src, @Nonnull File dst, boolean makeParents, boolean isMove) throws VcsException {
     List<String> parameters = new ArrayList<>();
 
     CommandUtil.put(parameters, src);
@@ -42,12 +42,12 @@ public class CmdCopyMoveClient extends BaseSvnClient implements CopyMoveClient {
   }
 
   @Override
-  public long copy(@NotNull SvnTarget source,
-                   @NotNull SvnTarget destination,
+  public long copy(@Nonnull SvnTarget source,
+                   @Nonnull SvnTarget destination,
                    @Nullable SVNRevision revision,
                    boolean makeParents,
                    boolean isMove,
-                   @NotNull String message,
+                   @Nonnull String message,
                    @Nullable CommitEventHandler handler) throws VcsException {
     if (!destination.isURL()) {
       throw new IllegalArgumentException("Only urls are supported as destination " + destination);
@@ -74,8 +74,8 @@ public class CmdCopyMoveClient extends BaseSvnClient implements CopyMoveClient {
   }
 
   @Override
-  public void copy(@NotNull SvnTarget source,
-                   @NotNull File destination,
+  public void copy(@Nonnull SvnTarget source,
+                   @Nonnull File destination,
                    @Nullable SVNRevision revision,
                    boolean makeParents,
                    @Nullable ProgressTracker handler) throws VcsException {
@@ -94,7 +94,7 @@ public class CmdCopyMoveClient extends BaseSvnClient implements CopyMoveClient {
     listener.throwWrappedIfException();
   }
 
-  @NotNull
+  @Nonnull
   private static SvnCommandName getCommandName(boolean isMove) {
     return isMove ? SvnCommandName.move : SvnCommandName.copy;
   }

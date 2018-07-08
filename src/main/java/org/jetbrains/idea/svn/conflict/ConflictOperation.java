@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.conflict;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.
@@ -27,8 +27,8 @@ public enum ConflictOperation {
   SWITCH,
   MERGE;
 
-  @NotNull
-  public static ConflictOperation from(@NotNull @NonNls String operationName) {
+  @Nonnull
+  public static ConflictOperation from(@Nonnull @NonNls String operationName) {
     return valueOf(ConflictOperation.class, operationName.toUpperCase());
   }
 

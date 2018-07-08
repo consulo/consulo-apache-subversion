@@ -27,8 +27,8 @@ import com.intellij.openapi.vcs.changes.committed.CommittedChangesCache;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.containers.SoftHashMap;
 import com.intellij.util.messages.MessageBusConnection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.*;
 
@@ -77,7 +77,7 @@ public class LoadedRevisionsCache implements Disposable {
     }
   }
 
-  private static void debugInfo(@NotNull List<CommittedChangeList> data, final boolean consistentWithPrevious, final Bunch bindTo) {
+  private static void debugInfo(@Nonnull List<CommittedChangeList> data, final boolean consistentWithPrevious, final Bunch bindTo) {
     LOG.debug(">>> cache internal >>> consistent: " + consistentWithPrevious + " bindTo: " + bindTo +
              " oldest list: " + data.get(data.size() - 1).getNumber() + ", youngest list: " + data.get(0).getNumber());
   }
@@ -88,7 +88,7 @@ public class LoadedRevisionsCache implements Disposable {
     myMap.clear();
   }
 
-  @NotNull
+  @Nonnull
   private static List<List<CommittedChangeList>> split(final List<CommittedChangeList> list, final int size) {
     final int listSize = list.size();
     if (listSize < size) {

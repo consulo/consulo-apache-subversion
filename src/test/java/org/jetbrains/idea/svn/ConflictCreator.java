@@ -26,7 +26,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.util.TimeoutUtil;
 import junit.framework.Assert;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.info.Info;
 import org.jetbrains.idea.svn.status.StatusType;
 
@@ -109,9 +109,9 @@ public class ConflictCreator {
     }
 
     VfsUtilCore.visitChildrenRecursively(myTheirsDir, new VirtualFileVisitor() {
-      @NotNull
+      @Nonnull
       @Override
-      public Result visitFileEx(@NotNull VirtualFile file) {
+      public Result visitFileEx(@Nonnull VirtualFile file) {
         if (!myTheirsDir.equals(file) && file.isDirectory() && file.getChildren().length == 0) {
           try {
             myClientRunner.delete(myTheirsDir, file.getPath());

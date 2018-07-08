@@ -1,6 +1,7 @@
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.add.CmdAddClient;
 import org.jetbrains.idea.svn.annotate.CmdAnnotateClient;
@@ -35,7 +36,7 @@ import org.jetbrains.idea.svn.upgrade.CmdUpgradeClient;
  */
 public class CmdClientFactory extends ClientFactory {
 
-  public CmdClientFactory(@NotNull SvnVcs vcs) {
+  public CmdClientFactory(@Nonnull SvnVcs vcs) {
     super(vcs);
   }
 
@@ -71,7 +72,7 @@ public class CmdClientFactory extends ClientFactory {
     put(InfoClient.class, CmdInfoClient.class);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public UpdateClient createUpdateClient() {
     return prepare(new CmdUpdateClient());

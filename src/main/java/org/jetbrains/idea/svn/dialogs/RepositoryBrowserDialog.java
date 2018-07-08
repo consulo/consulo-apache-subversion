@@ -45,8 +45,8 @@ import com.intellij.util.IconUtil;
 import com.intellij.util.WaitForProgressToShow;
 import com.intellij.vcsUtil.VcsUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnApplicationSettings;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -120,7 +120,7 @@ public class RepositoryBrowserDialog extends DialogWrapper {
     return "reference.svn.repository";
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[] {getOKAction(), getHelpAction()};
   }
@@ -415,9 +415,10 @@ public class RepositoryBrowserDialog extends DialogWrapper {
 
   protected static class EditLocationAction extends AnAction {
 
-    @NotNull private final RepositoryBrowserComponent myBrowserComponent;
+    @Nonnull
+	private final RepositoryBrowserComponent myBrowserComponent;
 
-    public EditLocationAction(@NotNull RepositoryBrowserComponent browserComponent) {
+    public EditLocationAction(@Nonnull RepositoryBrowserComponent browserComponent) {
       super(SvnBundle.message("repository.browser.edit.location.menu.item"));
       myBrowserComponent = browserComponent;
     }
@@ -897,11 +898,11 @@ public class RepositoryBrowserDialog extends DialogWrapper {
     }
   }
 
-  private static void setEnabled(@NotNull AnActionEvent e, @Nullable RepositoryTreeNode node) {
+  private static void setEnabled(@Nonnull AnActionEvent e, @Nullable RepositoryTreeNode node) {
     setEnabled(e, node, false);
   }
 
-  private static void setEnabled(@NotNull AnActionEvent e, @Nullable RepositoryTreeNode node, boolean isRunning) {
+  private static void setEnabled(@Nonnull AnActionEvent e, @Nullable RepositoryTreeNode node, boolean isRunning) {
     e.getPresentation().setEnabled(node != null && (node.getSVNDirEntry() == null || node.getSVNDirEntry().isDirectory()) && !isRunning);
   }
 

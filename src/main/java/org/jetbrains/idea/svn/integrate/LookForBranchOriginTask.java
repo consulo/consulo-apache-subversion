@@ -15,19 +15,21 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.Consumer;
-import org.jetbrains.annotations.NotNull;
 import org.tmatesoft.svn.core.SVNURL;
 
 public class LookForBranchOriginTask extends BaseMergeTask {
 
   private final boolean myFromSource;
-  @NotNull private final Consumer<SvnBranchPointsCalculator.WrapperInvertor> myCallback;
+  @Nonnull
+  private final Consumer<SvnBranchPointsCalculator.WrapperInvertor> myCallback;
 
-  public LookForBranchOriginTask(@NotNull QuickMerge mergeProcess,
+  public LookForBranchOriginTask(@Nonnull QuickMerge mergeProcess,
                                  boolean fromSource,
-                                 @NotNull Consumer<SvnBranchPointsCalculator.WrapperInvertor> callback) {
+                                 @Nonnull Consumer<SvnBranchPointsCalculator.WrapperInvertor> callback) {
     super(mergeProcess);
     myFromSource = fromSource;
     myCallback = callback;

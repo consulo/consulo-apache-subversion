@@ -38,8 +38,9 @@ import com.intellij.util.NotNullFunction;
 import com.intellij.util.UriUtil;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
@@ -86,7 +87,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
   private final CommonPathSearcher myCommonPathSearcher;
   private final Set<String> myKnownAsDirectories;
 
-  public SvnChangeList(@NotNull final List<CommittedChangeList> lists, @NotNull final SvnRepositoryLocation location) {
+  public SvnChangeList(@Nonnull final List<CommittedChangeList> lists, @Nonnull final SvnRepositoryLocation location) {
 
     final SvnChangeList sample = (SvnChangeList) lists.get(0);
     myVcs = sample.myVcs;
@@ -108,7 +109,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
     myKnownAsDirectories = new HashSet<>(0);
   }
 
-  public SvnChangeList(SvnVcs vcs, @NotNull final SvnRepositoryLocation location, final LogEntry logEntry, String repositoryRoot) {
+  public SvnChangeList(SvnVcs vcs, @Nonnull final SvnRepositoryLocation location, final LogEntry logEntry, String repositoryRoot) {
     myVcs = vcs;
     myLocation = location;
     setRevision(logEntry.getRevision());
@@ -147,7 +148,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
     }
   }
 
-  public SvnChangeList(SvnVcs vcs, @NotNull SvnRepositoryLocation location, @NotNull DataInput stream, final boolean supportsCopyFromInfo,
+  public SvnChangeList(SvnVcs vcs, @Nonnull SvnRepositoryLocation location, @Nonnull DataInput stream, final boolean supportsCopyFromInfo,
                        final boolean supportsReplaced) throws IOException {
     myVcs = vcs;
     myLocation = location;
@@ -337,7 +338,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
       return myPathToChangeMapping.get(path);
     }
 
-    private FilePath localDeletedPath(@NotNull String fullPath, final boolean isDir) {
+    private FilePath localDeletedPath(@Nonnull String fullPath, final boolean isDir) {
       final SvnFileUrlMapping urlMapping = myVcs.getSvnFileUrlMapping();
       final File file = urlMapping.getLocalPath(fullPath);
       if (file != null) {
@@ -360,7 +361,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
     public SvnRepositoryContentRevision createRevisionLazily(final String path, final boolean isBeforeRevision) {
       final boolean knownAsDirectory = myKnownAsDirectories.contains(path);
       final FilePath localPath = getLocalPath(path, new NotNullFunction<File, Boolean>() {
-        @NotNull
+        @Nonnull
         public Boolean fun(final File file) {
           if (knownAsDirectory) return Boolean.TRUE;
           // list will be next
@@ -431,7 +432,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
       myDetailedList.addAll(collectDetails(preprocessed, duplicates));
     }
 
-    private List<Change> collectDetails(@NotNull List<Change> changes, @NotNull Set<Pair<Boolean, String>> duplicates)
+    private List<Change> collectDetails(@Nonnull List<Change> changes, @Nonnull Set<Pair<Boolean, String>> duplicates)
       throws VcsException {
       List<Change> result = ContainerUtil.newArrayList();
 
@@ -464,7 +465,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
       return result;
     }
 
-    private void addDuplicate(@NotNull Set<Pair<Boolean, String>> duplicates,
+    private void addDuplicate(@Nonnull Set<Pair<Boolean, String>> duplicates,
                               boolean isBefore,
                               @Nullable ContentRevision revision) {
       if (revision != null) {
@@ -472,15 +473,15 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
       }
     }
 
-    @NotNull
-    private String getRelativePath(@NotNull ContentRevision revision) {
+    @Nonnull
+    private String getRelativePath(@Nonnull ContentRevision revision) {
       return ((SvnRepositoryContentRevision)revision).getRelativePath(myRepositoryRoot);
     }
 
-    @NotNull
-    private Collection<Change> getChildrenAsChanges(@NotNull ContentRevision contentRevision,
+    @Nonnull
+    private Collection<Change> getChildrenAsChanges(@Nonnull ContentRevision contentRevision,
                                                     final boolean isBefore,
-                                                    @NotNull final Set<Pair<Boolean, String>> duplicates)
+                                                    @Nonnull final Set<Pair<Boolean, String>> duplicates)
       throws VcsException {
       final List<Change> result = new ArrayList<>();
 
@@ -555,13 +556,13 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
   }
 
   @Nullable
-  private SvnLazyPropertyContentRevision createPropertyRevision(@NotNull FilePath filePath,
+  private SvnLazyPropertyContentRevision createPropertyRevision(@Nonnull FilePath filePath,
                                                                 @Nullable ContentRevision revision,
-                                                                @NotNull SVNURL url) {
+                                                                @Nonnull SVNURL url) {
     return revision == null ? null : new SvnLazyPropertyContentRevision(myVcs, filePath, revision.getRevisionNumber(), url);
   }
 
-  @NotNull
+  @Nonnull
   public String getName() {
     return myMessage;
   }
@@ -628,7 +629,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
     return myMessage;
   }
 
-  public void writeToStream(@NotNull DataOutput stream) throws IOException {
+  public void writeToStream(@Nonnull DataOutput stream) throws IOException {
     stream.writeUTF(myRepositoryRoot);
     stream.writeLong(myRevision);
     stream.writeUTF(myAuthor);
@@ -665,7 +666,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
     }
   }
 
-  private void readFromStream(@NotNull DataInput stream, final boolean supportsCopyFromInfo, final boolean supportsReplaced)
+  private void readFromStream(@Nonnull DataInput stream, final boolean supportsCopyFromInfo, final boolean supportsReplaced)
     throws IOException {
     myRepositoryRoot = stream.readUTF();
     setRevision(stream.readLong());
@@ -798,7 +799,7 @@ public class SvnChangeList implements CommittedChangeList, VcsRevisionNumberAwar
     myWcRoot = null;
   }
 
-  @NotNull
+  @Nonnull
   public Set<String> getAffectedPaths() {
     return ContainerUtil.newHashSet(ContainerUtil.concat(myAddedPaths, myDeletedPaths, myChangedPaths));
   }

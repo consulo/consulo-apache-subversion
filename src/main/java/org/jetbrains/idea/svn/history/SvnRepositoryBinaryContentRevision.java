@@ -15,11 +15,12 @@
  */
 package org.jetbrains.idea.svn.history;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.BinaryContentRevision;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 
 /**
@@ -28,7 +29,7 @@ import org.jetbrains.idea.svn.SvnVcs;
 public class SvnRepositoryBinaryContentRevision extends SvnRepositoryContentRevision implements BinaryContentRevision {
   private byte[] myBinaryContent;
 
-  public SvnRepositoryBinaryContentRevision(@NotNull SvnVcs vcs, @NotNull FilePath remotePath, @Nullable FilePath localPath, long revision) {
+  public SvnRepositoryBinaryContentRevision(@Nonnull SvnVcs vcs, @Nonnull FilePath remotePath, @Nullable FilePath localPath, long revision) {
     super(vcs, remotePath, localPath, revision);
   }
 

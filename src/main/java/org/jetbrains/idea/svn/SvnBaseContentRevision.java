@@ -15,21 +15,24 @@
  */
 package org.jetbrains.idea.svn;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.changes.ContentRevision;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class SvnBaseContentRevision implements ContentRevision {
 
-  @NotNull protected final SvnVcs myVcs;
-  @NotNull protected final FilePath myFile;
+  @Nonnull
+  protected final SvnVcs myVcs;
+  @Nonnull
+  protected final FilePath myFile;
 
-  protected SvnBaseContentRevision(@NotNull SvnVcs vcs, @NotNull FilePath file) {
+  protected SvnBaseContentRevision(@Nonnull SvnVcs vcs, @Nonnull FilePath file) {
     myVcs = vcs;
     myFile = file;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public FilePath getFile() {
     return myFile;

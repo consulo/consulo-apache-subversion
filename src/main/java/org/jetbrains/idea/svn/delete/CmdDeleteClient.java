@@ -2,8 +2,8 @@ package org.jetbrains.idea.svn.delete;
 
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.checkin.CmdCheckinClient;
@@ -23,7 +23,7 @@ import java.util.List;
 public class CmdDeleteClient extends BaseSvnClient implements DeleteClient {
 
   @Override
-  public void delete(@NotNull File path, boolean force, boolean dryRun, @Nullable ProgressTracker handler) throws VcsException {
+  public void delete(@Nonnull File path, boolean force, boolean dryRun, @Nullable ProgressTracker handler) throws VcsException {
     // TODO: no actual support for dryRun in 'svn delete', SvnKit performs certain validation on file status and svn:externals property
     // TODO: probably add some widespread checks for dryRun delete - but most likely this should be placed upper - in merge logic
     if (!dryRun) {
@@ -42,7 +42,7 @@ public class CmdDeleteClient extends BaseSvnClient implements DeleteClient {
   }
 
   @Override
-  public long delete(@NotNull SVNURL url, @NotNull String message) throws VcsException {
+  public long delete(@Nonnull SVNURL url, @Nonnull String message) throws VcsException {
     SvnTarget target = SvnTarget.fromURL(url);
     List<String> parameters = ContainerUtil.newArrayList();
 

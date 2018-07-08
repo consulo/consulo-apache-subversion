@@ -25,7 +25,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.NullableFunction;
 import com.intellij.vcsUtil.VcsUtil;
 import junit.framework.Assert;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 

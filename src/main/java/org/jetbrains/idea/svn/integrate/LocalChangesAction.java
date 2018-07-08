@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public enum LocalChangesAction {
   cancel("Cancel"),
@@ -23,9 +23,10 @@ public enum LocalChangesAction {
   shelve("Shelve local changes"),
   inspect("Inspect changes");
 
-  @NotNull private final String myTitle;
+  @Nonnull
+  private final String myTitle;
 
-  LocalChangesAction(@NotNull String title) {
+  LocalChangesAction(@Nonnull String title) {
     myTitle = title;
   }
 

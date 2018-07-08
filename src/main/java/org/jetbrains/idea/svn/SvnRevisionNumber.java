@@ -15,19 +15,20 @@
  */
 package org.jetbrains.idea.svn;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vcs.history.LongRevisionNumber;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import org.jetbrains.annotations.NotNull;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
 /**
  * @author alex
  */
 public class SvnRevisionNumber implements VcsRevisionNumber, LongRevisionNumber {
-  @NotNull
+  @Nonnull
   private final SVNRevision myRevision;
 
-  public SvnRevisionNumber(@NotNull SVNRevision revision) {
+  public SvnRevisionNumber(@Nonnull SVNRevision revision) {
     myRevision = revision;
   }
 
@@ -60,7 +61,7 @@ public class SvnRevisionNumber implements VcsRevisionNumber, LongRevisionNumber 
     return myRevision.getID() == rev.getID() ? 0 : myRevision.getID() > rev.getID() ? 1 : -1;
   }
 
-  @NotNull
+  @Nonnull
   public SVNRevision getRevision() {
     return myRevision;
   }

@@ -32,8 +32,8 @@ import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.checkin.CommitInfo;
 import org.jetbrains.idea.svn.diff.DiffOptions;
@@ -259,13 +259,13 @@ public class SvnAnnotationProvider implements AnnotationProvider, VcsCacheableAn
     return result;
   }
 
-  @NotNull
+  @Nonnull
   private static AnnotationConsumer createAnnotationHandler(@Nullable final ProgressIndicator progress,
-                                                            @NotNull final BaseSvnFileAnnotation result) {
+                                                            @Nonnull final BaseSvnFileAnnotation result) {
     return new AnnotationConsumer() {
 
       @Override
-      public void consume(int lineNumber, @NotNull CommitInfo info, @Nullable CommitInfo mergeInfo) throws SVNException {
+      public void consume(int lineNumber, @Nonnull CommitInfo info, @Nullable CommitInfo mergeInfo) throws SVNException {
         if (progress != null) {
           progress.checkCanceled();
         }
@@ -318,9 +318,9 @@ public class SvnAnnotationProvider implements AnnotationProvider, VcsCacheableAn
 
   @Nullable
   @Override
-  public FileAnnotation restore(@NotNull VcsAnnotation vcsAnnotation,
-                                @NotNull VcsAbstractHistorySession session,
-                                @NotNull String annotatedContent,
+  public FileAnnotation restore(@Nonnull VcsAnnotation vcsAnnotation,
+                                @Nonnull VcsAbstractHistorySession session,
+                                @Nonnull String annotatedContent,
                                 boolean forCurrentRevision, VcsRevisionNumber revisionNumber) {
     final SvnFileAnnotation annotation =
       new SvnFileAnnotation(myVcs, vcsAnnotation.getFilePath().getVirtualFile(), annotatedContent, revisionNumber);
@@ -449,7 +449,7 @@ public class SvnAnnotationProvider implements AnnotationProvider, VcsCacheableAn
   }
 
   @Nullable
-  private static DiffOptions getLogClientOptions(@NotNull SvnVcs vcs) {
+  private static DiffOptions getLogClientOptions(@Nonnull SvnVcs vcs) {
     return SvnConfiguration.getInstance(vcs.getProject()).isIgnoreSpacesInAnnotate() ? new DiffOptions(true, true, true) : null;
   }
 }

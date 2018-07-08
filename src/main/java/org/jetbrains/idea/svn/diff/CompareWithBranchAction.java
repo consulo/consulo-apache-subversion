@@ -16,6 +16,8 @@
 
 package org.jetbrains.idea.svn.diff;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -24,7 +26,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
 import org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationNew;
@@ -63,9 +64,10 @@ public class CompareWithBranchAction extends AnAction implements DumbAware {
 
   private static class MyBranchSelectedCallback implements SelectBranchPopup.BranchSelectedCallback {
 
-    @NotNull private final VirtualFile myVirtualFile;
+    @Nonnull
+	private final VirtualFile myVirtualFile;
 
-    public MyBranchSelectedCallback(@NotNull VirtualFile virtualFile) {
+    public MyBranchSelectedCallback(@Nonnull VirtualFile virtualFile) {
       myVirtualFile = virtualFile;
     }
 

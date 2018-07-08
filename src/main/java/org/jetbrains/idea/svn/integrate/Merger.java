@@ -22,8 +22,8 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.Topic;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -47,7 +47,8 @@ public class Merger implements IMerger {
   private final StringBuilder myCommitMessage;
   protected final SvnConfiguration mySvnConfig;
   private final Project myProject;
-  @NotNull protected final SvnVcs myVcs;
+  @Nonnull
+  protected final SvnVcs myVcs;
   private final String myBranchName;
   private final boolean myRecordOnly;
   private final boolean myInvertRange;
@@ -141,9 +142,9 @@ public class Merger implements IMerger {
     appendComment(myCommitMessage, myBranchName, myMergeChunk.changeLists());
   }
 
-  public static void appendComment(@NotNull StringBuilder builder,
-                                   @NotNull String branch,
-                                   @NotNull Iterable<CommittedChangeList> changeLists) {
+  public static void appendComment(@Nonnull StringBuilder builder,
+                                   @Nonnull String branch,
+                                   @Nonnull Iterable<CommittedChangeList> changeLists) {
     if (builder.length() == 0) {
       builder.append("Merged from ").append(branch);
     }
@@ -185,7 +186,7 @@ public class Merger implements IMerger {
   }
 
   @Nullable
-  public static String getSkippedMessage(@NotNull List<CommittedChangeList> changeLists) {
+  public static String getSkippedMessage(@Nonnull List<CommittedChangeList> changeLists) {
     String result = null;
 
     if (!changeLists.isEmpty()) {
@@ -234,7 +235,7 @@ public class Merger implements IMerger {
     void event(final List<CommittedChangeList> list);
   }
 
-  @NotNull
+  @Nonnull
   private CommittedChangeList listAt(int index) {
     return myChangeLists.get(index);
   }
@@ -243,7 +244,7 @@ public class Merger implements IMerger {
     return index >= 0 && index < myChangeLists.size();
   }
 
-  private static boolean areSequential(@NotNull CommittedChangeList list1, @NotNull CommittedChangeList list2) {
+  private static boolean areSequential(@Nonnull CommittedChangeList list1, @Nonnull CommittedChangeList list2) {
     return list1.getNumber() + 1 == list2.getNumber();
   }
 
@@ -281,22 +282,22 @@ public class Merger implements IMerger {
       return myChangeLists.get(end()).getNumber();
     }
 
-    @NotNull
+    @Nonnull
     public List<CommittedChangeList> changeLists() {
       return myChangeLists.subList(start(), nextChunkStart());
     }
 
-    @NotNull
+    @Nonnull
     public List<CommittedChangeList> chunkAndBeforeLists() {
       return myChangeLists.subList(0, nextChunkStart());
     }
 
-    @NotNull
+    @Nonnull
     public List<CommittedChangeList> chunkAndAfterLists() {
       return ContainerUtil.subList(myChangeLists, start());
     }
 
-    @NotNull
+    @Nonnull
     public SVNRevisionRange revisionRange() {
       SVNRevision startRevision = SVNRevision.create(lowestNumber() - 1);
       SVNRevision endRevision = SVNRevision.create(highestNumber());

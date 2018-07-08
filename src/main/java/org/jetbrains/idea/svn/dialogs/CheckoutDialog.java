@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.dialogs;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.CheckoutProvider;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;
@@ -46,7 +46,7 @@ public class CheckoutDialog extends RepositoryBrowserDialog {
     getOKAction().setEnabled(getRepositoryBrowser().getSelectedURL() != null);
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[] {getOKAction(), getCancelAction(), getHelpAction()};
   }

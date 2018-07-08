@@ -12,13 +12,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder.SvnDiffSettings;
 import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffRequest;
 import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffViewer;
@@ -61,27 +61,38 @@ public class SvnDiffViewer implements DiffViewer {
   public static final Key<MyPropertyContext> PROPERTY_CONTEXT_KEY = Key.create("MyPropertyContext");
   public static final Key<Boolean> FOCUSED_VIEWER_KEY = Key.create("SvnFocusedViewer");
 
-  @Nullable private final Project myProject;
+  @Nullable
+  private final Project myProject;
 
-  @NotNull private final DiffContext myContext;
-  @NotNull private final DiffRequest myPropertyRequest;
+  @Nonnull
+  private final DiffContext myContext;
+  @Nonnull
+  private final DiffRequest myPropertyRequest;
 
-  @NotNull private final SvnDiffSettings mySettings;
+  @Nonnull
+  private final SvnDiffSettings mySettings;
 
-  @NotNull private final JPanel myPanel;
-  @NotNull private final Splitter mySplitter;
-  @NotNull private final Wrapper myNotificationPanel;
+  @Nonnull
+  private final JPanel myPanel;
+  @Nonnull
+  private final Splitter mySplitter;
+  @Nonnull
+  private final Wrapper myNotificationPanel;
 
-  @NotNull private final DiffViewer myContentViewer;
-  @NotNull private final DiffViewer myPropertiesViewer;
+  @Nonnull
+  private final DiffViewer myContentViewer;
+  @Nonnull
+  private final DiffViewer myPropertiesViewer;
 
-  @NotNull private final FocusListener myContentFocusListener = new MyFocusListener(false);
-  @NotNull private final FocusListener myPropertiesFocusListener = new MyFocusListener(true);
+  @Nonnull
+  private final FocusListener myContentFocusListener = new MyFocusListener(false);
+  @Nonnull
+  private final FocusListener myPropertiesFocusListener = new MyFocusListener(true);
 
   private boolean myPropertiesViewerFocused; // False - content viewer, True - properties
   private boolean myDumbContentViewer;
 
-  public SvnDiffViewer(@NotNull DiffContext context, @NotNull DiffRequest propertyRequest, @NotNull DiffViewer wrappingViewer) {
+  public SvnDiffViewer(@Nonnull DiffContext context, @Nonnull DiffRequest propertyRequest, @Nonnull DiffViewer wrappingViewer) {
     myProject = context.getProject();
     myContext = context;
     myPropertyRequest = propertyRequest;
@@ -117,8 +128,8 @@ public class SvnDiffViewer implements DiffViewer {
     updatePropertiesPanel();
   }
 
-  @NotNull
-  private static DiffViewer createPropertiesViewer(@NotNull DiffRequest propertyRequest, @NotNull MyPropertyContext propertyContext) {
+  @Nonnull
+  private static DiffViewer createPropertiesViewer(@Nonnull DiffRequest propertyRequest, @Nonnull MyPropertyContext propertyContext) {
     if (propertyRequest instanceof SvnPropertiesDiffRequest) {
       return SvnPropertiesDiffViewer.create(propertyContext, ((SvnPropertiesDiffRequest)propertyRequest), true);
     }
@@ -127,7 +138,7 @@ public class SvnDiffViewer implements DiffViewer {
     }
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public ToolbarComponents init() {
     installListeners();
@@ -189,8 +200,8 @@ public class SvnDiffViewer implements DiffViewer {
     return null;
   }
 
-  @NotNull
-  private static Map<String, PropertyValue> getProperties(@NotNull DiffContent content) {
+  @Nonnull
+  private static Map<String, PropertyValue> getProperties(@Nonnull DiffContent content) {
     if (content instanceof EmptyContent) return Collections.emptyMap();
 
     List<PropertyData> properties = ((SvnPropertiesDiffRequest.PropertyContent)content).getProperties();
@@ -205,8 +216,8 @@ public class SvnDiffViewer implements DiffViewer {
     return map;
   }
 
-  @NotNull
-  private static JPanel createNotification(@NotNull String text) {
+  @Nonnull
+  private static JPanel createNotification(@Nonnull String text) {
     return new EditorNotificationPanel().text(text);
   }
 
@@ -227,7 +238,7 @@ public class SvnDiffViewer implements DiffViewer {
     if (wasFocused) myContext.requestFocus();
   }
 
-  @NotNull
+  @Nonnull
   private List<AnAction> createToolbar(@Nullable List<AnAction> propertiesActions) {
     List<AnAction> result = new ArrayList<>();
 
@@ -238,8 +249,8 @@ public class SvnDiffViewer implements DiffViewer {
     return result;
   }
 
-  @NotNull
-  private static SvnDiffSettings initSettings(@NotNull DiffContext context) {
+  @Nonnull
+  private static SvnDiffSettings initSettings(@Nonnull DiffContext context) {
     SvnDiffSettings settings = context.getUserData(SvnDiffSettingsHolder.KEY);
     if (settings == null) {
       settings = SvnDiffSettings.getSettings();
@@ -248,8 +259,8 @@ public class SvnDiffViewer implements DiffViewer {
     return settings;
   }
 
-  @NotNull
-  private MyPropertyContext initPropertyContext(@NotNull DiffContext context) {
+  @Nonnull
+  private MyPropertyContext initPropertyContext(@Nonnull DiffContext context) {
     MyPropertyContext propertyContext = context.getUserData(PROPERTY_CONTEXT_KEY);
     if (propertyContext == null) {
       propertyContext = new MyPropertyContext();
@@ -272,7 +283,7 @@ public class SvnDiffViewer implements DiffViewer {
   // Getters
   //
 
-  @NotNull
+  @Nonnull
   @Override
   public JComponent getComponent() {
     return myPanel;
@@ -361,9 +372,10 @@ public class SvnDiffViewer implements DiffViewer {
   }
 
   private static class MySplitter extends Splitter {
-    @NotNull private final String myLabelText;
+    @Nonnull
+	private final String myLabelText;
 
-    public MySplitter(@NotNull String text) {
+    public MySplitter(@Nonnull String text) {
       super(true);
       myLabelText = text;
     }

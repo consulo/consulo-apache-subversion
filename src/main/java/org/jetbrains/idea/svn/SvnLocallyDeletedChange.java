@@ -17,14 +17,15 @@ package org.jetbrains.idea.svn;
 
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.changes.LocallyDeletedChange;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.*;
 
 public class SvnLocallyDeletedChange extends LocallyDeletedChange {
-  @NotNull private final ConflictState myConflictState;
+  @Nonnull
+  private final ConflictState myConflictState;
 
-  public SvnLocallyDeletedChange(@NotNull FilePath path, @NotNull ConflictState state) {
+  public SvnLocallyDeletedChange(@Nonnull FilePath path, @Nonnull ConflictState state) {
     super(path);
     myConflictState = state;
   }
@@ -41,7 +42,7 @@ public class SvnLocallyDeletedChange extends LocallyDeletedChange {
     return description != null ? SvnBundle.message("svn.changeview.locally.deleted.item.in.conflict.text", description) : null;
   }
 
-  @NotNull
+  @Nonnull
   public ConflictState getConflictState() {
     return myConflictState;
   }

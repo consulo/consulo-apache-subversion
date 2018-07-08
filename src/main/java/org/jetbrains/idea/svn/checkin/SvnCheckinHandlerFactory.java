@@ -15,6 +15,21 @@
  */
 package org.jetbrains.idea.svn.checkin;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.jetbrains.idea.svn.RootUrlInfo;
+import org.jetbrains.idea.svn.SvnBundle;
+import org.jetbrains.idea.svn.SvnConfiguration;
+import org.jetbrains.idea.svn.SvnFileUrlMapping;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.WorkingCopyFormat;
+import org.jetbrains.idea.svn.update.AutoSvnUpdater;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.project.Project;
@@ -36,15 +51,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.PairConsumer;
 import com.intellij.util.containers.MultiMap;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.svn.*;
-import org.jetbrains.idea.svn.update.AutoSvnUpdater;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,7 +63,7 @@ public class SvnCheckinHandlerFactory extends VcsCheckinHandlerFactory {
     super(SvnVcs.getKey());
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected CheckinHandler createVcsHandler(final CheckinProjectPanel panel) {
     final Project project = panel.getProject();
@@ -126,8 +132,8 @@ public class SvnCheckinHandlerFactory extends VcsCheckinHandlerFactory {
     };
   }
 
-  @NotNull
-  private static MultiMap<String, WorkingCopyFormat> splitIntoCopies(@NotNull SvnVcs vcs, @NotNull Collection<Change> changes) {
+  @Nonnull
+  private static MultiMap<String, WorkingCopyFormat> splitIntoCopies(@Nonnull SvnVcs vcs, @Nonnull Collection<Change> changes) {
     MultiMap<String, WorkingCopyFormat> result = MultiMap.createSet();
     SvnFileUrlMapping mapping = vcs.getSvnFileUrlMapping();
 

@@ -15,8 +15,9 @@
  */
 package org.jetbrains.idea.svn.api;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
@@ -26,7 +27,7 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
 */
 public class UrlMappingRepositoryProvider extends BaseRepositoryProvider {
 
-  public UrlMappingRepositoryProvider(@NotNull SvnVcs vcs, @NotNull SvnTarget target) {
+  public UrlMappingRepositoryProvider(@Nonnull SvnVcs vcs, @Nonnull SvnTarget target) {
     super(vcs, target);
   }
 

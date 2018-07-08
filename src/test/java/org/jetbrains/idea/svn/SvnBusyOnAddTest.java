@@ -15,13 +15,11 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.application.PathManager;
-import com.intellij.openapi.application.PluginPathManager;
-import com.intellij.util.TimeoutUtil;
-import com.intellij.util.concurrency.Semaphore;
-import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.jetbrains.annotations.Nullable;
+import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
+
+import javax.annotation.Nullable;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.tmatesoft.svn.core.SVNCancelException;
@@ -31,10 +29,18 @@ import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.internal.wc17.SVNWCContext;
 import org.tmatesoft.svn.core.internal.wc17.db.ISVNWCDb;
 import org.tmatesoft.svn.core.internal.wc17.db.SVNWCDb;
-import org.tmatesoft.svn.core.wc.*;
-
-import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
+import org.tmatesoft.svn.core.wc.ISVNEventHandler;
+import org.tmatesoft.svn.core.wc.ISVNRepositoryPool;
+import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
+import org.tmatesoft.svn.core.wc.SVNEvent;
+import org.tmatesoft.svn.core.wc.SVNStatus;
+import org.tmatesoft.svn.core.wc.SVNStatusClient;
+import org.tmatesoft.svn.core.wc.SVNWCClient;
+import com.intellij.openapi.application.PathManager;
+import com.intellij.util.TimeoutUtil;
+import com.intellij.util.concurrency.Semaphore;
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,7 +57,7 @@ public class SvnBusyOnAddTest extends TestCase {
   public void setUp() throws Exception {
     super.setUp();
     //PlatformTestCase.initPlatformLangPrefix();
-    File pluginRoot = new File(PluginPathManager.getPluginHomePath("svn4idea"));
+    File pluginRoot = new File("svn4idea");
     if (!pluginRoot.isDirectory()) {
       // try standalone mode
       Class aClass = Svn17TestCase.class;

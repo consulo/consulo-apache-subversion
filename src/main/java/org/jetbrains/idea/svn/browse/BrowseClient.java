@@ -15,9 +15,11 @@
  */
 package org.jetbrains.idea.svn.browse;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
@@ -28,8 +30,8 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
  */
 public interface BrowseClient extends SvnClient {
 
-  void list(@NotNull SvnTarget target, @Nullable SVNRevision revision, @Nullable Depth depth, @Nullable DirectoryEntryConsumer handler)
+  void list(@Nonnull SvnTarget target, @Nullable SVNRevision revision, @Nullable Depth depth, @Nullable DirectoryEntryConsumer handler)
     throws VcsException;
 
-  long createDirectory(@NotNull SvnTarget target, @NotNull String message, boolean makeParents) throws VcsException;
+  long createDirectory(@Nonnull SvnTarget target, @Nonnull String message, boolean makeParents) throws VcsException;
 }

@@ -16,7 +16,7 @@
 package org.jetbrains.idea.svn.conflict;
 
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Map;
 
@@ -30,7 +30,8 @@ public enum ConflictAction {
   DELETE("delete", "deleted"),
   REPLACE("replace", "replaced");
 
-  @NotNull private static final Map<String, ConflictAction> ourAllActions = ContainerUtil.newHashMap();
+  @Nonnull
+  private static final Map<String, ConflictAction> ourAllActions = ContainerUtil.newHashMap();
 
   static {
     for (ConflictAction action : ConflictAction.values()) {
@@ -38,10 +39,12 @@ public enum ConflictAction {
     }
   }
 
-  @NotNull private final String myKey;
-  @NotNull private final String[] myOtherKeys;
+  @Nonnull
+  private final String myKey;
+  @Nonnull
+  private final String[] myOtherKeys;
 
-  ConflictAction(@NotNull String key, @NotNull String... otherKeys) {
+  ConflictAction(@Nonnull String key, @Nonnull String... otherKeys) {
     myKey = key;
     myOtherKeys = otherKeys;
   }
@@ -51,7 +54,7 @@ public enum ConflictAction {
     return myKey;
   }
 
-  private static void register(@NotNull ConflictAction action) {
+  private static void register(@Nonnull ConflictAction action) {
     ourAllActions.put(action.myKey, action);
 
     for (String otherKey : action.myOtherKeys) {
@@ -59,8 +62,8 @@ public enum ConflictAction {
     }
   }
 
-  @NotNull
-  public static ConflictAction from(@NotNull String actionName) {
+  @Nonnull
+  public static ConflictAction from(@Nonnull String actionName) {
     ConflictAction result = ourAllActions.get(actionName);
 
     if (result == null) {

@@ -2,8 +2,8 @@ package org.jetbrains.idea.svn.api;
 
 import com.intellij.util.ReflectionUtil;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.add.AddClient;
 import org.jetbrains.idea.svn.annotate.AnnotateClient;
@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public abstract class ClientFactory {
 
-  @NotNull
+  @Nonnull
   protected SvnVcs myVcs;
 
   protected AddClient addClient;
@@ -67,22 +67,23 @@ public abstract class ClientFactory {
   protected CheckinClient myCheckinClient;
   protected RepositoryFeaturesClient myRepositoryFeaturesClient;
 
-  @NotNull private final Map<Class, Class> myClientImplementations = ContainerUtil.newHashMap();
+  @Nonnull
+  private final Map<Class, Class> myClientImplementations = ContainerUtil.newHashMap();
 
-  protected ClientFactory(@NotNull SvnVcs vcs) {
+  protected ClientFactory(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
     setup();
   }
 
   protected abstract void setup();
 
-  protected <T extends SvnClient> void put(@NotNull Class<T> type, @NotNull Class<? extends T> implementation) {
+  protected <T extends SvnClient> void put(@Nonnull Class<T> type, @Nonnull Class<? extends T> implementation) {
     myClientImplementations.put(type, implementation);
   }
 
   @SuppressWarnings("unchecked")
-  @NotNull
-  protected <T extends SvnClient> Class<? extends T> get(@NotNull Class<T> type) {
+  @Nonnull
+  protected <T extends SvnClient> Class<? extends T> get(@Nonnull Class<T> type) {
     Class<? extends T> implementation = myClientImplementations.get(type);
 
     if (implementation == null) {
@@ -95,151 +96,151 @@ public abstract class ClientFactory {
   /**
    * TODO: Provide more robust way for the default settings here - probably some default Command instance could be used.
    */
-  @NotNull
-  public <T extends SvnClient> T create(@NotNull Class<T> type, boolean isActive) {
+  @Nonnull
+  public <T extends SvnClient> T create(@Nonnull Class<T> type, boolean isActive) {
     T client = prepare(ReflectionUtil.newInstance(get(type)));
     client.setIsActive(isActive);
 
     return client;
   }
 
-  @NotNull
+  @Nonnull
   public AddClient createAddClient() {
     return prepare(addClient);
   }
 
-  @NotNull
+  @Nonnull
   public AnnotateClient createAnnotateClient() {
     return prepare(annotateClient);
   }
 
-  @NotNull
+  @Nonnull
   public ContentClient createContentClient() {
     return prepare(contentClient);
   }
 
-  @NotNull
+  @Nonnull
   public HistoryClient createHistoryClient() {
     return prepare(historyClient);
   }
 
-  @NotNull
+  @Nonnull
   public RevertClient createRevertClient() {
     return prepare(revertClient);
   }
 
-  @NotNull
+  @Nonnull
   public StatusClient createStatusClient() {
     return prepare(statusClient);
   }
 
-  @NotNull
-  public StatusClient createStatusClient(@Nullable ISVNStatusFileProvider provider, @NotNull ProgressTracker handler) {
+  @Nonnull
+  public StatusClient createStatusClient(@Nullable ISVNStatusFileProvider provider, @Nonnull ProgressTracker handler) {
     return createStatusClient();
   }
 
-  @NotNull
+  @Nonnull
   public InfoClient createInfoClient() {
     return prepare(infoClient);
   }
 
   // TODO: Update this in same like other clients - move to corresponding package, rename clients
   // New instances should be always created by this method, as setXxx() methods are currently used in update logic
-  @NotNull
+  @Nonnull
   public abstract UpdateClient createUpdateClient();
 
-  @NotNull
+  @Nonnull
   public DeleteClient createDeleteClient() {
     return prepare(deleteClient);
   }
 
-  @NotNull
+  @Nonnull
   public CopyMoveClient createCopyMoveClient() {
     return prepare(copyMoveClient);
   }
 
-  @NotNull
+  @Nonnull
   public ConflictClient createConflictClient() {
     return prepare(conflictClient);
   }
 
-  @NotNull
+  @Nonnull
   public PropertyClient createPropertyClient() {
     return prepare(propertyClient);
   }
 
-  @NotNull
+  @Nonnull
   public MergeClient createMergeClient() {
     return prepare(mergeClient);
   }
 
-  @NotNull
+  @Nonnull
   public ChangeListClient createChangeListClient() {
     return prepare(changeListClient);
   }
 
-  @NotNull
+  @Nonnull
   public CheckoutClient createCheckoutClient() {
     return prepare(checkoutClient);
   }
 
-  @NotNull
+  @Nonnull
   public LockClient createLockClient() {
     return prepare(myLockClient);
   }
 
-  @NotNull
+  @Nonnull
   public CleanupClient createCleanupClient() {
     return prepare(myCleanupClient);
   }
 
-  @NotNull
+  @Nonnull
   public RelocateClient createRelocateClient() {
     return prepare(myRelocateClient);
   }
 
-  @NotNull
+  @Nonnull
   public VersionClient createVersionClient() {
     return prepare(myVersionClient);
   }
 
-  @NotNull
+  @Nonnull
   public ImportClient createImportClient() {
     return prepare(myImportClient);
   }
 
-  @NotNull
+  @Nonnull
   public ExportClient createExportClient() {
     return prepare(myExportClient);
   }
 
-  @NotNull
+  @Nonnull
   public UpgradeClient createUpgradeClient() {
     return prepare(myUpgradeClient);
   }
 
-  @NotNull
+  @Nonnull
   public BrowseClient createBrowseClient() {
     return prepare(myBrowseClient);
   }
 
-  @NotNull
+  @Nonnull
   public DiffClient createDiffClient() {
     return prepare(myDiffClient);
   }
 
-  @NotNull
+  @Nonnull
   public CheckinClient createCheckinClient() {
     return prepare(myCheckinClient);
   }
 
-  @NotNull
+  @Nonnull
   public RepositoryFeaturesClient createRepositoryFeaturesClient() {
     return prepare(myRepositoryFeaturesClient);
   }
 
-  @NotNull
-  protected <T extends SvnClient> T prepare(@NotNull T client) {
+  @Nonnull
+  protected <T extends SvnClient> T prepare(@Nonnull T client) {
     client.setVcs(myVcs);
     client.setFactory(this);
     client.setIsActive(true);

@@ -35,7 +35,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.vcs.ProgressManagerQueue;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnVcs;
 
 import java.io.File;
@@ -114,16 +114,16 @@ public class SvnBranchConfigurationManager implements PersistentStateComponent<S
 	}
 
 	private ConfigurationBean myConfigurationBean = new ConfigurationBean();
-	@NotNull
+	@Nonnull
 	private final NewRootBunch myBunch;
 
-	@NotNull
-	public SvnBranchConfigurationNew get(@NotNull final VirtualFile vcsRoot)
+	@Nonnull
+	public SvnBranchConfigurationNew get(@Nonnull final VirtualFile vcsRoot)
 	{
 		return myBunch.getConfig(vcsRoot);
 	}
 
-	@NotNull
+	@Nonnull
 	public NewRootBunch getSvnBranchConfigManager()
 	{
 		return myBunch;
@@ -172,7 +172,7 @@ public class SvnBranchConfigurationManager implements PersistentStateComponent<S
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	private Set<Pair<VirtualFile, SvnBranchConfigurationNew>> resolveAllBranchPoints()
 	{
 		final LocalFileSystem lfs = LocalFileSystem.getInstance();
@@ -219,7 +219,7 @@ public class SvnBranchConfigurationManager implements PersistentStateComponent<S
 		return branchPointsToLoad;
 	}
 
-	private void preloadBranches(@NotNull final Collection<Pair<VirtualFile, SvnBranchConfigurationNew>> branchPoints)
+	private void preloadBranches(@Nonnull final Collection<Pair<VirtualFile, SvnBranchConfigurationNew>> branchPoints)
 	{
 		((ProjectLevelVcsManagerImpl) myVcsManager).addInitializationRequest(VcsInitObject.BRANCHES, new Runnable()
 		{

@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -30,8 +31,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
@@ -66,7 +66,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
   private JTree myRepositoryTree;
   private final SvnVcs myVCS;
 
-  public RepositoryBrowserComponent(@NotNull SvnVcs vcs) {
+  public RepositoryBrowserComponent(@Nonnull SvnVcs vcs) {
     myVCS = vcs;
     createComponent();
   }
@@ -75,7 +75,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     return myRepositoryTree;
   }
 
-  @NotNull
+  @Nonnull
   public Project getProject() {
     return myVCS.getProject();
   }
@@ -124,7 +124,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     myRepositoryTree.setSelectionRow(0);
   }
 
-  public void expandNode(@NotNull final TreeNode treeNode) {
+  public void expandNode(@Nonnull final TreeNode treeNode) {
     final TreeNode[] pathToNode = ((RepositoryTreeModel) myRepositoryTree.getModel()).getPathToRoot(treeNode);
 
     if ((pathToNode != null) && (pathToNode.length > 0)) {
@@ -133,7 +133,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     }
   }
 
-  public Collection<TreeNode> getExpandedSubTree(@NotNull final TreeNode treeNode) {
+  public Collection<TreeNode> getExpandedSubTree(@Nonnull final TreeNode treeNode) {
     final TreeNode[] pathToNode = ((RepositoryTreeModel) myRepositoryTree.getModel()).getPathToRoot(treeNode);
 
     final Enumeration<TreePath> expanded = myRepositoryTree.getExpandedDescendants(new TreePath(pathToNode));
@@ -148,7 +148,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     return result;
   }
 
-  public boolean isExpanded(@NotNull final TreeNode treeNode) {
+  public boolean isExpanded(@Nonnull final TreeNode treeNode) {
     final TreeNode[] pathToNode = ((RepositoryTreeModel) myRepositoryTree.getModel()).getPathToRoot(treeNode);
 
     return (pathToNode != null) && (pathToNode.length > 0) && myRepositoryTree.isExpanded(new TreePath(pathToNode));
@@ -250,7 +250,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     return null;
   }
 
-  public void setSelectedNode(@NotNull final TreeNode node) {
+  public void setSelectedNode(@Nonnull final TreeNode node) {
     final TreeNode[] pathNodes = ((RepositoryTreeModel) myRepositoryTree.getModel()).getPathToRoot(node);
     myRepositoryTree.setSelectionPath(new TreePath(pathNodes));
   }

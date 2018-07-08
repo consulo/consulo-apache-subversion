@@ -16,18 +16,20 @@
 package org.jetbrains.idea.svn.dialogs;
 
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
 import java.util.List;
 
 public class WCInfoWithBranches extends WCInfo {
 
-  @NotNull private final List<Branch> myBranches;
-  @NotNull private final VirtualFile myRoot;
+  @Nonnull
+  private final List<Branch> myBranches;
+  @Nonnull
+  private final VirtualFile myRoot;
   private final Branch myCurrentBranch;
 
-  public WCInfoWithBranches(@NotNull WCInfo info, @NotNull List<Branch> branches, @NotNull VirtualFile root, Branch currentBranch) {
+  public WCInfoWithBranches(@Nonnull WCInfo info, @Nonnull List<Branch> branches, @Nonnull VirtualFile root, Branch currentBranch) {
     super(info.getRootInfo(), info.isIsWcRoot(), info.getStickyDepth());
 
     myBranches = branches;
@@ -42,7 +44,7 @@ public class WCInfoWithBranches extends WCInfo {
   }
 
   @Override
-  @NotNull
+  @Nonnull
   public VirtualFile getVcsRoot() {
     return myRoot;
   }
@@ -50,12 +52,12 @@ public class WCInfoWithBranches extends WCInfo {
   /**
    * List of all branches according to branch configuration. Does not contain {@code getCurrentBranch()} branch.
    */
-  @NotNull
+  @Nonnull
   public List<Branch> getBranches() {
     return myBranches;
   }
 
-  @NotNull
+  @Nonnull
   public VirtualFile getRoot() {
     return myRoot;
   }
@@ -69,20 +71,22 @@ public class WCInfoWithBranches extends WCInfo {
 
   public static class Branch {
 
-    @NotNull private final String myName;
-    @NotNull private final String myUrl;
+    @Nonnull
+	private final String myName;
+    @Nonnull
+	private final String myUrl;
 
-    public Branch(@NotNull String url) {
+    public Branch(@Nonnull String url) {
       myName = SVNPathUtil.tail(url);
       myUrl = url;
     }
 
-    @NotNull
+    @Nonnull
     public String getName() {
       return myName;
     }
 
-    @NotNull
+    @Nonnull
     public String getUrl() {
       return myUrl;
     }

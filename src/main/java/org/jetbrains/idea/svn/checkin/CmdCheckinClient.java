@@ -24,8 +24,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.AbstractFilterChildren;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
@@ -54,9 +54,9 @@ public class CmdCheckinClient extends BaseSvnClient implements CheckinClient {
 
   public static final long INVALID_REVISION_NUMBER = -1L;
 
-  @NotNull
+  @Nonnull
   @Override
-  public CommitInfo[] commit(@NotNull List<File> paths, @NotNull String message) throws VcsException {
+  public CommitInfo[] commit(@Nonnull List<File> paths, @Nonnull String message) throws VcsException {
     // if directory renames were used, IDEA reports all files under them as moved, but for svn we can not pass some of them
     // to commit command - since not all paths are registered as changes -> so we need to filter these cases, but only if
     // there at least some child-parent relationships in passed paths
@@ -65,8 +65,8 @@ public class CmdCheckinClient extends BaseSvnClient implements CheckinClient {
     return runCommit(paths, message);
   }
 
-  @NotNull
-  private CommitInfo[] runCommit(@NotNull List<File> paths, @NotNull String message) throws VcsException {
+  @Nonnull
+  private CommitInfo[] runCommit(@Nonnull List<File> paths, @Nonnull String message) throws VcsException {
     if (ContainerUtil.isEmpty(paths)) return new CommitInfo[]{CommitInfo.EMPTY};
 
     Command command = newCommand(SvnCommandName.ci);
@@ -96,8 +96,8 @@ public class CmdCheckinClient extends BaseSvnClient implements CheckinClient {
     return revision;
   }
 
-  @NotNull
-  private List<File> filterCommittables(@NotNull List<File> committables) throws SvnBindException {
+  @Nonnull
+  private List<File> filterCommittables(@Nonnull List<File> committables) throws SvnBindException {
     final Set<String> childrenOfSomebody = ContainerUtil.newHashSet();
     new AbstractFilterChildren<File>() {
       @Override
@@ -172,7 +172,7 @@ public class CmdCheckinClient extends BaseSvnClient implements CheckinClient {
       return myCommittedRevision;
     }
 
-    public void setBaseDirectory(@NotNull File file) {
+    public void setBaseDirectory(@Nonnull File file) {
       myBase = file;
     }
 
@@ -259,8 +259,8 @@ public class CmdCheckinClient extends BaseSvnClient implements CheckinClient {
       }
     }
 
-    @NotNull
-    private File toFile(@NotNull String path) {
+    @Nonnull
+    private File toFile(@Nonnull String path) {
       return SvnUtil.resolvePath(myBase, path);
     }
   }

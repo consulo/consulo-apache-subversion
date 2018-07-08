@@ -32,8 +32,9 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.newvfs.RefreshQueue;
 import com.intellij.util.WaitForProgressToShow;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -62,10 +63,10 @@ public abstract class AbstractSvnUpdateIntegrateEnvironment implements UpdateEnv
                                        FileGroup.MERGED_WITH_TREE_CONFLICT, false));
   }
 
-  @NotNull
-  public UpdateSession updateDirectories(@NotNull final FilePath[] contentRoots,
+  @Nonnull
+  public UpdateSession updateDirectories(@Nonnull final FilePath[] contentRoots,
                                          final UpdatedFiles updatedFiles,
-                                         final ProgressIndicator progressIndicator, @NotNull final Ref<SequentialUpdatesContext> context)
+                                         final ProgressIndicator progressIndicator, @Nonnull final Ref<SequentialUpdatesContext> context)
     throws ProcessCanceledException {
 
     if (context.isNull()) {
@@ -115,7 +116,7 @@ public abstract class AbstractSvnUpdateIntegrateEnvironment implements UpdateEnv
     private final VcsDirtyScopeManager myDirtyScopeManager;
     private final List<Runnable> myGroupWorkers;
 
-    private MyUpdateSessionAdapter(@NotNull final FilePath[] contentRoots, final UpdatedFiles updatedFiles, final List<VcsException> exceptions) {
+    private MyUpdateSessionAdapter(@Nonnull final FilePath[] contentRoots, final UpdatedFiles updatedFiles, final List<VcsException> exceptions) {
       super(exceptions, false);
       myContentRoots = contentRoots;
       myUpdatedFiles = updatedFiles;

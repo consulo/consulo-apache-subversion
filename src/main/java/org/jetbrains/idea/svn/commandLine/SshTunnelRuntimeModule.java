@@ -15,6 +15,8 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.execution.CommandLineUtil;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.openapi.util.io.FileUtil;
@@ -23,8 +25,8 @@ import com.intellij.util.EnvironmentUtil;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.execution.ParametersListUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnConfigurationState;
 
@@ -35,12 +37,12 @@ public class SshTunnelRuntimeModule extends BaseCommandRuntimeModule {
 
   public static final String DEFAULT_SSH_TUNNEL_VALUE = "$SVN_SSH ssh -q";
 
-  public SshTunnelRuntimeModule(@NotNull CommandRuntime runtime) {
+  public SshTunnelRuntimeModule(@Nonnull CommandRuntime runtime) {
     super(runtime);
   }
 
   @Override
-  public void onStart(@NotNull Command command) throws SvnBindException {
+  public void onStart(@Nonnull Command command) throws SvnBindException {
     if (!CommandRuntime.isLocal(command)) {
       if (!SvnConfiguration.SshConnectionType.SUBVERSION_CONFIG.equals(getState().sshConnectionType)) {
         command.put("--config-option", "config:tunnels:ssh=" + StringUtil.notNullize(buildTunnelValue()));
@@ -48,12 +50,12 @@ public class SshTunnelRuntimeModule extends BaseCommandRuntimeModule {
     }
   }
 
-  @NotNull
+  @Nonnull
   private SvnConfiguration getConfiguration() {
     return myRuntime.getVcs().getSvnConfiguration();
   }
 
-  @NotNull
+  @Nonnull
   private SvnConfigurationState getState() {
     return getConfiguration().getState();
   }
@@ -67,8 +69,8 @@ public class SshTunnelRuntimeModule extends BaseCommandRuntimeModule {
       .join(CommandLineUtil.toCommandLine(sshPath, buildTunnelCommandLine(sshPath).getParametersList().getParameters()), " ");
   }
 
-  @NotNull
-  private GeneralCommandLine buildTunnelCommandLine(@NotNull String sshPath) {
+  @Nonnull
+  private GeneralCommandLine buildTunnelCommandLine(@Nonnull String sshPath) {
     GeneralCommandLine result = new GeneralCommandLine(sshPath);
     boolean isPuttyLinkClient = StringUtil.endsWithIgnoreCase(FileUtil.getNameWithoutExtension(sshPath), "plink");
     SvnConfigurationState state = getState();
@@ -91,7 +93,7 @@ public class SshTunnelRuntimeModule extends BaseCommandRuntimeModule {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   public static String getSshTunnelValue(@Nullable String tunnelSetting) {
     tunnelSetting = !StringUtil.isEmpty(tunnelSetting) ? tunnelSetting : DEFAULT_SSH_TUNNEL_VALUE;
     String svnSshVariableName = getSvnSshVariableName(tunnelSetting);
@@ -102,7 +104,7 @@ public class SshTunnelRuntimeModule extends BaseCommandRuntimeModule {
            : !StringUtil.isEmpty(svnSshVariableName) ? tunnelSetting.substring(1 + svnSshVariableName.length()) : tunnelSetting;
   }
 
-  @NotNull
+  @Nonnull
   public static String getSvnSshVariableName(@Nullable String tunnel) {
     String result = "";
 
@@ -113,7 +115,7 @@ public class SshTunnelRuntimeModule extends BaseCommandRuntimeModule {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   public static String getExecutablePath(@Nullable String tunnelSetting) {
     // TODO: Add additional platform specific checks
     return StringUtil.notNullize(ContainerUtil.getFirstItem(ParametersListUtil.parse(getSshTunnelValue(tunnelSetting)))).trim();

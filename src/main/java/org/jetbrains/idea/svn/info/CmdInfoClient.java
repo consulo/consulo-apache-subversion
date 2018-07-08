@@ -23,8 +23,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.util.Consumer;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.*;
@@ -52,7 +52,7 @@ public class CmdInfoClient extends BaseSvnClient implements InfoClient {
 
   private static final Logger LOG = Logger.getInstance(CmdInfoClient.class);
 
-  private String execute(@NotNull List<String> parameters, @NotNull File path) throws SvnBindException {
+  private String execute(@Nonnull List<String> parameters, @Nonnull File path) throws SvnBindException {
     // workaround: separately capture command output - used in exception handling logic to overcome svn 1.8 issue (see below)
     final ProcessOutput output = new ProcessOutput();
     LineCommandListener listener = new LineCommandAdapter() {
@@ -98,7 +98,7 @@ public class CmdInfoClient extends BaseSvnClient implements InfoClient {
     return handler.getInfo();
   }
 
-  private static void parseResult(@NotNull final InfoConsumer handler, @Nullable File base, @Nullable String result)
+  private static void parseResult(@Nonnull final InfoConsumer handler, @Nullable File base, @Nullable String result)
     throws SvnBindException {
     if (StringUtil.isEmptyOrSpaces(result)) {
       return;
@@ -119,7 +119,7 @@ public class CmdInfoClient extends BaseSvnClient implements InfoClient {
     parseResult(result, infoHandler);
   }
 
-  private static void parseResult(@NotNull String result, @NotNull SvnInfoHandler handler) throws SvnBindException {
+  private static void parseResult(@Nonnull String result, @Nonnull SvnInfoHandler handler) throws SvnBindException {
     try {
       SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 
@@ -134,8 +134,8 @@ public class CmdInfoClient extends BaseSvnClient implements InfoClient {
     }
   }
 
-  @NotNull
-  private static List<String> buildParameters(@NotNull SvnTarget target, @Nullable SVNRevision revision, @Nullable Depth depth) {
+  @Nonnull
+  private static List<String> buildParameters(@Nonnull SvnTarget target, @Nullable SVNRevision revision, @Nullable Depth depth) {
     List<String> parameters = ContainerUtil.newArrayList();
 
     CommandUtil.put(parameters, depth);
@@ -147,14 +147,14 @@ public class CmdInfoClient extends BaseSvnClient implements InfoClient {
   }
 
   @Override
-  public Info doInfo(@NotNull File path, @Nullable SVNRevision revision) throws SvnBindException {
+  public Info doInfo(@Nonnull File path, @Nullable SVNRevision revision) throws SvnBindException {
     File base = CommandUtil.requireExistingParent(path);
 
     return parseResult(base, execute(buildParameters(SvnTarget.fromFile(path), revision, Depth.EMPTY), path));
   }
 
   @Override
-  public Info doInfo(@NotNull SvnTarget target, @Nullable SVNRevision revision) throws SvnBindException {
+  public Info doInfo(@Nonnull SvnTarget target, @Nullable SVNRevision revision) throws SvnBindException {
     assertUrl(target);
 
     CommandExecutor command = execute(myVcs, target, SvnCommandName.info, buildParameters(target, revision, Depth.EMPTY), null);
@@ -163,7 +163,7 @@ public class CmdInfoClient extends BaseSvnClient implements InfoClient {
   }
 
   @Override
-  public void doInfo(@NotNull Collection<File> paths, @Nullable InfoConsumer handler) throws SvnBindException {
+  public void doInfo(@Nonnull Collection<File> paths, @Nullable InfoConsumer handler) throws SvnBindException {
     File base = ContainerUtil.getFirstItem(paths);
 
     if (base != null) {
@@ -186,7 +186,8 @@ public class CmdInfoClient extends BaseSvnClient implements InfoClient {
 
   private static class CollectInfoHandler implements InfoConsumer {
 
-    @Nullable private Info myInfo;
+    @Nullable
+	private Info myInfo;
 
     @Override
     public void consume(Info info) throws SVNException {

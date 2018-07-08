@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.commandLine;
 
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.auth.SVNPasswordAuthentication;
@@ -39,7 +39,7 @@ public class TerminalUserNamePasswordModule extends BaseTerminalModule {
   private String userName;
   private SVNPasswordAuthentication authentication;
 
-  public TerminalUserNamePasswordModule(@NotNull CommandRuntime runtime, @NotNull CommandExecutor executor) {
+  public TerminalUserNamePasswordModule(@Nonnull CommandRuntime runtime, @Nonnull CommandExecutor executor) {
     super(runtime, executor);
   }
 
@@ -48,7 +48,7 @@ public class TerminalUserNamePasswordModule extends BaseTerminalModule {
     return checkRealm(line) || checkUserName(line) || checkPassword(line);
   }
 
-  private boolean checkRealm(@NotNull String line) {
+  private boolean checkRealm(@Nonnull String line) {
     Matcher matcher = AUTHENTICATION_REALM_MESSAGE.matcher(line);
 
     if (matcher.matches()) {
@@ -58,13 +58,13 @@ public class TerminalUserNamePasswordModule extends BaseTerminalModule {
     return matcher.matches();
   }
 
-  private boolean checkUserName(@NotNull String line) {
+  private boolean checkUserName(@Nonnull String line) {
     Matcher matcher = USER_NAME_PROMPT.matcher(line);
 
     return matcher.matches() && handleAuthPrompt(true);
   }
 
-  private boolean checkPassword(@NotNull String line) {
+  private boolean checkPassword(@Nonnull String line) {
     Matcher matcher = PASSWORD_PROMPT.matcher(line);
 
     if (matcher.matches()) {

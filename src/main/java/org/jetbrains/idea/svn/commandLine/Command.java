@@ -4,8 +4,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.properties.PropertyValue;
@@ -25,21 +25,30 @@ import java.util.List;
 // TODO: Probably make command immutable and use CommandBuilder for updates.
 public class Command {
 
-  @NotNull private final List<String> myParameters = ContainerUtil.newArrayList();
-  @NotNull private final List<String> myOriginalParameters = ContainerUtil.newArrayList();
-  @NotNull private final SvnCommandName myName;
+  @Nonnull
+  private final List<String> myParameters = ContainerUtil.newArrayList();
+  @Nonnull
+  private final List<String> myOriginalParameters = ContainerUtil.newArrayList();
+  @Nonnull
+  private final SvnCommandName myName;
 
   private File workingDirectory;
-  @Nullable private File myConfigDir;
-  @Nullable private LineCommandListener myResultBuilder;
-  @Nullable private volatile SVNURL myRepositoryUrl;
-  @NotNull private SvnTarget myTarget;
-  @Nullable private Collection<File> myTargets;
+  @Nullable
+  private File myConfigDir;
+  @Nullable
+  private LineCommandListener myResultBuilder;
+  @Nullable
+  private volatile SVNURL myRepositoryUrl;
+  @Nonnull
+  private SvnTarget myTarget;
+  @Nullable
+  private Collection<File> myTargets;
   @Nullable private PropertyValue myPropertyValue;
 
-  @Nullable private ProgressTracker myCanceller;
+  @Nullable
+  private ProgressTracker myCanceller;
 
-  public Command(@NotNull SvnCommandName name) {
+  public Command(@Nonnull SvnCommandName name) {
     myName = name;
   }
 
@@ -47,7 +56,7 @@ public class Command {
     CommandUtil.put(myParameters, depth, false);
   }
 
-  public void put(@NotNull SvnTarget target) {
+  public void put(@Nonnull SvnTarget target) {
     CommandUtil.put(myParameters, target);
   }
 
@@ -55,19 +64,19 @@ public class Command {
     CommandUtil.put(myParameters, revision);
   }
 
-  public void put(@NotNull String parameter, boolean condition) {
+  public void put(@Nonnull String parameter, boolean condition) {
     CommandUtil.put(myParameters, condition, parameter);
   }
 
-  public void put(@NonNls @NotNull String... parameters) {
+  public void put(@NonNls @Nonnull String... parameters) {
     put(Arrays.asList(parameters));
   }
 
-  public void put(@NotNull List<String> parameters) {
+  public void put(@Nonnull List<String> parameters) {
     myParameters.addAll(parameters);
   }
 
-  public void putIfNotPresent(@NotNull String parameter) {
+  public void putIfNotPresent(@Nonnull String parameter) {
     if (!myParameters.contains(parameter)) {
       myParameters.add(parameter);
     }
@@ -101,7 +110,7 @@ public class Command {
     return myRepositoryUrl;
   }
 
-  @NotNull
+  @Nonnull
   public SVNURL requireRepositoryUrl() {
     SVNURL result = getRepositoryUrl();
     assert result != null;
@@ -109,7 +118,7 @@ public class Command {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   public SvnTarget getTarget() {
     return myTarget;
   }
@@ -129,7 +138,7 @@ public class Command {
     return myPropertyValue;
   }
 
-  @NotNull
+  @Nonnull
   public SvnCommandName getName() {
     return myName;
   }
@@ -150,7 +159,7 @@ public class Command {
     myRepositoryUrl = repositoryUrl;
   }
 
-  public void setTarget(@NotNull SvnTarget target) {
+  public void setTarget(@Nonnull SvnTarget target) {
     myTarget = target;
   }
 
@@ -169,7 +178,7 @@ public class Command {
     myOriginalParameters.addAll(myParameters);
   }
 
-  @NotNull
+  @Nonnull
   public List<String> getParameters() {
     return ContainerUtil.newArrayList(myParameters);
   }
@@ -218,7 +227,7 @@ public class Command {
     return index >= 0 && index + 1 < myParameters.size() ? SVNRevision.parse(myParameters.get(index + 1)) : null;
   }
 
-  public boolean is(@NotNull SvnCommandName name) {
+  public boolean is(@Nonnull SvnCommandName name) {
     return name.equals(myName);
   }
 

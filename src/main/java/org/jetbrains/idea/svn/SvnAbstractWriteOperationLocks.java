@@ -18,7 +18,6 @@ package org.jetbrains.idea.svn;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vcs.changes.FilePathsHelper;
 import com.intellij.util.TimeoutUtil;
-import org.jetbrains.annotations.Nullable;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.table.ISqlJetBusyHandler;
 import org.tmatesoft.sqljet.core.table.ISqlJetTransaction;
@@ -30,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import javax.annotation.Nullable;
 
 /**
  * Created with IntelliJ IDEA.

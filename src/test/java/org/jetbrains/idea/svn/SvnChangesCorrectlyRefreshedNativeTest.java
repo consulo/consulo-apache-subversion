@@ -28,7 +28,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.vcs.DuringChangeListManagerUpdateTestScheme;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.SvnTestCase;
 import org.junit.Assert;
 import org.junit.Test;

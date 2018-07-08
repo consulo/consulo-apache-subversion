@@ -20,8 +20,9 @@ import com.intellij.openapi.util.Getter;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.Convertor;
 import com.intellij.util.containers.MultiMap;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.info.Info;
@@ -46,7 +47,7 @@ public class SvnStatusHandler extends DefaultHandler {
   private static final Logger LOG = Logger.getInstance(SvnStatusHandler.class);
 
   @Nullable
-  public static StatusType getStatus(@NotNull String code) {
+  public static StatusType getStatus(@Nonnull String code) {
     StatusType result = StatusType.forStatusOperation(code);
 
     if (result == null) {

@@ -25,8 +25,8 @@ import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.*;
 import com.intellij.util.ThrowableConsumer;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.change.ChangeListClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.status.Status;
@@ -39,14 +39,16 @@ import java.util.List;
 public class SvnChangelistListener implements ChangeListListener {
   private final static Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.SvnChangelistListener");
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final Condition<FilePath> myUnderSvnCondition;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final Condition<FilePath> myUnderSvnCondition;
 
-  public SvnChangelistListener(@NotNull SvnVcs vcs) {
+  public SvnChangelistListener(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
     myUnderSvnCondition = new Condition<FilePath>() {
       @Override
-      public boolean value(@NotNull FilePath path) {
+      public boolean value(@Nonnull FilePath path) {
         final AbstractVcs vcs = ProjectLevelVcsManager.getInstance(myVcs.getProject()).getVcsFor(path);
         return vcs != null && SvnVcs.VCS_NAME.equals(vcs.getName());
       }
@@ -75,8 +77,8 @@ public class SvnChangelistListener implements ChangeListListener {
     removeFromChangeList(list.getChanges());
   }
 
-  @NotNull
-  private List<FilePath> getPathsFromChanges(@NotNull Collection<Change> changes) {
+  @Nonnull
+  private List<FilePath> getPathsFromChanges(@Nonnull Collection<Change> changes) {
     return ContainerUtil.findAll(ChangesUtil.getPaths(changes), myUnderSvnCondition);
   }
 
@@ -120,7 +122,7 @@ public class SvnChangelistListener implements ChangeListListener {
   }
 
   @Nullable
-  public static String getCurrentMapping(@NotNull SvnVcs vcs, @NotNull File file) {
+  public static String getCurrentMapping(@Nonnull SvnVcs vcs, @Nonnull File file) {
     try {
       final Status status = vcs.getFactory(file).createStatusClient().doStatus(file, false);
       return status == null ? null : status.getChangelistName();
@@ -135,17 +137,17 @@ public class SvnChangelistListener implements ChangeListListener {
     return null;
   }
 
-  public static void putUnderList(@NotNull SvnVcs vcs, @NotNull String list, @NotNull File after) throws VcsException {
+  public static void putUnderList(@Nonnull SvnVcs vcs, @Nonnull String list, @Nonnull File after) throws VcsException {
     doChangeListOperation(vcs, after, client -> client.add(list, after, null));
   }
 
-  public static void removeFromList(@NotNull SvnVcs vcs, @NotNull File after) throws VcsException {
+  public static void removeFromList(@Nonnull SvnVcs vcs, @Nonnull File after) throws VcsException {
     doChangeListOperation(vcs, after, client -> client.remove(after));
   }
 
-  private static void doChangeListOperation(@NotNull SvnVcs vcs,
-                                            @NotNull File file,
-                                            @NotNull ThrowableConsumer<ChangeListClient, VcsException> operation) throws VcsException {
+  private static void doChangeListOperation(@Nonnull SvnVcs vcs,
+                                            @Nonnull File file,
+                                            @Nonnull ThrowableConsumer<ChangeListClient, VcsException> operation) throws VcsException {
     try {
       operation.consume(vcs.getFactory(file).createChangeListClient());
     }
@@ -161,7 +163,7 @@ public class SvnChangelistListener implements ChangeListListener {
     }
   }
 
-  private void removeFromChangeList(@NotNull Collection<Change> changes) {
+  private void removeFromChangeList(@Nonnull Collection<Change> changes) {
     for (FilePath path : getPathsFromChanges(changes)) {
       try {
         File file = path.getIOFile();
@@ -173,11 +175,11 @@ public class SvnChangelistListener implements ChangeListListener {
     }
   }
 
-  private void addToChangeList(@NotNull String changeList, @NotNull Collection<Change> changes) {
+  private void addToChangeList(@Nonnull String changeList, @Nonnull Collection<Change> changes) {
     addToChangeList(changeList, changes, null);
   }
 
-  private void addToChangeList(@NotNull String changeList, @NotNull Collection<Change> changes, @Nullable String[] changeListsToOperate) {
+  private void addToChangeList(@Nonnull String changeList, @Nonnull Collection<Change> changes, @Nullable String[] changeListsToOperate) {
     for (FilePath path : getPathsFromChanges(changes)) {
       try {
         File file = path.getIOFile();

@@ -26,7 +26,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.tmatesoft.svn.core.SVNException;
@@ -40,13 +40,16 @@ import java.io.IOException;
  */
 public class FileWithBranchComparer extends ElementWithBranchComparer {
 
-  @NotNull private final Ref<byte[]> content = new Ref<>();
-  @NotNull private final StringBuilder remoteTitleBuilder = new StringBuilder();
-  @NotNull private final Ref<Boolean> success = new Ref<>();
+  @Nonnull
+  private final Ref<byte[]> content = new Ref<>();
+  @Nonnull
+  private final StringBuilder remoteTitleBuilder = new StringBuilder();
+  @Nonnull
+  private final Ref<Boolean> success = new Ref<>();
 
-  public FileWithBranchComparer(@NotNull Project project,
-                                @NotNull VirtualFile virtualFile,
-                                @NotNull String branchUrl,
+  public FileWithBranchComparer(@Nonnull Project project,
+                                @Nonnull VirtualFile virtualFile,
+                                @Nonnull String branchUrl,
                                 long branchRevision) {
     super(project, virtualFile, branchUrl, branchRevision);
   }

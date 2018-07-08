@@ -3,23 +3,23 @@ package org.jetbrains.idea.svn.difftool.properties;
 import com.intellij.diff.DiffContext;
 import com.intellij.diff.FrameDiffTool;
 import com.intellij.diff.requests.DiffRequest;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class SvnPropertiesDiffTool implements FrameDiffTool {
-  @NotNull
+  @Nonnull
   @Override
   public String getName() {
     return "SVN properties viewer";
   }
 
   @Override
-  public boolean canShow(@NotNull DiffContext context, @NotNull DiffRequest request) {
+  public boolean canShow(@Nonnull DiffContext context, @Nonnull DiffRequest request) {
     return request instanceof SvnPropertiesDiffRequest;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public DiffViewer createComponent(@NotNull DiffContext context, @NotNull DiffRequest request) {
+  public DiffViewer createComponent(@Nonnull DiffContext context, @Nonnull DiffRequest request) {
     return SvnPropertiesDiffViewer.create(context, (SvnPropertiesDiffRequest)request);
   }
 }

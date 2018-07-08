@@ -15,8 +15,9 @@
  */
 package org.jetbrains.idea.svn.info;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
@@ -33,9 +34,9 @@ import java.util.Collection;
  */
 public interface InfoClient extends SvnClient {
 
-  Info doInfo(@NotNull File path, @Nullable SVNRevision revision) throws SvnBindException;
+  Info doInfo(@Nonnull File path, @Nullable SVNRevision revision) throws SvnBindException;
 
-  Info doInfo(@NotNull SvnTarget target, @Nullable SVNRevision revision) throws SvnBindException;
+  Info doInfo(@Nonnull SvnTarget target, @Nullable SVNRevision revision) throws SvnBindException;
 
-  void doInfo(@NotNull Collection<File> paths, @Nullable InfoConsumer handler) throws SvnBindException;
+  void doInfo(@Nonnull Collection<File> paths, @Nullable InfoConsumer handler) throws SvnBindException;
 }

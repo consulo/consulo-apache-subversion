@@ -2,8 +2,9 @@ package org.jetbrains.idea.svn.add;
 
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.containers.Convertor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.api.*;
 import org.jetbrains.idea.svn.commandLine.CommandExecutor;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -29,7 +30,7 @@ public class CmdAddClient extends BaseSvnClient implements AddClient {
   private static final Pattern CHANGED_PATH = Pattern.compile(STATUS + OPTIONAL_FILE_TYPE + PATH);
 
   @Override
-  public void add(@NotNull File file,
+  public void add(@Nonnull File file,
                   @Nullable Depth depth,
                   boolean makeParents,
                   boolean includeIgnored,

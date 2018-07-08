@@ -19,8 +19,8 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -92,7 +92,7 @@ public class SvnMapping {
   }
 
   @Nullable
-  public String getRootForPath(@NotNull final String path) {
+  public String getRootForPath(@Nonnull final String path) {
     String floor = myFile2UrlMap.floorKey(path);
     if (floor == null) return null;
     NavigableMap<String, RootUrlInfo> head = myFile2UrlMap.headMap(floor, true);

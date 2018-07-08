@@ -15,10 +15,11 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Key;
 import com.intellij.util.LineSeparator;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Konstantin Kolosovsky.
@@ -27,19 +28,21 @@ public abstract class BaseTerminalModule extends LineCommandAdapter implements C
 
   private static final Logger LOG = Logger.getInstance(BaseTerminalModule.class);
 
-  @NotNull protected final CommandRuntime myRuntime;
-  @NotNull protected final CommandExecutor myExecutor;
+  @Nonnull
+  protected final CommandRuntime myRuntime;
+  @Nonnull
+  protected final CommandExecutor myExecutor;
 
   protected boolean mySkipOneLine;
 
   // TODO: Do not accept executor here and make it as command runtime module
-  protected BaseTerminalModule(@NotNull CommandRuntime runtime, @NotNull CommandExecutor executor) {
+  protected BaseTerminalModule(@Nonnull CommandRuntime runtime, @Nonnull CommandExecutor executor) {
     myRuntime = runtime;
     myExecutor = executor;
   }
 
   @Override
-  public void onStart(@NotNull Command command) throws SvnBindException {
+  public void onStart(@Nonnull Command command) throws SvnBindException {
   }
 
   /**
@@ -66,7 +69,7 @@ public abstract class BaseTerminalModule extends LineCommandAdapter implements C
 
   protected abstract boolean doHandlePrompt(String line, Key outputType);
 
-  protected boolean sendData(@NotNull String data) {
+  protected boolean sendData(@Nonnull String data) {
     try {
       mySkipOneLine = true;
       myExecutor.write(data + LineSeparator.CRLF.getSeparatorString());

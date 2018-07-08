@@ -31,13 +31,13 @@ import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.svn.ConflictedSvnChange;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -95,14 +95,17 @@ public class TreeConflictRefreshablePanel implements Disposable {
   private FilePath myPath;
   private final CompositeDisposable myChildDisposables = new CompositeDisposable();
   private final TLongArrayList myRightRevisionsList;
-  @NotNull private final String myLoadingTitle;
-  @NotNull private final JBLoadingPanel myDetailsPanel;
-  @NotNull private final BackgroundTaskQueue myQueue;
+  @Nonnull
+  private final String myLoadingTitle;
+  @Nonnull
+  private final JBLoadingPanel myDetailsPanel;
+  @Nonnull
+  private final BackgroundTaskQueue myQueue;
   private volatile ProgressIndicator myIndicator = new EmptyProgressIndicator();
 
-  public TreeConflictRefreshablePanel(@NotNull Project project,
-                                      @NotNull String loadingTitle,
-                                      @NotNull BackgroundTaskQueue queue,
+  public TreeConflictRefreshablePanel(@Nonnull Project project,
+                                      @Nonnull String loadingTitle,
+                                      @Nonnull BackgroundTaskQueue queue,
                                       Change change) {
     myVcs = SvnVcs.getInstance(project);
     assert change instanceof ConflictedSvnChange;
@@ -140,12 +143,12 @@ public class TreeConflictRefreshablePanel implements Disposable {
     return true;
   }
 
-  @NotNull
+  @Nonnull
   public JPanel getPanel() {
     return myDetailsPanel;
   }
 
-  private BeforeAfter<ConflictSidePresentation> processDescription(@NotNull ProgressIndicator indicator,
+  private BeforeAfter<ConflictSidePresentation> processDescription(@Nonnull ProgressIndicator indicator,
                                                                    TreeConflictDescription description) throws VcsException {
     if (description == null) return null;
     if (myChange.getBeforeRevision() != null) {
@@ -175,7 +178,7 @@ public class TreeConflictRefreshablePanel implements Disposable {
   }
 
   @Nullable
-  private SVNRevision getPegRevisionFromLeftSide(@NotNull TreeConflictDescription description) {
+  private SVNRevision getPegRevisionFromLeftSide(@Nonnull TreeConflictDescription description) {
     SVNRevision result = null;
     if (description.getSourceLeftVersion() != null) {
       long committed = description.getSourceLeftVersion().getPegRevision();
@@ -194,7 +197,7 @@ public class TreeConflictRefreshablePanel implements Disposable {
                 ! Comparing.equal(description.getSourceLeftVersion().getPath(), description.getSourceRightVersion().getPath());
   }
 
-  @NotNull
+  @Nonnull
   private ConflictSidePresentation createSide(@Nullable ConflictVersion version, @Nullable SVNRevision untilThisOther, boolean isLeft)
     throws VcsException {
     ConflictSidePresentation result = EmptyConflictSide.getInstance();
@@ -402,8 +405,8 @@ public class TreeConflictRefreshablePanel implements Disposable {
     };
   }
 
-  @NotNull
-  public static String filePath(@NotNull FilePath newFilePath) {
+  @Nonnull
+  public static String filePath(@Nonnull FilePath newFilePath) {
     return newFilePath.getName() + " (" + notNull(newFilePath.getParentPath()).getPath() + ")";
   }
 
@@ -579,12 +582,12 @@ public class TreeConflictRefreshablePanel implements Disposable {
     private BeforeAfter<BeforeAfter<ConflictSidePresentation>> myData;
     private VcsException myException;
 
-    private Loader(@Nullable Project project, @NotNull String title) {
+    private Loader(@Nullable Project project, @Nonnull String title) {
       super(project, title, false);
     }
 
     @Override
-    public void run(@NotNull ProgressIndicator indicator) {
+    public void run(@Nonnull ProgressIndicator indicator) {
       try {
         myData = new BeforeAfter<>(processDescription(indicator, myChange.getBeforeDescription()),
                                    processDescription(indicator, myChange.getAfterDescription()));

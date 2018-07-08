@@ -16,8 +16,8 @@
 package org.jetbrains.idea.svn;
 
 import icons.SvnIcons;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.status.Status;
 import org.jetbrains.idea.svn.status.StatusType;
 
@@ -104,7 +104,7 @@ public enum ConflictState {
                              leftState.myProperty | rightState.myProperty);
   }
 
-  @NotNull
+  @Nonnull
   public static ConflictState getInstance(final boolean tree, final boolean text, final boolean property) {
     final ConflictState[] conflictStates = values();
     for (ConflictState state : conflictStates) {
@@ -117,8 +117,8 @@ public enum ConflictState {
     return null;
   }
 
-  @NotNull
-  public static ConflictState from(@NotNull Status status) {
+  @Nonnull
+  public static ConflictState from(@Nonnull Status status) {
     return getInstance(status.getTreeConflict() != null, StatusType.STATUS_CONFLICTED == status.getContentsStatus(),
                        status.isProperty(StatusType.STATUS_CONFLICTED));
   }

@@ -2,8 +2,8 @@ package org.jetbrains.idea.svn.checkout;
 
 import com.intellij.openapi.util.Version;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
@@ -23,13 +23,13 @@ import java.util.List;
  */
 public class CmdCheckoutClient extends BaseSvnClient implements CheckoutClient {
   @Override
-  public void checkout(@NotNull SvnTarget source,
-                       @NotNull File destination,
+  public void checkout(@Nonnull SvnTarget source,
+                       @Nonnull File destination,
                        @Nullable SVNRevision revision,
                        @Nullable Depth depth,
                        boolean ignoreExternals,
                        boolean force,
-                       @NotNull WorkingCopyFormat format,
+                       @Nonnull WorkingCopyFormat format,
                        @Nullable ProgressTracker handler) throws VcsException {
     validateFormat(format, getSupportedFormats());
 
@@ -55,10 +55,10 @@ public class CmdCheckoutClient extends BaseSvnClient implements CheckoutClient {
     return result;
   }
 
-  private void run(@NotNull SvnTarget source,
-                   @NotNull File destination,
+  private void run(@Nonnull SvnTarget source,
+                   @Nonnull File destination,
                    @Nullable ProgressTracker handler,
-                   @NotNull List<String> parameters) throws VcsException {
+                   @Nonnull List<String> parameters) throws VcsException {
     BaseUpdateCommandListener listener = new BaseUpdateCommandListener(destination, handler);
 
     execute(myVcs, source, SvnCommandName.checkout, parameters, listener);

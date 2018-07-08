@@ -1,7 +1,7 @@
 package org.jetbrains.idea.svn.update;
 
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.api.SvnClient;
 
 import java.io.File;
@@ -11,5 +11,5 @@ import java.io.File;
  */
 public interface RelocateClient extends SvnClient {
 
-  void relocate(@NotNull File copyRoot, @NotNull String fromPrefix, @NotNull String toPrefix) throws VcsException;
+  void relocate(@Nonnull File copyRoot, @Nonnull String fromPrefix, @Nonnull String toPrefix) throws VcsException;
 }

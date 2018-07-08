@@ -37,8 +37,8 @@ import com.intellij.util.EventDispatcher;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.actions.CleanupWorker;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -61,25 +61,28 @@ public class SvnChangeProvider implements ChangeProvider {
   public static final String PROPERTY_LAYER = "Property";
 
   private static final NotNullFactory<Map<String, File>> NAME_TO_FILE_MAP_FACTORY = new NotNullFactory<Map<String, File>>() {
-    @NotNull
+    @Nonnull
     @Override
     public Map<String, File> create() {
       return ContainerUtil.newHashMap();
     }
   };
 
-  @NotNull private final SvnVcs myVcs;
-  @NotNull private final VcsContextFactory myFactory;
-  @NotNull private final SvnFileUrlMappingImpl mySvnFileUrlMapping;
+  @Nonnull
+  private final SvnVcs myVcs;
+  @Nonnull
+  private final VcsContextFactory myFactory;
+  @Nonnull
+  private final SvnFileUrlMappingImpl mySvnFileUrlMapping;
 
-  public SvnChangeProvider(@NotNull SvnVcs vcs) {
+  public SvnChangeProvider(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
     myFactory = VcsContextFactory.SERVICE.getInstance();
     mySvnFileUrlMapping = (SvnFileUrlMappingImpl) vcs.getSvnFileUrlMapping();
   }
 
-  public void getChanges(@NotNull VcsDirtyScope dirtyScope, @NotNull ChangelistBuilder builder, @NotNull ProgressIndicator progress,
-                         @NotNull ChangeListManagerGate addGate) throws VcsException {
+  public void getChanges(@Nonnull VcsDirtyScope dirtyScope, @Nonnull ChangelistBuilder builder, @Nonnull ProgressIndicator progress,
+                         @Nonnull ChangeListManagerGate addGate) throws VcsException {
     final SvnScopeZipper zipper = new SvnScopeZipper(dirtyScope);
     zipper.run();
 
@@ -138,9 +141,9 @@ public class SvnChangeProvider implements ChangeProvider {
     }
   }
 
-  private static void processUnsaved(@NotNull VcsDirtyScope dirtyScope,
-                                     @NotNull ChangeListManagerGate addGate,
-                                     @NotNull SvnChangeProviderContext context)
+  private static void processUnsaved(@Nonnull VcsDirtyScope dirtyScope,
+                                     @Nonnull ChangeListManagerGate addGate,
+                                     @Nonnull SvnChangeProviderContext context)
     throws SVNException {
     FileDocumentManager fileDocumentManager = FileDocumentManager.getInstance();
 
@@ -155,8 +158,8 @@ public class SvnChangeProvider implements ChangeProvider {
     }
   }
 
-  @NotNull
-  private static ISVNStatusFileProvider createFileProvider(@NotNull Map<String, SvnScopeZipper.MyDirNonRecursive> nonRecursiveMap) {
+  @Nonnull
+  private static ISVNStatusFileProvider createFileProvider(@Nonnull Map<String, SvnScopeZipper.MyDirNonRecursive> nonRecursiveMap) {
     final Map<String, Map<String, File>> result = ContainerUtil.newHashMap();
 
     for (SvnScopeZipper.MyDirNonRecursive item : nonRecursiveMap.values()) {
@@ -185,7 +188,7 @@ public class SvnChangeProvider implements ChangeProvider {
     };
   }
 
-  private void processCopiedAndDeleted(@NotNull SvnChangeProviderContext context, @Nullable VcsDirtyScope dirtyScope) throws SVNException {
+  private void processCopiedAndDeleted(@Nonnull SvnChangeProviderContext context, @Nullable VcsDirtyScope dirtyScope) throws SVNException {
     for(SvnChangedFile copiedFile: context.getCopiedFiles()) {
       context.checkCanceled();
       processCopiedFile(copiedFile, context, dirtyScope);
@@ -196,7 +199,7 @@ public class SvnChangeProvider implements ChangeProvider {
     }
   }
 
-  public void getChanges(@NotNull FilePath path, boolean recursive, @NotNull ChangelistBuilder builder)
+  public void getChanges(@Nonnull FilePath path, boolean recursive, @Nonnull ChangelistBuilder builder)
     throws SVNException, SvnBindException {
     final SvnChangeProviderContext context = new SvnChangeProviderContext(myVcs, builder, null);
     SvnRecursiveStatusWalker walker = new SvnRecursiveStatusWalker(myVcs, context, ProgressManager.getInstance().getProgressIndicator());
@@ -204,8 +207,8 @@ public class SvnChangeProvider implements ChangeProvider {
     processCopiedAndDeleted(context, null);
   }
 
-  private void processCopiedFile(@NotNull SvnChangedFile copiedFile,
-                                 @NotNull SvnChangeProviderContext context,
+  private void processCopiedFile(@Nonnull SvnChangedFile copiedFile,
+                                 @Nonnull SvnChangeProviderContext context,
                                  @Nullable VcsDirtyScope dirtyScope) throws SVNException {
     boolean foundRename = false;
     final Status copiedStatus = copiedFile.getStatus();
@@ -276,11 +279,11 @@ public class SvnChangeProvider implements ChangeProvider {
     }
   }
 
-  private void applyMovedChange(@NotNull SvnChangeProviderContext context,
-                                @NotNull FilePath oldPath,
+  private void applyMovedChange(@Nonnull SvnChangeProviderContext context,
+                                @Nonnull FilePath oldPath,
                                 @Nullable final VcsDirtyScope dirtyScope,
-                                @NotNull Set<SvnChangedFile> deletedToDelete,
-                                @NotNull SvnChangedFile deletedFile,
+                                @Nonnull Set<SvnChangedFile> deletedToDelete,
+                                @Nonnull SvnChangedFile deletedFile,
                                 @Nullable Status copiedStatus,
                                 @Nullable String clName) throws SVNException {
     final Change change = context
@@ -299,8 +302,8 @@ public class SvnChangeProvider implements ChangeProvider {
     }
   }
 
-  @NotNull
-  private SvnContentRevision createBeforeRevision(@NotNull SvnChangedFile changedFile, boolean forDeleted) {
+  @Nonnull
+  private SvnContentRevision createBeforeRevision(@Nonnull SvnChangedFile changedFile, boolean forDeleted) {
     Status status = changedFile.getStatus();
     FilePath path = changedFile.getFilePath();
 
@@ -313,7 +316,7 @@ public class SvnChangeProvider implements ChangeProvider {
     return true;
   }
 
-  public void doCleanup(@NotNull List<VirtualFile> files) {
+  public void doCleanup(@Nonnull List<VirtualFile> files) {
     new CleanupWorker(VfsUtilCore.toVirtualFileArray(files), myVcs.getProject(), "action.Subversion.cleanup.progress.title").execute();
   }
 }

@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -26,11 +26,11 @@ public class SimpleTextNode extends DefaultMutableTreeNode {
 
   private final boolean myIsError;
 
-  public SimpleTextNode(@NotNull String text) {
+  public SimpleTextNode(@Nonnull String text) {
     this(text, false);
   }
 
-  public SimpleTextNode(@NotNull String text, boolean isError) {
+  public SimpleTextNode(@Nonnull String text, boolean isError) {
     super(text);
     myIsError = isError;
   }
@@ -39,7 +39,7 @@ public class SimpleTextNode extends DefaultMutableTreeNode {
     return myIsError;
   }
 
-  @NotNull
+  @Nonnull
   public String getText() {
     return (String)getUserObject();
   }

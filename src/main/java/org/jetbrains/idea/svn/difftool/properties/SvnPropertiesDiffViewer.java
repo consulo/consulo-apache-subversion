@@ -11,12 +11,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.properties.PropertyData;
 import org.jetbrains.idea.svn.properties.PropertyValue;
 import com.intellij.diff.DiffContentFactory;
@@ -61,23 +62,25 @@ import com.intellij.util.containers.hash.HashMap;
 import com.intellij.util.ui.UIUtil;
 
 public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
-  @NotNull private final WrapperRequest myWrapperRequest;
-  @NotNull private final List<DiffChange> myDiffChanges;
+  @Nonnull
+  private final WrapperRequest myWrapperRequest;
+  @Nonnull
+  private final List<DiffChange> myDiffChanges;
 
   private boolean myFirstRediff = true;
 
-  @NotNull
-  public static SvnPropertiesDiffViewer create(@NotNull DiffContext context, @NotNull SvnPropertiesDiffRequest request) {
+  @Nonnull
+  public static SvnPropertiesDiffViewer create(@Nonnull DiffContext context, @Nonnull SvnPropertiesDiffRequest request) {
     return create(context, request, false);
   }
 
-  @NotNull
-  public static SvnPropertiesDiffViewer create(@NotNull DiffContext context, @NotNull SvnPropertiesDiffRequest request, boolean embedded) {
+  @Nonnull
+  public static SvnPropertiesDiffViewer create(@Nonnull DiffContext context, @Nonnull SvnPropertiesDiffRequest request, boolean embedded) {
     Pair<WrapperRequest, List<DiffChange>> pair = convertRequest(request, embedded);
     return new SvnPropertiesDiffViewer(context, pair.first, pair.second);
   }
 
-  private SvnPropertiesDiffViewer(@NotNull DiffContext context, @NotNull WrapperRequest request, @NotNull List<DiffChange> diffChanges) {
+  private SvnPropertiesDiffViewer(@Nonnull DiffContext context, @Nonnull WrapperRequest request, @Nonnull List<DiffChange> diffChanges) {
     super(context, request);
     myWrapperRequest = request;
     myDiffChanges = diffChanges;
@@ -117,9 +120,9 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     myContentPanel.setPainter(new MyDividerPainter());
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected Runnable performRediff(@NotNull ProgressIndicator indicator) {
+  protected Runnable performRediff(@Nonnull ProgressIndicator indicator) {
     if (!myFirstRediff) return new EmptyRunnable();
     myFirstRediff = false;
 
@@ -159,7 +162,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     };
   }
 
-  private void setupHighlighting(@NotNull DiffChange change, @NotNull Side side) {
+  private void setupHighlighting(@Nonnull DiffChange change, @Nonnull Side side) {
     PropertyRecord record = change.getRecord();
     List<? extends LineFragment> fragments = change.getFragments();
     assert fragments != null;
@@ -195,13 +198,14 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     }
   }
 
-  @NotNull
+  @Nonnull
   private static List<? extends LineFragment> createEverythingChanged(int length1, int length2, int lines1, int lines2) {
     return Collections.singletonList(new LineFragmentImpl(0, lines1, 0, lines2, 0, length1, 0, length2));
   }
 
   private class MyDividerPainter implements DiffSplitter.Painter, DiffDividerDrawUtil.DividerPaintable {
-    @NotNull private final JBLabel myLabel;
+    @Nonnull
+	private final JBLabel myLabel;
 
     public MyDividerPainter() {
       myLabel = new JBLabel();
@@ -211,7 +215,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     }
 
     @Override
-    public void paint(@NotNull Graphics g, @NotNull JComponent divider) {
+    public void paint(@Nonnull Graphics g, @Nonnull JComponent divider) {
       Graphics2D gg = DiffDividerDrawUtil.getDividerGraphics(g, divider, getEditor1().getComponent());
       Rectangle clip = gg.getClipBounds();
       if (clip == null) return;
@@ -257,7 +261,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     }
 
     @Override
-    public void process(@NotNull Handler handler) {
+    public void process(@Nonnull Handler handler) {
       for (DiffChange diffChange : myDiffChanges) {
         TextDiffType type = getDiffType(diffChange);
         if (type == null) continue;
@@ -278,7 +282,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     }
 
     @Nullable
-    private Color getRecordTitleColor(@NotNull DiffChange change) {
+    private Color getRecordTitleColor(@Nonnull DiffChange change) {
       TextDiffType type = getDiffType(change);
       if (type == TextDiffType.INSERTED) return FileStatus.ADDED.getColor();
       if (type == TextDiffType.DELETED) return FileStatus.DELETED.getColor();
@@ -287,7 +291,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     }
 
     @Nullable
-    public TextDiffType getDiffType(@NotNull DiffChange change) {
+    public TextDiffType getDiffType(@Nonnull DiffChange change) {
       if (change.getRecord().getBefore() == null) return TextDiffType.INSERTED;
       if (change.getRecord().getAfter() == null) return TextDiffType.DELETED;
       if (change.getFragments() != null && !change.getFragments().isEmpty()) return TextDiffType.MODIFIED;
@@ -296,7 +300,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   }
 
   @Override
-  protected void onDocumentChange(@NotNull DocumentEvent event) {
+  protected void onDocumentChange(@Nonnull DocumentEvent event) {
     LOG.warn("Document changes are not supported");
   }
 
@@ -315,7 +319,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
       }
 
       @Override
-      public int transfer(@NotNull Side side, int line) {
+      public int transfer(@Nonnull Side side, int line) {
         return line;
       }
     };
@@ -334,8 +338,8 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   // Initial step
   //
 
-  @NotNull
-  private static Pair<WrapperRequest, List<DiffChange>> convertRequest(@NotNull SvnPropertiesDiffRequest request, boolean embedded) {
+  @Nonnull
+  private static Pair<WrapperRequest, List<DiffChange>> convertRequest(@Nonnull SvnPropertiesDiffRequest request, boolean embedded) {
     List<PropertyRecord> records = collectRecords(request);
 
     StringBuilder builder1 = new StringBuilder();
@@ -373,8 +377,8 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     return Pair.create(new WrapperRequest(request, document1, document2, embedded), diffChanges);
   }
 
-  @NotNull
-  private static List<PropertyRecord> collectRecords(@NotNull SvnPropertiesDiffRequest request) {
+  @Nonnull
+  private static List<PropertyRecord> collectRecords(@Nonnull SvnPropertiesDiffRequest request) {
     List<DiffContent> originalContents = request.getContents();
     List<PropertyData> properties1 = getProperties(originalContents.get(0));
     List<PropertyData> properties2 = getProperties(originalContents.get(1));
@@ -408,7 +412,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   }
 
   @Nullable
-  private static List<PropertyData> getProperties(@NotNull DiffContent content) {
+  private static List<PropertyData> getProperties(@Nonnull DiffContent content) {
     if (content instanceof SvnPropertiesDiffRequest.PropertyContent) {
       return ((SvnPropertiesDiffRequest.PropertyContent)content).getProperties();
     }
@@ -416,7 +420,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   }
 
   @Nullable
-  private static PropertyRecord createRecord(@NotNull String name, @Nullable PropertyValue value1, @Nullable PropertyValue value2) {
+  private static PropertyRecord createRecord(@Nonnull String name, @Nullable PropertyValue value1, @Nullable PropertyValue value2) {
     assert value1 != null || value2 != null;
 
     String text1 = value1 != null ? value1.toString() : null;
@@ -434,14 +438,17 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   //
 
   private static class WrapperRequest extends ContentDiffRequest {
-    @NotNull SvnPropertiesDiffRequest myRequest;
-    @NotNull DocumentContent myContent1;
-    @NotNull DocumentContent myContent2;
+    @Nonnull
+	SvnPropertiesDiffRequest myRequest;
+    @Nonnull
+	DocumentContent myContent1;
+    @Nonnull
+	DocumentContent myContent2;
     private final boolean myEmbedded;
 
-    public WrapperRequest(@NotNull SvnPropertiesDiffRequest request,
-                          @NotNull Document document1,
-                          @NotNull Document document2,
+    public WrapperRequest(@Nonnull SvnPropertiesDiffRequest request,
+                          @Nonnull Document document1,
+                          @Nonnull Document document2,
                           boolean embedded) {
       myRequest = request;
       myContent1 = DiffContentFactory.getInstance().create(null, document1);
@@ -451,18 +458,18 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
       putUserData(DiffUserDataKeys.FORCE_READ_ONLY, true);
     }
 
-    @NotNull
+    @Nonnull
     public SvnPropertiesDiffRequest getPropertiesRequest() {
       return myRequest;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public List<DiffContent> getContents() {
       return ContainerUtil.<DiffContent>list(myContent1, myContent2);
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public List<String> getContentTitles() {
       return myEmbedded ? ContainerUtil.<String>list(null, null) : myRequest.getContentTitles();
@@ -475,22 +482,23 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     }
 
     @Override
-    public <T> T getUserData(@NotNull Key<T> key) {
+    public <T> T getUserData(@Nonnull Key<T> key) {
       return myRequest.getUserData(key);
     }
 
     @Override
-    public <T> void putUserData(@NotNull Key<T> key, @Nullable T value) {
+    public <T> void putUserData(@Nonnull Key<T> key, @Nullable T value) {
       myRequest.putUserData(key, value);
     }
   }
 
   private static class PropertyRecord {
-    @NotNull private final String myName;
+    @Nonnull
+	private final String myName;
     @Nullable private final String myBefore;
     @Nullable private final String myAfter;
 
-    public PropertyRecord(@NotNull String name,
+    public PropertyRecord(@Nonnull String name,
                           @Nullable String before,
                           @Nullable String after) {
       assert before != null || after != null;
@@ -500,7 +508,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
       myAfter = after;
     }
 
-    @NotNull
+    @Nonnull
     public String getName() {
       return myName;
     }
@@ -517,15 +525,17 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   }
 
   private static class DiffChange {
-    @NotNull private final PropertyRecord myRecord;
+    @Nonnull
+	private final PropertyRecord myRecord;
     private final int myStartLine1;
     private final int myEndLine1;
     private final int myStartLine2;
     private final int myEndLine2;
 
-    @Nullable private List<? extends LineFragment> myFragments;
+    @Nullable
+	private List<? extends LineFragment> myFragments;
 
-    public DiffChange(@NotNull PropertyRecord record, int startLine1, int endLine1, int startLine2, int endLine2) {
+    public DiffChange(@Nonnull PropertyRecord record, int startLine1, int endLine1, int startLine2, int endLine2) {
       myRecord = record;
       myStartLine1 = startLine1;
       myEndLine1 = endLine1;
@@ -533,16 +543,16 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
       myEndLine2 = endLine2;
     }
 
-    @NotNull
+    @Nonnull
     public PropertyRecord getRecord() {
       return myRecord;
     }
 
-    public int getStartLine(@NotNull Side side) {
+    public int getStartLine(@Nonnull Side side) {
       return side.select(myStartLine1, myStartLine2);
     }
 
-    public int getEndLine(@NotNull Side side) {
+    public int getEndLine(@Nonnull Side side) {
       return side.select(myEndLine1, myEndLine2);
     }
 

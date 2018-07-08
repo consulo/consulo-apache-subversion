@@ -21,7 +21,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;
@@ -56,7 +56,7 @@ public class UserNameCredentialsDialog extends DialogWrapper implements Document
     HelpManager.getInstance().invokeHelp(HELP_ID);
   }
 
-  @NotNull
+  @Nonnull
   protected Action[] createActions() {
     return new Action[]{getOKAction(), getCancelAction(), getHelpAction()};
   }
