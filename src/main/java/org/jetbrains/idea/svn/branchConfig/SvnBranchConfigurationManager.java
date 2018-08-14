@@ -16,9 +16,21 @@
 
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.lifecycle.PeriodicalTasksCloser;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import javax.annotation.Nonnull;
+
+import org.jetbrains.idea.svn.SvnVcs;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
@@ -35,11 +47,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.vcs.ProgressManagerQueue;
-import javax.annotation.Nonnull;
-import org.jetbrains.idea.svn.SvnVcs;
-
-import java.io.File;
-import java.util.*;
 
 /**
  * @author yole
@@ -88,7 +95,7 @@ public class SvnBranchConfigurationManager implements PersistentStateComponent<S
 
 	public static SvnBranchConfigurationManager getInstance(final Project project)
 	{
-		SvnBranchConfigurationManager result = PeriodicalTasksCloser.getInstance().safeGetService(project, SvnBranchConfigurationManager.class);
+		SvnBranchConfigurationManager result = ServiceManager.getService(project, SvnBranchConfigurationManager.class);
 
 		if(result != null)
 		{

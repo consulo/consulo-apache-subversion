@@ -54,7 +54,7 @@ import org.tmatesoft.svn.util.SVNDebugLog;
  */
 public class SvnKitManager {
 
-  private static final Logger LOG = SvnVcs.wrapLogger(Logger.getInstance(SvnKitManager.class));
+  private static final Logger LOG = Logger.getInstance(SvnKitManager.class);
 
   @NonNls public static final String LOG_PARAMETER_NAME = "javasvn.log";
   @NonNls public static final String TRACE_NATIVE_CALLS = "javasvn.log.native";

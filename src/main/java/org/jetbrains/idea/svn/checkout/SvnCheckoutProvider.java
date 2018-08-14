@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.SvnWorkingCopyFormatHolder;
@@ -49,8 +50,8 @@ import org.tmatesoft.svn.core.wc.ISVNCommitHandler;
 import org.tmatesoft.svn.core.wc.ISVNFileFilter;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
-import com.intellij.lifecycle.PeriodicalTasksCloser;
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
@@ -229,7 +230,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
       public void run() {
         ProgressManager.getInstance().runProcessWithProgressSynchronously(new Runnable() {
           public void run() {
-            final FileIndexFacade facade = PeriodicalTasksCloser.getInstance().safeGetService(project, FileIndexFacade.class);
+            final FileIndexFacade facade = ServiceManager.getService(project, FileIndexFacade.class);
             ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             try {
               progressIndicator.setText(message("progress.text.import", target.getAbsolutePath()));

@@ -15,9 +15,19 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.lifecycle.PeriodicalTasksCloser;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.RepositoryLocation;
@@ -27,10 +37,6 @@ import com.intellij.openapi.vcs.changes.committed.CommittedChangesCache;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.containers.SoftHashMap;
 import com.intellij.util.messages.MessageBusConnection;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import java.util.*;
 
 public class LoadedRevisionsCache implements Disposable {
   private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.history.LoadedRevisionsCache");
@@ -42,7 +48,7 @@ public class LoadedRevisionsCache implements Disposable {
   private final MessageBusConnection myConnection;
 
   public static LoadedRevisionsCache getInstance(final Project project) {
-    return PeriodicalTasksCloser.getInstance().safeGetService(project, LoadedRevisionsCache.class);
+    return ServiceManager.getService(project, LoadedRevisionsCache.class);
   }
 
   private LoadedRevisionsCache(final Project project) {

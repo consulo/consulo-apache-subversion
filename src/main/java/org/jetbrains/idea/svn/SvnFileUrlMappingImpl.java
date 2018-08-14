@@ -21,11 +21,11 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
-import com.intellij.lifecycle.PeriodicalTasksCloser;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ProjectComponent;
@@ -103,7 +103,7 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 
 	public static SvnFileUrlMappingImpl getInstance(final Project project)
 	{
-		return PeriodicalTasksCloser.getInstance().safeGetComponent(project, SvnFileUrlMappingImpl.class);
+		return project.getComponent(SvnFileUrlMappingImpl.class);
 	}
 
 	@SuppressWarnings("UnusedDeclaration")

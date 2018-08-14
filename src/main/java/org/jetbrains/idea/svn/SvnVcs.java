@@ -68,7 +68,6 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 import com.intellij.ide.FrameStateListener;
 import com.intellij.ide.FrameStateManager;
-import com.intellij.idea.RareLogger;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
@@ -120,7 +119,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 	private static final Logger REFRESH_LOG = Logger.getInstance("#svn_refresh");
 	public static boolean ourListenToWcDb = !Boolean.getBoolean(DO_NOT_LISTEN_TO_WC_DB);
 
-	private static final Logger LOG = wrapLogger(Logger.getInstance("org.jetbrains.idea.svn.SvnVcs"));
+	private static final Logger LOG = Logger.getInstance(SvnVcs.class);
 	@NonNls
 	public static final String VCS_NAME = "svn";
 	public static final String VCS_DISPLAY_NAME = "Subversion";
@@ -457,11 +456,6 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		myProject.getMessageBus().connect().subscribe(ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED, myRootsToWorkingCopies);
 
 		myLoadedBranchesStorage.activate();
-	}
-
-	public static Logger wrapLogger(final Logger logger)
-	{
-		return RareLogger.wrap(logger, Boolean.getBoolean("svn.logger.fairsynch"), new SvnExceptionLogFilter());
 	}
 
 	public RootsToWorkingCopies getRootsToWorkingCopies()

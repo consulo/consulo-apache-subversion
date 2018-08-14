@@ -15,7 +15,18 @@
  */
 package org.jetbrains.idea.svn.mergeinfo;
 
-import com.intellij.lifecycle.PeriodicalTasksCloser;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.dialogs.WCInfoWithBranches;
+import org.jetbrains.idea.svn.history.CopyData;
+import org.jetbrains.idea.svn.history.FirstInBranch;
+import org.jetbrains.idea.svn.history.SvnChangeList;
+import org.tmatesoft.svn.core.SVNURL;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.EmptyProgressIndicator;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -28,17 +39,6 @@ import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.SoftHashMap;
 import com.intellij.util.messages.Topic;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.dialogs.WCInfoWithBranches;
-import org.jetbrains.idea.svn.history.CopyData;
-import org.jetbrains.idea.svn.history.FirstInBranch;
-import org.jetbrains.idea.svn.history.SvnChangeList;
-import org.tmatesoft.svn.core.SVNURL;
-
-import java.util.Map;
 
 public class SvnMergeInfoCache {
 
@@ -59,7 +59,7 @@ public class SvnMergeInfoCache {
   }
 
   public static SvnMergeInfoCache getInstance(@Nonnull Project project) {
-    return PeriodicalTasksCloser.getInstance().safeGetService(project, SvnMergeInfoCache.class);
+    return ServiceManager.getService(project, SvnMergeInfoCache.class);
   }
 
   public void clear(@Nonnull WCInfoWithBranches info, String branchPath) {
