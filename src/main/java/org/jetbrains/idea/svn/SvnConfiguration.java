@@ -17,17 +17,16 @@
 
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.changes.VcsAnnotationRefresher;
-import com.intellij.util.containers.ContainerUtil;
+import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeSet;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationManager;
@@ -47,17 +46,24 @@ import org.tmatesoft.svn.core.internal.wc.SVNConfigFile;
 import org.tmatesoft.svn.core.internal.wc.SVNFileUtil;
 import org.tmatesoft.svn.core.wc.ISVNOptions;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Comparing;
+import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vcs.changes.VcsAnnotationRefresher;
+import com.intellij.util.containers.ContainerUtil;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeSet;
-
+@Singleton
 @State(name = "SvnConfiguration", storages = @Storage(file = StoragePathMacros.WORKSPACE_FILE))
 public class SvnConfiguration implements PersistentStateComponent<SvnConfigurationState>
 {
-
 	public final static int ourMaxAnnotateRevisionsDefault = 500;
 
 	private final static long UPGRADE_TO_15_VERSION_ASKED = 123;
@@ -166,6 +172,7 @@ public class SvnConfiguration implements PersistentStateComponent<SvnConfigurati
 		return ServiceManager.getService(project, SvnConfiguration.class);
 	}
 
+	@Inject
 	public SvnConfiguration(final Project project)
 	{
 		myProject = project;

@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 
 import com.intellij.diff.util.DiffPlaces;
 import com.intellij.diff.util.DiffUtil;
@@ -30,6 +31,7 @@ import com.intellij.openapi.util.Key;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.xmlb.annotations.MapAnnotation;
 
+@Singleton
 @State(name = "SvnDiffSettings", storages = @Storage(file = DiffUtil.DIFF_CONFIG))
 public class SvnDiffSettingsHolder implements PersistentStateComponent<SvnDiffSettingsHolder.State> {
   public static final Key<SvnDiffSettings> KEY = Key.create("SvnDiffSettings");

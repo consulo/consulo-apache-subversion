@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import com.intellij.openapi.application.PathManager;
@@ -27,14 +30,12 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 
 
-@State(name = "SvnApplicationSettings", storages = {
-		@Storage(file = StoragePathMacros.APP_CONFIG + "/other.xml")
-})
+@Singleton
+@State(name = "SvnApplicationSettings", storages = {@Storage("other.xml")})
 public class SvnApplicationSettings implements PersistentStateComponent<SvnApplicationSettings.ConfigurationBean>
 {
 	private SvnFileSystemListener myVFSHandler;
@@ -55,6 +56,7 @@ public class SvnApplicationSettings implements PersistentStateComponent<SvnAppli
 		return ServiceManager.getService(SvnApplicationSettings.class);
 	}
 
+	@Inject
 	public SvnApplicationSettings()
 	{
 		myConfigurationBean = new ConfigurationBean();

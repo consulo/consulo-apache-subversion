@@ -27,6 +27,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.actions.CleanupWorker;
@@ -111,6 +112,7 @@ import com.intellij.util.containers.SoftHashMap;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
+import consulo.application.ApplicationProperties;
 
 @SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
 public class SvnVcs extends AbstractVcs<CommittedChangeList>
@@ -175,7 +177,8 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 
 	private final boolean myLogExceptions;
 
-	public SvnVcs(@Nonnull Project project, MessageBus bus, SvnConfiguration svnConfiguration, final SvnLoadedBranchesStorage storage)
+	@Inject
+	public SvnVcs(@Nonnull Project project, SvnConfiguration svnConfiguration, final SvnLoadedBranchesStorage storage)
 	{
 		super(project, VCS_NAME);
 
@@ -201,7 +204,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		else
 		{
 			myEntriesFileListener = new SvnEntriesFileListener(project);
-			upgradeIfNeeded(bus);
+			upgradeIfNeeded(project.getMessageBus());
 
 			myChangeListListener = new SvnChangelistListener(this);
 
@@ -218,8 +221,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		myFrameStateListener = project.isDefault() ? null : new MyFrameStateListener(ChangeListManager.getInstance(project), VcsDirtyScopeManager.getInstance(project));
 		myChecker = new SvnExecutableChecker(this);
 
-		Application app = ApplicationManager.getApplication();
-		myLogExceptions = app != null && (app.isInternal() || app.isUnitTestMode());
+		myLogExceptions = ApplicationProperties.isInSandbox();
 	}
 
 	public void postStartup()

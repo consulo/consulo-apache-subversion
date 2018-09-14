@@ -21,6 +21,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Singleton;
+
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -32,6 +34,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 /**
  * Holds what working copies we have for URLs
  */
+@Singleton
 @State(name = "SvnBranchMapperManager", storages = {
 		@Storage(file = StoragePathMacros.APP_CONFIG + "/other.xml")
 })

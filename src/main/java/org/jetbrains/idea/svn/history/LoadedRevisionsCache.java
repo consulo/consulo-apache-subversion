@@ -24,6 +24,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
@@ -38,6 +40,7 @@ import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.util.containers.SoftHashMap;
 import com.intellij.util.messages.MessageBusConnection;
 
+@Singleton
 public class LoadedRevisionsCache implements Disposable {
   private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.history.LoadedRevisionsCache");
 
@@ -51,6 +54,7 @@ public class LoadedRevisionsCache implements Disposable {
     return ServiceManager.getService(project, LoadedRevisionsCache.class);
   }
 
+  @Inject
   private LoadedRevisionsCache(final Project project) {
     myProject = project;
     myMap = (ApplicationManager.getApplication().isUnitTestMode()) ? new HashMap<>() : new SoftHashMap<>();

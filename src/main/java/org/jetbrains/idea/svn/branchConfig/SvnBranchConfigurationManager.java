@@ -26,6 +26,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.jetbrains.idea.svn.SvnVcs;
 import com.intellij.openapi.application.ApplicationManager;
@@ -51,6 +53,7 @@ import com.intellij.vcs.ProgressManagerQueue;
 /**
  * @author yole
  */
+@Singleton
 @State(name = "SvnBranchConfigurationManager", storages = @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/misc.xml"))
 public class SvnBranchConfigurationManager implements PersistentStateComponent<SvnBranchConfigurationManager.ConfigurationBean>
 {
@@ -61,6 +64,7 @@ public class SvnBranchConfigurationManager implements PersistentStateComponent<S
 	private final ProgressManagerQueue myBranchesLoader;
 	private boolean myIsInitialized;
 
+	@Inject
 	public SvnBranchConfigurationManager(final Project project, final ProjectLevelVcsManager vcsManager, final SvnLoadedBranchesStorage storage)
 	{
 		myProject = project;

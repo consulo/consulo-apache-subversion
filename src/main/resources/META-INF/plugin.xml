@@ -5,14 +5,8 @@
 	<category>VCS Integration</category>
 	<vendor>JetBrains</vendor>
 	<resource-bundle>org.jetbrains.idea.svn.SvnBundle</resource-bundle>
-	<project-components>
-		<component>
-			<implementation-class>org.jetbrains.idea.svn.SvnFileUrlMappingImpl</implementation-class>
-		</component>
-	</project-components>
 
 	<actions>
-
 		<action id="Subversion.ImportToSVNRepository" class="org.jetbrains.idea.svn.actions.ImportToRepositoryAction">
 			<add-to-group group-id="Vcs.Import"/>
 		</action>
@@ -27,7 +21,6 @@
 			<add-to-group group-id="VcsGroup" anchor="last"/>
 			<add-to-group group-id="VcsGlobalGroup" anchor="after" relative-to-action="Vcs.Specific"/>
 		</group>
-
 
 		<action id="IntegrateChangeSetAction" class="org.jetbrains.idea.svn.actions.IntegrateChangeSetAction" popup="true"
 				icon="SvnIcons.IntegrateToBranch">
@@ -155,5 +148,6 @@
 		<diff.DiffTool implementation="org.jetbrains.idea.svn.difftool.SvnTreeConflictDiffRequestProvider$SvnTreeConflictDiffTool"/>
 		<applicationService serviceInterface="org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder"
 							serviceImplementation="org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder"/>
+		<projectService serviceImplementation="org.jetbrains.idea.svn.SvnFileUrlMappingImpl" />
 	</extensions>
 </idea-plugin>

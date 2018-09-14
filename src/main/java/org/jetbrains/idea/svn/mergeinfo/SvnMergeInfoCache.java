@@ -19,6 +19,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.WCInfoWithBranches;
@@ -40,8 +42,8 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.SoftHashMap;
 import com.intellij.util.messages.Topic;
 
+@Singleton
 public class SvnMergeInfoCache {
-
   private final static Logger LOG = Logger.getInstance(SvnMergeInfoCache.class);
 
   @Nonnull
@@ -53,6 +55,7 @@ public class SvnMergeInfoCache {
   public static Topic<SvnMergeInfoCacheListener> SVN_MERGE_INFO_CACHE =
     new Topic<>("SVN_MERGE_INFO_CACHE", SvnMergeInfoCacheListener.class);
 
+  @Inject
   private SvnMergeInfoCache(@Nonnull Project project) {
     myProject = project;
     myCurrentUrlMapping = ContainerUtil.newHashMap();

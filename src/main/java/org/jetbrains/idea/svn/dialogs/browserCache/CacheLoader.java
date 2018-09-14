@@ -15,16 +15,18 @@
  */
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
-import com.intellij.openapi.components.ServiceManager;
-import javax.annotation.Nonnull;
-import org.jetbrains.idea.svn.browse.DirectoryEntry;
-import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
-
-import javax.swing.*;
 import java.util.List;
 
-public class CacheLoader extends Loader {
+import javax.annotation.Nonnull;
+import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 
+import org.jetbrains.idea.svn.browse.DirectoryEntry;
+import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
+import com.intellij.openapi.components.ServiceManager;
+
+@Singleton
+public class CacheLoader extends Loader {
   @Nonnull
   private final Loader myRepositoryLoader;
 

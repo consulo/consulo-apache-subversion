@@ -15,21 +15,31 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.application.PathManager;
-import com.intellij.openapi.project.Project;
-import org.jetbrains.idea.svn.SmallMapSerializer;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.io.DataExternalizer;
-import com.intellij.util.io.EnumeratorStringDescriptor;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import org.jetbrains.idea.svn.SmallMapSerializer;
+import com.intellij.openapi.application.PathManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.io.DataExternalizer;
+import com.intellij.util.io.EnumeratorStringDescriptor;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,12 +47,14 @@ import java.util.*;
  * Date: 8/24/11
  * Time: 1:21 PM
  */
+@Singleton
 public class SvnLoadedBranchesStorage {
   private final Object myLock;
   private SmallMapSerializer<String, Map<String, Collection<SvnBranchItem>>> myState;
   private final File myFile;
   private final Project myProject;
 
+  @Inject
   public SvnLoadedBranchesStorage(final Project project) {
     myProject = project;
     final File vcsFile = new File(PathManager.getSystemPath(), "vcs");

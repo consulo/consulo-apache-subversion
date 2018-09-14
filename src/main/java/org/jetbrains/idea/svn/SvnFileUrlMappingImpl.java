@@ -21,6 +21,8 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNException;
@@ -28,7 +30,6 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
@@ -45,12 +46,11 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.messages.MessageBus;
 
-@State(name = "SvnFileUrlMappingImpl", storages = {
-		@Storage(file = StoragePathMacros.WORKSPACE_FILE)
-})
-public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentStateComponent<SvnMappingSavedPart>, ProjectComponent
+@Singleton
+@State(name = "SvnFileUrlMappingImpl", storages = {@Storage(file = StoragePathMacros.WORKSPACE_FILE)})
+public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentStateComponent<SvnMappingSavedPart>
 {
-	private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.SvnFileUrlMappingImpl");
+	private static final Logger LOG = Logger.getInstance(SvnFileUrlMappingImpl.class);
 
 	private final SvnCompatibilityChecker myChecker;
 	private final Object myMonitor = new Object();
@@ -106,7 +106,7 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 		return project.getComponent(SvnFileUrlMappingImpl.class);
 	}
 
-	@SuppressWarnings("UnusedDeclaration")
+	@Inject
 	private SvnFileUrlMappingImpl(final Project project, final ProjectLevelVcsManager vcsManager)
 	{
 		myProject = project;
@@ -493,27 +493,5 @@ public class SvnFileUrlMappingImpl implements SvnFileUrlMapping, PersistentState
 
 			mapping.add(info);
 		}
-	}
-
-	public void projectOpened()
-	{
-	}
-
-	public void projectClosed()
-	{
-	}
-
-	@Nonnull
-	public String getComponentName()
-	{
-		return "SvnFileUrlMappingImpl";
-	}
-
-	public void initComponent()
-	{
-	}
-
-	public void disposeComponent()
-	{
 	}
 }
