@@ -27,7 +27,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -74,6 +73,7 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.util.NotNullFunction;
 import com.intellij.util.messages.Topic;
 import com.intellij.util.ui.JBUI;
+import consulo.ui.image.Image;
 import icons.SvnIcons;
 
 public class RootsAndBranches implements CommittedChangeListDecorator {
@@ -204,7 +204,7 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
     myManager.repaintTree();
   }
 
-  public Icon decorate(final CommittedChangeList list) {
+  public Image decorate(final CommittedChangeList list) {
     final ListMergeStatus status = getStatus(list, false);
     return (status == null) ? ListMergeStatus.ALIEN.getIcon() : status.getIcon();
   }
@@ -459,9 +459,9 @@ public class RootsAndBranches implements CommittedChangeListDecorator {
 
   private abstract class CommonFilter extends ToggleAction {
     private boolean mySelected;
-    private final Icon myIcon;
+    private final Image myIcon;
 
-    protected CommonFilter(final Icon icon, final String text) {
+    protected CommonFilter(final Image icon, final String text) {
       super(text);
       myIcon = icon;
     }

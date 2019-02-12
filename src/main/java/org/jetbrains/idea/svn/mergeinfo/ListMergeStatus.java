@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.mergeinfo;
 
-import icons.SvnIcons;
-import org.jetbrains.annotations.Contract;
 import javax.annotation.Nullable;
 
-import javax.swing.*;
+import org.jetbrains.annotations.Contract;
+import consulo.ui.image.Image;
+import icons.SvnIcons;
 
 /**
 * Created with IntelliJ IDEA.
@@ -35,14 +35,14 @@ public enum ListMergeStatus {
   REFRESHING(SvnIcons.IntegrationStatusUnknown);
 
   @Nullable
-  private final Icon myIcon;
+  private final Image myIcon;
 
-  ListMergeStatus(@Nullable final Icon icon) {
+  ListMergeStatus(@Nullable final Image icon) {
     myIcon = icon;
   }
 
   @Nullable
-  public Icon getIcon() {
+  public Image getIcon() {
     return myIcon;
   }
 

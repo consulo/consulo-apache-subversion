@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.changes.LocallyDeletedChange;
 import javax.annotation.Nonnull;
 
-import javax.swing.*;
+import com.intellij.openapi.vcs.FilePath;
+import com.intellij.openapi.vcs.changes.LocallyDeletedChange;
+import consulo.ui.image.Image;
 
 public class SvnLocallyDeletedChange extends LocallyDeletedChange {
   @Nonnull
@@ -31,7 +31,7 @@ public class SvnLocallyDeletedChange extends LocallyDeletedChange {
   }
 
   @Override
-  public Icon getAddIcon() {
+  public Image getAddIcon() {
     return myConflictState.getIcon();
   }
 

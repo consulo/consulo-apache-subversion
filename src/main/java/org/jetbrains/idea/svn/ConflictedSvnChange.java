@@ -15,13 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
+import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
-import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
-
-import javax.swing.*;
+import consulo.ui.image.Image;
 
 public class ConflictedSvnChange extends Change {
   private final ConflictState myConflictState;
@@ -82,7 +81,7 @@ public class ConflictedSvnChange extends Change {
   }
 
   @Override
-  public Icon getAdditionalIcon() {
+  public Image getAdditionalIcon() {
     return myConflictState.getIcon();
   }
 

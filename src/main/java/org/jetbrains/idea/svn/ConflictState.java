@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn;
 
-import icons.SvnIcons;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import org.jetbrains.idea.svn.status.Status;
 import org.jetbrains.idea.svn.status.StatusType;
-
-import javax.swing.*;
+import consulo.ui.image.Image;
+import icons.SvnIcons;
 
 public enum ConflictState {
   none(false, false, false, null),
@@ -37,10 +37,10 @@ public enum ConflictState {
   private final boolean myText;
   private final boolean myProperty;
   @Nullable
-  private final Icon myIcon;
+  private final Image myIcon;
   private final String myDescription;
 
-  ConflictState(final boolean tree, final boolean text, final boolean property, @Nullable final Icon icon) {
+  ConflictState(final boolean tree, final boolean text, final boolean property, @Nullable final Image icon) {
     myTree = tree;
     myText = text;
     myProperty = property;
@@ -91,7 +91,7 @@ public enum ConflictState {
   }
 
   @Nullable
-  public Icon getIcon() {
+  public Image getIcon() {
     return myIcon;
   }
 
