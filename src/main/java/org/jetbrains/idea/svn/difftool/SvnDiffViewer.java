@@ -34,7 +34,6 @@ import com.intellij.diff.requests.ErrorDiffRequest;
 import com.intellij.diff.tools.ErrorDiffTool;
 import com.intellij.diff.util.DiffUtil;
 import com.intellij.ide.DataManager;
-import com.intellij.ide.impl.DataManagerImpl;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataProvider;
@@ -54,6 +53,7 @@ import com.intellij.ui.components.panels.Wrapper;
 import com.intellij.util.containers.HashMap;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
+import consulo.ide.base.BaseDataManager;
 
 public class SvnDiffViewer implements DiffViewer {
   private static final Logger LOG = Logger.getInstance(SvnDiffViewer.class);
@@ -117,8 +117,8 @@ public class SvnDiffViewer implements DiffViewer {
     DataManager.registerDataProvider(myPanel, new DataProvider() {
       @Override
       public Object getData(@NonNls Key<?> dataId) {
-        DataProvider propertiesDataProvider = DataManagerImpl.getDataProviderEx(myPropertiesViewer.getComponent());
-        DataProvider contentDataProvider = DataManagerImpl.getDataProviderEx(myContentViewer.getComponent());
+        DataProvider propertiesDataProvider = ((BaseDataManager)DataManager.getInstance()).getDataProviderEx(myPropertiesViewer.getComponent());
+        DataProvider contentDataProvider = ((BaseDataManager) DataManager.getInstance()).getDataProviderEx(myContentViewer.getComponent());
         DataProvider defaultDP = myPropertiesViewerFocused ? propertiesDataProvider : contentDataProvider;
         DataProvider fallbackDP = myPropertiesViewerFocused ? contentDataProvider : propertiesDataProvider;
         return DiffUtil.getData(defaultDP, fallbackDP, dataId);
