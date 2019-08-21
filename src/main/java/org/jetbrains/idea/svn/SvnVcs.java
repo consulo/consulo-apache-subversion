@@ -17,27 +17,50 @@
 
 package org.jetbrains.idea.svn;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-
+import com.intellij.ide.FrameStateListener;
+import com.intellij.ide.FrameStateManager;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.progress.ProcessCanceledException;
+import com.intellij.openapi.project.DumbAwareRunnable;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.startup.StartupManager;
+import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.Trinity;
+import com.intellij.openapi.util.registry.Registry;
+import com.intellij.openapi.vcs.*;
+import com.intellij.openapi.vcs.annotate.AnnotationProvider;
+import com.intellij.openapi.vcs.changes.*;
+import com.intellij.openapi.vcs.checkin.CheckinEnvironment;
+import com.intellij.openapi.vcs.diff.DiffProvider;
+import com.intellij.openapi.vcs.history.VcsAnnotationCachedProxy;
+import com.intellij.openapi.vcs.history.VcsHistoryProvider;
+import com.intellij.openapi.vcs.history.VcsRevisionNumber;
+import com.intellij.openapi.vcs.merge.MergeProvider;
+import com.intellij.openapi.vcs.rollback.RollbackEnvironment;
+import com.intellij.openapi.vcs.update.UpdateEnvironment;
+import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
+import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VfsUtilCore;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.util.Consumer;
+import com.intellij.util.ThreeState;
+import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.SoftHashMap;
+import com.intellij.util.messages.MessageBus;
+import com.intellij.util.messages.MessageBusConnection;
+import com.intellij.util.messages.Topic;
+import consulo.application.ApplicationProperties;
+import consulo.logging.Logger;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.actions.CleanupWorker;
 import org.jetbrains.idea.svn.actions.SvnMergeProvider;
 import org.jetbrains.idea.svn.annotate.SvnAnnotationProvider;
-import org.jetbrains.idea.svn.api.ClientFactory;
-import org.jetbrains.idea.svn.api.CmdClientFactory;
-import org.jetbrains.idea.svn.api.CmdVersionClient;
-import org.jetbrains.idea.svn.api.Depth;
-import org.jetbrains.idea.svn.api.SvnKitClientFactory;
+import org.jetbrains.idea.svn.api.*;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationNotifier;
 import org.jetbrains.idea.svn.branchConfig.SvnLoadedBranchesStorage;
 import org.jetbrains.idea.svn.checkin.SvnCheckinEnvironment;
@@ -67,52 +90,13 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.wc.SVNAdminUtil;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
-import com.intellij.ide.FrameStateListener;
-import com.intellij.ide.FrameStateManager;
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.project.DumbAwareRunnable;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.startup.StartupManager;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.Trinity;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.vcs.*;
-import com.intellij.openapi.vcs.annotate.AnnotationProvider;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.ChangeListManagerImpl;
-import com.intellij.openapi.vcs.changes.ChangeProvider;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.LocalChangeList;
-import com.intellij.openapi.vcs.changes.LocalChangeListsLoadedListener;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vcs.checkin.CheckinEnvironment;
-import com.intellij.openapi.vcs.diff.DiffProvider;
-import com.intellij.openapi.vcs.history.VcsAnnotationCachedProxy;
-import com.intellij.openapi.vcs.history.VcsHistoryProvider;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vcs.merge.MergeProvider;
-import com.intellij.openapi.vcs.rollback.RollbackEnvironment;
-import com.intellij.openapi.vcs.update.UpdateEnvironment;
-import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.util.Consumer;
-import com.intellij.util.ThreeState;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.SoftHashMap;
-import com.intellij.util.messages.MessageBus;
-import com.intellij.util.messages.MessageBusConnection;
-import com.intellij.util.messages.Topic;
-import consulo.application.ApplicationProperties;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import java.io.File;
+import java.util.*;
+import java.util.function.Function;
 
 @SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
 public class SvnVcs extends AbstractVcs<CommittedChangeList>
@@ -128,7 +112,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 
 	private static final VcsKey ourKey = createKey(VCS_NAME);
 	public static final Topic<Runnable> WC_CONVERTED = new Topic<>("WC_CONVERTED", Runnable.class);
-	private final Map<String, Map<String, Pair<PropertyValue, Trinity<Long, Long, Long>>>> myPropertyCache = new SoftHashMap<>();
+	private final Map<String, Map<String, Pair<PropertyValue, Trinity<Long, Long, Long>>>> myPropertyCache = ContainerUtil.createSoftMap();
 
 	private final SvnConfiguration myConfiguration;
 	private final SvnEntriesFileListener myEntriesFileListener;
@@ -1033,7 +1017,7 @@ public class SvnVcs extends AbstractVcs<CommittedChangeList>
 		}
 	}
 
-	private static class MyFrameStateListener extends FrameStateListener.Adapter
+	private static class MyFrameStateListener implements FrameStateListener
 	{
 		private final ChangeListManager myClManager;
 		private final VcsDirtyScopeManager myDirtyScopeManager;
