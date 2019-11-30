@@ -1,4 +1,4 @@
-<idea-plugin>
+<consulo-plugin>
 	<id>consulo.apache.subversion</id>
 	<name>Subversion Integration</name>
 	<version>SNAPSHOT</version>
@@ -150,4 +150,4 @@
 							serviceImplementation="org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder"/>
 		<projectService serviceImplementation="org.jetbrains.idea.svn.SvnFileUrlMappingImpl" />
 	</extensions>
-</idea-plugin>
+</consulo-plugin>

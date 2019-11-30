@@ -15,20 +15,26 @@
  */
 package org.jetbrains.idea.svn.checkout;
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static com.intellij.openapi.application.ModalityState.any;
-import static com.intellij.openapi.ui.Messages.showErrorDialog;
-import static com.intellij.util.containers.ContainerUtil.getFirstItem;
-import static org.jetbrains.idea.svn.SvnBundle.message;
-import static org.jetbrains.idea.svn.WorkingCopyFormat.UNKNOWN;
-
-import java.io.File;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.FileIndexFacade;
+import com.intellij.openapi.util.Computable;
+import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.vcs.CheckoutProvider;
+import com.intellij.openapi.vcs.VcsConfiguration;
+import com.intellij.openapi.vcs.VcsException;
+import com.intellij.openapi.vcs.ex.ProjectLevelVcsManagerEx;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.wm.StatusBar;
+import com.intellij.util.containers.ContainerUtil;
+import consulo.ui.annotation.RequiredUIAccess;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.SvnWorkingCopyFormatHolder;
@@ -50,26 +56,19 @@ import org.tmatesoft.svn.core.wc.ISVNCommitHandler;
 import org.tmatesoft.svn.core.wc.ISVNFileFilter;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.FileIndexFacade;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.CheckoutProvider;
-import com.intellij.openapi.vcs.VcsConfiguration;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.ex.ProjectLevelVcsManagerEx;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.StatusBar;
-import com.intellij.util.containers.ContainerUtil;
-import consulo.annotations.RequiredDispatchThread;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.intellij.openapi.application.ApplicationManager.getApplication;
+import static com.intellij.openapi.application.ModalityState.any;
+import static com.intellij.openapi.ui.Messages.showErrorDialog;
+import static com.intellij.util.containers.ContainerUtil.getFirstItem;
+import static org.jetbrains.idea.svn.SvnBundle.message;
+import static org.jetbrains.idea.svn.WorkingCopyFormat.UNKNOWN;
 
 public class SvnCheckoutProvider implements CheckoutProvider {
 
@@ -183,7 +182,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
     }
   }
 
-  @RequiredDispatchThread
+  @RequiredUIAccess
   @Nonnull
   public static WorkingCopyFormat promptForWCopyFormat(@Nonnull File target, @Nonnull Project project) {
     return new CheckoutFormatFromUserProvider(project, target).prompt();
@@ -311,7 +310,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
       error = new AtomicReference<>();
     }
 
-    @RequiredDispatchThread
+    @RequiredUIAccess
     public WorkingCopyFormat prompt() {
       assert !getApplication().isUnitTestMode();
 

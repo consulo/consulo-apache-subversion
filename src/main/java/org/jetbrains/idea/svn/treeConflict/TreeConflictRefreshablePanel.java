@@ -15,49 +15,11 @@
  */
 package org.jetbrains.idea.svn.treeConflict;
 
-import static com.intellij.openapi.application.ModalityState.defaultModalityState;
-import static com.intellij.util.ObjectUtils.notNull;
-import static org.jetbrains.idea.svn.history.SvnHistorySession.getCurrentCommittedRevision;
-
-import gnu.trove.TLongArrayList;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import org.jetbrains.idea.svn.ConflictedSvnChange;
-import org.jetbrains.idea.svn.SvnRevisionNumber;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.conflict.ConflictAction;
-import org.jetbrains.idea.svn.conflict.ConflictReason;
-import org.jetbrains.idea.svn.conflict.ConflictVersion;
-import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
-import org.jetbrains.idea.svn.history.SvnHistoryProvider;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.wc.SVNRevision;
 import com.intellij.openapi.CompositeDisposable;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.progress.BackgroundTaskQueue;
-import com.intellij.openapi.progress.EmptyProgressIndicator;
-import com.intellij.openapi.progress.PerformInBackgroundOption;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.progress.*;
 import com.intellij.openapi.progress.impl.BackgroundableProcessIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -69,12 +31,7 @@ import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangesUtil;
-import com.intellij.openapi.vcs.history.FileHistoryPanelImpl;
-import com.intellij.openapi.vcs.history.FileHistoryRefresherI;
-import com.intellij.openapi.vcs.history.VcsAbstractHistorySession;
-import com.intellij.openapi.vcs.history.VcsAppendableHistoryPartnerAdapter;
-import com.intellij.openapi.vcs.history.VcsFileRevision;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
+import com.intellij.openapi.vcs.history.*;
 import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLoadingPanel;
@@ -84,7 +41,31 @@ import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.VcsBackgroundTask;
 import com.intellij.vcsUtil.VcsUtil;
-import consulo.annotations.RequiredDispatchThread;
+import consulo.ui.annotation.RequiredUIAccess;
+import gnu.trove.TLongArrayList;
+import org.jetbrains.idea.svn.ConflictedSvnChange;
+import org.jetbrains.idea.svn.SvnRevisionNumber;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.conflict.ConflictAction;
+import org.jetbrains.idea.svn.conflict.ConflictReason;
+import org.jetbrains.idea.svn.conflict.ConflictVersion;
+import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
+import org.jetbrains.idea.svn.history.SvnHistoryProvider;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.wc.SVNRevision;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collections;
+import java.util.List;
+
+import static com.intellij.openapi.application.ModalityState.defaultModalityState;
+import static com.intellij.util.ObjectUtils.notNull;
+import static org.jetbrains.idea.svn.history.SvnHistorySession.getCurrentCommittedRevision;
 
 public class TreeConflictRefreshablePanel implements Disposable {
 
@@ -217,7 +198,7 @@ public class TreeConflictRefreshablePanel implements Disposable {
     return result;
   }
 
-  @RequiredDispatchThread
+  @RequiredUIAccess
   public void refresh() {
     ApplicationManager.getApplication().assertIsDispatchThread();
 
@@ -227,7 +208,7 @@ public class TreeConflictRefreshablePanel implements Disposable {
     myQueue.run(task, defaultModalityState(), myIndicator);
   }
 
-  @RequiredDispatchThread
+  @RequiredUIAccess
   protected JPanel dataToPresentation(BeforeAfter<BeforeAfter<ConflictSidePresentation>> data) {
     final JPanel wrapper = new JPanel(new BorderLayout());
     final JPanel main = new JPanel(new GridBagLayout());
