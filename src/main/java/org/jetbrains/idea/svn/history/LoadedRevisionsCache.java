@@ -15,18 +15,6 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
@@ -37,8 +25,14 @@ import com.intellij.openapi.vcs.changes.committed.ChangesBunch;
 import com.intellij.openapi.vcs.changes.committed.CommittedChangesAdapter;
 import com.intellij.openapi.vcs.changes.committed.CommittedChangesCache;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.util.containers.SoftHashMap;
 import com.intellij.util.messages.MessageBusConnection;
+import consulo.util.collection.ContainerUtil;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.*;
 
 @Singleton
 public class LoadedRevisionsCache implements Disposable {
@@ -57,7 +51,7 @@ public class LoadedRevisionsCache implements Disposable {
   @Inject
   private LoadedRevisionsCache(final Project project) {
     myProject = project;
-    myMap = (ApplicationManager.getApplication().isUnitTestMode()) ? new HashMap<>() : new SoftHashMap<>();
+    myMap = ContainerUtil.createSoftMap();
 
     myConnection = project.getMessageBus().connect();
     myConnection.subscribe(CommittedChangesCache.COMMITTED_TOPIC, new CommittedChangesAdapter() {

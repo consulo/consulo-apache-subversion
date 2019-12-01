@@ -15,19 +15,6 @@
  */
 package org.jetbrains.idea.svn.mergeinfo;
 
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.dialogs.WCInfoWithBranches;
-import org.jetbrains.idea.svn.history.CopyData;
-import org.jetbrains.idea.svn.history.FirstInBranch;
-import org.jetbrains.idea.svn.history.SvnChangeList;
-import org.tmatesoft.svn.core.SVNURL;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.EmptyProgressIndicator;
@@ -39,8 +26,19 @@ import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.SoftHashMap;
 import com.intellij.util.messages.Topic;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.dialogs.WCInfoWithBranches;
+import org.jetbrains.idea.svn.history.CopyData;
+import org.jetbrains.idea.svn.history.FirstInBranch;
+import org.jetbrains.idea.svn.history.SvnChangeList;
+import org.tmatesoft.svn.core.SVNURL;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.Map;
 
 @Singleton
 public class SvnMergeInfoCache {
@@ -183,7 +181,7 @@ public class SvnMergeInfoCache {
 	private final Map<String, BranchInfo> myBranchInfo;
 
     private MyCurrentUrlData() {
-      myBranchInfo = new SoftHashMap<>();
+      myBranchInfo = ContainerUtil.createSoftMap();
     }
 
     public BranchInfo getBranchInfo(final String branchUrl) {

@@ -15,17 +15,16 @@
  */
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.intellij.openapi.components.ServiceManager;
+import consulo.util.collection.ContainerUtil;
+import org.jetbrains.idea.svn.browse.DirectoryEntry;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import org.jetbrains.idea.svn.browse.DirectoryEntry;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.util.containers.SoftHashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class SvnRepositoryCache {
@@ -38,8 +37,8 @@ public class SvnRepositoryCache {
 
   @Inject
   private SvnRepositoryCache() {
-    myMap = new SoftHashMap<>();
-    myErrorsMap = new SoftHashMap<>();
+    myMap = ContainerUtil.createSoftMap();
+    myErrorsMap = ContainerUtil.createSoftMap();
   }
 
   @Nullable
