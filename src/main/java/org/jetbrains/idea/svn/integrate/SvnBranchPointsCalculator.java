@@ -15,19 +15,19 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vcs.VcsException;
-import org.jetbrains.idea.svn.SmallMapSerializer;
 import com.intellij.util.io.DataExternalizer;
 import com.intellij.util.io.EnumeratorStringDescriptor;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.container.boot.ContainerPathManager;
+import org.jetbrains.idea.svn.SmallMapSerializer;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.history.CopyData;
 import org.jetbrains.idea.svn.history.FirstInBranch;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
@@ -51,7 +51,7 @@ public class SvnBranchPointsCalculator {
 
   public SvnBranchPointsCalculator(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
-    File directory = new File(new File(PathManager.getSystemPath(), "vcs"), "svn_copy_sources");
+    File directory = new File(new File(ContainerPathManager.get().getSystemPath(), "vcs"), "svn_copy_sources");
     directory.mkdirs();
     File file = new File(directory, myVcs.getProject().getLocationHash());
     myPersistentMap = new SmallMapSerializer<>(file, EnumeratorStringDescriptor.INSTANCE, new BranchDataExternalizer());

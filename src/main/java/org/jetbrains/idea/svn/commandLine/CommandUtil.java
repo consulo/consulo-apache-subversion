@@ -15,19 +15,19 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.text.DateFormatUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.container.boot.ContainerPathManager;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.diff.DiffOptions;
 import org.jetbrains.idea.svn.status.StatusType;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -186,7 +186,7 @@ public class CommandUtil {
 
   @Nonnull
   public static File getHomeDirectory() {
-    return new File(PathManager.getHomePath());
+    return new File(ContainerPathManager.get().getHomePath());
   }
 
   /**

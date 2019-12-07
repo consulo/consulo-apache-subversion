@@ -15,23 +15,22 @@
  */
 package org.jetbrains.idea.svn;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
+import consulo.container.boot.ContainerPathManager;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNURL;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 @Singleton
@@ -126,7 +125,7 @@ public class SvnApplicationSettings implements PersistentStateComponent<SvnAppli
 
 	private static File getCommonPath()
 	{
-		File file = new File(PathManager.getSystemPath());
+		File file = new File(ContainerPathManager.get().getSystemPath());
 		file = new File(file, "plugins");
 		file = new File(file, "svn4idea");
 		file.mkdirs();

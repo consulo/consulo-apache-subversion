@@ -15,31 +15,23 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.jetbrains.idea.svn.SmallMapSerializer;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.io.DataExternalizer;
 import com.intellij.util.io.EnumeratorStringDescriptor;
+import consulo.container.boot.ContainerPathManager;
+import org.jetbrains.idea.svn.SmallMapSerializer;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -57,7 +49,7 @@ public class SvnLoadedBranchesStorage {
   @Inject
   public SvnLoadedBranchesStorage(final Project project) {
     myProject = project;
-    final File vcsFile = new File(PathManager.getSystemPath(), "vcs");
+    final File vcsFile = new File(ContainerPathManager.get().getSystemPath(), "vcs");
     File file = new File(vcsFile, "svn_branches");
     file.mkdirs();
     myFile = new File(file, project.getLocationHash());

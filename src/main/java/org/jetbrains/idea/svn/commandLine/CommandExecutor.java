@@ -18,9 +18,7 @@ package org.jetbrains.idea.svn.commandLine;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.*;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.diagnostic.Logger;
-import consulo.util.dataholder.Key;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.CharsetToolkit;
@@ -29,12 +27,14 @@ import com.intellij.util.SystemProperties;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.vcs.VcsLocaleHelper;
 import com.intellij.vcsUtil.VcsFileUtil;
+import consulo.container.boot.ContainerPathManager;
+import consulo.util.dataholder.Key;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.properties.PropertyValue;
 import org.tmatesoft.svn.core.SVNCancelException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -228,7 +228,7 @@ public class CommandExecutor {
 
   @Nonnull
   protected static File getSvnFolder() {
-    File vcsFolder = new File(PathManager.getSystemPath(), "vcs");
+    File vcsFolder = new File(ContainerPathManager.get().getSystemPath(), "vcs");
 
     return new File(vcsFolder, "svn");
   }
