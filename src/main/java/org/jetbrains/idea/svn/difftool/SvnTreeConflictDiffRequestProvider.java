@@ -9,18 +9,18 @@ import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.UserDataHolder;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProducer;
 import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProvider;
 import com.intellij.ui.components.panels.Wrapper;
 import com.intellij.util.ThreeState;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.dataholder.UserDataHolder;
 import org.jetbrains.idea.svn.ConflictedSvnChange;
 import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
 import org.jetbrains.idea.svn.treeConflict.TreeConflictRefreshablePanel;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProvider {

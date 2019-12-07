@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.util.Key;
+import consulo.util.dataholder.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNURL;

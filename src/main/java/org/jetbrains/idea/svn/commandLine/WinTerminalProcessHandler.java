@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.commandLine;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.util.Key;
+import consulo.util.dataholder.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.io.BaseOutputReader;
 

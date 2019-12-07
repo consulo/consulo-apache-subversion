@@ -1,7 +1,7 @@
 package org.jetbrains.idea.svn.upgrade;
 
 import com.intellij.execution.process.ProcessOutputTypes;
-import com.intellij.openapi.util.Key;
+import consulo.util.dataholder.Key;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.containers.Convertor;
 import javax.annotation.Nonnull;

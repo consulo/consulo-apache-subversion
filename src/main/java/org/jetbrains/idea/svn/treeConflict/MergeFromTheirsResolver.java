@@ -197,7 +197,7 @@ public class MergeFromTheirsResolver extends BackgroundTaskGroup
 				ApplyPatchMode.APPLY_PATCH_IN_MEMORY, myTextPatches, changeList);
 
 		// dialog is not modal - so such async behavior is used
-		patchExecutor.myPromise.done(callback);
+		patchExecutor.myPromise.onSuccess(callback);
 		dialog.show();
 	}
 
