@@ -15,20 +15,19 @@
  */
 package org.jetbrains.idea.svn.statistics;
 
-import com.intellij.internal.statistic.AbstractApplicationUsagesCollector;
-import com.intellij.internal.statistic.beans.GroupDescriptor;
-import com.intellij.internal.statistic.beans.UsageDescriptor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
-import com.intellij.util.Function;
-import com.intellij.util.containers.ContainerUtil;
+import java.util.List;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
+
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnVcs;
-
-import java.util.List;
-import java.util.Set;
+import com.intellij.internal.statistic.AbstractApplicationUsagesCollector;
+import com.intellij.internal.statistic.beans.UsageDescriptor;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
+import com.intellij.util.containers.ContainerUtil;
 
 /**
  * @author Konstantin Kolosovsky.
@@ -38,8 +37,8 @@ public class SvnWorkingCopyFormatUsagesCollector extends AbstractApplicationUsag
   private static final String GROUP_ID = "svn working copy format";
 
   @Nonnull
-  public GroupDescriptor getGroupId() {
-    return GroupDescriptor.create(GROUP_ID, GroupDescriptor.HIGHER_PRIORITY);
+  public String getGroupId() {
+    return GROUP_ID;
   }
 
   @Nonnull
@@ -55,11 +54,6 @@ public class SvnWorkingCopyFormatUsagesCollector extends AbstractApplicationUsag
       }
     });
 
-    return ContainerUtil.map2Set(roots, new Function<RootUrlInfo, UsageDescriptor>() {
-      @Override
-      public UsageDescriptor fun(RootUrlInfo info) {
-        return new UsageDescriptor(info.getFormat().toString(), 1);
-      }
-    });
+    return ContainerUtil.map2Set(roots, info -> new UsageDescriptor(info.getFormat().toString(), 1));
   }
 }
