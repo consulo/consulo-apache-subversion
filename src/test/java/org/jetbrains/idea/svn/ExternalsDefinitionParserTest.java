@@ -15,16 +15,17 @@
  */
 package org.jetbrains.idea.svn;
 
-import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.properties.ExternalsDefinitionParser;
 import org.junit.Test;
+
+import javax.annotation.Nonnull;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * @author Konstantin Kolosovsky.
  */
-public class ExternalsDefinitionParserTest {
+public abstract class ExternalsDefinitionParserTest {
 
   @Test
   public void test_no_space_directory_with_revision() throws Exception {

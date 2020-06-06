@@ -53,7 +53,7 @@ import java.util.Collections;
 import java.util.List;
 
 // TODO: Full duplicate of SvnMergeInfoTest in org.jetbrains.idea.svn.
-public class SvnMergeInfoTest extends Svn16TestCase {
+public abstract class SvnMergeInfoTest extends Svn16TestCase {
 
   private static final String CONTENT1 = "123\n456\n123";
   private static final String CONTENT2 = "123\n456\n123\n4";

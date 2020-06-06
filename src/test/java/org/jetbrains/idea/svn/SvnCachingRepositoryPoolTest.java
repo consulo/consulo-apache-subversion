@@ -43,7 +43,7 @@ import java.util.Random;
  * Date: 8/3/12
  * Time: 5:37 PM
  */
-public class SvnCachingRepositoryPoolTest extends FileBasedTest {
+public abstract class SvnCachingRepositoryPoolTest extends FileBasedTest {
 
   @Test
   public void testRepositoriesAreClosed() throws Exception {

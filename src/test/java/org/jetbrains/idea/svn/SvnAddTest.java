@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author yole
  */
-public class SvnAddTest extends Svn17TestCase {
+public abstract class SvnAddTest extends Svn17TestCase {
   @Test
   public void testCopy() throws Exception {
     enableSilentOperation(VcsConfiguration.StandardConfirmation.ADD);

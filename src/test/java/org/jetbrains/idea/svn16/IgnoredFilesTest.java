@@ -42,7 +42,7 @@ import consulo.ui.UIAccess;
 /**
  * @author irengrig
  */
-public class IgnoredFilesTest extends Svn16TestCase {
+public abstract class IgnoredFilesTest extends Svn16TestCase {
   private SvnVcs myVcs;
   private ProjectLevelVcsManagerImpl myVcsManager;
   private ChangeListManager myChangeListManager;

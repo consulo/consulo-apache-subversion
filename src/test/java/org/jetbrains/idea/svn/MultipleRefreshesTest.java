@@ -30,7 +30,7 @@ import java.util.List;
  * Time: 12:37 PM
  */
 @org.junit.runner.RunWith(org.junit.runners.Parameterized.class)
-public class MultipleRefreshesTest {
+public abstract class MultipleRefreshesTest {
 
   private final SvnChangesCorrectlyRefreshedTest myTest;
 
@@ -55,7 +55,7 @@ public class MultipleRefreshesTest {
 
   public MultipleRefreshesTest(int cnt) {
     ChangeListManagerImpl.LOG.info("TEST " + cnt);
-    myTest = new SvnChangesCorrectlyRefreshedTest();
+    myTest = new SvnChangesCorrectlyRefreshedTest() {};
   }
 
   @org.junit.Test

@@ -53,7 +53,7 @@ import junit.framework.Assert;
  * Date: 11/21/12
  * Time: 10:02 AM
  */
-public class SvnAnnotationIsClosedTest extends Svn17TestCase
+public abstract class SvnAnnotationIsClosedTest extends Svn17TestCase
 {
 	private volatile boolean myIsClosed;
 	private volatile boolean myIsClosed1;

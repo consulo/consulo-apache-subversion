@@ -15,12 +15,6 @@
  */
 package org.jetbrains.idea.svn;
 
-import java.io.File;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import com.intellij.ide.startup.impl.StartupManagerImpl;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.util.io.FileUtil;
@@ -37,13 +31,19 @@ import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.TempDirTestFixture;
 import com.intellij.util.ui.UIUtil;
 import consulo.ui.UIAccess;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
 
 /**
  * Here we check the situation when there's no working copy - nevertheless we think that ignored on IDEA level files should be
  * marked even under unversioned directories
  * @author irengrig
  */
-public class IgnoredFilesTest extends Svn17TestCase {
+public abstract class IgnoredFilesTest extends Svn17TestCase {
   private SvnVcs myVcs;
   private ProjectLevelVcsManagerImpl myVcsManager;
   private ChangeListManager myChangeListManager;

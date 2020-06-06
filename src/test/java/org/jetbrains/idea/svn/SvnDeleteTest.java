@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * @author yole
  */
-public class SvnDeleteTest extends Svn17TestCase {
+public abstract class SvnDeleteTest extends Svn17TestCase {
   // IDEADEV-16066
   @Test
   public void testDeletePackage() throws Exception {

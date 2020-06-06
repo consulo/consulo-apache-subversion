@@ -52,7 +52,7 @@ import java.util.List;
  * Date: 3/4/13
  * Time: 9:55 PM
  */
-public class SvnNativeClientAuthTest extends Svn17TestCase {
+public abstract class SvnNativeClientAuthTest extends Svn17TestCase {
   private SvnVcs myVcs;
   private int myCertificateAnswer = ISVNAuthenticationProvider.ACCEPTED_TEMPORARY;
   private boolean myCredentialsCorrect = true;

@@ -49,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 
 // TODO: Many tests in this class are written with direct SVNKit usage - could not utilize it for svn 1.8
-public class SvnMergeInfoTest extends Svn17TestCase {
+public abstract class SvnMergeInfoTest extends Svn17TestCase {
 
   private static final String CONTENT1 = "123\n456\n123";
   private static final String CONTENT2 = "123\n456\n123\n4";

@@ -15,7 +15,7 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 
 import java.util.*;
 
-public class SvnCachingRevisionsTest extends CodeInsightFixtureTestCase {
+public abstract class SvnCachingRevisionsTest extends CodeInsightFixtureTestCase {
   private SvnRepositoryLocation myLocation;
   private LoadedRevisionsCache myInternalManager;
   private final static String URL = "file:///C:/repo/trunk";

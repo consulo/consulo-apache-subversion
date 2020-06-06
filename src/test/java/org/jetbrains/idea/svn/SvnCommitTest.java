@@ -41,7 +41,7 @@ import java.util.List;
  * Date: 2/28/13
  * Time: 11:59 AM
  */
-public class SvnCommitTest extends Svn17TestCase {
+public abstract class SvnCommitTest extends Svn17TestCase {
   private SvnVcs myVcs;
   private VcsDirtyScopeManager myDirtyScopeManager;
   private ChangeListManager myChangeListManager;

@@ -30,7 +30,7 @@ import java.util.List;
  * Date: 1/20/13
  * Time: 10:51 PM
  */
-public class ProxyTest {
+public abstract class ProxyTest {
 
   private ProxySelector myDefault;
 

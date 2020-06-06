@@ -46,7 +46,7 @@ import junit.framework.TestCase;
  */
 // TODO: Locking functionality which is tested by this test is not required anymore. Likely test needs to be removed.
 @Ignore
-public class SvnLockingTest extends TestCase {
+public abstract class SvnLockingTest extends TestCase {
   private File myWorkingCopyRoot;
   private SvnTestWriteOperationLocks myLocks;
 

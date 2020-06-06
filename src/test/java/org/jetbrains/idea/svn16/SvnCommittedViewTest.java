@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SvnCommittedViewTest extends Svn16TestCase {
+public abstract class SvnCommittedViewTest extends Svn16TestCase {
 
   @Test
   public void testAdd() throws Exception {

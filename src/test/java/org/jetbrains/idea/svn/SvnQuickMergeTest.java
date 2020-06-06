@@ -56,7 +56,7 @@ import static java.util.stream.Collectors.toList;
  * Date: 3/27/13
  * Time: 12:58 PM
  */
-public class SvnQuickMergeTest extends Svn17TestCase {
+public abstract class SvnQuickMergeTest extends Svn17TestCase {
   private SvnVcs myVcs;
   private String myBranchUrl;
   private File myBranchRoot;

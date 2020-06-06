@@ -24,7 +24,7 @@ import junit.framework.TestCase;
  * Date: 11/4/12
  * Time: 2:35 PM
  */
-public class SvnNativeLogParserTest extends TestCase {
+public abstract class SvnNativeLogParserTest extends TestCase {
   private final static String[] ourCases = {"CALLED ISVNKernel32Library#GetVersionExW(allocated@0x82f4d0 (276 bytes)) = 1",
     "CALLED ISVNWin32Library#SHGetFolderPathW(null, 35, null, 0, [C@30602d) = 0",
     "CALLED ISVNWinCryptLibrary#CryptUnprotectData( flags =, 1) = true",

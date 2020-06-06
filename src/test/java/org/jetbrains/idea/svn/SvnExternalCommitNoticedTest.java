@@ -37,7 +37,7 @@ import java.util.List;
  * Date: 11/21/12
  * Time: 10:02 AM
  */
-public class SvnExternalCommitNoticedTest extends Svn17TestCase {
+public abstract class SvnExternalCommitNoticedTest extends Svn17TestCase {
   private ChangeListManagerImpl clManager;
   private SvnVcs myVcs;
   private VcsDirtyScopeManager myVcsDirtyScopeManager;

@@ -27,7 +27,7 @@ import javax.net.ssl.SSLProtocolException;
  * Date: 3/25/13
  * Time: 6:09 PM
  */
-public class SSLExceptionParserTest {
+public abstract class SSLExceptionParserTest {
   @Test
   public void testRealLifeCase() throws Exception {
     final String original = "handshake alert:  unrecognized_name";

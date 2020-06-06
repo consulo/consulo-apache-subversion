@@ -25,7 +25,7 @@ import org.tmatesoft.svn.core.internal.util.jna.ISVNGnomeKeyringLibrary;
  * Date: 11/4/12
  * Time: 3:56 PM
  */
-public class SvnNativeCallsTranslatorTest extends TestCase {
+public abstract class SvnNativeCallsTranslatorTest extends TestCase {
   public void testMac() throws Exception {
     assertResult(SvnNativeCallsTranslator.forMac(new NativeLogReader.CallInfo("Test", -25293)), false);
     assertResult(SvnNativeCallsTranslator.forMac(new NativeLogReader.CallInfo("Test", 0)), null);

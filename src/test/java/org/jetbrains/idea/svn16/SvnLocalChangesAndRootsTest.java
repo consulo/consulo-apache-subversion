@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SvnLocalChangesAndRootsTest extends Svn16TestCase {
+public abstract class SvnLocalChangesAndRootsTest extends Svn16TestCase {
   private File myAlienRoot;
   private ProjectLevelVcsManagerImpl myProjectLevelVcsManager;
   private ChangeListManager myClManager;

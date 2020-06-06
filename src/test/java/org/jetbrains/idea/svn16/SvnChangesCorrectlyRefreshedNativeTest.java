@@ -45,7 +45,7 @@ import java.util.List;
  * Date: 2/4/13
  * Time: 2:07 PM
  */
-public class SvnChangesCorrectlyRefreshedNativeTest extends Svn17TestCase {
+public abstract class SvnChangesCorrectlyRefreshedNativeTest extends Svn17TestCase {
   private ChangeListManager clManager;
 
   @Override

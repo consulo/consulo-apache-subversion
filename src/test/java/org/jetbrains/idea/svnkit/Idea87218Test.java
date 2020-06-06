@@ -27,7 +27,7 @@ import java.io.File;
  * Date: 8/7/12
  * Time: 11:47 AM
  */
-public class Idea87218Test {
+public abstract class Idea87218Test {
   private final static String ourWcPath = "C:\\TestProjects\\sortedProjects\\Subversion\\Sasha\\moveTest";
 
   public static void main(String[] args) {

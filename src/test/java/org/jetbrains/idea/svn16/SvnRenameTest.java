@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * @author yole
  */
-public class SvnRenameTest extends Svn16TestCase {
+public abstract class SvnRenameTest extends Svn16TestCase {
   @NonNls private static final String LOG_SEPARATOR = "------------------------------------------------------------------------\n";
   @NonNls private static final String LOG_SEPARATOR_START = "-------------";
 

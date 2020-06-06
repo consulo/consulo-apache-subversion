@@ -47,7 +47,7 @@ import java.util.*;
  * Date: 12/3/12
  * Time: 1:28 PM
  */
-public class SvnRollbackTest extends Svn17TestCase {
+public abstract class SvnRollbackTest extends Svn17TestCase {
 
   private VcsDirtyScopeManager myDirtyScopeManager;
   private ChangeListManager myChangeListManager;

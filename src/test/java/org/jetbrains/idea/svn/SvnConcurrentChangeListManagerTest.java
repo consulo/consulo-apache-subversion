@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-public class SvnConcurrentChangeListManagerTest extends Svn17TestCase {
+public abstract class SvnConcurrentChangeListManagerTest extends Svn17TestCase {
   private DuringChangeListManagerUpdateTestScheme myScheme;
   private String myDefaulListName;
 

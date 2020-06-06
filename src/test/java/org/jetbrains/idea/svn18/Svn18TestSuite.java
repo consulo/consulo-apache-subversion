@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 //@Suite.SuiteClasses({SvnAddTest.class, SvnDeleteTest.class, SvnQuickMergeTest.class})
 @Suite.SuiteClasses({SvnMergeInfoTest.class})
-public class Svn18TestSuite {
+public abstract class Svn18TestSuite {
 
   @ClassRule
   public static TestRule configuration = new ExternalResource() {

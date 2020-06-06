@@ -24,7 +24,7 @@ import org.junit.Test;
 /**
  * @author Konstantin Kolosovsky.
  */
-public class ParseVersionTest {
+public abstract class ParseVersionTest {
 
   @Test
   public void testSvnOutput() throws Exception {

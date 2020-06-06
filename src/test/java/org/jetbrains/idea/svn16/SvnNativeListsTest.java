@@ -28,7 +28,7 @@ import org.junit.Test;
 import java.util.Collection;
 import java.util.List;
 
-public class SvnNativeListsTest extends Svn16TestCase {
+public abstract class SvnNativeListsTest extends Svn16TestCase {
   private ChangeListManager myChangeListManager;
   private VcsDirtyScopeManager myDirtyScopeManager;
 

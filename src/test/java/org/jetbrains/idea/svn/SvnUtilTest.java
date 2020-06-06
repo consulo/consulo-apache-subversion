@@ -26,7 +26,7 @@ import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
  * Date: 7/9/12
  * Time: 5:46 PM
  */
-public class SvnUtilTest extends TestCase {
+public abstract class SvnUtilTest extends TestCase {
   public static final String URL1 = "http://one/two parts/three";
   public static final String URL2 = "http://one/two/parts/three";
 

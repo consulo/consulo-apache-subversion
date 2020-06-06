@@ -49,7 +49,7 @@ import java.util.Set;
  * Date: 11/9/12
  * Time: 7:03 PM
  */
-public class SvnParseCommandLineParseTest extends TestCase {
+public abstract class SvnParseCommandLineParseTest extends TestCase {
 
   public static final String LINUX_ROOT = "/c7181320/";
 

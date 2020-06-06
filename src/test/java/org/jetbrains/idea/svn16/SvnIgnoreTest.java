@@ -37,7 +37,7 @@ import java.util.Random;
  *         Date: 12/20/10
  *         Time: 5:05 PM
  */
-public class SvnIgnoreTest extends Svn16TestCase {
+public abstract class SvnIgnoreTest extends Svn16TestCase {
   private ChangeListManager clManager;
   private SvnVcs myVcs;
 

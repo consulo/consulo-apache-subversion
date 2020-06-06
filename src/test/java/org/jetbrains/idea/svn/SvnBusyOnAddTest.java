@@ -48,7 +48,7 @@ import junit.framework.TestCase;
  * Date: 8/7/12
  * Time: 7:15 PM
  */
-public class SvnBusyOnAddTest extends TestCase {
+public abstract class SvnBusyOnAddTest extends TestCase {
   public static final String filename = "abc/test.txt";
 
   private File myWorkingCopyRoot;

@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class SvnTestDirtyScopeStateTest extends Svn17TestCase {
+public abstract class SvnTestDirtyScopeStateTest extends Svn17TestCase {
   @Override
   public void setUp() throws Exception {
     myInitChangeListManager = false;

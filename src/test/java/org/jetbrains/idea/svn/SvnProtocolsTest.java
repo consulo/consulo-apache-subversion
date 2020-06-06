@@ -67,7 +67,7 @@ import junit.framework.Assert;
  * Date: 2/11/13
  * Time: 3:48 PM
  */
-public class SvnProtocolsTest extends Svn17TestCase {
+public abstract class SvnProtocolsTest extends Svn17TestCase {
   // todo correct URL
   private final static String ourSSH_URL = "svn+ssh://unit-069:222/home/irina/svnrepo";
 

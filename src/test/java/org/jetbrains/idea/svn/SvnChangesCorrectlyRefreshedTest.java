@@ -38,7 +38,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class SvnChangesCorrectlyRefreshedTest extends Svn17TestCase {
+public abstract class SvnChangesCorrectlyRefreshedTest extends Svn17TestCase {
   private ChangeListManager clManager;
 
   @Override

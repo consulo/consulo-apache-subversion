@@ -29,7 +29,7 @@ import static org.jetbrains.idea.svn.SvnUtil.getHeadRevision;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class FirstInBranchTest extends Svn17TestCase {
+public abstract class FirstInBranchTest extends Svn17TestCase {
 
   private SvnVcs myVcs;
   private String myTrunkUrl;

@@ -48,7 +48,7 @@ import com.intellij.util.concurrency.Semaphore;
 import com.intellij.util.ui.UIUtil;
 import junit.framework.Assert;
 
-public class SvnAuthenticationTest extends PlatformTestCase
+public abstract class SvnAuthenticationTest extends PlatformTestCase
 {
 	private SvnAuthenticationManager myAuthenticationManager;
 	private TestInteraction myTestInteraction;

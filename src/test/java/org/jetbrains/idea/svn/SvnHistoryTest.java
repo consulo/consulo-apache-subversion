@@ -34,7 +34,7 @@ import org.junit.Test;
  * Date: 11/27/12
  * Time: 5:15 PM
  */
-public class SvnHistoryTest extends Svn17TestCase {
+public abstract class SvnHistoryTest extends Svn17TestCase {
   private volatile int myCnt;
 
   @Test

@@ -31,7 +31,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @org.junit.runner.RunWith(org.junit.runners.Parameterized.class)
-public class MultipleRefreshesTest {
+public abstract class MultipleRefreshesTest {
 
   private SvnChangesCorrectlyRefreshedTest myTest;
 
@@ -56,7 +56,7 @@ public class MultipleRefreshesTest {
 
   public MultipleRefreshesTest(int cnt) {
     ChangeListManagerImpl.LOG.info("TEST " + cnt);
-    myTest = new SvnChangesCorrectlyRefreshedTest();
+    myTest = new SvnChangesCorrectlyRefreshedTest() {};
   }
 
   @org.junit.Test

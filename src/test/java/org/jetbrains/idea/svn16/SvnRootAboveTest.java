@@ -27,7 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SvnRootAboveTest extends Svn16TestCase {
+public abstract class SvnRootAboveTest extends Svn16TestCase {
   private ProjectLevelVcsManagerImpl myProjectLevelVcsManager;
   private ChangeListManager myClManager;
 

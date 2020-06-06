@@ -34,7 +34,7 @@ import java.io.File;
  * Time: 11:45 AM
  */
 // TODO: Rather strange test - probably it should be removed
-public class SvnCommandLineStabilityTest extends Svn17TestCase {
+public abstract class SvnCommandLineStabilityTest extends Svn17TestCase {
 
   @Test
   public void testCallInfoManyTimes() throws Exception {

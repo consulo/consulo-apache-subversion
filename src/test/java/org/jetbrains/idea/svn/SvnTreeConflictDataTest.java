@@ -36,7 +36,7 @@ import java.io.File;
  * @author Irina.Chernushina
  * @since 2.05.2012
  */
-public class SvnTreeConflictDataTest extends Svn17TestCase {
+public abstract class SvnTreeConflictDataTest extends Svn17TestCase {
   private VirtualFile myTheirs;
   private SvnClientRunnerImpl mySvnClientRunner;
 
