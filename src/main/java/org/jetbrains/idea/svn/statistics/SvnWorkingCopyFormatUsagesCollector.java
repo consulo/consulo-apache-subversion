@@ -15,30 +15,26 @@
  */
 package org.jetbrains.idea.svn.statistics;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
-import org.jetbrains.idea.svn.NestedCopyType;
-import org.jetbrains.idea.svn.RootUrlInfo;
-import org.jetbrains.idea.svn.SvnVcs;
 import com.intellij.internal.statistic.AbstractApplicationUsagesCollector;
 import com.intellij.internal.statistic.beans.UsageDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.util.containers.ContainerUtil;
+import org.jetbrains.idea.svn.NestedCopyType;
+import org.jetbrains.idea.svn.RootUrlInfo;
+import org.jetbrains.idea.svn.SvnVcs;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Konstantin Kolosovsky.
  */
 public class SvnWorkingCopyFormatUsagesCollector extends AbstractApplicationUsagesCollector {
-
-  private static final String GROUP_ID = "svn working copy format";
-
   @Nonnull
   public String getGroupId() {
-    return GROUP_ID;
+    return "consulo.apache.subversion:working.copy.format";
   }
 
   @Nonnull
