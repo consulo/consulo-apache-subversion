@@ -15,39 +15,7 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-import javax.swing.DefaultListModel;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import org.jetbrains.idea.svn.SvnBundle;
-import org.jetbrains.idea.svn.SvnConfiguration;
-import org.jetbrains.idea.svn.SvnUtil;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.branchConfig.SvnBranchMapperManager;
-import org.jetbrains.idea.svn.info.Info;
-import org.tmatesoft.svn.core.SVNURL;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionPlaces;
-import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonShortcuts;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
@@ -59,8 +27,21 @@ import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.IconUtil;
-import com.intellij.util.PlatformIcons;
 import com.intellij.util.ui.UIUtil;
+import org.jetbrains.idea.svn.SvnBundle;
+import org.jetbrains.idea.svn.SvnConfiguration;
+import org.jetbrains.idea.svn.SvnUtil;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.branchConfig.SvnBranchMapperManager;
+import org.jetbrains.idea.svn.info.Info;
+import org.tmatesoft.svn.core.SVNURL;
+
+import javax.annotation.Nullable;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.io.File;
+import java.util.*;
 
 public class IntegratedSelectedOptionsDialog extends DialogWrapper {
   private JPanel contentPane;
@@ -158,7 +139,7 @@ public class IntegratedSelectedOptionsDialog extends DialogWrapper {
     myGroup.add(addAction);
 
     final String removeText = SvnBundle.message("action.Subversion.integrate.changes.dialog.remove.wc.text");
-    myGroup.add(new AnAction(removeText, removeText, PlatformIcons.DELETE_ICON) {
+    myGroup.add(new AnAction(removeText, removeText, IconUtil.getRemoveIcon()) {
       {
         registerCustomShortcutSet(CommonShortcuts.getDelete(), myWorkingCopiesList);
       }

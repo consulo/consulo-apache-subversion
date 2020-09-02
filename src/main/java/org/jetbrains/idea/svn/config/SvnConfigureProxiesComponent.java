@@ -15,6 +15,7 @@
  */
 package org.jetbrains.idea.svn.config;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonShortcuts;
@@ -24,7 +25,6 @@ import com.intellij.openapi.ui.MasterDetailsComponent;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Ref;
 import com.intellij.util.IconUtil;
-import com.intellij.util.PlatformIcons;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import org.jetbrains.idea.svn.SvnBundle;
@@ -189,7 +189,7 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
       }
     });
 
-    result.add(new AnAction("Copy", "Copy", PlatformIcons.COPY_ICON) {
+    result.add(new AnAction("Copy", "Copy", AllIcons.Actions.Copy) {
         {
             registerCustomShortcutSet(new CustomShortcutSet(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_MASK)), myTree);
         }
