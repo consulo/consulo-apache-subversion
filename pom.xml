@@ -56,6 +56,14 @@
 				</configuration>
 				<executions>
 					<execution>
+						<id>gen</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate-icon</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>pack</id>
 						<phase>package</phase>
 						<goals>
 							<goal>workspace</goal>
@@ -185,6 +193,12 @@
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch.agentproxy.svnkit-trilead-ssh2</artifactId>
 			<version>0.0.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

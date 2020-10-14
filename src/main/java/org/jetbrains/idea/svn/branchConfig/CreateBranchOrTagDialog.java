@@ -15,36 +15,6 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-
-import javax.swing.Action;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-
-import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import org.jetbrains.idea.svn.RootUrlInfo;
-import org.jetbrains.idea.svn.SvnBundle;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.dialogs.SelectLocationDialog;
-import org.jetbrains.idea.svn.info.Info;
-import org.jetbrains.idea.svn.update.SvnRevisionPanel;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.internal.util.SVNEncodingUtil;
-import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
-import org.tmatesoft.svn.core.wc.SVNRevision;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
@@ -61,6 +31,28 @@ import com.intellij.ui.components.JBCheckBox;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
+import consulo.awt.TargetAWT;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.idea.svn.RootUrlInfo;
+import org.jetbrains.idea.svn.SvnBundle;
+import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.dialogs.SelectLocationDialog;
+import org.jetbrains.idea.svn.info.Info;
+import org.jetbrains.idea.svn.update.SvnRevisionPanel;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.internal.util.SVNEncodingUtil;
+import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
+import org.tmatesoft.svn.core.wc.SVNRevision;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -107,7 +99,7 @@ public class CreateBranchOrTagDialog extends DialogWrapper {
     setTitle(SvnBundle.message("dialog.title.branch"));
     getHelpAction().setEnabled(true);
     myUseThisVariantToLabel.setBorder(JBUI.Borders.emptyBottom(10));
-    myProjectButton.setIcon(AllIcons.Nodes.Module);
+    myProjectButton.setIcon(TargetAWT.to(AllIcons.Nodes.Module));
     myBranchTagBaseComboBox.setPreferredSize(new Dimension(myBranchTagBaseComboBox.getPreferredSize().width,
                                                            myWorkingCopyField.getPreferredSize().height));
 

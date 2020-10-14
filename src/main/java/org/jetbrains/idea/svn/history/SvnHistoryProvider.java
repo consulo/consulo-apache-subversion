@@ -15,6 +15,7 @@
  */
 package org.jetbrains.idea.svn.history;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -35,13 +36,10 @@ import com.intellij.openapi.vcs.history.*;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.*;
 import com.intellij.util.Consumer;
-import com.intellij.util.PlatformIcons;
 import com.intellij.util.ThrowableConsumer;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.StatusText;
 import com.intellij.util.ui.UIUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.info.Info;
@@ -54,6 +52,8 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 import org.tmatesoft.svn.util.SVNLogType;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
@@ -851,7 +851,6 @@ public class SvnHistoryProvider
   }
 
   private static class CopyFromColumnInfo extends ColumnInfo<VcsFileRevision, String> {
-    private final Icon myIcon = PlatformIcons.COPY_ICON;
     private final ColoredTableCellRenderer myRenderer = new ColoredTableCellRenderer() {
       @Override
       protected void customizeCellRenderer(final JTable table,
@@ -861,7 +860,7 @@ public class SvnHistoryProvider
                                            final int row,
                                            final int column) {
         if (value instanceof String && ((String)value).length() > 0) {
-          setIcon(myIcon);
+          setIcon(AllIcons.Actions.Copy);
           setToolTipText(SvnBundle.message("copy.column.tooltip", value));
         }
         else {

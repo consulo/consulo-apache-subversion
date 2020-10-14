@@ -18,11 +18,11 @@ package org.jetbrains.idea.svn.dialogs;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.MultiLineLabelUI;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.util.ui.JBUI;
-import javax.annotation.Nonnull;
-
 import org.jetbrains.idea.svn.SvnBundle;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +64,7 @@ public class ChangeFormatDialog extends UpgradeFormatDialog {
     gb.anchor = GridBagConstraints.WEST;
     gb.fill = GridBagConstraints.HORIZONTAL;
 
-    final JLabel iconLabel = new JLabel(Messages.getWarningIcon());
+    final JLabel iconLabel = new JBLabel(Messages.getWarningIcon());
     result.add(iconLabel, gb);
     ++ gb.gridx;
 

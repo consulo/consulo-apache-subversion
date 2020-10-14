@@ -15,43 +15,38 @@
  */
 package icons;
 
-import com.intellij.openapi.util.IconLoader;
+import consulo.annotation.DeprecationInfo;
+import consulo.apache.subversion.icon.SubversionIconGroup;
 import consulo.ui.image.Image;
 
-/**
- * NOTE THIS FILE IS AUTO-GENERATED
- * DO NOT EDIT IT BY HAND, run build/scripts/icons.gant instead
- */
+@Deprecated
+@DeprecationInfo("Use SubversionIconGroup")
 public class SvnIcons {
-  private static Image load(String path) {
-    return IconLoader.getIcon(path, SvnIcons.class);
-  }
-
-  public static final Image AllRevisions = load("/icons/allRevisions.png"); // 16x16
-  public static final Image Common = load("/icons/Common.png"); // 16x16
-  public static final Image ConfigureBranches = load("/icons/ConfigureBranches.png"); // 16x16
-  public static final Image Conflictc = load("/icons/conflictc.png"); // 16x16
-  public static final Image Conflictcp = load("/icons/conflictcp.png"); // 16x16
-  public static final Image Conflictct = load("/icons/conflictct.png"); // 16x16
-  public static final Image Conflictctp = load("/icons/conflictctp.png"); // 16x16
-  public static final Image Conflictp = load("/icons/conflictp.png"); // 16x16
-  public static final Image Conflictt = load("/icons/conflictt.png"); // 16x16
-  public static final Image Conflicttp = load("/icons/conflicttp.png"); // 16x16
-  public static final Image FilterIntegrated = load("/icons/FilterIntegrated.png"); // 16x16
-  public static final Image FilterNotIntegrated = load("/icons/FilterNotIntegrated.png"); // 16x16
-  public static final Image FilterOthers = load("/icons/FilterOthers.png"); // 16x16
-  public static final Image Integrated = load("/icons/Integrated.png"); // 16x16
-  public static final Image IntegrateToBranch = load("/icons/IntegrateToBranch.png"); // 16x16
-  public static final Image IntegrationStatusUnknown = load("/icons/IntegrationStatusUnknown.png"); // 16x16
-  public static final Image MarkAsMerged = load("/icons/MarkAsMerged.png"); // 16x16
-  public static final Image MarkAsNotMerged = load("/icons/MarkAsNotMerged.png"); // 16x16
-  public static final Image MergeSourcesDetails = load("/icons/mergeSourcesDetails.png"); // 16x16
-  public static final Image Notintegrated = load("/icons/Notintegrated.png"); // 16x16
-  public static final Image OnDefault = load("/icons/OnDefault.png"); // 16x16
-  public static final Image PropertiesDiff = load("/icons/PropertiesDiff.png"); // 16x16
-  public static final Image PropertiesDiffWithLocal = load("/icons/PropertiesDiffWithLocal.png"); // 16x16
-  public static final Image ShowIntegratedFrom = load("/icons/ShowIntegratedFrom.png"); // 16x16
-  public static final Image ShowIntegratedTo = load("/icons/ShowIntegratedTo.png"); // 16x16
-  public static final Image ShowWorkingCopies = load("/icons/ShowWorkingCopies.png"); // 16x16
-  public static final Image UndoIntegrateToBranch = load("/icons/UndoIntegrateToBranch.png"); // 16x16
+  public static final Image AllRevisions = SubversionIconGroup.allRevisions();
+  public static final Image Common = SubversionIconGroup.Common();
+  public static final Image ConfigureBranches = SubversionIconGroup.ConfigureBranches();
+  public static final Image Conflictc = SubversionIconGroup.conflictc();
+  public static final Image Conflictcp = SubversionIconGroup.conflictcp();
+  public static final Image Conflictct = SubversionIconGroup.conflictct();
+  public static final Image Conflictctp = SubversionIconGroup.conflictctp();
+  public static final Image Conflictp = SubversionIconGroup.conflictp();
+  public static final Image Conflictt = SubversionIconGroup.conflictt();
+  public static final Image Conflicttp = SubversionIconGroup.conflicttp();
+  public static final Image FilterIntegrated = SubversionIconGroup.FilterIntegrated();
+  public static final Image FilterNotIntegrated = SubversionIconGroup.FilterNotIntegrated();
+  public static final Image FilterOthers = SubversionIconGroup.FilterOthers();
+  public static final Image Integrated = SubversionIconGroup.Integrated();
+  public static final Image IntegrateToBranch = SubversionIconGroup.IntegrateToBranch();
+  public static final Image IntegrationStatusUnknown = SubversionIconGroup.IntegrationStatusUnknown();
+  public static final Image MarkAsMerged = SubversionIconGroup.MarkAsMerged();
+  public static final Image MarkAsNotMerged = SubversionIconGroup.MarkAsNotMerged();
+  public static final Image MergeSourcesDetails = SubversionIconGroup.mergeSourcesDetails();
+  public static final Image Notintegrated = SubversionIconGroup.Notintegrated();
+  public static final Image OnDefault = SubversionIconGroup.OnDefault();
+  public static final Image PropertiesDiff = SubversionIconGroup.PropertiesDiff();
+  public static final Image PropertiesDiffWithLocal = SubversionIconGroup.PropertiesDiffWithLocal();
+  public static final Image ShowIntegratedFrom = SubversionIconGroup.ShowIntegratedFrom();
+  public static final Image ShowIntegratedTo = SubversionIconGroup.ShowIntegratedTo();
+  public static final Image ShowWorkingCopies = SubversionIconGroup.ShowWorkingCopies();
+  public static final Image UndoIntegrateToBranch = SubversionIconGroup.UndoIntegrateToBranch();
 }
