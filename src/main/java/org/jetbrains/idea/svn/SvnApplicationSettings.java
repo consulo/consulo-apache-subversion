@@ -22,11 +22,12 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import consulo.container.boot.ContainerPathManager;
+import jakarta.inject.Singleton;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;

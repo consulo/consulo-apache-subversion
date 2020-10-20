@@ -18,7 +18,7 @@ package org.jetbrains.idea.svn.dialogs.browserCache;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import javax.swing.SwingUtilities;
 
 import org.jetbrains.idea.svn.browse.DirectoryEntry;

@@ -17,11 +17,12 @@ package org.jetbrains.idea.svn.dialogs.browserCache;
 
 import com.intellij.openapi.components.ServiceManager;
 import consulo.util.collection.ContainerUtil;
+import jakarta.inject.Singleton;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 
 import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;

@@ -26,8 +26,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jetbrains.idea.svn.SvnVcs;
 import com.intellij.openapi.application.ApplicationManager;

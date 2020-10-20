@@ -55,6 +55,7 @@ import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
 import consulo.application.ApplicationProperties;
 import consulo.logging.Logger;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.actions.CleanupWorker;
 import org.jetbrains.idea.svn.actions.SvnMergeProvider;
@@ -92,7 +93,6 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import java.io.File;
 import java.util.*;
 import java.util.function.Function;

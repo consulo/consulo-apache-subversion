@@ -19,7 +19,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.intellij.diff.util.DiffPlaces;
 import com.intellij.diff.util.DiffUtil;
