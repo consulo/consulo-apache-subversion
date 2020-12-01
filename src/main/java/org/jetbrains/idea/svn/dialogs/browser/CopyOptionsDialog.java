@@ -31,8 +31,8 @@ import com.intellij.ui.EditorTextField;
 import com.intellij.ui.PopupHandler;
 import com.intellij.util.ui.GridBag;
 import com.intellij.util.ui.JBUI;
+import consulo.awt.TargetAWT;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserDialog;
@@ -41,6 +41,7 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.TreeSelectionEvent;
@@ -72,10 +73,10 @@ public class CopyOptionsDialog extends DialogWrapper {
     createUI();
 
     if (copy) {
-      myTargetURL.setForeground(FileStatus.ADDED.getColor());
+      myTargetURL.setForeground(TargetAWT.to(FileStatus.ADDED.getColor()));
       setOKButtonText("Copy");
     } else {
-      myTargetURL.setForeground(FileStatus.MODIFIED.getColor());
+      myTargetURL.setForeground(TargetAWT.to(FileStatus.MODIFIED.getColor()));
       setOKButtonText("Move");
     }
 

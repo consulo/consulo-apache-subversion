@@ -1,25 +1,5 @@
 package org.jetbrains.idea.svn.difftool.properties;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.swing.JComponent;
-import javax.swing.SwingConstants;
-
-import org.jetbrains.annotations.NonNls;
-
-import javax.annotation.Nullable;
-import org.jetbrains.idea.svn.properties.PropertyData;
-import org.jetbrains.idea.svn.properties.PropertyValue;
 import com.intellij.diff.DiffContentFactory;
 import com.intellij.diff.DiffContext;
 import com.intellij.diff.comparison.ComparisonManager;
@@ -34,12 +14,7 @@ import com.intellij.diff.requests.ContentDiffRequest;
 import com.intellij.diff.tools.util.DiffSplitter;
 import com.intellij.diff.tools.util.SyncScrollSupport;
 import com.intellij.diff.tools.util.side.TwosideTextDiffViewer;
-import com.intellij.diff.util.DiffDividerDrawUtil;
-import com.intellij.diff.util.DiffDrawUtil;
-import com.intellij.diff.util.DiffUserDataKeys;
-import com.intellij.diff.util.DiffUtil;
-import com.intellij.diff.util.Side;
-import com.intellij.diff.util.TextDiffType;
+import com.intellij.diff.util.*;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.EditorSettings;
@@ -51,7 +26,6 @@ import com.intellij.openapi.editor.impl.DocumentImpl;
 import com.intellij.openapi.editor.markup.SeparatorPlacement;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.util.EmptyRunnable;
-import consulo.util.dataholder.Key;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.FileStatus;
@@ -60,6 +34,21 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.hash.HashMap;
 import com.intellij.util.ui.UIUtil;
+import consulo.awt.TargetAWT;
+import consulo.ui.color.ColorValue;
+import consulo.ui.style.StandardColors;
+import consulo.util.dataholder.Key;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.idea.svn.properties.PropertyData;
+import org.jetbrains.idea.svn.properties.PropertyValue;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.util.List;
+import java.util.*;
 
 public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   @Nonnull
@@ -220,7 +209,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
       Rectangle clip = gg.getClipBounds();
       if (clip == null) return;
 
-      gg.setColor(DiffDrawUtil.getDividerColor());
+      gg.setColor(TargetAWT.to(DiffDrawUtil.getDividerColor()));
       gg.fill(clip);
 
       EditorEx editor1 = getEditor1();
@@ -248,7 +237,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
         gg.translate(0, y1);
         if (rotate != 0) gg.rotate(-rotate);
         myLabel.setText(change.getRecord().getName());
-        myLabel.setForeground(getRecordTitleColor(change));
+        myLabel.setForeground(TargetAWT.to(getRecordTitleColor(change)));
         myLabel.setBounds(clip);
         myLabel.paint(gg);
         gg.setTransform(oldTransform);
@@ -282,12 +271,12 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     }
 
     @Nullable
-    private Color getRecordTitleColor(@Nonnull DiffChange change) {
+    private ColorValue getRecordTitleColor(@Nonnull DiffChange change) {
       TextDiffType type = getDiffType(change);
       if (type == TextDiffType.INSERTED) return FileStatus.ADDED.getColor();
       if (type == TextDiffType.DELETED) return FileStatus.DELETED.getColor();
       if (type == TextDiffType.MODIFIED) return FileStatus.MODIFIED.getColor();
-      return JBColor.black; // unchanged
+      return StandardColors.BLACK; // unchanged
     }
 
     @Nullable
