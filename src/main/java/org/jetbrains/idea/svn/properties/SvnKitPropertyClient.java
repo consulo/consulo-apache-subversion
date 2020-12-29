@@ -1,10 +1,7 @@
 package org.jetbrains.idea.svn.properties;
 
 import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.util.LineSeparator;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -13,7 +10,10 @@ import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.wc.*;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -24,7 +24,7 @@ public class SvnKitPropertyClient extends BaseSvnClient implements PropertyClien
   public static final ISVNOptions LF_SEPARATOR_OPTIONS = new DefaultSVNOptions() {
     @Override
     public byte[] getNativeEOL() {
-      return CharsetToolkit.getUtf8Bytes(LineSeparator.LF.getSeparatorString());
+      return LineSeparator.LF.getSeparatorString().getBytes(StandardCharsets.UTF_8);
     }
   };
 
