@@ -15,21 +15,20 @@
  */
 package org.jetbrains.idea.svn.difftool;
 
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import jakarta.inject.Singleton;
-
 import com.intellij.diff.util.DiffPlaces;
 import com.intellij.diff.util.DiffUtil;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import consulo.util.dataholder.Key;
-import com.intellij.util.containers.HashMap;
 import com.intellij.util.xmlb.annotations.MapAnnotation;
+import consulo.util.dataholder.Key;
+import jakarta.inject.Singleton;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 @State(name = "SvnDiffSettings", storages = @Storage(file = DiffUtil.DIFF_CONFIG))

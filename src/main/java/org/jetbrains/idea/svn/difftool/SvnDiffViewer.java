@@ -1,29 +1,5 @@
 package org.jetbrains.idea.svn.difftool;
 
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder.SvnDiffSettings;
-import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffRequest;
-import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffViewer;
-import org.jetbrains.idea.svn.properties.PropertyData;
-import org.jetbrains.idea.svn.properties.PropertyValue;
 import com.intellij.diff.DiffContext;
 import com.intellij.diff.FrameDiffTool.DiffViewer;
 import com.intellij.diff.FrameDiffTool.ToolbarComponents;
@@ -46,14 +22,29 @@ import com.intellij.openapi.ui.Divider;
 import com.intellij.openapi.ui.Splitter;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Disposer;
-import consulo.util.dataholder.Key;
 import com.intellij.ui.EditorNotificationPanel;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.panels.Wrapper;
-import com.intellij.util.containers.HashMap;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import consulo.ide.base.BaseDataManager;
+import consulo.util.dataholder.Key;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder.SvnDiffSettings;
+import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffRequest;
+import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffViewer;
+import org.jetbrains.idea.svn.properties.PropertyData;
+import org.jetbrains.idea.svn.properties.PropertyValue;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.List;
+import java.util.*;
 
 public class SvnDiffViewer implements DiffViewer {
   private static final Logger LOG = Logger.getInstance(SvnDiffViewer.class);

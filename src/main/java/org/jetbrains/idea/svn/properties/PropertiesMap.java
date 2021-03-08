@@ -15,10 +15,11 @@
  */
 package org.jetbrains.idea.svn.properties;
 
-import com.intellij.util.containers.HashMap;
+import java.util.HashMap;
 
 /**
  * @author Konstantin Kolosovsky.
  */
-public class PropertiesMap extends HashMap<String, PropertyValue> {
+public class PropertiesMap extends HashMap<String, PropertyValue>
+{
 }

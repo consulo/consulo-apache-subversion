@@ -28,8 +28,6 @@ import com.intellij.openapi.vcs.actions.VcsContextFactory;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.changes.CurrentContentRevision;
-import com.intellij.util.containers.HashMap;
-import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNPropertyValue;
@@ -37,8 +35,10 @@ import org.tmatesoft.svn.core.io.ISVNEditor;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.diff.SVNDiffWindow;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SvnDiffEditor implements ISVNEditor {
