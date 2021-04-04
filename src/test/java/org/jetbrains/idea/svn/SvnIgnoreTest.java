@@ -132,6 +132,6 @@ public abstract class SvnIgnoreTest extends Svn17TestCase {
 
     Assert.assertTrue(clManager.getDefaultChangeList().getChanges().isEmpty());
     final FileStatus status = clManager.getStatus(file);
-    Assert.assertTrue(status.getText(), FileStatus.IGNORED.equals(status));
+    Assert.assertTrue(status.getText().getValue(), FileStatus.IGNORED.equals(status));
   }
 }

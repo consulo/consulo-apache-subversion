@@ -19,7 +19,7 @@ import consulo.annotation.DeprecationInfo;
 import consulo.apache.subversion.icon.SubversionIconGroup;
 import consulo.ui.image.Image;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @DeprecationInfo("Use SubversionIconGroup")
 public class SvnIcons {
   public static final Image AllRevisions = SubversionIconGroup.allRevisions();

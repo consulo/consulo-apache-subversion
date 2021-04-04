@@ -1,0 +1,1294 @@
+subversion.name:
+  text: Subversion
+subversion.executable.notification.title:
+  text: Can't use Subversion command line client
+subversion.executable.notification.description:
+  text: Probably the path to Subversion executable is wrong.
+subversion.executable.too.old:
+  text: Subversion command line client version is too old ({0}).
+subversion.roots.detection.errors.found.description:
+  text: Errors found while detecting svn working copies. <a href="FIX">Fix it</a>.
+group.SubversionFileGroup.text:
+  text: SVN
+action.Subversion.BrowseSVNRepository.text:
+  text: Bro_wse Subversion Repository...
+action.Subversion.BrowseSVNRepository.description:
+  text: Browse a Subversion repository
+group.SubversionFilePopupGroup.text:
+  text: _Subversion
+group.IgnoreChoicesGroup.text:
+  text: Ignore
+group.RevertIgnoreChoicesGroup.text:
+  text: Remove from ignore list
+action.Subversion.UndoIgnore.text:
+  text: Selected file names
+action.Subversion.UndoIgnore.description:
+  text: Remove file name/mask from folder ignore list
+action.Subversion.Ignore.ExactMatch.text:
+  text: Selected file names
+action.Subversion.Ignore.ExactMatch.description:
+  text: Adds names of all selected files into folder ignore list
+action.Subversion.Ignore.MatchExtension.text:
+  text: Extension mask
+action.Subversion.Ignore.MatchExtension.description:
+  text: Adds {0} mask into folder ignore list
+action.Subversion.SetProperty.text:
+  text: Set Proper_ty...
+action.Subversion.SetProperty.description:
+  text: Set versioned property on file or directory
+action.Subversion.Revert.text:
+  text: _Revert...
+action.Subversion.Revert.description:
+  text: Revert file to pristine state
+action.Subversion.Resolve.text:
+  text: Re_solve Text Conflict...
+action.Subversion.Resolve.description:
+  text: Resolve text conflict on file
+action.Subversion.MarkResolved.text:
+  text: _Mark Resolved...
+action.Subversion.MarkResolved.description:
+  text: Mark text and properties conflicts as resolved
+action.Subversion.Clenaup.text:
+  text: Cl_eanup
+action.Subversion.Clenaup.description:
+  text: Unlock locked directories and run all remaining incompleted operations
+action.Subversion.Copy.text:
+  text: _Branch or Tag...
+action.Subversion.Copy.description:
+  text: Copy selected file or directory to the new repository location
+action.Subversion.Lock.text:
+  text: _Lock...
+action.Subversion.Lock.description:
+  text: Lock files
+action.Subversion.Unlock.text:
+  text: Unl_ock
+action.Subversion.Unlock.description:
+  text: Unlock files
+action.SvnChangesBrowser.text:
+  text: Bro_wse Changes...
+plugin.Subversion.description:
+  text: Provides integration with Subversion version control system
+action.name.refresh:
+  text: Refresh
+action.Subversion.ImportToSVNRepository.text:
+  text: I_mport into Subversion...
+action.Subversion.Share.text:
+  text: _Share Directory...
+action.Subversion.ShowProperties.text:
+  text: Edit _Properties
+action.Subversion.ConfigureBranches.text:
+  text: Configure Branches...
+action.Subversion.CompareWithBranch.text:
+  text: Compare with Branch...
+action.Subversion.Relocate.text:
+  text: Relocate...
+action.Subversion.Relocate.description:
+  text: Relocate working copy to a different URL
+action.Subversion.CleanupProject.text:
+  text: Cleanup Project
+action.Subversion.CleanupProject.description:
+  text: Perform cleanup for all working copy directories in the project
+dialog.title.branch:
+  text: Create Branch or Tag
+label.copy.from:
+  text: '&From:'
+label.copy.to:
+  text: '&To:'
+label.copy.from.revision:
+  text: 'Copy from revision:'
+radio.copy.working.copy:
+  text: '&Working copy'
+radio.copy.head:
+  text: '&HEAD revision'
+radio.copy.specific:
+  text: 'Specific &revision:'
+label.copy.comment:
+  text: '&Comment'
+label.copy.select.location.dialog.copy.as:
+  text: 'Copy &as:'
+dialog.title.lock.files:
+  text: Lock Files
+dialog.title.lock.file:
+  text: Lock File
+label.lock.comment:
+  text: '&Lock comment:'
+label.locl.steal.existing:
+  text: '&Steal existing lock'
+label.ssh.authentication.realm:
+  text: 'Authentication realm: ''''{0}'''''
+dialog.title.openssh.v2.private.key:
+  text: OpenSSH v2 Private Key
+dialog.description.openssh.v2.private.key:
+  text: Select private key file for SSH authentication
+checkbox.ssh.keep.for.current.session:
+  text: '&Save Credentials'
+radio.ssh.authentication.with.agent:
+  text: SS&H Agent
+label.ssh.user.name:
+  text: '&User name:'
+radio.ssh.authentication.with.password:
+  text: Authentication &with password
+label.ssh.password:
+  text: '&Password:'
+radio.ssh.authentication.private.key:
+  text: Authentication with private &key
+label.ssh.key.file:
+  text: 'Key &File:'
+label.ssh.passphrase:
+  text: 'Passph&rase:'
+label.ssh.port:
+  text: 'Port &Number:'
+label.ssl.certificate.path:
+  text: 'Path to certificate:'
+label.ssl.certificate.password:
+  text: 'Certificate passphrase:'
+checkbox.ssl.keep.for.current.session:
+  text: '&Save Credentials'
+progress.text.create.remote.folder:
+  text: Create Remote Folder
+message.text.error:
+  text: Error
+gnome.keyring.prompt.nameless:
+  text: Please provide GNOME Keyring password
+gnome.keyring.prompt.named:
+  text: Please provide ''{0}'' GNOME Keyring password
+dialog.title.browser.copy.or.move:
+  text: Copy or Move
+dialog.title.browser.delete:
+  text: Delete
+dialog.title.browser.new.folder:
+  text: New Folder
+label.browser.url1.delete:
+  text: Delete
+label.browser.url1.create:
+  text: Create
+label.browser.url1.from:
+  text: From
+label.browser.to:
+  text: To
+label.browser.name.copy.as:
+  text: 'Copy &as:'
+label.browser.name.name:
+  text: '&Name:'
+checkbox.browser.move.source.to.target:
+  text: '&Move source to target'
+label.browser.comment:
+  text: '&Comment:'
+label.browser.select.location:
+  text: '&Select location in repository:'
+node.text.browser.type.valid.url:
+  text: Type valid URL and click 'Refresh' to select location
+dialog.title.browser.browse.repository:
+  text: Browse Subversion Repository
+label.text.browser.repository.url:
+  text: 'Repository &URL:'
+button.text.new.folder:
+  text: '&New Folder...'
+button.text.delete:
+  text: '&Delete...'
+button.text.copy:
+  text: '&Copy'
+button.text.paste:
+  text: '&Paste...'
+progres.text.deleting:
+  text: Deleting {0}
+progress.title.browser.delete:
+  text: Delete
+progress.text.browser.creating:
+  text: Creating {0}
+progress.text.browser.moving:
+  text: Moving {0}
+progress.text.browser.copying:
+  text: Copying {0}
+progress.text.browser.remote.destination:
+  text: To {0}
+progress.title.browser.move:
+  text: Move
+progress.title.browser.copy:
+  text: Copy
+node.text.browser.cannot.access.repository:
+  text: Cannot access repository at ''{0}''
+progress.text.browser.establishing.connection:
+  text: Establishing connection to Subversion repository
+progress.title.browser.establishing.connection:
+  text: Establishing Connection...
+node.text.browser.cannot.establish.connection:
+  text: Cannot establish connection to ''{0}''
+label.auth.authentication.realm:
+  text: 'Authentication realm: ''''{0}'''''
+label.auth.user.name:
+  text: '&User name:'
+label.auth.password:
+  text: '&Password:'
+checkbox.auth.keep.for.current.session:
+  text: '&Save credentials'
+label.credentials.user.name.required:
+  text: User name is required for ''{0}''
+label.credentials.user.name:
+  text: 'User name:'
+checkbox.credentials.save.for.future:
+  text: Save for future use
+dialog.title.authentication.required:
+  text: Authentication Required
+dialog.title.authentication.required.was.failed:
+  text: Authentication Required (Authentication Failed)
+progress.title.revisions.history:
+  text: Revisions History
+progress.text2.collecting.history:
+  text: Collecting revisions history for ''{0}''
+checkbox.changes.filter.filter.by.author:
+  text: 'A&uthor:'
+progress.text2.processing.revision:
+  text: Processing revision ''{0}''
+progress.text.changes.collecting.changes:
+  text: Collecting information on changes
+progress.text2.changes.establishing.connection:
+  text: Establishing connection to ''{0}''
+progress.text2.revision.processed:
+  text: Revision ''{0}'' processed
+status.configurable.display.name:
+  text: Status
+status.configurable.get.out.of.date.information:
+  text: Check status against se&rver
+progress.text.status.analyzing.local:
+  text: Analyzing status of ''{0}''
+progress.text.status.analizyng.remote:
+  text: Discovering remote status of ''{0}''
+status.group.name.missing:
+  text: Missing
+status.group.name.replaced:
+  text: Replaced
+status.group.name.obstructed:
+  text: Obstructed
+status.group.name.externals:
+  text: Externals
+status.group.name.switched:
+  text: Switched
+status.group.name.locked:
+  text: Locked
+checkbox.configure.use.system.default.configuration.directory:
+  text: '&Use system default Subversion configuration directory'
+label.configuration.configuration.directory:
+  text: 'Subversion configuration &directory:'
+dialog.title.select.configuration.directory:
+  text: Select Configuration Directory
+action.title.select.configuration.directory:
+  text: Change Configuration Directory
+dialog.description.select.configuration.directory:
+  text: Select Subversion configuration directory or create new one
+button.text.clear.authentication.cache:
+  text: '&Clear Auth Cache'
+label.text.delete.stored.credentials:
+  text: Delete all stored credentials for 'http', 'svn' and 'svn+ssh' protocols
+button.text.edit.proxies:
+  text: Edit Network &Options...
+label.text.edit.proxies:
+  text: Edit 'servers' Subversion runtime configuration file
+dialog.title.edit.http.proxies.settings:
+  text: Edit Subversion options related to the network layers
+dialog.edit.http.proxies.settings.error.same.group.names.text:
+  text: 'Groups with identical names detected: ''''{0}'''''
+dialog.edit.http.proxies.settings.error.ambiguous.group.patterns.text:
+  text: 'Found repository urls that match to several groups: {0}'
+dialog.edit.http.proxies.settings.error.ambiguous.group.patterns.to.text:
+  text: |
+    url {0} matches to {1}
+dialog.edit.http.proxies.settings.tab.edit.user.file.title:
+  text: User file
+dialog.edit.http.proxies.settings.tab.edit.system.file.title:
+  text: System file
+dialog.edit.http.proxies.settings.port.must.be.number.error:
+  text: Port must be a number (group ''{0}'')
+dialog.edit.http.proxies.settings.timeout.must.be.number.error:
+  text: HTTP timeout must be a number (group ''{0}'')
+dialog.edit.http.proxies.settings.dialog.select.ssl.client.certificate.path.title:
+  text: Select path to your certificate
+dialog.edit.http.proxies.settings.dialog.select.ssl.client.certificate.path.text:
+  text: Select path to your certificate
+dialog.edit.http.proxies.settings.panel.proxy.title:
+  text: HTTP proxy settings
+dialog.edit.http.proxies.settings.panel.ssl.title:
+  text: SSL settings
+dialog.edit.http.proxies.settings.panel.repositories.title:
+  text: Repositories
+dialog.edit.http.proxies.settings.patterns.text:
+  text: 'U&RL patterns:'
+dialog.edit.http.proxies.settings.exceptions.text:
+  text: 'E&xceptions:'
+dialog.edit.http.proxies.settings.server.text:
+  text: '&Server:'
+dialog.edit.http.proxies.settings.user.text:
+  text: '&User:'
+dialog.edit.http.proxies.settings.port.text:
+  text: 'P&ort:'
+dialog.edit.http.proxies.settings.password.text:
+  text: 'Pass&word:'
+dialog.edit.http.proxies.settings.connection.timeout.text:
+  text: 'Connection t&imeout:'
+dialog.edit.http.proxies.settings.seconds.text:
+  text: seconds
+dialog.edit.http.proxies.settings.paths.to.authority.certificates.text:
+  text: 'Comma separated &paths to CAs certificate files:'
+dialog.edit.http.proxies.settings.ssl.client.certificate.file.text:
+  text: 'SSL &client certificate file:'
+dialog.edit.http.proxies.settings.client.certificate.passphrase.text:
+  text: 'SSL client certificate passp&hrase:'
+dialog.edit.http.proxies.settings.trust.default.cas.text:
+  text: Trust default C&As
+dialog.edit.http.proxies.settings.test.connection.button.text:
+  text: '&Test connection'
+dialog.edit.http.proxies.settings.test.connection.settings.will.be.stored.title:
+  text: Warning
+dialog.edit.http.proxies.settings.test.connection.settings.will.be.stored.text:
+  text: Settings will be saved
+dialog.edit.http.proxies.settings.test.connection.error.title:
+  text: Connection test failed
+dialog.edit.http.proxies.settings.test.connection.succes.title:
+  text: Connection test successful
+dialog.edit.http.proxies.settings.test.connection.succes.text:
+  text: 'Connection test successful      '
+confirmation.text.delete.stored.authentication.information:
+  text: |-
+    You are about to delete all stored Subversion authentication information.
+    Would you like to proceed with deletion?
+confirmation.title.clear.authentication.cache:
+  text: Clear Authentication Cache
+command.line.interactive.mode.title:
+  text: Enable interactive mode
+command.line.interactive.mode.description:
+  text: <html>Emulates the behavior when Subversion commands are executed directly from the terminal (in the interactive mode).<br>This is required to handle password/passphrase prompts for svn+ssh repositories, and trust invalid server certificates for https repositories.</html>
+non.english.locale.detected.warning:
+  text: A non-English locale is used.
+ssh.settings.title:
+  text: SSH Settings
+ssh.settings.executable.label:
+  text: 'SSH executable:'
+ssh.settings.browse.executable.dialog.title:
+  text: SSH executable
+ssh.settings.user.name.label:
+  text: 'User name:'
+ssh.settings.port.label:
+  text: 'Port:'
+ssh.settings.password.choice.title:
+  text: Password
+ssh.settings.private.key.choice.title:
+  text: Private key
+ssh.settings.private.key.path.label:
+  text: 'Path:'
+ssh.settings.browse.private.key.dialog.title:
+  text: Private key
+ssh.settings.subversion.config.choice.title:
+  text: Subversion config
+ssh.settings.tunnel.label:
+  text: 'SSH tunnel:'
+ssh.settings.update.tunnel.title:
+  text: Update
+label.configure.upgrade.label:
+  text: 'Working Copy upgrade strategy:'
+radio.configure.upgrade.ask:
+  text: As&k me on attempt to upgrade
+radio.configure.upgrade.none:
+  text: '&Never upgrade (keep Subversion 1.3)'
+radio.configure.upgrade.auto:
+  text: Upgrade &automatically (use Subversion 1.4)
+radio.configure.upgrade.auto.15format:
+  text: Upgrade automatically (use Subversion 1.&5)
+radio.configure.upgrade.auto.16format:
+  text: Upgrade automatically (use Subversion 1.&6)
+radio.configure.upgrade.auto.17format:
+  text: Upgrade automatically (use Subversion 1.&7)
+radio.configure.upgrade.auto.18format:
+  text: Upgrade automatically (use Subversion 1.&8)
+label.configure.create.label:
+  text: |-
+    {0} is about to create new Subversion working copy,
+    please, select desired working copy format:
+label.configure.create.strategy:
+  text: 'Create working copy directory in:'
+radio.configure.create.none:
+  text: 1.&3 format
+radio.configure.create.auto:
+  text: 1.&4 format
+radio.configure.create.auto.15format:
+  text: 1.&5 format
+radio.configure.create.auto.16format:
+  text: 1.&6 format
+radio.configure.create.auto.17format:
+  text: 1.&7 format
+radio.configure.create.auto.18format:
+  text: 1.&8 format
+label.configure.change.label:
+  text: 'Change working copy ''''{0}'''' format to:'
+radio.configure.change.auto.16format:
+  text: 1.&6 format
+radio.configure.change.auto.17format:
+  text: 1.&7 format
+radio.configure.change.auto.18format:
+  text: 1.&8 format
+dialog.upgrade.wcopy.format.title:
+  text: Subversion Working Copy Format
+label.working.copy.root.outside.text:
+  text: |-
+    Working copy root is outside the directory specified in Project Settings.
+    The whole working copy will be converted.
+progress.text.loading.contents:
+  text: Loading contents of ''{0}''
+progress.text2.revision.information:
+  text: Revision {0}
+progress.title.loading.file.content:
+  text: Loading Remote File Content
+progress.title.loading.file.properties:
+  text: Loading Remote File Properties
+exception.text.file.miss.svn:
+  text: File ''{0}'' is readonly, but miss svn:needs-lock property
+confirmation.text.edit.file:
+  text: File(s) you're are going to edit needs to be locked before editing
+file.status.external:
+  text: External (svn)
+file.status.obstructed:
+  text: Obstructed (svn)
+file.status.replaced:
+  text: Replaced (svn)
+file.status.switched:
+  text: Switched (svn)
+confirmation.text.add.file:
+  text: |-
+    Do you want to schedule the following file for addition to Subversion?
+    {0}
+confirmation.text.add.dir:
+  text: |-
+    Do you want to schedule the following directory for addition to Subversion?
+    {0}
+confirmation.title.add.file:
+  text: Schedule for Addition
+confirmation.title.add.multiple.files:
+  text: Select Files to Add to Subversion
+action.name.add.files:
+  text: Adding files to {0}
+action.name.ignore.files:
+  text: Adding ignore file(s) mask to {0}
+action.name.undo.ignore.files:
+  text: Removing file names(or mask) from ignore list from {0}
+confirmation.text.delete.file:
+  text: |-
+    Do you want to schedule the following file for deletion from Subversion?
+    {0}
+confirmation.text.delete.dir:
+  text: |-
+    Do you want to schedule the following directory for deletion from Subversion?
+    {0}
+    NOTE: The directory will be deleted from disk when the change is committed.
+confirmation.text.delete.dir.17:
+  text: |-
+    Do you want to schedule the following directory for deletion from Subversion?
+    {0}
+confirmation.title.delete.file:
+  text: Schedule for Deletion
+confirmation.title.delete.multiple.files:
+  text: Select Files to Delete from Subversion
+progress.text.discovering.location:
+  text: Discovering location for ''{0}''
+progress.text.locking.files:
+  text: Locking files in repository...
+progress.text2.processing.file:
+  text: Processing file {0}
+progress.title.lock.files:
+  text: Lock Files
+exception.text.locking.file.failed:
+  text: 'Failed to lock file: {0}'
+message.title.lock.failures:
+  text: Lock Failures
+message.text.files.lock.failed:
+  text: '{0,choice, 0#Failed to lock file.|1#Failed to lock files.}'
+message.text.files.locked:
+  text: '{0,choice, 0#Failed to lock files.|1#1 file locked|2#{0,number} files locked}'
+progress.text.unlocking.files:
+  text: Unlocking files in repository...
+progress.title.unlock.files:
+  text: Unlock Files
+exception.text.failed.to.unlock.file:
+  text: 'Failed to unlock file: {0}'
+message.title.unlock.failures:
+  text: Unlock Failures
+message.text.files.unlocked:
+  text: '{0,choice, 0#Failed to unlock files.|1#1 file unlocked|2#{0,number} files unlocked}'
+progress.text.collection.locations:
+  text: Collection Subversion Repository Locations
+message.text.no.working.copies.found:
+  text: No subversion working copies found in project
+message.title.no.working.copies.found:
+  text: Not working copies found
+progress.text.collecting.roots.in.module:
+  text: Collecting working copy roots in module ''{0}''
+dialog.title.select.location:
+  text: Select Location
+border.select.location.repository.location:
+  text: Repository Location
+radio.select.location.use.project:
+  text: 'Use project location:'
+radio.select.location.use.custom:
+  text: 'Use custom location:'
+exception.text.cleanupaction.batchperform.not.implemented:
+  text: CleanupAction.batchPerform not implemented
+progress.text2.adding:
+  text: Adding ''{0}''
+progress.text2.deleting:
+  text: Deleting ''{0}''
+progress.text2.sending:
+  text: Sending ''{0}''
+progress.text2.replacing:
+  text: Replacing ''{0}''
+progress.text2.transmitting.delta:
+  text: Transmitting delta for  ''{0}''
+progress.title.copy:
+  text: Subversion Copy
+status.text.comitted.revision:
+  text: Committed revision {0}.
+progress.text.copy.to:
+  text: Copy to ''{0}''
+message.text.no.conflicts.found:
+  text: No conflicts found
+message.title.no.conflicts.found:
+  text: No Conflicts
+label.select.files.and.directories.to.mark.resolved:
+  text: 'Select files and directories to mark resolved:'
+dialog.title.mark.resolved:
+  text: Mark Resolved
+action.name.mark.resolved:
+  text: Mark Resolved
+action.name.resolve.conflict:
+  text: Resolve Conflict
+message.text.revert.no.modifications.found:
+  text: No modifications to revert found
+label.select.files.and.directories.to.revert:
+  text: 'Select files and directories to revert:'
+dialog.title.revert.files:
+  text: Revert Files
+action.name.revert:
+  text: '&Revert'
+message.title.revert.no.modifications.found:
+  text: No Modifications
+action.name.revert.files:
+  text: Revert files
+action.name.set.property:
+  text: Set Property
+action.name.show.all.paths.affected:
+  text: Show all paths affected in selected transaction
+dialog.title.affected.paths:
+  text: Paths Affected in Transaction ''{0}''
+progress.text.loading.log:
+  text: Loading revision log...
+exception.text.cannot.load.version:
+  text: Cannot load repository version {0}
+progress.text.processing.changes:
+  text: Processing changes...
+message.text.cannot.load.version:
+  text: Cannot load repository version {0} :{1}
+message.title.error.fetching.affected.paths:
+  text: Error Fetching Affected Paths
+exception.text.cannot.annotate.directory:
+  text: Annotation operation only makes sence for files
+progress.text.computing.annotation:
+  text: Computing annotation for ''{0}''
+action.text.annotate:
+  text: Annotate
+checkbox.chckin.keep.files.locked:
+  text: '&Keep files locked'
+progress.title.commit:
+  text: Commit
+progress.text.committing.changes.below:
+  text: Creating commit packets...
+status.text.committed.revision:
+  text: Committed revision {0}.
+checkin.operation.name:
+  text: Comm_it
+checkin.different.formats.involved:
+  text: |-
+    Selected changes for {0,choice,0#repository|1#repositories} {1}
+    belong to Subversion working copies of different formats.
+    Commit will split into several commits.
+
+    You can convert all working copies to the same format in Changes | Subversion Working Copies Information.
+    Do you wish to continue with commit?
+progress.text.collecting.commitables:
+  text: Collecting commitables at ''{0}''
+progress.text2.fetching.external.location:
+  text: Fetching external location to ''{0}''
+progress.text2.checked.out:
+  text: Checked out {1} files, checking out {0}
+progress.text2.exported:
+  text: Exported {1} files, exporting {0}
+progress.text2.checked.out.revision:
+  text: Checked out revision {0}.
+progress.text2.exported.revision:
+  text: Exported revision {0}.
+status.text.checked.out.revision:
+  text: Checked out revision {0}.
+message.text.cannot.load.supported.formats:
+  text: 'Cannot load supported formats: {0}'
+message.text.cannot.checkout:
+  text: 'Cannot checkout from svn: {0}'
+message.text.cannot.export:
+  text: 'Cannot export from svn: {0}'
+message.title.check.out:
+  text: Check Out from Subversion
+message.title.export:
+  text: Export from Subversion
+progress.text.checking.out:
+  text: Checking out files to ''{0}''
+progress.text.export:
+  text: Exporting files to ''{0}''
+dialog.text.check.out:
+  text: Check Out from Repository
+label.text.checkout.repository.url:
+  text: 'Repository &URL:'
+label.text.checkout.checkout.from:
+  text: 'Checkout From:'
+label.checkout.checkout.to:
+  text: 'Checkout &To:'
+dialof.title.select.checkout.destination:
+  text: Select Checkout Destination
+dialog.description.select.checkout.destination:
+  text: Select directory to checkout remote directory into or create new one
+button.text.select.all:
+  text: Select &All
+button.text.deselect.all:
+  text: '&Deselect All'
+dialog.title.select.repository.location:
+  text: Select Repository Location
+button.text.ssl.accept:
+  text: _Accept
+button.text.ssl.reject:
+  text: _Reject
+button.text.ssh.accept:
+  text: _Yes
+button.text.ssh.reject:
+  text: _No
+dialog.title.ssl.examine.server.crertificate:
+  text: Examine Server Certificate
+dialog.title.ssh.examine.server.fingerprints:
+  text: Verify Server Key Fingerprint
+label.ssl.server.provided.certificate:
+  text: 'Server provided the following certificate:'
+label.ssh.server.provided.fingerprints:
+  text: The authenticity of host {0} can''t be established.
+label.ssh.server.provided.fingerprints2:
+  text: '{0} key fingerprint is'
+label.ssh.server.provided.fingerprints3:
+  text: Are you sure you want to continue connecting?
+checkbox.svn.ssh.cache.fingerprint:
+  text: '&Add key to Subversion cache'
+dialog.title.set.property:
+  text: Set Property
+label.set.property.property.name:
+  text: 'Property &name:'
+radio.set.property.set.property.value:
+  text: '&Set property value:'
+radio.set.property.delete.property:
+  text: '&Delete property'
+checkbox.set.property.update.properties.recursively:
+  text: Update properties &recursively
+exception.text.invalid.revision:
+  text: Invalid revision ''{0}''
+update.configurable.name:
+  text: Update
+checkbox.update.configurable.descend.into.child.directories:
+  text: '&Descend into child directories'
+checkbox.update.configurable.run.status:
+  text: Run &status after update
+update.switch.configurable.name:
+  text: Update/Switch
+radio.update.switch.configurable.update.or.switch:
+  text: U&pdate or Switch
+label.update.switch.configurable.url:
+  text: '&URL:'
+checkbox.update.switch.configurable.to.specific.revision:
+  text: 'Update/Switch to specific &revision:'
+radio.update.switch.configurable.merge:
+  text: '&Merge'
+label.update.switch.configurable.url1:
+  text: 'URL &1:'
+label.update.switch.configurable.revision1:
+  text: 'Re&vision:'
+lable.update.switch.configurable.url2:
+  text: 'URL &2:'
+update.switch.configurable.revision2:
+  text: 'R&evision:'
+checkbox.update.switch.configurable.try.merge.without.changes:
+  text: '&Try merge, but make no changes'
+checkbox.update.switch.configurable.descend.into.child.directories:
+  text: '&Descend into child directories'
+checkbox.update.switch.configurable.run.status:
+  text: Run &status after update
+progress.text.merging.dry.run.changes:
+  text: Merging (dry run) changes into ''{0}''
+progress.text.merging.changes:
+  text: Merging changes into ''{0}''
+progress.text.updating:
+  text: Updating ''{0}''
+exception.text.root.was.not.properly.updated:
+  text: 'svn: {0} was not properly updated; may be it is already removed from the repository along with its parent.'
+progress.text.update.computing.post.update.status:
+  text: Computing post-update status of ''{0}''
+message.text.update.no.directories.found:
+  text: No versioned directories to update was found
+messate.text.update.error:
+  text: 'SVN: Update Error'
+progress.text2.added:
+  text: Added {0}
+progress.text2.deleted:
+  text: Deleted {0}
+progress.text2.conflicted:
+  text: Conflicted {0}
+progress.text2.treeconflicted:
+  text: Conflicted {0} (tree conflict)
+progres.text2.merged:
+  text: Merged {0}
+progres.text2.updated:
+  text: Updated {0}
+progress.text2.restored.file:
+  text: Restored {0}
+progres.text2.updated.to.revision:
+  text: Updated to revision {0}.
+status.text.updated.to.revision:
+  text: Updated to revision {0}.
+progress.text2.skipped.file:
+  text: Skipped {0}
+update.group.name.skipped:
+  text: Skipped
+progress.text.updating.external.location:
+  text: Updating external location at ''{0}''
+exception.text.update.operation.cancelled:
+  text: Operation cancelled
+server.ssl.accept.temporary.action.name:
+  text: Accept _Temporary
+changes.browser.change.column.name:
+  text: Change
+changes.browser.author.column.name:
+  text: Author
+changes.browser.date.column.name:
+  text: Date
+cannot.mark.file.as.resolved.error.message:
+  text: 'Cannot mark file as resolved: {0}'
+mark.resolved.dialog.title:
+  text: Mark Resolved
+mark.resolved.action.description:
+  text: Mark resolved
+commit.dialog.setings.show.unresolved.checkbox:
+  text: Show &unresolved
+unresolved.difference.type.name:
+  text: Unresolved
+integrate.display.name:
+  text: Integrate
+invalid.svn.revision.error.message:
+  text: 'Invalid svn revision: {0}'
+nulty.roots.update.configuration.affected.roots.label:
+  text: 'Affected roots:'
+nulty.roots.update.configuration.selected.root.setting.group.title:
+  text: 'Selected Root Setting:'
+integrate.configuration.revision1.label:
+  text: re&vision
+integrate.configuration.source2.label:
+  text: 'Source 2:'
+integrate.configuration.revision2.label:
+  text: '&revision'
+integrate.configuration.source1.label:
+  text: 'Source 1:'
+integrate.configuration.description.label:
+  text: Integrate differences between sources into working copy (compare Source 2 to Source 1)
+source.url.could.not.be.empty.error.message:
+  text: Source url could not be empty
+no.differences.between.sources.error.message:
+  text: There are no differences between source and the same source
+configure.revision.specified.radio:
+  text: Specified
+configure.revision.head.radio:
+  text: HEAD
+update.configuration.specific.url:
+  text: 'Update/Switch to specific &url:'
+progress.text.import:
+  text: Importing {0}
+message.text.cannot.import:
+  text: 'Cannot import to svn: {0}'
+message.title.import:
+  text: Import to Subversion
+revision.title:
+  text: Revision
+checkout.dialog.title:
+  text: Checkout from Subversion
+checkout.dialog.button:
+  text: Checkout
+checkout.directory.chooser.title:
+  text: Checkout Directory
+checkout.directory.chooser.prompt:
+  text: Select directory to checkout from Subversion
+checkout.options.dialog.title:
+  text: SVN Checkout Options
+checkout.options.checkout.label:
+  text: 'Checkout:'
+checkout.options.destination.label:
+  text: 'Destination:'
+checkout.options.recursive.label:
+  text: Checkout directories recursively
+checkout.options.externals.label:
+  text: Include externals locations
+configure.branches.title:
+  text: Configure Subversion Branches
+configure.branches.error.no.connection.title:
+  text: Repository root was not found
+configure.branches.error.wrong.url:
+  text: |-
+    Trunk location must be under repository root
+    ''{0}''
+configure.branches.trunk.location:
+  text: 'Trunk location:'
+configure.branches.branch.locations:
+  text: 'Branch locations:'
+configure.branches.item:
+  text: Configure Branches...
+refresh.branches.item:
+  text: Refresh Branches...
+copy.column.title:
+  text: Copy
+copy.column.tooltip:
+  text: Copied from {0}
+compare.with.branch.progress.loading.branches:
+  text: Loading Branches
+compare.with.branch.progress.loading.content:
+  text: Loading Content
+compare.with.branch.diff.title:
+  text: Compare with Branch
+compare.with.branch.error.title:
+  text: Compare with Branch
+compare.with.branch.popup.title:
+  text: Compare with Branch
+getting.branch.configuration.error:
+  text: 'Error retrieving branch configuration: {0}'
+compare.with.branch.location.error:
+  text: |-
+    Couldn''t find repository location for file ''{0}'' under branch ''{1}''
+    Please check your branch configuration.
+compare.with.branch.list.error:
+  text: Error Loading Branches
+create.branch.invalid.revision.error:
+  text: Invalid revision ''{0}''
+create.branch.no.working.copy.error:
+  text: No working copy found at {0}
+create.branch.no.base.location.error:
+  text: No branch base location selected
+create.branch.switch.on.create.title:
+  text: Switch after create
+action.name.switch:
+  text: Switch
+import.dialog.title:
+  text: Import into Subversion
+import.dialog.button:
+  text: Import
+repository.browser.add.location.action:
+  text: Add Repository Location
+repository.browser.add.location.prompt:
+  text: 'Repository URL:'
+repository.browser.add.location.title:
+  text: New Repository Location
+repository.browser.details.action:
+  text: Show/Hide Details
+repository.browser.refresh.action:
+  text: Refresh selected tree node
+repository.browser.add.location.menu.item:
+  text: _Repository Location...
+repository.browser.edit.location.menu.item:
+  text: Edit Location _Url...
+repository.browser.discard.location.action:
+  text: Discard _Location
+repository.browser.discard.location.prompt:
+  text: Would you like to discard the location ''{0}''?
+repository.browser.discard.location.title:
+  text: Discard Location
+repository.browser.new.folder.action:
+  text: Remote _Folder...
+repository.browser.history.action:
+  text: Show History
+repository.browser.import.action:
+  text: _Import...
+diff.options.title:
+  text: Compare With Branch or Tag
+diff.options.no.url.error:
+  text: Please select an URL to compare with
+diff.options.same.url.error:
+  text: Please select different URLs to compare
+diff.options.no.patch.file.error:
+  text: Please specify the path to save the patch file
+diff.cant.get.properties.changes:
+  text: Can't show SVN properties
+repository.browser.browse.changes.action:
+  text: _Browse Changes...
+repository.browser.browse.changes.description:
+  text: View history of changes in the selected node
+repository.browser.compare.title:
+  text: Compare of ''{0} and ''{1}''
+repository.browser.compare.no.difference.message:
+  text: No textual difference found between ''{0} and ''{1}''
+repository.browser.compare.no.difference.title:
+  text: No Difference Found
+cleanup.action.name:
+  text: Cleanup
+changes.browser.revision.term:
+  text: Revision
+progress.computing.difference:
+  text: Computing Difference
+progress.searching.for.files.with.conflicts:
+  text: Searching for files with conflicts
+add.files.errors.title:
+  text: Errors Adding Files
+move.files.errors.title:
+  text: Errors Moving Files
+remove.ignore.patterns.errors.title:
+  text: Errors Removing 'svn:ignore' patterns
+gather.ignore.patterns.info.progress.title:
+  text: Gathering not used 'svn:ignore' patterns
+delete.files.errors.title:
+  text: Errors Deleting Files
+copy.dialog.title:
+  text: Branch or Tag
+move.dialog.title:
+  text: Move or Rename
+select.location.invalid.url.message:
+  text: 'Invalid Subversion repository URL: ''''{0}'''''
+share.directory.action:
+  text: Share Directory...
+share.directory.commit.message:
+  text: |-
+    {2}
+    Directory ''{0}'' created by {1}
+share.directory.title:
+  text: Share Directory
+share.directory.info.message:
+  text: To complete share operation commit ''{0}''.
+share.directory.create.dir.progress.text:
+  text: Creating remote folder {0}
+share.directory.checkout.back.progress.text:
+  text: Checking out {0}
+share.or.import.add.progress.text:
+  text: Scheduling {0} for addition
+action.share.whole.project.text:
+  text: Share Project (Subversion)...
+action.Subversion.integrate.changes.open.in.changelist.text:
+  text: 'Open in changelist:'
+action.Subversion.integrate.changes.select.working.copy.text:
+  text: 'Integrate into working copy:'
+action.Subversion.integrate.changes.dialog.title:
+  text: Integrate To Branch
+action.Subversion.integrate.changes.message.not.under.control.text:
+  text: Selected destination is not under Subversion control. Continue anyway?
+action.Subversion.integrate.changes.message.another.wc.text:
+  text: Selected destination is inside working copy of another repository. Continue anyway?
+action.Subversion.integrate.changes.branch.info.source.label.text:
+  text: 'Source branch URL: {0}'
+action.Subversion.integrate.changes.branch.info.target.label.text:
+  text: 'Target branch URL: {0}'
+action.Subversion.integrate.changes.actionname:
+  text: Integrate To Branch...
+action.Subversion.integrate.changes.description:
+  text: Integrates selected changelist(s)/changeset into selected branch
+action.Subversion.integrate.changes.messages.title:
+  text: Integrate To Branch
+action.Subversion.integrate.changes.error.no.available.files.text:
+  text: No files available for integration
+action.Subversion.integrate.changes.warning.failed.list.text:
+  text: Changelist {0} ({1}) integration faced problems
+action.Subversion.integrate.changes.warning.skipped.lists.text:
+  text: 'Skipped changelists: {0}'
+action.Subversion.integrate.changes.select.branch.text:
+  text: Select branch to integrate to...
+action.Subversion.integrate.changes.error.source.and.target.same.text:
+  text: 'Can not start integration: Target and source branches are the same.'
+action.Subversion.integrate.changes.error.target.not.dir.text:
+  text: 'Can not start integration: target directory does not exist or is not a directory.'
+action.Subversion.integrate.changes.error.not.versioned.text:
+  text: 'Can not start integration: target directory is not under Subversion control or does not belong to the selected branch.'
+action.Subversion.integrate.changes.alien.commit.changelist.title:
+  text: Integrated
+action.Subversion.integrate.changes.dialog.add.wc.text:
+  text: Add
+action.Subversion.integrate.changes.dialog.remove.wc.text:
+  text: Remove
+action.Subversion.integrate.changes.message.files.up.to.date.text:
+  text: All files are up to date
+action.Subversion.integrate.changes.collecting.changes.to.commit.task.title:
+  text: Collecting changes to commit
+action.Subversion.integrate.changes.error.unable.to.collect.changes.text:
+  text: 'Error while collecting changes to commit: {0}'
+error.cannot.load.revisions:
+  text: Can not load revision list
+action.Subversion.integrate.changes.message.canceled.text:
+  text: Integration was canceled
+action.Subversion.integrate.changes.progress.integrating.text:
+  text: Merging changes
+action.Subversion.integrate.changes.progress.integrating.details.text:
+  text: Merging changelist {0}
+update.switch.to.branch.text:
+  text: 'Use branch:'
+select.branch.popup.general.title:
+  text: Select branch
+progress.live.provider.loading.revisions.text:
+  text: Loading revisions from server
+progress.live.provider.loading.revisions.details.text:
+  text: Loading revisions from server...
+dialog.show.svn.map.title:
+  text: Subversion Working Copies Information
+dialog.show.svn.map.label.table.header:
+  text: Detected working copies
+dialog.show.svn.map.change.format.button.text:
+  text: '&Change Working Copy Format'
+dialog.show.svn.map.table.header.column.wcpath.title:
+  text: Root path
+dialog.show.svn.map.table.header.column.wcurl.title:
+  text: URL
+dialog.show.svn.map.table.header.column.wcroot.title:
+  text: Working copy root
+dialog.show.svn.map.table.header.column.format.title:
+  text: Format
+dialog.show.svn.map.table.version13.text:
+  text: '1.3'
+dialog.show.svn.map.table.version14.text:
+  text: '1.4'
+dialog.show.svn.map.table.version15.text:
+  text: '1.5'
+dialog.show.svn.map.table.version16.text:
+  text: '1.6'
+dialog.show.svn.map.table.version17.text:
+  text: '1.7'
+dialog.show.svn.map.table.version18.text:
+  text: '1.8'
+action.change.wcopy.format.task.title:
+  text: Convert working copy format
+action.change.wcopy.format.task.progress.text:
+  text: Converting working copy at {0} format from {1} to {2}
+action.change.wcopy.format.after.change.settings:
+  text: |-
+    Selected working copy format ({0}) is older than upgrade mode selected in Project Settings ({1}).
+    Change Project Settings upgrade mode to {0}?
+committed.changes.action.enable.merge.highlighting:
+  text: Highlight integrated
+committed.changes.action.enable.merge.highlighting.description.text:
+  text: Option is available for SVN repositories and working copies with 1.5 version only
+committed.changes.action.merge.highlighting.select.root:
+  text: 'from:'
+committed.changes.action.merge.highlighting.select.branch:
+  text: 'to:'
+committed.changes.action.merge.highlighting.refresh.text:
+  text: Refresh
+committed.changes.action.merge.highlighting.refresh.description:
+  text: Refresh merged revisions info
+committed.changes.merge.status.refreshing.text:
+  text: '?'
+committed.changes.merge.status.integrated.text:
+  text: +
+committed.changes.merge.status.not.integrated.text:
+  text: '-'
+committed.changes.action.merge.highlighting.select.wcopy:
+  text: 'working copy:'
+dialog.Subversion.select.working.copy.title:
+  text: Configure working copy paths
+dialog.Subversion.select.working.copy.wcopy.list.title:
+  text: Known working copies
+upgrade.format.to15.question.title:
+  text: Upgrade working copies format
+upgrade.format.to15.question.text:
+  text: |-
+    Do you want to upgrade Subversion working copies format to 1.5?
+    Note: Working copy formats can be changed through {0}
+upgrade.format.clarify.for.outside.copies.text:
+  text: |-
+    Working copy root ''{0}'' is outside the directory specified in Project Settings.
+    Convert anyway?
+upgrade.format.to16.question.title:
+  text: Upgrade Subversion working copies format
+upgrade.format.to16.question.text:
+  text: |-
+    Do you want to upgrade Subversion working copies format to 1.6?
+    Note: Working copy formats can be changed through {0}
+action.Subversion.cleanup.progress.title:
+  text: Subversion cleanup
+action.Subversion.cleanup.progress.text:
+  text: Performing ''{0}'' cleanup...
+action.Subversion.cleanup.project.title:
+  text: Cleanup Project
+action.Subversion.cleanup.error.message:
+  text: 'Error performing cleanup for ''''{0}'''': {1}'
+action.working.copies.map.correct.roots.button.text:
+  text: Correct &Roots
+action.working.copies.map.correct.warning.text:
+  text: |-
+    Some folders marked in 'Project Settings | Version Control' as under Subversion control,
+    are unversioned (Versioned folders may be under them).
+    You can use 'Correct Roots' button to perform auto correction.
+action.Subversion.properties.difference.diff.title:
+  text: 'Subversion properties difference: {0}'
+action.Subversion.properties.difference.diff.for.move.title:
+  text: 'Subversion properties difference: {0} -> {1}'
+message.Subversion.files.can.not.be.added.to.subversion.are.not.under.working.copy.text:
+  text: File(s) {0} can not be added to Subversion control since they are not under working copy.
+action.Subversion.integrate.difference.option.use.ancestry.text:
+  text: '&Use ancestry'
+fatal.Subversion.javasvn.jar.library.version.test:
+  text: |-
+    javasvn.jar library is old;
+    Please make sure installation was made properly.
+subversion.problem.text:
+  text: Subversion problem
+use.idea.proxy.as.default:
+  text: Use {0} general proxy settings as default for Subversion
+use.idea.proxy.as.default.label.text:
+  text: Only HTTP proxy can be used as default
+navigate.to.idea.proxy.settings:
+  text: Navigate to general proxy settings
+action.Subversion.update.use.locks.on.demand.text.configurable:
+  text: Updat&e administrative information only in changed subtrees
+action.Subversion.update.use.locks.on.demand.text:
+  text: Update administrative information only in &changed subtrees
+action.Subversion.update.use.locks.on.demand.description:
+  text: |-
+    When enabled, update only locks those parts of working copy that is about to be updated.
+    As a result administrative information will only be updated for working copy subtrees that has been modified during update.
+    Enabling this option may improve update operation performance.
+    Note that under some circumstances, you might have to perform "normal" update.
+switch.target.not.copy.current:
+  text: |-
+    Switch target URL is not a copy of current.
+     Do you want to continue?
+switch.target.problem.title:
+  text: Switch target problem
+tab.repository.merge.panel.title:
+  text: Subversion
+tab.repository.merge.panel.root.panel.to:
+  text: 'To:'
+tab.repository.merge.panel.root.panel.from:
+  text: 'From:'
+tab.repository.merge.panel.root.panel.branch:
+  text: 'Branch:'
+tab.repository.merge.panel.root.panel.url:
+  text: 'Url:'
+tab.repository.merge.panel.root.panel.local:
+  text: 'Local Path:'
+tab.repository.merge.panel.root.panel.select.local:
+  text: Select path to the target working copy
+tab.repository.merge.panel.filter.plus:
+  text: Filter out integrated
+tab.repository.merge.panel.filter.minus:
+  text: Filter out not integrated
+tab.repository.merge.panel.filter.others:
+  text: Filter out others
+browse.changes.settings.stop.on.copy:
+  text: '&Stop On Copy'
+action.mark.list.as.merged.text:
+  text: Mark As Merged
+action.mark.list.as.merged.description:
+  text: Mark selected revision as merged, but do not actually merge
+action.mark.list.as.not.merged.text:
+  text: Mark As Not Merged
+action.mark.list.as.not.merged.description:
+  text: Mark selected revision as not merged, but do not change anything besides svn:mergeinfo
+label.depth.text:
+  text: '&Depth:'
+label.depth.description:
+  text: Replaces old "recursive" option. "Recursive"=false is equivalent to "immediates", "recursive"=true is equivalent to "infinity"
+undo.integrate.to.branch:
+  text: Undo Integrate To Branch...
+undo.integrate.to.branch.description:
+  text: Removes changes done in revision from branch
+undo.integrate.to.branch.dialog.title:
+  text: Undo Integrate To Branch
+merge.source.details.title:
+  text: Merge source details for {0} [{1}]
+repository.browser.edit.location.dialog.title:
+  text: Edit Location Url
+loading.default.branches.configuration.text:
+  text: Loading default branches configuration...
+loading.data.for.root.text:
+  text: Loading data for {0}
+action.Subversion.TogglePropertiesDiff.text:
+  text: Show properties
+action.Subversion.TogglePropertiesDiff.description:
+  text: Show differences in SVN properties
+action.PropertiesDiff.text:
+  text: Compare Subversion Properties
+action.IntegrateChangeSetAction.text:
+  text: Integrate to Branch
+dialog.map.working.copies.button.refresh.text:
+  text: Re&fresh
+refreshing.working.copies.roots.progress.text:
+  text: Refreshing working copies roots...
+retrieving.subversion.status.text:
+  text: Retrieving Subversion status...
+fetching.properties.contents.progress.title:
+  text: Fetching properties contents...
+show.properties.diff.progress.text.revision.information:
+  text: Revision {0}
+show.properties.diff.progress.text2.property.information:
+  text: Property {0}
+svn.checkout.destination.directory.title:
+  text: Destination Directory
+svn.checkout.destination.directory.description:
+  text: Select checkout destination directory
+checkbox.ignore.whitespace.when.merge.text:
+  text: '&Ignore whitespaces'
+svn.dialog.select.ignore.patterns.to.remove.title:
+  text: Select svn:ignore patterns to remove
+svn.dialog.select.ignore.patterns.to.remove.prompt:
+  text: |-
+    Files being deleted are ignored by Subversion.
+    Some of 'svn:ignore' patterns may become outdated.
+    Select 'svn:ignore' patterns to be deleted.
+detect.nested.working.copies:
+  text: Detect nested working copies
+svn.changeview.item.in.conflict.text:
+  text: File has {0} conflict(s) and can not be committed
+svn.changeview.locally.deleted.item.in.conflict.text:
+  text: File has {0} conflict(s)
+action.mark.tree.conflict.resolved.text:
+  text: Mark Tree Conflict Resolved...
+action.mark.tree.conflict.resolved.confirmation.text:
+  text: Do you want to mark tree conflict as resolved?
+action.mark.tree.conflict.resolved.confirmation.title:
+  text: Mark Tree Conflict Resolved
+svn.integrate.changelist.warning.unresolved.conflicts.text:
+  text: Integration interrupted. There are unresolved conflicts or skipped items.
+svn.option.ignore.whitespace.in.annotate:
+  text: Ignore whitespace differences in annotations
+annotation.show.merge.sources.default.text:
+  text: Show merge source in history and annotations
+svn.cannot.save.credentials.store-auth-creds:
+  text: 'Cannot store credentials: forbidden by "store-auth-creds = no"'
+annotation.original.revision:
+  text: Original revision
+confirmation.resolve.tree.conflict.merge.moved:
+  text: Apply theirs changes to {0} moved to {1}?
+confirmation.resolve.tree.conflict.merge.renamed:
+  text: Apply theirs changes to {0} renamed to {1}?
+svn.create.external.below.action:
+  text: Create External...
+svn.create.external.below.description:
+  text: Select URL, add svn:external property, and optionally checkout it
+svn.edit.commit.message.title:
+  text: 'Edit Revision #{0} Comment'
+svn.edit.commit.message.attention:
+  text: Attention! Previous message will be lost!
+svn.edit.commit.message.prompt:
+  text: 'New revision comment:'
+quick.merge.variants.merge.all.explanation:
+  text: |-
+    All not merged revisions will be merged.
+    Subversion will find not merged revisions using svn:mergeinfo property recorded in local copy.
+quick.merge.variants.quick.select.explanation:
+  text: |-
+    Shows all revisions from target branch, merged and not merged.
+    For manual selection. Very quick.
+quick.merge.variants.pre.select.explanation:
+  text: |-
+    Finds where one of involved branches was copied from another.
+    Loads only not yet merged revisions for selection. Can take long time for execution.
+dialog.create.branch.or.tag.from.working.copy.warning:
+  text: <html>Use this variant to create branch <b>with local changes</b>.<br/>In general, several items will be "added-with-history", not only target directory.<br/><br/>Each file that have revision different than root will be copied separately.<br/>It's recommended to update working copy before branch creation therefore.</html>
+exportable.SvnDiffSettings.presentable.name:
+  text: Svn Diff

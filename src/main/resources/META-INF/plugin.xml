@@ -4,7 +4,7 @@
 	<version>SNAPSHOT</version>
 	<category>VCS Integration</category>
 	<vendor>JetBrains</vendor>
-	<resource-bundle>org.jetbrains.idea.svn.SvnBundle</resource-bundle>
+	<localize>consulo.apache.subversion.SvnLocalize</localize>
 
 	<actions>
 		<action id="Subversion.ImportToSVNRepository" class="org.jetbrains.idea.svn.actions.ImportToRepositoryAction">

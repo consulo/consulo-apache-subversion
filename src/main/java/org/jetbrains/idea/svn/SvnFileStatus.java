@@ -19,6 +19,7 @@ package org.jetbrains.idea.svn;
 
 import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.openapi.vcs.FileStatusFactory;
+import consulo.apache.subversion.localize.SvnLocalize;
 import consulo.ui.color.RGBColor;
 
 public class SvnFileStatus {
@@ -26,11 +27,11 @@ public class SvnFileStatus {
   }
 
   public static final FileStatus EXTERNAL = FileStatusFactory.getInstance()
-    .createFileStatus("IDEA_SVN_FILESTATUS_EXTERNAL", SvnBundle.message("file.status.external"), new RGBColor(114, 160, 56));
+    .createFileStatus("IDEA_SVN_FILESTATUS_EXTERNAL", SvnLocalize.fileStatusExternal(), new RGBColor(114, 160, 56));
 
   public static final FileStatus OBSTRUCTED = FileStatusFactory.getInstance()
-    .createFileStatus("IDEA_SVN_FILESTATUS_OBSTRUCTED", SvnBundle.message("file.status.obstructed"), new RGBColor(114, 114, 56));
+    .createFileStatus("IDEA_SVN_FILESTATUS_OBSTRUCTED", SvnLocalize.fileStatusObstructed(), new RGBColor(114, 114, 56));
 
   public static final FileStatus REPLACED = FileStatusFactory.getInstance()
-    .createFileStatus("IDEA_SVN_REPLACED", SvnBundle.message("file.status.replaced"), FileStatus.ADDED.getColor());
+    .createFileStatus("IDEA_SVN_REPLACED", SvnLocalize.fileStatusReplaced(), FileStatus.ADDED.getColor());
 }

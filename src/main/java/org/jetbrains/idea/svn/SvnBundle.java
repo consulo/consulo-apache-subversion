@@ -16,36 +16,46 @@
 package org.jetbrains.idea.svn;
 
 import com.intellij.CommonBundle;
+import consulo.annotation.DeprecationInfo;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
 import org.jetbrains.annotations.PropertyKey;
 
+import javax.annotation.Nonnull;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.ResourceBundle;
 
-public class SvnBundle {
+@Deprecated(forRemoval = true)
+@DeprecationInfo("Use SvnLocalize")
+public class SvnBundle
+{
 
-  public static String message(@Nonnull @PropertyKey(resourceBundle = BUNDLE) String key, @Nonnull Object... params) {
-    return CommonBundle.message(getBundle(), key, params);
-  }
+	public static String message(@Nonnull @PropertyKey(resourceBundle = BUNDLE) String key, @Nonnull Object... params)
+	{
+		return CommonBundle.message(getBundle(), key, params);
+	}
 
-  private static Reference<ResourceBundle> ourBundle;
-  @NonNls private static final String BUNDLE = "org.jetbrains.idea.svn.SvnBundle";
+	private static Reference<ResourceBundle> ourBundle;
+	@NonNls
+	private static final String BUNDLE = "org.jetbrains.idea.svn.SvnBundle";
 
-  private SvnBundle() {
-  }
+	private SvnBundle()
+	{
+	}
 
-  public static String getString(@PropertyKey(resourceBundle = BUNDLE) String key) {
-    return getBundle().getString(key);
-  }
+	public static String getString(@PropertyKey(resourceBundle = BUNDLE) String key)
+	{
+		return getBundle().getString(key);
+	}
 
-  private static ResourceBundle getBundle() {
-    ResourceBundle bundle = com.intellij.reference.SoftReference.dereference(ourBundle);
-    if (bundle == null) {
-      bundle = ResourceBundle.getBundle(BUNDLE);
-      ourBundle = new SoftReference<>(bundle);
-    }
-    return bundle;
-  }
+	private static ResourceBundle getBundle()
+	{
+		ResourceBundle bundle = com.intellij.reference.SoftReference.dereference(ourBundle);
+		if(bundle == null)
+		{
+			bundle = ResourceBundle.getBundle(BUNDLE);
+			ourBundle = new SoftReference<>(bundle);
+		}
+		return bundle;
+	}
 }
