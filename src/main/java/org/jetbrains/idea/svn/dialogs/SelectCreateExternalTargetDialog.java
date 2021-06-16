@@ -21,16 +21,16 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.hash.HashSet;
 import com.intellij.util.ui.JBUI;
-import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**

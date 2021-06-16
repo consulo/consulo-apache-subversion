@@ -38,12 +38,9 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.FunctionUtil;
 import com.intellij.util.NullableFunction;
 import com.intellij.util.PairConsumer;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.Convertor;
 import com.intellij.util.containers.MultiMap;
-import gnu.trove.THashSet;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.collection.Sets;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -54,11 +51,13 @@ import org.jetbrains.idea.svn.status.StatusType;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class SvnCheckinEnvironment implements CheckinEnvironment {
 
@@ -153,7 +152,7 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
 
   @Nonnull
   private Collection<FilePath> getCommitables(@Nonnull List<Change> changes) {
-    THashSet<FilePath> result = ContainerUtil.newTroveSet(ChangesUtil.FILE_PATH_BY_PATH_ONLY_HASHING_STRATEGY);
+    Set<FilePath> result = Sets.newHashSet(ChangesUtil.FILE_PATH_BY_PATH_ONLY_HASHING_STRATEGY);
 
     ChangesUtil.getAllPaths(changes.stream()).forEach(path -> {
       if (result.add(path)) {

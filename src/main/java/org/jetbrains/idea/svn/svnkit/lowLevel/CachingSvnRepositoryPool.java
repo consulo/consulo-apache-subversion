@@ -22,7 +22,6 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.util.Pair;
 import com.intellij.util.ThrowableConsumer;
 import com.intellij.util.ThrowableConvertor;
-import com.intellij.util.containers.hash.HashSet;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 import org.tmatesoft.svn.core.SVNException;

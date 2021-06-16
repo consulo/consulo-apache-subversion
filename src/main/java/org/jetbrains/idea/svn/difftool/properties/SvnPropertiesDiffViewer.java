@@ -32,7 +32,6 @@ import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.hash.HashMap;
 import com.intellij.util.ui.UIUtil;
 import consulo.awt.TargetAWT;
 import consulo.ui.color.ColorValue;

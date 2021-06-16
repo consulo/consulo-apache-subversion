@@ -42,7 +42,8 @@ import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.VcsBackgroundTask;
 import com.intellij.vcsUtil.VcsUtil;
 import consulo.ui.annotation.RequiredUIAccess;
-import gnu.trove.TLongArrayList;
+import consulo.util.collection.primitive.longs.LongList;
+import consulo.util.collection.primitive.longs.LongLists;
 import org.jetbrains.idea.svn.ConflictedSvnChange;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -75,7 +76,7 @@ public class TreeConflictRefreshablePanel implements Disposable {
   private SvnRevisionNumber myCommittedRevision;
   private FilePath myPath;
   private final CompositeDisposable myChildDisposables = new CompositeDisposable();
-  private final TLongArrayList myRightRevisionsList;
+  private final LongList myRightRevisionsList;
   @Nonnull
   private final String myLoadingTitle;
   @Nonnull
@@ -92,7 +93,7 @@ public class TreeConflictRefreshablePanel implements Disposable {
     assert change instanceof ConflictedSvnChange;
     myChange = (ConflictedSvnChange) change;
     myPath = ChangesUtil.getFilePath(myChange);
-    myRightRevisionsList = new TLongArrayList();
+    myRightRevisionsList = LongLists.newArrayList();
 
     myLoadingTitle = loadingTitle;
     myQueue = queue;
@@ -478,7 +479,7 @@ public class TreeConflictRefreshablePanel implements Disposable {
     private final SvnVcs myVcs;
     private final SVNRevision myPeg;
     private FileHistoryPanelImpl myFileHistoryPanel;
-    private TLongArrayList myListToReportLoaded;
+    private LongList myListToReportLoaded;
 
     private HistoryConflictSide(SvnVcs vcs, ConflictVersion version, final SVNRevision peg) throws VcsException {
       super(vcs.getProject(), version);
@@ -499,7 +500,7 @@ public class TreeConflictRefreshablePanel implements Disposable {
       myProvider = (SvnHistoryProvider) myVcs.getVcsHistoryProvider();
     }
 
-    public void setListToReportLoaded(TLongArrayList listToReportLoaded) {
+    public void setListToReportLoaded(LongList listToReportLoaded) {
       myListToReportLoaded = listToReportLoaded;
     }
 

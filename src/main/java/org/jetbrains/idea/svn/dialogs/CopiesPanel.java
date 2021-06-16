@@ -15,62 +15,8 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import static com.intellij.notification.NotificationDisplayType.STICKY_BALLOON;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.swing.JComponent;
-import javax.swing.JEditorPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-
-import javax.annotation.Nullable;
-import org.jetbrains.idea.svn.NestedCopyType;
-import org.jetbrains.idea.svn.SvnBundle;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.WorkingCopiesContent;
-import org.jetbrains.idea.svn.WorkingCopyFormat;
-import org.jetbrains.idea.svn.actions.CleanupWorker;
-import org.jetbrains.idea.svn.api.ClientFactory;
-import org.jetbrains.idea.svn.api.Depth;
-import org.jetbrains.idea.svn.branchConfig.BranchConfigurationDialog;
-import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
-import org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationNew;
-import org.jetbrains.idea.svn.checkout.SvnCheckoutProvider;
-import org.jetbrains.idea.svn.integrate.MergeContext;
-import org.jetbrains.idea.svn.integrate.QuickMerge;
-import org.jetbrains.idea.svn.integrate.QuickMergeInteractionImpl;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
-import org.tmatesoft.svn.core.wc.SVNRevision;
 import com.intellij.ide.DataManager;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationGroup;
-import com.intellij.notification.NotificationListener;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.NotificationsManager;
+import com.intellij.notification.*;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -81,7 +27,6 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Comparing;
-import consulo.util.dataholder.Key;
 import com.intellij.openapi.vcs.ObjectsConvertor;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -96,9 +41,41 @@ import com.intellij.ui.components.labels.LinkListener;
 import com.intellij.util.Consumer;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.Convertor;
-import com.intellij.util.io.EqualityPolicy;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.ui.UIUtil;
+import consulo.util.collection.HashingStrategy;
+import consulo.util.dataholder.Key;
+import org.jetbrains.idea.svn.*;
+import org.jetbrains.idea.svn.actions.CleanupWorker;
+import org.jetbrains.idea.svn.api.ClientFactory;
+import org.jetbrains.idea.svn.api.Depth;
+import org.jetbrains.idea.svn.branchConfig.BranchConfigurationDialog;
+import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
+import org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationNew;
+import org.jetbrains.idea.svn.checkout.SvnCheckoutProvider;
+import org.jetbrains.idea.svn.integrate.MergeContext;
+import org.jetbrains.idea.svn.integrate.QuickMerge;
+import org.jetbrains.idea.svn.integrate.QuickMergeInteractionImpl;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
+import org.tmatesoft.svn.core.wc.SVNRevision;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.List;
+import java.util.*;
+
+import static com.intellij.notification.NotificationDisplayType.STICKY_BALLOON;
 
 public class CopiesPanel {
 
@@ -492,10 +469,10 @@ public class CopiesPanel {
   }
 
   public static class OverrideEqualsWrapper<T> {
-    private final EqualityPolicy<T> myPolicy;
+    private final HashingStrategy<T> myPolicy;
     private final T myT;
 
-    public OverrideEqualsWrapper(EqualityPolicy<T> policy, T t) {
+    public OverrideEqualsWrapper(HashingStrategy<T> policy, T t) {
       myPolicy = policy;
       myT = t;
     }
@@ -510,16 +487,16 @@ public class CopiesPanel {
       if (o == null || getClass() != o.getClass()) return false;
       final OverrideEqualsWrapper<T> that = (OverrideEqualsWrapper<T>) o;
 
-      return myPolicy.isEqual(myT, that.getT());
+      return myPolicy.equals(myT, that.getT());
     }
 
     @Override
     public int hashCode() {
-      return myPolicy.getHashCode(myT);
+      return myPolicy.hashCode(myT);
     }
   }
 
-  private static class InfoEqualityPolicy implements EqualityPolicy<WCInfo> {
+  private static class InfoEqualityPolicy implements HashingStrategy<WCInfo> {
     private final static InfoEqualityPolicy ourInstance = new InfoEqualityPolicy();
 
     public static InfoEqualityPolicy getInstance() {
@@ -543,7 +520,7 @@ public class CopiesPanel {
     }
 
     @Override
-    public int getHashCode(WCInfo value) {
+    public int hashCode(WCInfo value) {
       final HashCodeBuilder builder = new HashCodeBuilder();
       builder.append(value.getPath());
       builder.append(value.getUrl());
@@ -555,7 +532,7 @@ public class CopiesPanel {
     }
 
     @Override
-    public boolean isEqual(WCInfo val1, WCInfo val2) {
+    public boolean equals(WCInfo val1, WCInfo val2) {
       if (val1 == val2) return true;
       if (val1 == null || val2 == null || val1.getClass() != val2.getClass()) return false;
 
