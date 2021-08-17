@@ -15,12 +15,11 @@
  */
 package org.jetbrains.idea.svn.checkin;
 
-import javax.annotation.Nonnull;
-
+import jakarta.xml.bind.annotation.*;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.xml.bind.annotation.*;
 import java.util.Date;
 
 /**

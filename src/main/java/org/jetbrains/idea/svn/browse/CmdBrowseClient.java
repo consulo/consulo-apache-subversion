@@ -18,8 +18,10 @@ package org.jetbrains.idea.svn.browse;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.util.PathUtil;
 import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.NodeKind;
@@ -36,11 +38,8 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 

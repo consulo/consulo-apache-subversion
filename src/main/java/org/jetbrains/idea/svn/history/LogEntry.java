@@ -16,12 +16,12 @@
 package org.jetbrains.idea.svn.history;
 
 import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.xml.bind.annotation.*;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNLogEntryPath;
 
-import javax.xml.bind.annotation.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

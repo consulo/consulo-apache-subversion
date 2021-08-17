@@ -16,11 +16,11 @@
 package org.jetbrains.idea.svn.api;
 
 import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import jakarta.xml.bind.annotation.XmlEnum;
+import jakarta.xml.bind.annotation.XmlEnumValue;
 import org.tmatesoft.svn.core.SVNNodeKind;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
+import javax.annotation.Nonnull;
 import java.util.Map;
 
 /**

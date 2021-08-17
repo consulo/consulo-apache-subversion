@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import javax.annotation.Nonnull;
+import jakarta.xml.bind.annotation.*;
 import org.jetbrains.idea.svn.api.BaseNodeDescription;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
 import org.tmatesoft.svn.core.SVNLogEntryPath;
 
-import javax.xml.bind.annotation.*;
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.

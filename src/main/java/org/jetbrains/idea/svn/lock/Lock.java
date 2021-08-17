@@ -16,12 +16,11 @@
 package org.jetbrains.idea.svn.lock;
 
 import com.intellij.openapi.vcs.changes.LogicalLock;
-import javax.annotation.Nonnull;
-
+import jakarta.xml.bind.annotation.*;
 import org.tmatesoft.svn.core.SVNLock;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.xml.bind.annotation.*;
 import java.util.Date;
 
 /**
