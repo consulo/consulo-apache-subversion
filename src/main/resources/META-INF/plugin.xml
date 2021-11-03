@@ -3,6 +3,9 @@
 	<name>Subversion Integration</name>
 	<version>SNAPSHOT</version>
 	<category>VCS Integration</category>
+	<tags>
+		<tag>vcs</tag>
+	</tags>
 	<vendor>JetBrains</vendor>
 	<localize>consulo.apache.subversion.SvnLocalize</localize>
 
