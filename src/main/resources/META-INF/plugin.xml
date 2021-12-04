@@ -1,4 +1,4 @@
-<consulo-plugin>
+<consulo-plugin url="https://github.com/consulo/consulo-apache-subversion">
 	<id>consulo.apache.subversion</id>
 	<name>Subversion Integration</name>
 	<version>SNAPSHOT</version>
