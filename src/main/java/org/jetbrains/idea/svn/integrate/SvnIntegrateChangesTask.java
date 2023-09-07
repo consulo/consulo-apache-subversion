@@ -25,6 +25,7 @@ import consulo.ide.impl.idea.openapi.vcs.ex.ProjectLevelVcsManagerEx;
 import consulo.ide.impl.idea.openapi.vcs.update.RestoreUpdateTree;
 import consulo.ide.impl.idea.openapi.vcs.update.UpdatedFilesReverseSide;
 import consulo.project.Project;
+import consulo.project.ProjectManager;
 import consulo.project.internal.ProjectManagerEx;
 import consulo.project.ui.notification.NotificationType;
 import consulo.ui.ex.awt.Messages;
@@ -178,7 +179,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
         afterExecution(wasCancelled);
       }
       finally {
-        ProjectManagerEx.getInstanceEx().unblockReloadingProjectOnExternalChanges();
+        ProjectManager.getInstanceEx().unblockReloadingProjectOnExternalChanges();
       }
     });
   }

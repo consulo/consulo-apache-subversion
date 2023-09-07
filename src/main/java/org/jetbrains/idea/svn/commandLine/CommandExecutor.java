@@ -18,11 +18,11 @@ package org.jetbrains.idea.svn.commandLine;
 import consulo.container.boot.ContainerPathManager;
 import consulo.logging.Logger;
 import consulo.process.ExecutionException;
+import consulo.process.ProcessHandler;
 import consulo.process.ProcessOutputTypes;
 import consulo.process.cmd.GeneralCommandLine;
 import consulo.process.event.ProcessAdapter;
 import consulo.process.event.ProcessEvent;
-import consulo.process.internal.OSProcessHandler;
 import consulo.process.util.CapturingProcessAdapter;
 import consulo.process.util.ProcessOutput;
 import consulo.proxy.EventDispatcher;
@@ -320,7 +320,7 @@ public class CommandExecutor {
    */
   public boolean waitFor(int timeout) {
     checkStarted();
-    final OSProcessHandler handler;
+    final ProcessHandler handler;
     synchronized (myLock) {
       // TODO: This line seems to cause situation when exitCode is not set before SvnLineCommand.runCommand() is finished.
       // TODO: Carefully analyze behavior (on all operating systems) and fix.
