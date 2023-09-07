@@ -15,9 +15,8 @@
  */
 package org.jetbrains.idea.svn.conflict;
 
-import com.intellij.util.containers.ContainerUtil;
 import javax.annotation.Nonnull;
-
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,7 +30,7 @@ public enum ConflictAction {
   REPLACE("replace", "replaced");
 
   @Nonnull
-  private static final Map<String, ConflictAction> ourAllActions = ContainerUtil.newHashMap();
+  private static final Map<String, ConflictAction> ourAllActions = new HashMap<>();
 
   static {
     for (ConflictAction action : ConflictAction.values()) {

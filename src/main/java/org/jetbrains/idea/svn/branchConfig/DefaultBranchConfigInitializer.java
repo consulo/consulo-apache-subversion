@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

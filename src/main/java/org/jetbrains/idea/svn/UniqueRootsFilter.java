@@ -15,13 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.collection.ContainerUtil;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,12 +53,7 @@ public class UniqueRootsFilter {
   }
 
   private static <T extends RootUrlPair> boolean alreadyRegistered(@Nonnull final T child, @Nonnull List<T> registered) {
-    return ContainerUtil.exists(registered, new Condition<T>() {
-      @Override
-      public boolean value(T parent) {
-        return isSamePath(child, parent) || isSameSupposedUrl(child, parent);
-      }
-    });
+    return ContainerUtil.exists(registered, parent -> isSamePath(child, parent) || isSameSupposedUrl(child, parent));
   }
 
   private static <T extends RootUrlPair> boolean isSamePath(@Nonnull T child, @Nonnull T parent) {
@@ -69,8 +63,8 @@ public class UniqueRootsFilter {
   private static <T extends RootUrlPair> boolean isSameSupposedUrl(@Nonnull T child, @Nonnull T parent) {
     boolean result = false;
 
-    if (VfsUtilCore.isAncestor(parent.getVirtualFile(), child.getVirtualFile(), true)) {
-      String relativePath = VfsUtilCore.getRelativePath(child.getVirtualFile(), parent.getVirtualFile(), '/');
+    if (VirtualFileUtil.isAncestor(parent.getVirtualFile(), child.getVirtualFile(), true)) {
+      String relativePath = VirtualFileUtil.getRelativePath(child.getVirtualFile(), parent.getVirtualFile(), '/');
       // get child's supposed and real urls
       final String supposed = getSupposedUrl(parent.getUrl(), relativePath);
       if (supposed.equals(child.getUrl())) {

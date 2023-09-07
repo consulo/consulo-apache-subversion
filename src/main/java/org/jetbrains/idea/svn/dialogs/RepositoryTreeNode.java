@@ -15,14 +15,12 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.CommonBundle;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.util.NotNullFunction;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.FilteringIterator;
-import javax.annotation.Nonnull;
-
+import consulo.application.ApplicationManager;
+import consulo.application.CommonBundle;
+import consulo.disposer.Disposable;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.collection.FilteringIterator;
+import consulo.util.lang.ObjectUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
@@ -30,12 +28,11 @@ import org.jetbrains.idea.svn.dialogs.browserCache.NodeLoadState;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.tree.TreeNode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 
 public class RepositoryTreeNode implements TreeNode, Disposable {
 
@@ -81,7 +78,7 @@ public class RepositoryTreeNode implements TreeNode, Disposable {
   }
 
   public TreeNode getChildAt(int childIndex) {
-    return (TreeNode) getChildren().get(childIndex);
+    return (TreeNode)getChildren().get(childIndex);
   }
 
   public int getIndex(TreeNode node) {
@@ -108,7 +105,7 @@ public class RepositoryTreeNode implements TreeNode, Disposable {
   @Nullable
   public TreeNode getNextChildByKey(final String key, final boolean isFolder) {
     final ByKeySelectedSearcher searcher = (isFolder) ? new FolderByKeySelectedSearcher(key, myChildren) :
-                                                 new FileByKeySelectedSearcher(key, myChildren);
+      new FileByKeySelectedSearcher(key, myChildren);
     return searcher.getNextSelectedByKey();
   }
 
@@ -125,7 +122,7 @@ public class RepositoryTreeNode implements TreeNode, Disposable {
     if (removeCurrentChildren || NodeLoadState.EMPTY.equals(myChildrenLoadState)) {
       initChildren();
     }
-    
+
     myModel.getCacheLoader().load(this, expander);
   }
 
@@ -162,7 +159,7 @@ public class RepositoryTreeNode implements TreeNode, Disposable {
   }
 
   public boolean isRepositoryRoot() {
-    return ! (myUserObject instanceof DirectoryEntry);
+    return !(myUserObject instanceof DirectoryEntry);
   }
 
   @Nonnull
@@ -172,7 +169,9 @@ public class RepositoryTreeNode implements TreeNode, Disposable {
 
   @Nonnull
   public List<RepositoryTreeNode> getAlreadyLoadedChildren() {
-    return ContainerUtil.collect(myChildren.iterator(), FilteringIterator.instanceOf(RepositoryTreeNode.class));
+    return myChildren.stream().map(treeNode -> ObjectUtil.tryCast(treeNode, RepositoryTreeNode.class))
+                     .filter(Objects::nonNull)
+                     .toList();
   }
 
   public boolean isDisposed() {
@@ -204,7 +203,7 @@ public class RepositoryTreeNode implements TreeNode, Disposable {
 
     for (TreeNode child : children) {
       if (child instanceof RepositoryTreeNode) {
-        ((RepositoryTreeNode) child).setParentNode(this);
+        ((RepositoryTreeNode)child).setParentNode(this);
         myChildren.add(child);
         myChildrenLoadState = oldState;
       }
@@ -242,18 +241,18 @@ public class RepositoryTreeNode implements TreeNode, Disposable {
     return myChildrenLoadState;
   }
 
-  public void doOnSubtree(@Nonnull NotNullFunction<RepositoryTreeNode, Object> function) {
+  public void doOnSubtree(@Nonnull Function<RepositoryTreeNode, Object> function) {
     new SubTreeWalker(this, function).execute();
   }
 
   private static class SubTreeWalker {
 
     @Nonnull
-	private final RepositoryTreeNode myNode;
+    private final RepositoryTreeNode myNode;
     @Nonnull
-	private final NotNullFunction<RepositoryTreeNode, Object> myFunction;
+    private final Function<RepositoryTreeNode, Object> myFunction;
 
-    private SubTreeWalker(@Nonnull RepositoryTreeNode node, @Nonnull NotNullFunction<RepositoryTreeNode, Object> function) {
+    private SubTreeWalker(@Nonnull RepositoryTreeNode node, @Nonnull Function<RepositoryTreeNode, Object> function) {
       myNode = node;
       myFunction = function;
     }
@@ -263,9 +262,9 @@ public class RepositoryTreeNode implements TreeNode, Disposable {
     }
 
     private void executeImpl(final RepositoryTreeNode node) {
-      myFunction.fun(node);
+      myFunction.apply(node);
       for (RepositoryTreeNode child : node.getAlreadyLoadedChildren()) {
-        myFunction.fun(child);
+        myFunction.apply(child);
       }
     }
   }

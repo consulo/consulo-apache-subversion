@@ -15,20 +15,19 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.execution.CommandLineUtil;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.EnvironmentUtil;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.execution.ParametersListUtil;
-
-import javax.annotation.Nullable;
+import consulo.process.CommandLineUtil;
+import consulo.process.cmd.GeneralCommandLine;
+import consulo.process.cmd.ParametersListUtil;
+import consulo.process.local.EnvironmentUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnConfigurationState;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Konstantin Kolosovsky.
@@ -109,7 +108,7 @@ public class SshTunnelRuntimeModule extends BaseCommandRuntimeModule {
     String result = "";
 
     if (tunnel != null && tunnel.startsWith("$")) {
-      result = ObjectUtils.notNull(StringUtil.substringBefore(tunnel, " "), tunnel).substring(1);
+      result = ObjectUtil.notNull(StringUtil.substringBefore(tunnel, " "), tunnel).substring(1);
     }
 
     return result;

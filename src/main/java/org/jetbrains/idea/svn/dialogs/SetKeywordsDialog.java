@@ -15,20 +15,19 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.Function;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.function.Condition;
 import org.jetbrains.idea.svn.properties.PropertyValue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,13 +43,12 @@ public class SetKeywordsDialog extends DialogWrapper {
   private static final List<String> KNOWN_KEYWORDS =
     ContainerUtil.newArrayList("Id", "HeadURL", "LastChangedDate", "LastChangedRevision", "LastChangedBy");
 
-  private static final Map<String, String> KNOWN_KEYWORD_ALIASES = ContainerUtil.<String, String>immutableMapBuilder()
-    .put("URL", "HeadURL")
-    .put("Date", "LastChangedDate")
-    .put("Revision", "LastChangedRevision")
-    .put("Rev", "LastChangedRevision")
-    .put("Author", "LastChangedBy")
-    .build();
+  private static final Map<String, String> KNOWN_KEYWORD_ALIASES = Map.of(
+    "URL", "HeadURL",
+    "Date", "LastChangedDate",
+    "Rev", "LastChangedRevision",
+    "Author", "LastChangedBy"
+  );
 
   @Nullable
   private final PropertyValue myKeywordsValue;
@@ -76,12 +74,7 @@ public class SetKeywordsDialog extends DialogWrapper {
       }
     });
 
-    return StringUtil.nullize(StringUtil.join(selectedKeywords, new Function<JCheckBox, String>() {
-      @Override
-      public String fun(@Nonnull JCheckBox keywordOption) {
-        return keywordOption.getText();
-      }
-    }, " "));
+    return StringUtil.nullize(StringUtil.join(selectedKeywords, keywordOption -> keywordOption.getText(), " "));
   }
 
   @Nullable
@@ -123,11 +116,11 @@ public class SetKeywordsDialog extends DialogWrapper {
    */
   @Nonnull
   private static Set<String> parseKeywords(@Nullable PropertyValue keywordsValue) {
-    Set<String> result = ContainerUtil.newHashSet();
+    Set<String> result = new HashSet<>();
 
     if (keywordsValue != null) {
       for (String keyword : StringUtil.split(PropertyValue.toString(keywordsValue), " ")) {
-        result.add(ObjectUtils.notNull(KNOWN_KEYWORD_ALIASES.get(keyword), keyword));
+        result.add(ObjectUtil.notNull(KNOWN_KEYWORD_ALIASES.get(keyword), keyword));
       }
     }
 

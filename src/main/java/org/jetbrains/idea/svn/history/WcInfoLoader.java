@@ -15,12 +15,13 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.RepositoryLocation;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.RepositoryLocation;
+import consulo.util.collection.ContainerUtil;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.util.lang.Comparing;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;

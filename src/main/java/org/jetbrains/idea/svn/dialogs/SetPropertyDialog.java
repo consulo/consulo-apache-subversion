@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.help.HelpManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.ui.DocumentAdapter;
+import consulo.project.Project;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.application.HelpManager;
+import consulo.logging.Logger;
+import consulo.ui.ex.awt.DialogWrapper;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,7 +51,8 @@ import java.util.TreeSet;
 /**
  * @author alex
  */
-public class SetPropertyDialog extends DialogWrapper {
+public class SetPropertyDialog extends DialogWrapper
+{
 
   private static final Logger LOG = Logger.getInstance("org.jetbrains.idea.svn.dialogs.SetPropertyDialog");
 

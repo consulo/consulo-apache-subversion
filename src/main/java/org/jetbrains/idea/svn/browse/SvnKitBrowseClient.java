@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.browse;
 
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
@@ -57,7 +57,8 @@ public class SvnKitBrowseClient extends BaseSvnClient implements BrowseClient {
   }
 
   @Override
-  public long createDirectory(@Nonnull SvnTarget target, @Nonnull String message, boolean makeParents) throws VcsException {
+  public long createDirectory(@Nonnull SvnTarget target, @Nonnull String message, boolean makeParents) throws VcsException
+  {
     assertUrl(target);
 
     try {

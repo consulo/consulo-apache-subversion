@@ -15,17 +15,15 @@
  */
 package org.jetbrains.idea.svn.checkin;
 
-import com.intellij.execution.process.ProcessOutputTypes;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressManager;
+import consulo.application.progress.ProgressManager;
+import consulo.logging.Logger;
+import consulo.process.ProcessOutputTypes;
+import consulo.util.collection.ContainerUtil;
 import consulo.util.dataholder.Key;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.AbstractFilterChildren;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.AbstractFilterChildren;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
@@ -35,8 +33,11 @@ import org.jetbrains.idea.svn.status.StatusClient;
 import org.jetbrains.idea.svn.status.StatusType;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -98,7 +99,7 @@ public class CmdCheckinClient extends BaseSvnClient implements CheckinClient {
 
   @Nonnull
   private List<File> filterCommittables(@Nonnull List<File> committables) throws SvnBindException {
-    final Set<String> childrenOfSomebody = ContainerUtil.newHashSet();
+    final Set<String> childrenOfSomebody = new HashSet<>();
     new AbstractFilterChildren<File>() {
       @Override
       protected void sortAscending(List<File> list) {

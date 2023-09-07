@@ -15,26 +15,28 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.LocalChangeList;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.LocalChangeList;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.intellij.util.ObjectUtils.notNull;
-import static com.intellij.util.containers.ContainerUtil.*;
+import static consulo.util.collection.ContainerUtil.concat;
+import static consulo.util.lang.ObjectUtil.notNull;
 
 public class Intersection {
 
   @Nonnull
-  private final Map<String, String> myListComments = newHashMap();
+  private final Map<String, String> myListComments = new HashMap<>();
   @Nonnull
-  private final Map<String, List<Change>> myChangesByLists = newHashMap();
+  private final Map<String, List<Change>> myChangesByLists = new HashMap<>();
 
   public void add(@Nonnull LocalChangeList list, @Nonnull Change change) {
-    myChangesByLists.computeIfAbsent(list.getName(), key -> newArrayList()).add(change);
+    myChangesByLists.computeIfAbsent(list.getName(), key -> new ArrayList<>()).add(change);
     myListComments.put(list.getName(), notNull(list.getComment(), list.getName()));
   }
 

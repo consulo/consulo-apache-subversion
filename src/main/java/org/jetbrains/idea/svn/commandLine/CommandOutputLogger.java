@@ -1,9 +1,9 @@
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.process.event.ProcessAdapter;
+import consulo.process.event.ProcessEvent;
+import consulo.application.ApplicationManager;
+import consulo.logging.Logger;
 import consulo.util.dataholder.Key;
 
 /**

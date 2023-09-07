@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.CommandLineUtil;
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.PtyCommandLine;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.ide.impl.idea.execution.configurations.PtyCommandLine;
+import consulo.process.CommandLineUtil;
+import consulo.process.ExecutionException;
+import consulo.process.cmd.GeneralCommandLine;
+import consulo.util.collection.Lists;
 import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nonnull;
@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class TerminalExecutor extends CommandExecutor {
 
-  private final List<InteractiveCommandListener> myInteractiveListeners = ContainerUtil.createLockFreeCopyOnWriteList();
+  private final List<InteractiveCommandListener> myInteractiveListeners = Lists.newLockFreeCopyOnWriteList();
 
   public TerminalExecutor(@Nonnull @NonNls String exePath, @Nonnull Command command) {
     super(exePath, command);
@@ -89,7 +89,8 @@ public class TerminalExecutor extends CommandExecutor {
 
   @Nonnull
   @Override
-  protected Process createProcess() throws ExecutionException {
+  protected Process createProcess() throws ExecutionException
+  {
     List<String> parameters = escapeArguments(buildParameters());
 
     return createProcess(parameters);
@@ -101,7 +102,8 @@ public class TerminalExecutor extends CommandExecutor {
   }
 
   @Nonnull
-  protected Process createProcess(@Nonnull List<String> parameters) throws ExecutionException {
+  protected Process createProcess(@Nonnull List<String> parameters) throws ExecutionException
+  {
     try {
       return ((PtyCommandLine)myCommandLine).startProcessWithPty(parameters, false);
     }

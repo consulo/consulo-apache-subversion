@@ -15,14 +15,18 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.history.*;
-import javax.annotation.Nullable;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.history.HistoryAsTreeProvider;
+import consulo.versionControlSystem.history.VcsAbstractHistorySession;
+import consulo.versionControlSystem.history.VcsFileRevision;
+import consulo.versionControlSystem.history.VcsHistorySession;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 
@@ -39,8 +43,13 @@ public class SvnHistorySession extends VcsAbstractHistorySession {
   private final boolean myHaveMergeSources;
   private final boolean myHasLocalSource;
 
-  public SvnHistorySession(SvnVcs vcs, final List<VcsFileRevision> revisions, final FilePath committedPath, final boolean haveMergeSources,
-                           @Nullable final VcsRevisionNumber currentRevision, boolean skipRefreshOnStart, boolean source) {
+  public SvnHistorySession(SvnVcs vcs,
+                           final List<VcsFileRevision> revisions,
+                           final FilePath committedPath,
+                           final boolean haveMergeSources,
+                           @Nullable final VcsRevisionNumber currentRevision,
+                           boolean skipRefreshOnStart,
+                           boolean source) {
     super(revisions, currentRevision);
     myVcs = vcs;
     myCommittedPath = committedPath;

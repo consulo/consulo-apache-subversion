@@ -1,10 +1,13 @@
 package org.jetbrains.idea.svn.difftool.properties;
 
-import com.intellij.diff.DiffContext;
-import com.intellij.diff.FrameDiffTool;
-import com.intellij.diff.requests.DiffRequest;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.diff.request.DiffRequest;
+import consulo.ide.impl.idea.diff.DiffContext;
+import consulo.ide.impl.idea.diff.FrameDiffTool;
+
 import javax.annotation.Nonnull;
 
+@ExtensionImpl
 public class SvnPropertiesDiffTool implements FrameDiffTool {
   @Nonnull
   @Override

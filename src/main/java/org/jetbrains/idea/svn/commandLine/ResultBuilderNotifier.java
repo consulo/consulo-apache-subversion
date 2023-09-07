@@ -1,17 +1,17 @@
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
-import com.intellij.execution.process.ProcessOutputTypes;
+import consulo.process.ProcessOutputTypes;
+import consulo.process.event.ProcessAdapter;
+import consulo.process.event.ProcessEvent;
 import consulo.util.dataholder.Key;
-import com.intellij.openapi.vcs.LineHandlerHelper;
-import javax.annotation.Nonnull;
+import consulo.versionControlSystem.util.LineHandlerHelper;
 
+import javax.annotation.Nonnull;
 import java.util.Iterator;
 
 /**
-* @author Konstantin Kolosovsky.
-*/
+ * @author Konstantin Kolosovsky.
+ */
 public class ResultBuilderNotifier extends ProcessAdapter {
 
   /**
@@ -35,7 +35,8 @@ public class ResultBuilderNotifier extends ProcessAdapter {
   public void processTerminated(final ProcessEvent event) {
     try {
       forceNewLine();
-    } finally {
+    }
+    finally {
       myResultBuilder.processTerminated(event.getExitCode());
     }
   }

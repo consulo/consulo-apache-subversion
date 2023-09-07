@@ -15,16 +15,13 @@
  */
 package org.jetbrains.idea.svn.treeConflict;
 
-import com.intellij.history.LocalHistory;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ChangesUtil;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.localHistory.LocalHistory;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ChangesUtil;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -35,8 +32,11 @@ import org.jetbrains.idea.svn.status.StatusType;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -63,7 +63,8 @@ public class SvnTreeConflictResolver {
     myDirtyScopeManager = VcsDirtyScopeManager.getInstance(myVcs.getProject());
   }
 
-  public void resolveSelectTheirsFull() throws VcsException {
+  public void resolveSelectTheirsFull() throws VcsException
+  {
     final LocalHistory localHistory = LocalHistory.getInstance();
     String pathPresentation = TreeConflictRefreshablePanel.filePath(myPath);
 
@@ -92,7 +93,8 @@ public class SvnTreeConflictResolver {
     }
   }
 
-  private void revertAdditional() throws VcsException {
+  private void revertAdditional() throws VcsException
+  {
     if (myRevertPath != null) {
       final File ioFile = myRevertPath.getIOFile();
       final Status status = myVcs.getFactory(ioFile).createStatusClient().doStatus(ioFile, false);
@@ -105,14 +107,16 @@ public class SvnTreeConflictResolver {
     }
   }
 
-  public void resolveSelectMineFull() throws VcsException {
+  public void resolveSelectMineFull() throws VcsException
+  {
     final File ioFile = myPath.getIOFile();
 
     myVcs.getFactory(ioFile).createConflictClient().resolve(ioFile, Depth.INFINITY, true, true, true);
     pathDirty(myPath);
   }
 
-  private void updateToTheirsFull() throws VcsException {
+  private void updateToTheirsFull() throws VcsException
+  {
     final File ioFile = myPath.getIOFile();
     Status status = myVcs.getFactory(ioFile).createStatusClient().doStatus(ioFile, false);
 
@@ -124,7 +128,7 @@ public class SvnTreeConflictResolver {
       updateFile(ioFile, SVNRevision.HEAD);
       FileUtil.delete(ioFile);
     } else {
-      Set<File> usedToBeAdded = myPath.isDirectory() ? getDescendantsWithAddedStatus(ioFile) : ContainerUtil.<File>newHashSet();
+      Set<File> usedToBeAdded = myPath.isDirectory() ? getDescendantsWithAddedStatus(ioFile) : new HashSet<>();
 
       revert(ioFile);
       for (File wasAdded : usedToBeAdded) {
@@ -136,7 +140,7 @@ public class SvnTreeConflictResolver {
 
   @Nonnull
   private Set<File> getDescendantsWithAddedStatus(@Nonnull File ioFile) throws SvnBindException {
-    final Set<File> result = ContainerUtil.newHashSet();
+    final Set<File> result = new HashSet<>();
     StatusClient statusClient = myVcs.getFactory(ioFile).createStatusClient();
 
     statusClient.doStatus(ioFile, SVNRevision.UNDEFINED, Depth.INFINITY, false, false, false, false,
@@ -152,7 +156,8 @@ public class SvnTreeConflictResolver {
     return result;
   }
 
-  private void revert(@Nonnull File file) throws VcsException {
+  private void revert(@Nonnull File file) throws VcsException
+  {
     myVcs.getFactory(file).createRevertClient().revert(Collections.singletonList(file), Depth.INFINITY, null);
   }
 

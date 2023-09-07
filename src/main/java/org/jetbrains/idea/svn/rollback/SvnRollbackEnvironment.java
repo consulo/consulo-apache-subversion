@@ -15,17 +15,16 @@
  */
 package org.jetbrains.idea.svn.rollback;
 
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Couple;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.rollback.DefaultRollbackEnvironment;
-import com.intellij.openapi.vcs.rollback.RollbackProgressListener;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.ide.impl.idea.openapi.vcs.rollback.DefaultRollbackEnvironment;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.Couple;
+import consulo.util.lang.Pair;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.rollback.RollbackProgressListener;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.info.Info;
@@ -33,6 +32,7 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;

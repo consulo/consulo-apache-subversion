@@ -21,15 +21,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import consulo.component.persist.Storage;
+import consulo.ide.ServiceManager;
 import jakarta.inject.Singleton;
 
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.component.persist.PersistentStateComponent;
+import consulo.component.persist.State;
+import consulo.component.persist.StoragePathMacros;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
 
 /**
  * Holds what working copies we have for URLs

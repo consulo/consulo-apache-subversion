@@ -15,9 +15,8 @@
  */
 package org.jetbrains.idea.svn.conflict;
 
-import com.intellij.util.containers.ContainerUtil;
 import javax.annotation.Nonnull;
-
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -48,7 +47,7 @@ public enum ConflictReason {
   MOVED_HERE("moved-here");
 
   @Nonnull
-  private static final Map<String, ConflictReason> ourAllReasons = ContainerUtil.newHashMap();
+  private static final Map<String, ConflictReason> ourAllReasons = new HashMap<>();
 
   static {
     for (ConflictReason reason : ConflictReason.values()) {

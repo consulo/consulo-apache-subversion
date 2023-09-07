@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.api;
 
-import com.intellij.util.containers.ContainerUtil;
 import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import org.tmatesoft.svn.core.SVNNodeKind;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -37,7 +37,7 @@ public enum NodeKind {
   @XmlEnumValue("none") NONE("none");
 
   @Nonnull
-  private static final Map<String, NodeKind> ourAllNodeKinds = ContainerUtil.newHashMap();
+  private static final Map<String, NodeKind> ourAllNodeKinds = new HashMap<>();
 
   static {
     for (NodeKind kind : NodeKind.values()) {

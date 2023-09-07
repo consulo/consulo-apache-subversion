@@ -15,19 +15,19 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.process.ProcessWrapper;
-import com.intellij.execution.util.ExecUtil;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.Function;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.application.util.SystemInfo;
+import consulo.ide.impl.idea.execution.process.ProcessWrapper;
+import consulo.process.ExecutionException;
+import consulo.process.local.ExecUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.annotations.NonNls;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.io.*;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Konstantin Kolosovsky.
@@ -139,12 +139,7 @@ public class WinTerminalExecutor extends TerminalExecutor {
   @Nonnull
   @Override
   protected List<String> escapeArguments(@Nonnull List<String> arguments) {
-    return ContainerUtil.map(arguments, new Function<String, String>() {
-      @Override
-      public String fun(String argument) {
-        return needQuote(argument) && !isQuoted(argument) ? quote(argument) : argument;
-      }
-    });
+    return ContainerUtil.map(arguments, argument -> needQuote(argument) && !isQuoted(argument) ? quote(argument) : argument);
   }
 
   @Nonnull

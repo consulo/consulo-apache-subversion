@@ -15,21 +15,23 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.changes.*;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.progress.ProgressIndicator;
+import consulo.document.FileDocumentManager;
+import consulo.logging.Logger;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Comparing;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ChangelistBuilder;
+import consulo.versionControlSystem.change.ChangesUtil;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.change.CurrentContentRevision;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.status.FileStatus;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationManager;
 import org.jetbrains.idea.svn.history.SimplePropertyRevision;
@@ -40,14 +42,17 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.jetbrains.idea.svn.actions.ShowPropertiesDiffAction.getPropertyList;
 
 class SvnChangeProviderContext implements StatusReceiver {
-  private static final Logger LOG = Logger.getInstance("org.jetbrains.idea.svn.SvnChangeProviderContext");
+  private static final Logger LOG = Logger.getInstance(SvnChangeProviderContext.class);
 
   @Nonnull
   private final ChangelistBuilder myChangelistBuilder;
@@ -57,9 +62,9 @@ class SvnChangeProviderContext implements StatusReceiver {
   private final List<SvnChangedFile> myDeletedFiles = ContainerUtil.newArrayList();
   // for files moved in a subtree, which were the targets of merge (for instance).
   @Nonnull
-  private final Map<String, Status> myTreeConflicted = ContainerUtil.newHashMap();
+  private final Map<String, Status> myTreeConflicted = new HashMap<>();
   @Nonnull
-  private final Map<FilePath, String> myCopyFromURLs = ContainerUtil.newHashMap();
+  private final Map<FilePath, String> myCopyFromURLs = new HashMap<>();
   @Nonnull
   private final SvnVcs myVcs;
   private final SvnBranchConfigurationManager myBranchConfigurationManager;
@@ -171,7 +176,11 @@ class SvnChangeProviderContext implements StatusReceiver {
 
   public void addCopiedFile(@Nonnull FilePath filePath, @Nonnull Status status, @Nonnull String copyFromURL) {
     myCopiedFiles.add(new SvnChangedFile(filePath, status, copyFromURL));
-    ContainerUtil.putIfNotNull(filePath, status.getCopyFromURL(), myCopyFromURLs);
+
+    String value = status.getCopyFromURL();
+    if (value != null) {
+      myCopyFromURLs.put(filePath, value);
+    }
   }
 
   void processStatusFirstPass(@Nonnull FilePath filePath, @Nonnull Status status) throws SVNException {
@@ -252,7 +261,7 @@ class SvnChangeProviderContext implements StatusReceiver {
       }
       else if (status.getTreeConflict() != null) {
         myChangelistBuilder.processChange(createChange(SvnContentRevision.createBaseRevision(myVcs, filePath, status),
-                                                       CurrentContentRevision.create(filePath), FileStatus.MODIFIED, status),
+                                                      CurrentContentRevision.create(filePath), FileStatus.MODIFIED, status),
                                           SvnVcs.getKey());
       }
       checkSwitched(filePath, status, fStatus);

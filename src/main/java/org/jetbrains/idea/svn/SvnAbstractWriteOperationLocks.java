@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.vcs.changes.FilePathsHelper;
-import com.intellij.util.TimeoutUtil;
+import consulo.logging.Logger;
+import consulo.util.lang.TimeoutUtil;
+import consulo.versionControlSystem.change.FilePathsHelper;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.table.ISqlJetBusyHandler;
 import org.tmatesoft.sqljet.core.table.ISqlJetTransaction;

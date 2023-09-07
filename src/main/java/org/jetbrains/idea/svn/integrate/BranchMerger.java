@@ -15,10 +15,11 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.logging.Logger;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;

@@ -15,21 +15,21 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.ide.actions.ContextHelpAction;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowAnchor;
-import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentFactory;
+import consulo.disposer.Disposable;
+import consulo.language.editor.CommonDataKeys;
+import consulo.project.Project;
+import consulo.project.ProjectManager;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.ContextHelpAction;
+import consulo.language.editor.PlatformDataKeys;
+import consulo.application.dumb.DumbAware;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.ui.ex.content.Content;
+import consulo.ui.ex.toolWindow.ToolWindowAnchor;
+import consulo.ui.ex.content.ContentFactory;
+import consulo.ui.ex.toolWindow.ToolWindow;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserDialog;
 
 import javax.swing.*;
@@ -59,7 +59,8 @@ public class BrowseRepositoryAction extends AnAction implements DumbAware {
     }
   }
 
-  private static class RepositoryToolWindowPanel extends JPanel implements Disposable {
+  private static class RepositoryToolWindowPanel extends JPanel implements Disposable
+  {
     private final RepositoryBrowserDialog myDialog;
     private final Project myProject;
 

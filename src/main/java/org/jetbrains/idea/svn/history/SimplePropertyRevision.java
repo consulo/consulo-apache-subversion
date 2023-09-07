@@ -1,12 +1,12 @@
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.properties.PropertyData;
 
 import java.util.List;
@@ -20,7 +20,8 @@ public class SimplePropertyRevision implements ContentRevision, PropertyRevision
 
   @Nullable
   @Override
-  public List<PropertyData> getProperties() throws VcsException {
+  public List<PropertyData> getProperties() throws VcsException
+  {
     return myProperty;
   }
 

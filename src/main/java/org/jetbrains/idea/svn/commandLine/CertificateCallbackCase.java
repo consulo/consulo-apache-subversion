@@ -15,12 +15,13 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.util.text.StringUtil;
-import javax.annotation.Nonnull;
+import consulo.application.util.registry.Registry;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.

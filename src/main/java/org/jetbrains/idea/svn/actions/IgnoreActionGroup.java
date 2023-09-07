@@ -15,24 +15,24 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import java.util.Map;
-import java.util.Set;
-
+import consulo.application.dumb.DumbAware;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.util.lang.ref.Ref;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.ignore.FileGroupInfo;
 import org.jetbrains.idea.svn.ignore.IgnoreGroupHelperAction;
 import org.jetbrains.idea.svn.ignore.IgnoreInfoGetter;
 import org.jetbrains.idea.svn.ignore.SvnPropertyService;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vfs.VirtualFile;
 
-public class IgnoreActionGroup extends DefaultActionGroup implements DumbAware {
+import java.util.Map;
+import java.util.Set;
+
+public class IgnoreActionGroup extends DefaultActionGroup implements DumbAware
+{
   private final IgnoreGroupHelperAction myHelperAction;
   private final IgnoreInfoGetterStub myGetterStub;
   
@@ -74,7 +74,7 @@ public class IgnoreActionGroup extends DefaultActionGroup implements DumbAware {
     if ((e.getPresentation().isEnabled())) {
       removeAll();
       if (myHelperAction.allAreIgnored()) {
-        final Project project = e.getProject();
+        final Project project = e.getData(Project.KEY);
         SvnVcs vcs = SvnVcs.getInstance(project);
 
         final Ref<Boolean> filesOk = new Ref<>(Boolean.FALSE);

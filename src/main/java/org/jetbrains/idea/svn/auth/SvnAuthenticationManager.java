@@ -15,33 +15,33 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Getter;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.ThrowableComputable;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.util.EventDispatcher;
-import com.intellij.util.SystemProperties;
-import com.intellij.util.messages.Topic;
-import com.intellij.util.net.HttpConfigurable;
-import com.intellij.util.proxy.CommonProxy;
-import com.intellij.util.ui.UIUtil;
 import com.trilead.ssh2.auth.AgentProxy;
+import consulo.application.Application;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.util.function.ThrowableComputable;
+import consulo.component.ProcessCanceledException;
+import consulo.component.messagebus.Topic;
+import consulo.disposer.Disposable;
+import consulo.http.HttpProxyManager;
+import consulo.http.impl.internal.proxy.CommonProxy;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.ide.impl.idea.openapi.util.Getter;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.proxy.EventDispatcher;
+import consulo.ui.ModalityState;
+import consulo.ui.ex.awt.Messages;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.util.io.FilePermissionCopier;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.SystemProperties;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
 import org.intellij.lang.annotations.MagicConstant;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.config.ProxyGroup;
 import org.jetbrains.idea.svn.config.SvnServerFileKeys;
@@ -53,12 +53,14 @@ import org.tmatesoft.svn.core.auth.*;
 import org.tmatesoft.svn.core.internal.wc.*;
 import org.tmatesoft.svn.core.io.SVNRepository;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
 
-import static com.intellij.util.WaitForProgressToShow.runOrInvokeLaterAboveProgress;
+import static consulo.project.util.WaitForProgressToShow.runOrInvokeLaterAboveProgress;
 
 /**
  * @author alex
@@ -108,11 +110,11 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
         myProject = null;
         if (myPersistentAuthenticationProviderProxy != null) {
           myPersistentAuthenticationProviderProxy.myProject = null;
-          ((MyKeyringMasterKeyProvider) myPersistentAuthenticationProviderProxy.myISVNGnomeKeyringPasswordProvider).myProject = null;
+          ((MyKeyringMasterKeyProvider)myPersistentAuthenticationProviderProxy.myISVNGnomeKeyringPasswordProvider).myProject = null;
           myPersistentAuthenticationProviderProxy = null;
         }
         if (myInteraction instanceof MySvnAuthenticationInteraction) {
-          ((MySvnAuthenticationInteraction) myInteraction).myProject = null;
+          ((MySvnAuthenticationInteraction)myInteraction).myProject = null;
         }
         if (myConfig != null) {
           myConfig.clear();
@@ -142,7 +144,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
     // USERNAME authentication is also requested in SVNSSHConnector.open()
     if (ISVNAuthenticationManager.SSH.equals(kind) ||
-        (ISVNAuthenticationManager.USERNAME.equals(kind) && SVN_SSH.equals(url.getProtocol()))) {
+      (ISVNAuthenticationManager.USERNAME.equals(kind) && SVN_SSH.equals(url.getProtocol()))) {
       result = url != null && !StringUtil.isEmpty(url.getUserInfo()) ? url.getUserInfo() : getDefaultOptions().getDefaultSSHUserName();
     }
 
@@ -186,9 +188,9 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
                                                          SVNAuthentication previousAuth, boolean authMayBeStored) {
       final SVNAuthentication authentication =
         myDelegate.requestClientAuthentication(kind, url, realm, errorMessage, previousAuth, authMayBeStored);
-      if (myProject != null && ! myProject.isDisposed()) {
+      if (myProject != null && !myProject.isDisposed()) {
         myProject.getMessageBus().syncPublisher(AUTHENTICATION_PROVIDER_LISTENER)
-          .requestClientAuthentication(kind, url, realm, errorMessage, previousAuth, authMayBeStored, authentication);
+                 .requestClientAuthentication(kind, url, realm, errorMessage, previousAuth, authMayBeStored, authentication);
       }
       return authentication;
     }
@@ -199,9 +201,9 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
                                           Object certificate,
                                           boolean resultMayBeStored) {
       final int result = myDelegate.acceptServerAuthentication(url, realm, certificate, resultMayBeStored);
-      if (myProject != null && ! myProject.isDisposed()) {
+      if (myProject != null && !myProject.isDisposed()) {
         myProject.getMessageBus().syncPublisher(AUTHENTICATION_PROVIDER_LISTENER)
-          .acceptServerAuthentication(url, realm, certificate, resultMayBeStored, result);
+                 .acceptServerAuthentication(url, realm, certificate, resultMayBeStored, result);
       }
       return result;
     }
@@ -209,14 +211,19 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
   public interface ISVNAuthenticationProviderListener {
     void requestClientAuthentication(String kind, SVNURL url, String realm, SVNErrorMessage errorMessage,
-      SVNAuthentication previousAuth, boolean authMayBeStored, SVNAuthentication authentication);
-    void acceptServerAuthentication(SVNURL url, String realm, Object certificate, boolean resultMayBeStored, @MagicConstant int acceptResult);
+                                     SVNAuthentication previousAuth, boolean authMayBeStored, SVNAuthentication authentication);
+
+    void acceptServerAuthentication(SVNURL url,
+                                    String realm,
+                                    Object certificate,
+                                    boolean resultMayBeStored,
+                                    @MagicConstant int acceptResult);
   }
 
   @Override
   public void setAuthenticationProvider(ISVNAuthenticationProvider provider) {
     ISVNAuthenticationProvider useProvider = provider;
-    if (! (provider instanceof AuthenticationProviderProxy)) {
+    if (!(provider instanceof AuthenticationProviderProxy)) {
       useProvider = new AuthenticationProviderProxy(provider);
     }
     myProvider = useProvider;
@@ -231,13 +238,13 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
   /**
    * Gets authentication provider without looking into thread local storage for providers.
-   *
+   * <p>
    * TODO:
    * Thread local storage is used "for some interaction with SVNKit" and is not always cleared correctly. So some threads contain
    * "passive provider" in thread local storage - and getProvider() returns this "passive provider". This occurs, for instance when
    * RemoteRevisionsCache is refreshed in background - after its execution, corresponding thread has "passive provider" in thread local
    * storage.
-   *
+   * <p>
    * As a result authentication fails in such cases (at least for command line implementation). To fix this, command line implementation is
    * updated not to check thread local storage at all.
    *
@@ -302,7 +309,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
   @Override
   public void requested(ProviderType type, SVNURL url, String realm, String kind, boolean canceled) {
-    if (ProviderType.interactive.equals(type) && (! canceled)) {
+    if (ProviderType.interactive.equals(type) && (!canceled)) {
       ourJustEntered.set(true);
     }
     myListener.getMulticaster().requested(type, url, realm, kind, canceled);
@@ -344,7 +351,11 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
         }
       };
       ensureListenerCreated();
-      myDelegate = new DefaultSVNPersistentAuthenticationProvider(authDir, userName, delegatingOptions, getDefaultOptions(), getHostOptionsProvider()) {
+      myDelegate = new DefaultSVNPersistentAuthenticationProvider(authDir,
+                                                                  userName,
+                                                                  delegatingOptions,
+                                                                  getDefaultOptions(),
+                                                                  getHostOptionsProvider()) {
         @Override
         protected IPasswordStorage[] createPasswordStorages(DefaultSVNOptions options) {
           final IPasswordStorage[] passwordStorages = super.createPasswordStorages(options);
@@ -363,8 +374,12 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
       myProject = project;
     }
 
-    public SVNAuthentication requestClientAuthentication(final String kind, final SVNURL url, final String realm, final SVNErrorMessage errorMessage,
-                                                         final SVNAuthentication previousAuth, final boolean authMayBeStored) {
+    public SVNAuthentication requestClientAuthentication(final String kind,
+                                                         final SVNURL url,
+                                                         final String realm,
+                                                         final SVNErrorMessage errorMessage,
+                                                         final SVNAuthentication previousAuth,
+                                                         final boolean authMayBeStored) {
       try {
         return wrapNativeCall(new ThrowableComputable<SVNAuthentication, SVNException>() {
           @Override
@@ -388,41 +403,40 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
     private void actualSavePermissions(String realm, SVNAuthentication auth) {
       final String actualKind = auth.getKind();
-          File dir = new File(myAuthDir, actualKind);
-          String fileName = SVNFileUtil.computeChecksum(realm);
-          File authFile = new File(dir, fileName);
+      File dir = new File(myAuthDir, actualKind);
+      String fileName = SVNFileUtil.computeChecksum(realm);
+      File authFile = new File(dir, fileName);
 
-          try {
-            ((ISVNPersistentAuthenticationProvider) myDelegate).saveAuthentication(auth, actualKind, realm);
-          }
-          catch (SVNException e) {
-            if (myProject != null) {
-              ApplicationManager.getApplication().invokeLater(new VcsBalloonProblemNotifier(myProject,
-                "<b>Problem when storing Subversion credentials:</b>&nbsp;" + e.getMessage(), MessageType.ERROR));
-            }
-          }
-          finally {
-            // do not make password file readonly
-            setWriteable(authFile);
-          }
+      try {
+        ((ISVNPersistentAuthenticationProvider)myDelegate).saveAuthentication(auth, actualKind, realm);
+      }
+      catch (SVNException e) {
+        if (myProject != null) {
+          ApplicationManager.getApplication().invokeLater(new VcsBalloonProblemNotifier(myProject,
+                                                                                        "<b>Problem when storing Subversion credentials:</b>&nbsp;" + e
+                                                                                          .getMessage(),
+                                                                                        NotificationType.ERROR));
+        }
+      }
+      finally {
+        // do not make password file readonly
+        setWriteable(authFile);
+      }
     }
 
     public void saveAuthentication(final SVNAuthentication auth, final String kind, final String realm) throws SVNException {
       try {
-        wrapNativeCall(new ThrowableComputable<Void, SVNException>() {
-          @Override
-          public Void compute() throws SVNException {
-            final Boolean fromInteractive = ourJustEntered.get();
-            ourJustEntered.set(null);
-            if (! myArtificialSaving && ! Boolean.TRUE.equals(fromInteractive)) {
-              // not what user entered
-              return null;
-            }
-            myListener.getMulticaster().saveAttemptStarted(ProviderType.persistent, auth.getURL(), realm, auth.getKind());
-            ((ISVNPersistentAuthenticationProvider) myDelegate).saveAuthentication(auth, kind, realm);
-            myListener.getMulticaster().saveAttemptFinished(ProviderType.persistent, auth.getURL(), realm, auth.getKind());
+        wrapNativeCall((ThrowableComputable<Void, SVNException>)() -> {
+          final Boolean fromInteractive = ourJustEntered.get();
+          ourJustEntered.set(null);
+          if (!myArtificialSaving && !Boolean.TRUE.equals(fromInteractive)) {
+            // not what user entered
             return null;
           }
+          myListener.getMulticaster().saveAttemptStarted(ProviderType.persistent, auth.getURL(), realm, auth.getKind());
+          ((ISVNPersistentAuthenticationProvider)myDelegate).saveAuthentication(auth, kind, realm);
+          myListener.getMulticaster().saveAttemptFinished(ProviderType.persistent, auth.getURL(), realm, auth.getKind());
+          return null;
         });
       }
       catch (SVNException e) {
@@ -434,12 +448,9 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     @Override
     public void saveFingerprints(final String realm, final byte[] fingerprints) {
       try {
-        wrapNativeCall(new ThrowableComputable<Void, SVNException>() {
-          @Override
-          public Void compute() throws SVNException {
-            ((ISVNPersistentAuthenticationProvider) myDelegate).saveFingerprints(realm, fingerprints);
-            return null;
-          }
+        wrapNativeCall((ThrowableComputable<Void, SVNException>)() -> {
+          ((ISVNPersistentAuthenticationProvider)myDelegate).saveFingerprints(realm, fingerprints);
+          return null;
         });
       }
       catch (SVNException e) {
@@ -454,7 +465,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
         return wrapNativeCall(new ThrowableComputable<byte[], SVNException>() {
           @Override
           public byte[] compute() throws SVNException {
-            return ((ISVNPersistentAuthenticationProvider) myDelegate).loadFingerprints(realm);
+            return ((ISVNPersistentAuthenticationProvider)myDelegate).loadFingerprints(realm);
           }
         });
       }
@@ -465,8 +476,9 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     }
 
     private final static int maxAttempts = 10;
+
     private void setWriteable(final File file) {
-      if (! file.exists()) return;
+      if (!file.exists()) return;
       if (file.getParentFile() == null) {
         return;
       }
@@ -475,9 +487,9 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
         try {
           final File tempFile = FileUtil.createTempFile(parent, "123", "1", true);
           FileUtil.delete(tempFile);
-          if (! file.renameTo(tempFile)) continue;
-          if (! file.createNewFile()) continue;
-          FileUtil.copy(tempFile, file);
+          if (!file.renameTo(tempFile)) continue;
+          if (!file.createNewFile()) continue;
+          FileUtil.copy(tempFile, file, FilePermissionCopier.BY_NIO2);
           FileUtil.delete(tempFile);
           return;
         }
@@ -493,7 +505,8 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     myKeyAlgorithm.put(Thread.currentThread(), keyAlgorithm);
     try {
       super.verifyHostKey(hostName, port, keyAlgorithm, hostKey);
-    } finally {
+    }
+    finally {
       myKeyAlgorithm.remove(Thread.currentThread());
     }
   }
@@ -540,7 +553,8 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
       final SVNAuthentication proxy = ProxySvnAuthentication.proxy(authentication, authStorageEnabled, myArtificialSaving);
       super.acknowledgeAuthentication(accepted, kind, realm, errorMessage, proxy);
       successSaving = true;
-    } finally {
+    }
+    finally {
       mySavePermissions.remove();
       if (myArtificialSaving) {
         myArtificialSaving = false;
@@ -560,13 +574,13 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
       if (agentProxy != null) {
         // TODO: Most likely this should be updated with new VcsNotifier api.
-        VcsBalloonProblemNotifier.showOverChangesView(myProject, errorMessage.getFullMessage(), MessageType.ERROR);
+        VcsBalloonProblemNotifier.showOverChangesView(myProject, errorMessage.getFullMessage(), NotificationType.ERROR);
       }
     }
   }
 
   public void acknowledgeForSSL(boolean accepted, SVNAuthentication proxy) {
-    if (accepted && proxy instanceof SVNSSLAuthentication && (((SVNSSLAuthentication) proxy).getCertificateFile() != null)) {
+    if (accepted && proxy instanceof SVNSSLAuthentication && (((SVNSSLAuthentication)proxy).getCertificateFile() != null)) {
       final SVNSSLAuthentication svnsslAuthentication = (SVNSSLAuthentication)proxy;
       final SVNURL url = svnsslAuthentication.getURL();
 
@@ -599,10 +613,11 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
       if (getConfig().isIsUseDefaultProxy()) {
         // ! use common proxy if it is set
         try {
-          final List<Proxy> proxies = HttpConfigurable.getInstance().getOnlyBySettingsSelector().select(new URI(url.toString()));
-          if (proxies != null && ! proxies.isEmpty()) {
+          HttpProxyManager httpProxyManager = HttpProxyManager.getInstance();
+          final List<Proxy> proxies = httpProxyManager.getOnlyBySettingsSelector().select(new URI(url.toString()));
+          if (proxies != null && !proxies.isEmpty()) {
             for (Proxy proxy : proxies) {
-              if (HttpConfigurable.isRealProxy(proxy) && Proxy.Type.HTTP.equals(proxy.type())) {
+              if (httpProxyManager.isRealProxy(proxy) && Proxy.Type.HTTP.equals(proxy.type())) {
                 final SocketAddress address = proxy.address();
                 if (address instanceof InetSocketAddress) {
                   return new MyPromptingProxyManager(((InetSocketAddress)address).getHostName(),
@@ -621,15 +636,15 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     String proxyExceptions = getServersPropertyIdea(host, "http-proxy-exceptions");
     String proxyExceptionsSeparator = ",";
     if (proxyExceptions == null) {
-        proxyExceptions = System.getProperty("http.nonProxyHosts");
-        proxyExceptionsSeparator = "|";
+      proxyExceptions = System.getProperty("http.nonProxyHosts");
+      proxyExceptionsSeparator = "|";
     }
     if (proxyExceptions != null) {
-      for(StringTokenizer exceptions = new StringTokenizer(proxyExceptions, proxyExceptionsSeparator); exceptions.hasMoreTokens();) {
-          String exception = exceptions.nextToken().trim();
-          if (DefaultSVNOptions.matches(exception, host)) {
-              return null;
-          }
+      for (StringTokenizer exceptions = new StringTokenizer(proxyExceptions, proxyExceptionsSeparator); exceptions.hasMoreTokens(); ) {
+        String exception = exceptions.nextToken().trim();
+        if (DefaultSVNOptions.matches(exception, host)) {
+          return null;
+        }
       }
     }
     String proxyPort = getServersPropertyIdea(host, HTTP_PROXY_PORT);
@@ -684,41 +699,42 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
   }
 
   private static class MySimpleProxyManager implements ISVNProxyManager {
-      protected String myProxyHost;
-      private final String myProxyPort;
-      protected String myProxyUser;
-      protected String myProxyPassword;
+    protected String myProxyHost;
+    private final String myProxyPort;
+    protected String myProxyUser;
+    protected String myProxyPassword;
 
-      public MySimpleProxyManager(String host, String port, String user, String password) {
-          myProxyHost = host;
-          myProxyPort = port == null ? "3128" : port;
-          myProxyUser = user;
-          myProxyPassword = password;
-      }
+    public MySimpleProxyManager(String host, String port, String user, String password) {
+      myProxyHost = host;
+      myProxyPort = port == null ? "3128" : port;
+      myProxyUser = user;
+      myProxyPassword = password;
+    }
 
-      public String getProxyHost() {
-          return myProxyHost;
-      }
+    public String getProxyHost() {
+      return myProxyHost;
+    }
 
-      public int getProxyPort() {
-          try {
-              return Integer.parseInt(myProxyPort);
-          } catch (NumberFormatException nfe) {
-              //
-          }
-          return 3128;
+    public int getProxyPort() {
+      try {
+        return Integer.parseInt(myProxyPort);
       }
+      catch (NumberFormatException nfe) {
+        //
+      }
+      return 3128;
+    }
 
-      public String getProxyUserName() {
-          return myProxyUser;
-      }
+    public String getProxyUserName() {
+      return myProxyUser;
+    }
 
-      public String getProxyPassword() {
-          return myProxyPassword;
-      }
+    public String getProxyPassword() {
+      return myProxyPassword;
+    }
 
-      public void acknowledgeProxyContext(boolean accepted, SVNErrorMessage errorMessage) {
-      }
+    public void acknowledgeProxyContext(boolean accepted, SVNErrorMessage errorMessage) {
+    }
   }
 
   // 30 seconds
@@ -783,7 +799,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
       }
     }
     Map globalProps = serversFile.getProperties("global");
-    return (String) globalProps.get(name);
+    return (String)globalProps.get(name);
   }
 
   public static boolean checkHostGroup(final String url, final String patterns, final String exceptions) {
@@ -796,15 +812,15 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     }
 
     final String host = svnurl.getHost();
-    return matches(patterns, host) && (! matches(exceptions, host));
+    return matches(patterns, host) && (!matches(exceptions, host));
   }
 
   private static boolean matches(final String pattern, final String host) {
     final StringTokenizer tokenizer = new StringTokenizer(pattern, ",");
-    while(tokenizer.hasMoreTokens()) {
+    while (tokenizer.hasMoreTokens()) {
       String token = tokenizer.nextToken();
       if (DefaultSVNOptions.matches(token, host)) {
-          return true;
+        return true;
       }
     }
     return false;
@@ -812,7 +828,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
   @Nullable
   public static String getGroupForHost(final String host, final IdeaSVNConfigFile serversFile) {
-    final Map<String,ProxyGroup> groups = serversFile.getAllGroups();
+    final Map<String, ProxyGroup> groups = serversFile.getAllGroups();
     for (Map.Entry<String, ProxyGroup> entry : groups.entrySet()) {
       if (matchesGroupPattern(host, entry.getValue().getPatterns())) return entry.getKey();
     }
@@ -822,19 +838,19 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
   // taken from default manager as is
   private static String getGroupName(Map groups, String host) {
     for (Object o : groups.keySet()) {
-      final String name = (String) o;
-      final String pattern = (String) groups.get(name);
+      final String name = (String)o;
+      final String pattern = (String)groups.get(name);
       if (matchesGroupPattern(host, pattern)) return name;
     }
-      return null;
+    return null;
   }
 
   private static boolean matchesGroupPattern(String host, String pattern) {
-    for(StringTokenizer tokens = new StringTokenizer(pattern, ","); tokens.hasMoreTokens();) {
-        String token = tokens.nextToken();
-        if (DefaultSVNOptions.matches(token, host)) {
-          return true;
-        }
+    for (StringTokenizer tokens = new StringTokenizer(pattern, ","); tokens.hasMoreTokens(); ) {
+      String token = tokens.nextToken();
+      if (DefaultSVNOptions.matches(token, host)) {
+        return true;
+      }
     }
     return false;
   }
@@ -845,12 +861,13 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
   }
 
   private static ModalityState getCurrent() {
-    if (ApplicationManager.getApplication().isDispatchThread()) {
-      return ModalityState.current();
+    Application application = Application.get();
+    if (application.isDispatchThread()) {
+      return application.getCurrentModalityState();
     }
     final ProgressIndicator pi = ProgressManager.getInstance().getProgressIndicator();
     if (pi == null) {
-      return ModalityState.defaultModalityState();
+      return application.getDefaultModalityState();
     }
     return pi.getModalityState();
   }
@@ -868,24 +885,28 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
     @Override
     public void warnOnAuthStorageDisabled(SVNURL url) {
-      VcsBalloonProblemNotifier.showOverChangesView(myProject, "Cannot store credentials: forbidden by \"store-auth-creds=no\"", MessageType.ERROR);
+      VcsBalloonProblemNotifier.showOverChangesView(myProject, "Cannot store credentials: forbidden by \"store-auth-creds=no\"",
+                                                    NotificationType.ERROR);
     }
 
     @Override
     public void warnOnPasswordStorageDisabled(SVNURL url) {
-      VcsBalloonProblemNotifier.showOverChangesView(myProject, "Cannot store password: forbidden by \"store-passwords=no\"", MessageType.ERROR);
+      VcsBalloonProblemNotifier.showOverChangesView(myProject, "Cannot store password: forbidden by \"store-passwords=no\"",
+                                                    NotificationType.ERROR);
     }
 
     @Override
     public void warnOnSSLPassphraseStorageDisabled(SVNURL url) {
-      VcsBalloonProblemNotifier.showOverChangesView(myProject, "Cannot store passphrase: forbidden by \"store-ssl-client-cert-pp=no\"", MessageType.ERROR);
+      VcsBalloonProblemNotifier.showOverChangesView(myProject, "Cannot store passphrase: forbidden by \"store-ssl-client-cert-pp=no\"",
+                                                    NotificationType.ERROR);
     }
 
     @Override
     public boolean promptForPlaintextPasswordSaving(SVNURL url, String realm) {
       final int answer = Messages.showYesNoDialog(myProject, String.format("Your password for authentication realm:\n" +
-        "%s\ncan only be stored to disk unencrypted. Would you like to store it in plaintext?", realm),
-        "Store the password in plaintext?", Messages.getQuestionIcon());
+                                                                             "%s\ncan only be stored to disk unencrypted. Would you like to store it in plaintext?",
+                                                                           realm),
+                                                  "Store the password in plaintext?", Messages.getQuestionIcon());
       return answer == Messages.YES;
     }
 
@@ -897,9 +918,9 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     @Override
     public boolean promptForSSLPlaintextPassphraseSaving(SVNURL url, String realm, File certificateFile, String certificateName) {
       final int answer = Messages.showYesNoDialog(myProject,
-        String.format("Your passphrase for " + certificateName + ":\n%s\ncan only be stored to disk unencrypted. Would you like to store it in plaintext?",
-                                                            certificateFile.getPath()),
-        "Store the passphrase in plaintext?", Messages.getQuestionIcon());
+                                                  String.format("Your passphrase for " + certificateName + ":\n%s\ncan only be stored to disk unencrypted. Would you like to store it in plaintext?",
+                                                                certificateFile.getPath()),
+                                                  "Store the passphrase in plaintext?", Messages.getQuestionIcon());
       return answer == Messages.YES;
     }
 
@@ -964,13 +985,13 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
 
       final boolean superValue = super.isStorePlainTextPasswords(realm, auth);
       final boolean value = mySavePermissions.allowed() || superValue;
-      if ((! value) && (! mySavePermissions.have())) {
+      if ((!value) && (!mySavePermissions.have())) {
         promptAndSaveWhenWeLackEncryption(realm, auth, new Getter<Boolean>() {
-                                                @Override
-                                                public Boolean get() {
-                                                  return myInteraction.promptForPlaintextPasswordSaving(myUrl, realm);
-                                                }
-                                              });
+          @Override
+          public Boolean get() {
+            return myInteraction.promptForPlaintextPasswordSaving(myUrl, realm);
+          }
+        });
       }
       return value;
     }
@@ -980,25 +1001,27 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
       if (USERNAME.equals(auth.getKind())) return true;
 
       final boolean value = mySavePermissions.allowed() || super.isStorePlainTextPassphrases(realm, auth);
-      if ((! value) && (! mySavePermissions.have())) {
+      if ((!value) && (!mySavePermissions.have())) {
         promptAndSaveWhenWeLackEncryption(realm, auth, new Getter<Boolean>() {
-                                                @Override
-                                                public Boolean get() {
-                                                  File file = null;
-                                                  String certificateName = null;
-                                                  if (auth instanceof SVNSSLAuthentication) {
-                                                    file = ((SVNSSLAuthentication) auth).getCertificateFile();
-                                                    certificateName = "client certificate";
-                                                  } else if (auth instanceof SVNSSHAuthentication) {
-                                                    file = ((SVNSSHAuthentication) auth).getPrivateKeyFile();
-                                                    certificateName = "private key file";
-                                                  } else {
-                                                    assert false;
-                                                  }
-                                                  return myInteraction.promptForSSLPlaintextPassphraseSaving(myUrl, realm,
-                                                           file, certificateName);
-                                                }
-                                              });
+          @Override
+          public Boolean get() {
+            File file = null;
+            String certificateName = null;
+            if (auth instanceof SVNSSLAuthentication) {
+              file = ((SVNSSLAuthentication)auth).getCertificateFile();
+              certificateName = "client certificate";
+            }
+            else if (auth instanceof SVNSSHAuthentication) {
+              file = ((SVNSSHAuthentication)auth).getPrivateKeyFile();
+              certificateName = "private key file";
+            }
+            else {
+              assert false;
+            }
+            return myInteraction.promptForSSLPlaintextPassphraseSaving(myUrl, realm,
+                                                                       file, certificateName);
+          }
+        });
       }
       return value;
     }
@@ -1008,10 +1031,11 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
       final boolean value;
       if (hasAuthStorageEnabledOption()) {
         value = super.isAuthStorageEnabled();
-      } else {
+      }
+      else {
         value = isTurned(getConfigFile().getPropertyValue("auth", "store-auth-creds"));
       }
-      if (! value) {
+      if (!value) {
         myInteraction.warnOnAuthStorageDisabled(myUrl);
       }
       return value;
@@ -1023,11 +1047,12 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
       final boolean value;
       if (storePasswords != null) {
         value = isTurned(storePasswords);
-      } else {
+      }
+      else {
         final String configValue = getConfigFile().getPropertyValue("auth", "store-passwords");
         value = isTurned(configValue);
       }
-      if (! value) {
+      if (!value) {
         myInteraction.warnOnPasswordStorageDisabled(myUrl);
       }
       return value;
@@ -1036,7 +1061,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     @Override
     public boolean isStoreSSLClientCertificatePassphrases() {
       final boolean value = super.isStoreSSLClientCertificatePassphrases();
-      if (! value) {
+      if (!value) {
         myInteraction.warnOnSSLPassphraseStorageDisabled(myUrl);
       }
       return value;
@@ -1077,7 +1102,8 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
           saveOnce[0] = Boolean.TRUE.equals(prompt.get());
           ApplicationManager.getApplication().executeOnPooledThread(actualSave);
         }, getCurrent(), myProject);
-      } else {
+      }
+      else {
         saveOnce[0] = Boolean.TRUE.equals(prompt.get());
         actualSave.run();
       }
@@ -1145,11 +1171,12 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
         }
       }
       if (sb.length() > 0) {
-        VcsBalloonProblemNotifier.showOverChangesView(myProject, sb.toString(), MessageType.ERROR);
+        VcsBalloonProblemNotifier.showOverChangesView(myProject, sb.toString(), NotificationType.ERROR);
         LOG.info(sb.toString());
       }
       return t;
-    } finally {
+    }
+    finally {
       NativeLogReader.clear();
       NativeLogReader.endTracking();
     }
@@ -1165,7 +1192,7 @@ public class SvnAuthenticationManager extends DefaultSVNAuthenticationManager im
     @Override
     public char[] getKeyringPassword(final String keyringName) throws SVNException {
       final String message = keyringName != null ? SvnBundle.message("gnome.keyring.prompt.named", keyringName)
-                                                 : SvnBundle.message("gnome.keyring.prompt.nameless");
+        : SvnBundle.message("gnome.keyring.prompt.nameless");
       final Ref<String> result = Ref.create();
       UIUtil.invokeAndWaitIfNeeded(new Runnable() {
         @Override

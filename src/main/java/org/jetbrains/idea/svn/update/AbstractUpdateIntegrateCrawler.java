@@ -15,10 +15,10 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.update.UpdatedFiles;
+import consulo.application.progress.ProgressIndicator;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.update.UpdatedFiles;
+import consulo.logging.Logger;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.SvnWCRootCrawler;

@@ -15,19 +15,18 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.LocalChangeList;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.Task;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ChangeListManager;
+import consulo.versionControlSystem.change.LocalChangeList;
+import consulo.versionControlSystem.util.VcsUtil;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -39,6 +38,7 @@ import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNException;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,7 +128,7 @@ public class SvnFormatWorker extends Task.Backgroundable {
         SvnVcs.getInstance(myProject).processChangeLists(myBeforeChangeLists);
       }
 
-      ApplicationManager.getApplication().getMessageBus().syncPublisher(SvnVcs.WC_CONVERTED).run();
+      ApplicationManager.getApplication().getMessageBus().syncPublisher(SvnVcs.WC_CONVERTED).wcConverted();
     }
   }
 

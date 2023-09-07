@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
+import consulo.util.lang.ObjectUtil;
+import consulo.versionControlSystem.FilePath;
+import org.jetbrains.idea.svn.status.Status;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.util.ObjectUtils;
-import org.jetbrains.idea.svn.status.Status;
 
 class SvnChangedFile {
 
@@ -53,7 +53,7 @@ class SvnChangedFile {
 
   @Nullable
   public String getCopyFromURL() {
-    return ObjectUtils.chooseNotNull(myCopyFromURL, myStatus.getCopyFromURL());
+    return ObjectUtil.chooseNotNull(myCopyFromURL, myStatus.getCopyFromURL());
   }
 
   @Override

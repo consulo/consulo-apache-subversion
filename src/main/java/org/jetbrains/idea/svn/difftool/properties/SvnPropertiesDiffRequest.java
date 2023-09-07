@@ -1,18 +1,19 @@
 package org.jetbrains.idea.svn.difftool.properties;
 
-import com.intellij.diff.contents.DiffContent;
-import com.intellij.diff.contents.DiffContentBase;
-import com.intellij.diff.contents.EmptyContent;
-import com.intellij.diff.requests.ContentDiffRequest;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.diff.content.DiffContent;
+import consulo.diff.content.DiffContentBase;
+import consulo.diff.content.EmptyContent;
+import consulo.diff.request.ContentDiffRequest;
+import consulo.util.collection.ContainerUtil;
+import consulo.virtualFileSystem.fileType.FileType;
 import org.jetbrains.idea.svn.properties.PropertyData;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class SvnPropertiesDiffRequest extends ContentDiffRequest {
+public class SvnPropertiesDiffRequest extends ContentDiffRequest
+{
   @Nonnull
   private final List<DiffContent> myContents;
   @Nonnull

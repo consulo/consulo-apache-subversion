@@ -22,12 +22,12 @@
  */
 package org.jetbrains.idea.svn.diff;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.actions.VcsContextFactory;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.CurrentContentRevision;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.action.VcsContextFactory;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.change.CurrentContentRevision;
+import consulo.virtualFileSystem.status.FileStatus;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNPropertyValue;

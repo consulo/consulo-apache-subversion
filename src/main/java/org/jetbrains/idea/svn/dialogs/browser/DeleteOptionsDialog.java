@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.vcs.VcsConfiguration;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.ui.JBUI;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.util.collection.ArrayUtil;
+import consulo.ui.ex.awt.JBUI;
+import consulo.project.Project;
+import consulo.ui.ex.awt.ScrollPaneFactory;
+import consulo.versionControlSystem.VcsConfiguration;
 import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nullable;

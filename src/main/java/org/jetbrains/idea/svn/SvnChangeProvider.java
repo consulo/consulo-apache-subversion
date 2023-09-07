@@ -15,30 +15,33 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.NotNullFactory;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.actions.VcsContextFactory;
-import com.intellij.openapi.vcs.changes.*;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.EventDispatcher;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.util.function.Computable;
+import consulo.document.Document;
+import consulo.document.FileDocumentManager;
+import consulo.ide.impl.idea.openapi.vcs.changes.ChangeListManagerImpl;
+import consulo.logging.Logger;
+import consulo.proxy.EventDispatcher;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.action.VcsContextFactory;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ChangeListManagerGate;
+import consulo.versionControlSystem.change.ChangeProvider;
+import consulo.versionControlSystem.change.ChangelistBuilder;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.change.CurrentContentRevision;
+import consulo.versionControlSystem.change.VcsDirtyScope;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
 import org.jetbrains.idea.svn.actions.CleanupWorker;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -49,24 +52,21 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.ISVNStatusFileProvider;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * @author max
  * @author yole
  */
 public class SvnChangeProvider implements ChangeProvider {
-  private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.SvnChangeProvider");
+  private static final Logger LOG = Logger.getInstance(SvnChangeProvider.class);
   public static final String PROPERTY_LAYER = "Property";
 
-  private static final NotNullFactory<Map<String, File>> NAME_TO_FILE_MAP_FACTORY = new NotNullFactory<Map<String, File>>() {
-    @Nonnull
-    @Override
-    public Map<String, File> create() {
-      return ContainerUtil.newHashMap();
-    }
-  };
+  private static final Function<String, Map<String, File>> NAME_TO_FILE_MAP_FACTORY = s -> new HashMap<>();
 
   @Nonnull
   private final SvnVcs myVcs;
@@ -78,10 +78,12 @@ public class SvnChangeProvider implements ChangeProvider {
   public SvnChangeProvider(@Nonnull SvnVcs vcs) {
     myVcs = vcs;
     myFactory = VcsContextFactory.SERVICE.getInstance();
-    mySvnFileUrlMapping = (SvnFileUrlMappingImpl) vcs.getSvnFileUrlMapping();
+    mySvnFileUrlMapping = (SvnFileUrlMappingImpl)vcs.getSvnFileUrlMapping();
   }
 
-  public void getChanges(@Nonnull VcsDirtyScope dirtyScope, @Nonnull ChangelistBuilder builder, @Nonnull ProgressIndicator progress,
+  public void getChanges(@Nonnull VcsDirtyScope dirtyScope,
+                         @Nonnull ChangelistBuilder builder,
+                         @Nonnull ProgressIndicator progress,
                          @Nonnull ChangeListManagerGate addGate) throws VcsException {
     final SvnScopeZipper zipper = new SvnScopeZipper(dirtyScope);
     zipper.run();
@@ -115,10 +117,12 @@ public class SvnChangeProvider implements ChangeProvider {
       final Set<NestedCopyInfo> nestedCopies = nestedCopiesBuilder.getCopies();
       mySvnFileUrlMapping.acceptNestedData(nestedCopies);
       putAdministrative17UnderVfsListener(nestedCopies);
-    } catch (SvnExceptionWrapper e) {
+    }
+    catch (SvnExceptionWrapper e) {
       LOG.info(e);
       throw new VcsException(e.getCause());
-    } catch (SVNException e) {
+    }
+    catch (SVNException e) {
       if (e.getCause() != null) {
         throw new VcsException(e.getMessage() + " " + e.getCause().getMessage(), e);
       }
@@ -131,10 +135,10 @@ public class SvnChangeProvider implements ChangeProvider {
    * TODO: code. So for now, checks for formats greater than 1.7 are not added here.
    */
   private static void putAdministrative17UnderVfsListener(Set<NestedCopyInfo> pointInfos) {
-    if (! SvnVcs.ourListenToWcDb) return;
+    if (!SvnVcs.ourListenToWcDb) return;
     final LocalFileSystem lfs = LocalFileSystem.getInstance();
     for (NestedCopyInfo info : pointInfos) {
-      if (WorkingCopyFormat.ONE_DOT_SEVEN.equals(info.getFormat()) && ! NestedCopyType.switched.equals(info.getType())) {
+      if (WorkingCopyFormat.ONE_DOT_SEVEN.equals(info.getFormat()) && !NestedCopyType.switched.equals(info.getType())) {
         final VirtualFile root = info.getFile();
         lfs.refreshIoFiles(Collections.singletonList(SvnUtil.getWcDb(new File(root.getPath()))), true, false, null);
       }
@@ -160,12 +164,12 @@ public class SvnChangeProvider implements ChangeProvider {
 
   @Nonnull
   private static ISVNStatusFileProvider createFileProvider(@Nonnull Map<String, SvnScopeZipper.MyDirNonRecursive> nonRecursiveMap) {
-    final Map<String, Map<String, File>> result = ContainerUtil.newHashMap();
+    final Map<String, Map<String, File>> result = new HashMap<>();
 
     for (SvnScopeZipper.MyDirNonRecursive item : nonRecursiveMap.values()) {
       File file = item.getDir().getIOFile();
 
-      Map<String, File> fileMap = ContainerUtil.getOrCreate(result, file.getAbsolutePath(), NAME_TO_FILE_MAP_FACTORY);
+      Map<String, File> fileMap = result.computeIfAbsent(file.getAbsolutePath(), NAME_TO_FILE_MAP_FACTORY);
       for (FilePath path : item.getChildrenList()) {
         fileMap.put(path.getName(), path.getIOFile());
       }
@@ -174,26 +178,22 @@ public class SvnChangeProvider implements ChangeProvider {
       // parent (and not file that was passed to doStatus()), gets null result and does not provide any status
       // see http://issues.tmatesoft.com/issue/SVNKIT-567 for details
       if (file.getParentFile() != null) {
-        Map<String, File> parentMap = ContainerUtil.getOrCreate(result, file.getParentFile().getAbsolutePath(), NAME_TO_FILE_MAP_FACTORY);
+        Map<String, File> parentMap = result.computeIfAbsent(file.getParentFile().getAbsolutePath(), NAME_TO_FILE_MAP_FACTORY);
 
         parentMap.put(file.getName(), file);
       }
     }
 
-    return new ISVNStatusFileProvider() {
-      @Override
-      public Map<String, File> getChildrenFiles(File parent) {
-        return result.get(parent.getAbsolutePath());
-      }
-    };
+    return parent -> result.get(parent.getAbsolutePath());
   }
 
-  private void processCopiedAndDeleted(@Nonnull SvnChangeProviderContext context, @Nullable VcsDirtyScope dirtyScope) throws SVNException {
-    for(SvnChangedFile copiedFile: context.getCopiedFiles()) {
+  private void processCopiedAndDeleted(@Nonnull SvnChangeProviderContext context,
+                                       @Nullable VcsDirtyScope dirtyScope) throws SVNException {
+    for (SvnChangedFile copiedFile : context.getCopiedFiles()) {
       context.checkCanceled();
       processCopiedFile(copiedFile, context, dirtyScope);
     }
-    for(SvnChangedFile deletedFile: context.getDeletedFiles()) {
+    for (SvnChangedFile deletedFile : context.getDeletedFiles()) {
       context.checkCanceled();
       context.processStatus(deletedFile.getFilePath(), deletedFile.getStatus());
     }
@@ -212,7 +212,7 @@ public class SvnChangeProvider implements ChangeProvider {
                                  @Nullable VcsDirtyScope dirtyScope) throws SVNException {
     boolean foundRename = false;
     final Status copiedStatus = copiedFile.getStatus();
-    final String copyFromURL = ObjectUtils.assertNotNull(copiedFile.getCopyFromURL());
+    final String copyFromURL = ObjectUtil.assertNotNull(copiedFile.getCopyFromURL());
     final Set<SvnChangedFile> deletedToDelete = new HashSet<>();
 
     for (SvnChangedFile deletedFile : context.getDeletedFiles()) {
@@ -317,6 +317,6 @@ public class SvnChangeProvider implements ChangeProvider {
   }
 
   public void doCleanup(@Nonnull List<VirtualFile> files) {
-    new CleanupWorker(VfsUtilCore.toVirtualFileArray(files), myVcs.getProject(), "action.Subversion.cleanup.progress.title").execute();
+    new CleanupWorker(VirtualFileUtil.toVirtualFileArray(files), myVcs.getProject(), "action.Subversion.cleanup.progress.title").execute();
   }
 }

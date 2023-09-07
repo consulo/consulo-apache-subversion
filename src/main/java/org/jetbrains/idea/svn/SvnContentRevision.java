@@ -16,21 +16,20 @@
 
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ByteBackedContentRevision;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vcs.impl.ContentRevisionCache;
-import com.intellij.openapi.vcs.impl.CurrentRevisionProvider;
+import consulo.ide.impl.idea.openapi.vcs.changes.ByteBackedContentRevision;
+import consulo.util.lang.Pair;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ContentRevisionCache;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
+import consulo.versionControlSystem.internal.CurrentRevisionProvider;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.jetbrains.idea.svn.status.Status;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 
@@ -44,7 +43,10 @@ public class SvnContentRevision extends SvnBaseContentRevision implements ByteBa
    */
   private final boolean myUseBaseRevision;
 
-  protected SvnContentRevision(@Nonnull SvnVcs vcs, @Nonnull FilePath file, @Nonnull SVNRevision revision, boolean useBaseRevision) {
+  protected SvnContentRevision(@Nonnull SvnVcs vcs,
+                               @Nonnull FilePath file,
+                               @Nonnull SVNRevision revision,
+                               boolean useBaseRevision) {
     super(vcs, file);
     myRevision = revision;
     myUseBaseRevision = useBaseRevision;
@@ -57,7 +59,9 @@ public class SvnContentRevision extends SvnBaseContentRevision implements ByteBa
   }
 
   @Nonnull
-  public static SvnContentRevision createBaseRevision(@Nonnull SvnVcs vcs, @Nonnull FilePath file, @Nonnull SVNRevision revision) {
+  public static SvnContentRevision createBaseRevision(@Nonnull SvnVcs vcs,
+                                                      @Nonnull FilePath file,
+                                                      @Nonnull SVNRevision revision) {
     if (file.getFileType().isBinary()) {
       return new SvnBinaryContentRevision(vcs, file, revision, true);
     }
@@ -65,7 +69,9 @@ public class SvnContentRevision extends SvnBaseContentRevision implements ByteBa
   }
 
   @Nonnull
-  public static SvnContentRevision createRemote(@Nonnull SvnVcs vcs, @Nonnull FilePath file, @Nonnull SVNRevision revision) {
+  public static SvnContentRevision createRemote(@Nonnull SvnVcs vcs,
+                                                @Nonnull FilePath file,
+                                                @Nonnull SVNRevision revision) {
     if (file.getFileType().isBinary()) {
       return new SvnBinaryContentRevision(vcs, file, revision, false);
     }
@@ -95,9 +101,14 @@ public class SvnContentRevision extends SvnBaseContentRevision implements ByteBa
                                                                 return Pair.create(getRevisionNumber(), getUpToDateBinaryContent());
                                                               }
                                                             }).getSecond();
-      } else {
-        return ContentRevisionCache.getOrLoadAsBytes(myVcs.getProject(), myFile, getRevisionNumber(), myVcs.getKeyInstanceMethod(),
-                                                     ContentRevisionCache.UniqueType.REPOSITORY_CONTENT, () -> getUpToDateBinaryContent());
+      }
+      else {
+        return ContentRevisionCache.getOrLoadAsBytes(myVcs.getProject(),
+                                                     myFile,
+                                                     getRevisionNumber(),
+                                                     myVcs.getKeyInstanceMethod(),
+                                                     ContentRevisionCache.UniqueType.REPOSITORY_CONTENT,
+                                                     () -> getUpToDateBinaryContent());
       }
     }
     catch (IOException e) {

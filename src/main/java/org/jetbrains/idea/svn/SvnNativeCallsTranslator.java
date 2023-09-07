@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.application.ApplicationInfo;
-import com.intellij.openapi.util.Couple;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.Trinity;
-import com.intellij.util.containers.Convertor;
+import consulo.application.Application;
+import consulo.application.util.SystemInfo;
+import consulo.ide.impl.idea.util.containers.Convertor;
+import consulo.util.lang.Couple;
+import consulo.util.lang.Trinity;
 import org.tmatesoft.svn.core.internal.util.jna.ISVNGnomeKeyringLibrary;
 
 import java.text.MessageFormat;
@@ -171,11 +171,12 @@ public class SvnNativeCallsTranslator {
           if (! SystemInfo.isMac) return null;
           final Trinity<String, String, String> trinity = MacParser.macMessages.get(callInfo.getResultCode());
           if (trinity == null) return null;
+          String version = Application.get().getVersion().toString();
           return MessageFormat.format(ourGenericAdvice, callInfo.getFunctionName(),
                                       new StringBuilder().append(callInfo.getResultCode()).append(" ( ").append(trinity.getFirst())
                                         .append(" - ").append(trinity.getSecond()).append(")").append("\nYou are likely to have modified ")
-                                        .append(ApplicationInfo.getInstance().getVersionName()).append(" bundle.\n")
-                                        .append("Please try to reinstall ").append(ApplicationInfo.getInstance().getVersionName()).toString());
+                                        .append(version).append(" bundle.\n")
+                                        .append("Please try to reinstall ").append(version).toString());
         }
       });
 

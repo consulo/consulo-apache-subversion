@@ -1,8 +1,6 @@
 package org.jetbrains.idea.svn.upgrade;
 
-import com.intellij.openapi.vcs.VcsException;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.EventAction;
@@ -12,6 +10,8 @@ import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNWCClient;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 
@@ -37,7 +37,8 @@ public class SvnKitUpgradeClient extends BaseSvnClient implements UpgradeClient 
   }
 
   @Override
-  public List<WorkingCopyFormat> getSupportedFormats() throws VcsException {
+  public List<WorkingCopyFormat> getSupportedFormats() throws VcsException
+  {
     return SvnKitCheckoutClient.SUPPORTED_FORMATS;
   }
 
@@ -56,7 +57,8 @@ public class SvnKitUpgradeClient extends BaseSvnClient implements UpgradeClient 
   private static void upgrade(@Nonnull File path,
                               @Nonnull WorkingCopyFormat format,
                               @Nonnull SVNWCClient client,
-                              @Nullable ProgressTracker handler) throws SVNException, VcsException {
+                              @Nullable ProgressTracker handler) throws SVNException, VcsException
+  {
     // fake event indicating upgrade start
     callHandler(handler, createEvent(path, EventAction.UPDATE_COMPLETED));
     client.doSetWCFormat(path, format.getFormat());

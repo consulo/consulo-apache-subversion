@@ -15,13 +15,14 @@
  */
 package org.jetbrains.idea.svn;
 
+import consulo.ui.image.Image;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.change.LocallyDeletedChange;
+
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.changes.LocallyDeletedChange;
-import consulo.ui.image.Image;
-
-public class SvnLocallyDeletedChange extends LocallyDeletedChange {
+public class SvnLocallyDeletedChange extends LocallyDeletedChange
+{
   @Nonnull
   private final ConflictState myConflictState;
 

@@ -16,20 +16,21 @@
 
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.application.dumb.DumbAware;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.language.editor.CommonDataKeys;
+import consulo.language.editor.PlatformDataKeys;
+import consulo.project.Project;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnVcs;
 
 /**
  * @author yole
  */
-public class CleanupProjectAction extends AnAction implements DumbAware {
+public class CleanupProjectAction extends AnAction implements DumbAware
+{
   public void actionPerformed(final AnActionEvent e) {
     final Project project = e.getData(CommonDataKeys.PROJECT);
     final VirtualFile[] roots = ProjectLevelVcsManager.getInstance(project).getRootsUnderVcs(SvnVcs.getInstance(project));

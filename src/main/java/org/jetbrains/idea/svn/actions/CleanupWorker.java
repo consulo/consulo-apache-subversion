@@ -15,18 +15,17 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import javax.annotation.Nonnull;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.project.Project;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Pair;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -34,6 +33,7 @@ import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNException;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -97,7 +97,7 @@ public class CleanupWorker {
         if (myProject.isDisposed()) {
           return;
         }
-        final VcsDirtyScopeManager manager = VcsDirtyScopeManager.getInstance(myProject);
+        final VcsDirtyScopeManager manager = VcsDirtyScopeManager.getInstance((Project)myProject);
         ApplicationManager.getApplication().invokeLater(new Runnable() {
           public void run() {
             ApplicationManager.getApplication().runWriteAction(new Runnable() {
@@ -128,7 +128,7 @@ public class CleanupWorker {
                                                               FileUtil.toSystemDependentName(pair.second.getPath()),
                                                               ((exception == null) ? "" : exception.getMessage()))));
           }
-          final AbstractVcsHelper helper = AbstractVcsHelper.getInstance(myProject);
+          final AbstractVcsHelper helper = AbstractVcsHelper.getInstance((Project)myProject);
           helper.showErrors(vcsExceptions, SvnBundle.message(myTitleKey));
         }
       }

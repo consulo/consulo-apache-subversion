@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.vcs.FilePath;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.versionControlSystem.FilePath;
+import consulo.configurable.ConfigurationException;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -96,7 +96,8 @@ public class SvnIntegrateRootOptionsPanel implements SvnPanel{
     }
   }
 
-  public void apply(SvnConfiguration conf) throws ConfigurationException {
+  public void apply(SvnConfiguration conf) throws ConfigurationException
+  {
 
     if (myMergeText1.getText().trim().length() == 0) {
       myMergeText1.getTextField().requestFocus();

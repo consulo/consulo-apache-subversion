@@ -11,7 +11,7 @@
     </clientProperties>
     <border type="none"/>
     <children>
-      <tabbedpane id="b5f6e" class="com.intellij.ui.components.JBTabbedPane">
+      <tabbedpane id="b5f6e" class="consulo.ui.ex.awt.JBTabbedPane">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -64,7 +64,7 @@
                           <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="label.configuration.configuration.directory"/>
                         </properties>
                       </component>
-                      <component id="212b3" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myConfigurationDirectoryText">
+                      <component id="212b3" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myConfigurationDirectoryText">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -109,7 +109,7 @@
                       <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="button.text.clear.authentication.cache"/>
                     </properties>
                   </component>
-                  <component id="5b8dd" class="com.intellij.ui.components.JBLabel">
+                  <component id="5b8dd" class="consulo.ui.ex.awt.JBLabel">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -139,7 +139,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="3ecd1" class="com.intellij.ui.components.JBCheckBox" binding="myWithCommandLineClient">
+                  <component id="3ecd1" class="consulo.ui.ex.awt.JBCheckBox" binding="myWithCommandLineClient">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -148,7 +148,7 @@
                       <text value="Use command line client:"/>
                     </properties>
                   </component>
-                  <component id="44a8" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myCommandLineClient">
+                  <component id="44a8" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myCommandLineClient">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -164,7 +164,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="df957" class="com.intellij.ui.components.JBCheckBox" binding="myRunUnderTerminal">
+                  <component id="df957" class="consulo.ui.ex.awt.JBCheckBox" binding="myRunUnderTerminal">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -173,7 +173,7 @@
                       <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="command.line.interactive.mode.title"/>
                     </properties>
                   </component>
-                  <component id="40f21" class="com.intellij.ui.components.JBLabel">
+                  <component id="40f21" class="consulo.ui.ex.awt.JBLabel">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -279,7 +279,7 @@
                       <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="button.text.edit.proxies"/>
                     </properties>
                   </component>
-                  <component id="d809a" class="com.intellij.ui.components.JBLabel">
+                  <component id="d809a" class="consulo.ui.ex.awt.JBLabel">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -296,7 +296,7 @@
                   </hspacer>
                 </children>
               </grid>
-              <component id="f9a79" class="com.intellij.ui.components.JBLabel">
+              <component id="f9a79" class="consulo.ui.ex.awt.JBLabel">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="30" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="3" use-parent-layout="false"/>
                 </constraints>
@@ -314,7 +314,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="9c08f" class="com.intellij.ui.components.JBLabel">
+                  <component id="9c08f" class="consulo.ui.ex.awt.JBLabel">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -349,7 +349,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="234" class="com.intellij.ui.components.JBLabel">
+                  <component id="234" class="consulo.ui.ex.awt.JBLabel">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -383,7 +383,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="44801" class="com.intellij.ui.components.JBLabel">
+                  <component id="44801" class="consulo.ui.ex.awt.JBLabel">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -418,7 +418,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="1528f" class="com.intellij.ui.components.JBLabel">
+                  <component id="1528f" class="consulo.ui.ex.awt.JBLabel">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -436,7 +436,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="a97cb" class="com.intellij.ui.components.JBRadioButton" binding="mySSLv3RadioButton" default-binding="true">
+                      <component id="a97cb" class="consulo.ui.ex.awt.JBRadioButton" binding="mySSLv3RadioButton" default-binding="true">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -444,7 +444,7 @@
                           <text value="SSLv3"/>
                         </properties>
                       </component>
-                      <component id="48af1" class="com.intellij.ui.components.JBRadioButton" binding="myTLSv1RadioButton" default-binding="true">
+                      <component id="48af1" class="consulo.ui.ex.awt.JBRadioButton" binding="myTLSv1RadioButton" default-binding="true">
                         <constraints>
                           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -452,7 +452,7 @@
                           <text value="TLSv1"/>
                         </properties>
                       </component>
-                      <component id="5c1ce" class="com.intellij.ui.components.JBRadioButton" binding="myAllRadioButton" default-binding="true">
+                      <component id="5c1ce" class="consulo.ui.ex.awt.JBRadioButton" binding="myAllRadioButton" default-binding="true">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -462,7 +462,7 @@
                       </component>
                     </children>
                   </grid>
-                  <component id="98a95" class="com.intellij.ui.components.JBLabel" binding="mySSLExplicitly">
+                  <component id="98a95" class="consulo.ui.ex.awt.JBLabel" binding="mySSLExplicitly">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                     </constraints>
@@ -505,7 +505,7 @@
                       <text value="Use IDEA general proxy settings as default for Subversion" noi18n="true"/>
                     </properties>
                   </component>
-                  <component id="a8ce1" class="com.intellij.ui.components.labels.LinkLabel" binding="myNavigateToCommonProxyLink" custom-create="true">
+                  <component id="a8ce1" class="consulo.ui.ex.awt.LinkLabel" binding="myNavigateToCommonProxyLink" custom-create="true">
                     <constraints border-constraint="East"/>
                     <properties>
                       <horizontalAlignment value="10"/>

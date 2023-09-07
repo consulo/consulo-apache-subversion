@@ -1,6 +1,6 @@
 package org.jetbrains.idea.svn.lock;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -56,7 +56,8 @@ public class CmdLockClient extends BaseSvnClient implements LockClient {
                                               @Nonnull File file,
                                               @Nonnull EventAction success,
                                               @Nonnull EventAction failure,
-                                              @Nullable ProgressTracker handler) throws VcsException {
+                                              @Nullable ProgressTracker handler) throws VcsException
+  {
     // just warning appears in output when can not lock/unlock file for some reason (like, that file is already locked)
     SVNErrorMessage error = SvnUtil.parseWarning(command.getErrorOutput());
 

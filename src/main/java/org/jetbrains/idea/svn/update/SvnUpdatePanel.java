@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.ui.MultiLineTooltipUI;
+import consulo.versionControlSystem.FilePath;
+import consulo.ide.impl.idea.ui.MultiLineTooltipUI;
 import org.jetbrains.idea.svn.DepthCombo;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;

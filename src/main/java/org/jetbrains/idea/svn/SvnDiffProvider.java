@@ -15,24 +15,22 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.diff.DiffMixin;
-import com.intellij.openapi.vcs.diff.DiffProvider;
-import com.intellij.openapi.vcs.diff.DiffProviderEx;
-import com.intellij.openapi.vcs.diff.ItemLatestState;
-import com.intellij.openapi.vcs.history.VcsRevisionDescription;
-import com.intellij.openapi.vcs.history.VcsRevisionDescriptionImpl;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.ide.impl.idea.openapi.vcs.history.VcsRevisionDescriptionImpl;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.logging.Logger;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.ObjectUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.diff.DiffProvider;
+import consulo.versionControlSystem.diff.DiffProviderEx;
+import consulo.versionControlSystem.diff.ItemLatestState;
+import consulo.versionControlSystem.history.VcsRevisionDescription;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.history.LatestExistentSearcher;
 import org.jetbrains.idea.svn.info.Info;
@@ -44,13 +42,16 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SvnDiffProvider extends DiffProviderEx implements DiffProvider, DiffMixin {
+public class SvnDiffProvider extends DiffProviderEx implements DiffProvider {
 
-  private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.SvnDiffProvider");
+  private static final Logger LOG = Logger.getInstance(SvnDiffProvider.class);
 
   public static final String COMMIT_MESSAGE = "svn:log";
   private static final int BATCH_INFO_SIZE = 20;
@@ -88,12 +89,12 @@ public class SvnDiffProvider extends DiffProviderEx implements DiffProvider, Dif
   @Nonnull
   @Override
   public Map<VirtualFile, VcsRevisionNumber> getCurrentRevisions(@Nonnull Iterable<VirtualFile> files) {
-    Map<VirtualFile, VcsRevisionNumber> result = ContainerUtil.newHashMap();
-    Map<String, VirtualFile> items = ContainerUtil.newHashMap();
+    Map<VirtualFile, VcsRevisionNumber> result = new HashMap<>();
+    Map<String, VirtualFile> items = new HashMap<>();
     List<File> ioFiles = ContainerUtil.newArrayList();
 
     for (VirtualFile file : files) {
-      File ioFile = VfsUtilCore.virtualToIoFile(file);
+      File ioFile = VirtualFileUtil.virtualToIoFile(file);
       ioFiles.add(ioFile);
       items.put(ioFile.getAbsolutePath(), file);
 
@@ -139,7 +140,7 @@ public class SvnDiffProvider extends DiffProviderEx implements DiffProvider, Dif
   @Nullable
   @Override
   public VcsRevisionDescription getCurrentRevisionDescription(@Nonnull VirtualFile file) {
-    return getCurrentRevisionDescription(VfsUtilCore.virtualToIoFile(file));
+    return getCurrentRevisionDescription(VirtualFileUtil.virtualToIoFile(file));
   }
 
   @Nullable
@@ -195,7 +196,7 @@ public class SvnDiffProvider extends DiffProviderEx implements DiffProvider, Dif
   @Nonnull
   @Override
   public ItemLatestState getLastRevision(@Nonnull VirtualFile file) {
-    return getLastRevision(VfsUtilCore.virtualToIoFile(file));
+    return getLastRevision(VirtualFileUtil.virtualToIoFile(file));
   }
 
   @Nonnull
@@ -209,7 +210,7 @@ public class SvnDiffProvider extends DiffProviderEx implements DiffProvider, Dif
     }
 
     // not clear why we need it, with remote check..
-    Status svnStatus = getFileStatus(VfsUtilCore.virtualToIoFile(selectedFile), false);
+    Status svnStatus = getFileStatus(VirtualFileUtil.virtualToIoFile(selectedFile), false);
 
     return svnStatus != null && svnRevision.equals(svnStatus.getRevision())
            ? SvnContentRevision.createBaseRevision(myVcs, filePath, svnRevision)
@@ -260,7 +261,7 @@ public class SvnDiffProvider extends DiffProviderEx implements DiffProvider, Dif
     if (!itemExists(svnStatus)) {
       return createResult(getLastExistingRevision(file, svnStatus), false, false);
     }
-    return createResult(ObjectUtils.notNull(svnStatus.getRemoteRevision(), svnStatus.getRevision()), true, false);
+    return createResult(ObjectUtil.notNull(svnStatus.getRemoteRevision(), svnStatus.getRevision()), true, false);
   }
 
   @Nonnull

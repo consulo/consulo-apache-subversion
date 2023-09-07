@@ -15,16 +15,16 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.FileStatusManager;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowAnchor;
-import com.intellij.openapi.wm.ToolWindowManager;
+import consulo.dataContext.DataContext;
+import consulo.project.Project;
+import consulo.ui.ex.toolWindow.ToolWindow;
+import consulo.ui.ex.toolWindow.ToolWindowAnchor;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.status.FileStatusManager;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.versionControlSystem.AbstractVcs;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.PropertiesComponent;
 

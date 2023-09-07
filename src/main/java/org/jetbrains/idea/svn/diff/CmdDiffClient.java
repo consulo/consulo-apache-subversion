@@ -15,15 +15,15 @@
  */
 package org.jetbrains.idea.svn.diff;
 
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.CurrentContentRevision;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcsUtil.VcsUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.change.CurrentContentRevision;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.status.FileStatus;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.annotation.*;
 import org.jetbrains.idea.svn.SvnStatusConvertor;
@@ -78,7 +78,8 @@ public class CmdDiffClient extends BaseSvnClient implements DiffClient {
   }
 
   @Override
-  public void unifiedDiff(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2, @Nonnull OutputStream output) throws VcsException {
+  public void unifiedDiff(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2, @Nonnull OutputStream output) throws VcsException
+  {
     assertUrl(target1);
     assertUrl(target2);
 

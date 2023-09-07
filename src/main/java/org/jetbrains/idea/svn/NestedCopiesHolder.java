@@ -15,21 +15,20 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.util.containers.ContainerUtil;
 import javax.annotation.Nonnull;
-
+import java.util.HashSet;
 import java.util.Set;
 
 public class NestedCopiesHolder {
 
-  private final Set<NestedCopyInfo> mySet = ContainerUtil.newHashSet();
+  private final Set<NestedCopyInfo> mySet = new HashSet<>();
 
   public synchronized void add(@Nonnull final Set<NestedCopyInfo> data) {
     mySet.addAll(data);
   }
 
   public synchronized Set<NestedCopyInfo> getAndClear() {
-    Set<NestedCopyInfo> copy = ContainerUtil.newHashSet(mySet);
+    Set<NestedCopyInfo> copy = new HashSet<>(mySet);
     mySet.clear();
 
     return copy;

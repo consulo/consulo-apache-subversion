@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.statistics;
 
-import com.intellij.internal.statistic.AbstractApplicationUsagesCollector;
-import com.intellij.internal.statistic.beans.UsageDescriptor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.externalService.statistic.AbstractApplicationUsagesCollector;
+import consulo.externalService.statistic.UsageDescriptor;
+import consulo.project.Project;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.function.Condition;
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -31,7 +31,8 @@ import java.util.Set;
 /**
  * @author Konstantin Kolosovsky.
  */
-public class SvnWorkingCopyFormatUsagesCollector extends AbstractApplicationUsagesCollector {
+public class SvnWorkingCopyFormatUsagesCollector extends AbstractApplicationUsagesCollector
+{
   @Nonnull
   public String getGroupId() {
     return "consulo.apache.subversion:working.copy.format";

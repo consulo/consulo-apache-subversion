@@ -15,10 +15,10 @@
  */
 package org.jetbrains.idea.svn.config;
 
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.ui.InsertPathAction;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.ui.ex.awt.InsertPathAction;
+import consulo.fileChooser.FileChooserDescriptor;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;
@@ -61,9 +61,9 @@ public class ConfigureProxiesOptionsPanel implements RepositoryUrlsListener {
   private final TestConnectionPerformer myTestConnectionPerformer;
 
   /**
-   * called on after repositories list had been recalculated by {@link org.jetbrains.idea.svn.config.PatternsListener}
+   * called on after repositories list had been recalculated by {@link PatternsListener}
    *
-   * @see org.jetbrains.idea.svn.config.RepositoryUrlsListener#onListChanged(java.util.List)
+   * @see RepositoryUrlsListener#onListChanged(List)
    */
   public void onListChanged(final List<String> urls) {
     final String value = (String) myRepositoriesList.getSelectedValue();

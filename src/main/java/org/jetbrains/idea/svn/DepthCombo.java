@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.ui.ListCellRendererWrapper;
+import consulo.ui.ex.awt.ListCellRendererWrapper;
 import org.jetbrains.idea.svn.api.Depth;
 
 import javax.swing.*;
@@ -36,7 +36,8 @@ public class DepthCombo extends JComboBox {
   private final static Depth[] ourForUpdate = {Depth.UNKNOWN, Depth.EMPTY, Depth.FILES, Depth.IMMEDIATES, Depth.INFINITY};
   private final static Depth[] ourForCheckout = {Depth.EMPTY, Depth.FILES, Depth.IMMEDIATES, Depth.INFINITY};
 
-  private static class DepthRenderer extends ListCellRendererWrapper<Depth> {
+  private static class DepthRenderer extends ListCellRendererWrapper<Depth>
+  {
 
     @Override
     public void customize(JList list, Depth value, int index, boolean selected, boolean hasFocus) {

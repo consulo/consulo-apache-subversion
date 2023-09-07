@@ -15,28 +15,23 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.help.HelpManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.ui.components.JBRadioButton;
-import com.intellij.util.Consumer;
-import com.intellij.util.SystemProperties;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
 import com.trilead.ssh2.crypto.PEMDecoder;
+import consulo.application.HelpManager;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.fileChooser.IdeaFileChooser;
+import consulo.project.Project;
+import consulo.ui.ex.awt.*;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.SystemProperties;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.VirtualFileManager;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.tmatesoft.svn.core.internal.io.svn.SVNSSHPrivateKeyUtil;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -48,6 +43,7 @@ import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author alex
@@ -441,9 +437,9 @@ public class SSHCredentialsDialog extends DialogWrapper implements ActionListene
         .withHideIgnored(false)
         .withShowHiddenFiles(true);
 
-      FileChooser.chooseFiles(descriptor, myProject, file, new Consumer<List<VirtualFile>>() {
+      IdeaFileChooser.chooseFiles(descriptor, myProject, file, new Consumer<List<VirtualFile>>() {
         @Override
-        public void consume(List<VirtualFile> files) {
+        public void accept(List<VirtualFile> files) {
           if (files.size() == 1) {
             path[0] = FileUtil.toSystemDependentName(files.get(0).getPath());
             myKeyFileText.setText(path[0]);

@@ -15,24 +15,20 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.options.ConfigurableUi;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.ui.PortField;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBRadioButton;
-import com.intellij.ui.components.JBTextField;
-import com.intellij.util.EnvironmentUtil;
-import com.intellij.util.ui.UIUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.configurable.IdeaConfigurableUi;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.ide.impl.idea.ui.PortField;
+import consulo.process.local.EnvironmentUtil;
+import consulo.ui.ex.awt.*;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnConfigurationState;
 import org.jetbrains.idea.svn.commandLine.SshTunnelRuntimeModule;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
@@ -43,7 +39,7 @@ import java.awt.event.ItemListener;
 /**
  * @author Konstantin Kolosovsky.
  */
-public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
+public class SshSettingsPanel implements IdeaConfigurableUi<SvnConfiguration> {
   private JBRadioButton myPasswordChoice;
   private JBRadioButton myPrivateKeyChoice;
   private JBRadioButton mySubversionConfigChoice;
@@ -144,10 +140,10 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
     SvnConfigurationState state = settings.getState();
 
     return !state.sshConnectionType.equals(getConnectionChoice()) ||
-           !StringUtil.equals(state.sshExecutablePath, myExecutablePathField.getText()) ||
-           !StringUtil.equals(state.sshUserName, myUserNameField.getText()) ||
-           state.sshPort != myPortField.getNumber() ||
-           !StringUtil.equals(state.sshPrivateKeyPath, myPrivateKeyPathField.getText());
+      !StringUtil.equals(state.sshExecutablePath, myExecutablePathField.getText()) ||
+      !StringUtil.equals(state.sshUserName, myUserNameField.getText()) ||
+      state.sshPort != myPortField.getNumber() ||
+      !StringUtil.equals(state.sshPrivateKeyPath, myPrivateKeyPathField.getText());
   }
 
   @Override
@@ -176,10 +172,10 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
   @Nonnull
   private SvnConfiguration.SshConnectionType getConnectionChoice() {
     JBRadioButton selected = myPasswordChoice.isSelected()
-                             ? myPasswordChoice
-                             : myPrivateKeyChoice.isSelected()
-                               ? myPrivateKeyChoice
-                               : mySubversionConfigChoice.isSelected() ? mySubversionConfigChoice : null;
+      ? myPasswordChoice
+      : myPrivateKeyChoice.isSelected()
+      ? myPrivateKeyChoice
+      : mySubversionConfigChoice.isSelected() ? mySubversionConfigChoice : null;
 
     assert selected != null;
 
@@ -219,7 +215,8 @@ public class SshSettingsPanel implements ConfigurableUi<SvnConfiguration> {
     choice.putClientProperty("value", value);
   }
 
-  private static void setSelected(@Nonnull JBRadioButton choice, @Nonnull SvnConfiguration.SshConnectionType value) {
+  private static void setSelected(@Nonnull JBRadioButton choice,
+                                  @Nonnull SvnConfiguration.SshConnectionType value) {
     choice.setSelected(value.equals(choice.getClientProperty("value")));
   }
 

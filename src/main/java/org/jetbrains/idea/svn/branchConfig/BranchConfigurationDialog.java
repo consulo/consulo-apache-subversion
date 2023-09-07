@@ -16,18 +16,16 @@
 
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.actionSystem.ActionToolbarPosition;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.MultiLineLabelUI;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.*;
-import com.intellij.ui.components.JBList;
+import consulo.project.Project;
+import consulo.ui.ex.SimpleTextAttributes;
+import consulo.ui.ex.action.ActionToolbarPosition;
+import consulo.ui.ex.awt.*;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.ui.ex.awt.internal.laf.MultiLineLabelUI;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.Pair;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -36,19 +34,21 @@ import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.intellij.openapi.util.text.StringUtil.isEmptyOrSpaces;
-import static com.intellij.openapi.vfs.VfsUtilCore.virtualToIoFile;
-import static com.intellij.util.ObjectUtils.notNull;
+import static consulo.ide.impl.idea.openapi.vfs.VfsUtilCore.virtualToIoFile;
+import static consulo.util.lang.StringUtil.isEmptyOrSpaces;
 import static java.lang.Math.min;
 import static org.jetbrains.idea.svn.dialogs.SelectLocationDialog.selectLocation;
 
-public class BranchConfigurationDialog extends DialogWrapper {
+public class BranchConfigurationDialog extends DialogWrapper
+{
   private JPanel myTopPanel;
   private TextFieldWithBrowseButton myTrunkLocationTextField;
   private JBList<String> myBranchLocationsList;
@@ -108,7 +108,7 @@ public class BranchConfigurationDialog extends DialogWrapper {
 
         @Override
         public void run(AnActionButton button) {
-          Pair<SVNURL, SVNURL> result = selectLocation(project, notNull(usedRootUrl, rootUrl));
+          Pair<SVNURL, SVNURL> result = selectLocation(project, ObjectUtil.notNull(usedRootUrl, rootUrl));
           if (result != null) {
             SVNURL selectedUrl = result.first;
             usedRootUrl = result.second;
@@ -145,7 +145,8 @@ public class BranchConfigurationDialog extends DialogWrapper {
       .createPanel();
   }
 
-  private class TrunkUrlValidator extends DocumentAdapter {
+  private class TrunkUrlValidator extends DocumentAdapter
+  {
     private final SVNURL myRootUrl;
     private final SvnBranchConfigurationNew myConfiguration;
 

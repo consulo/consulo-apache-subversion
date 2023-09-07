@@ -15,13 +15,11 @@
  */
 package org.jetbrains.idea.svn.status;
 
-import com.intellij.openapi.util.Getter;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.util.containers.Convertor;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.ide.impl.idea.openapi.util.Getter;
+import consulo.ide.impl.idea.util.containers.Convertor;
+import consulo.util.io.CharsetToolkit;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
@@ -35,6 +33,8 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;

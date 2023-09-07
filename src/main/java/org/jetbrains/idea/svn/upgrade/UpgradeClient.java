@@ -1,9 +1,9 @@
 package org.jetbrains.idea.svn.upgrade;
 
-import com.intellij.openapi.vcs.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.api.SvnClient;

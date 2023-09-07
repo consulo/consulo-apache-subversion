@@ -15,29 +15,29 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.*;
-import com.intellij.util.ThrowableConsumer;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.logging.Logger;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.function.Condition;
+import consulo.util.lang.function.ThrowableConsumer;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.*;
 import org.jetbrains.idea.svn.change.ChangeListClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.status.Status;
 import org.tmatesoft.svn.core.SVNErrorCode;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
 public class SvnChangelistListener implements ChangeListListener {
-  private final static Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.SvnChangelistListener");
+  private final static Logger LOG = Logger.getInstance(SvnChangelistListener.class);
 
   @Nonnull
   private final SvnVcs myVcs;
@@ -108,7 +108,7 @@ public class SvnChangelistListener implements ChangeListListener {
       return;
     }
 
-    final String[] fromLists = LocalChangeList.DEFAULT_NAME.equals(fromList.getName()) ? null : new String[] {fromList.getName()};
+    final String[] fromLists = LocalChangeList.DEFAULT_NAME.equals(fromList.getName()) ? null : new String[]{fromList.getName()};
     addToChangeList(toList.getName(), changes, fromLists);
   }
 
@@ -130,7 +130,8 @@ public class SvnChangelistListener implements ChangeListListener {
     catch (SvnBindException e) {
       if (e.contains(SVNErrorCode.WC_NOT_DIRECTORY) || e.contains(SVNErrorCode.WC_NOT_FILE)) {
         LOG.debug("Logging only, exception is valid (caught) here", e);
-      } else {
+      }
+      else {
         LOG.info("Logging only, exception is valid (caught) here", e);
       }
     }

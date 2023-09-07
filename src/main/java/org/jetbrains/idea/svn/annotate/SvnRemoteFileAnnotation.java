@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn.annotate;
 
-import com.intellij.openapi.vcs.annotate.ShowAllAffectedGenericAction;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.ide.impl.idea.openapi.vcs.annotate.ShowAllAffectedGenericAction;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.history.SvnChangeList;

@@ -15,15 +15,15 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.update.UpdatedFiles;
+import consulo.application.progress.ProgressIndicator;
+import consulo.ui.ex.awt.Messages;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.update.UpdatedFiles;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import consulo.configurable.Configurable;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.info.Info;
@@ -41,8 +41,8 @@ public class SvnUpdateEnvironment extends AbstractSvnUpdateIntegrateEnvironment 
   }
 
   protected AbstractUpdateIntegrateCrawler createCrawler(final UpdateEventHandler eventHandler,
-                                        final boolean totalUpdate,
-                                        final ArrayList<VcsException> exceptions, final UpdatedFiles updatedFiles) {
+														 final boolean totalUpdate,
+														 final ArrayList<VcsException> exceptions, final UpdatedFiles updatedFiles) {
     return new UpdateCrawler(myVcs, eventHandler, totalUpdate, exceptions, updatedFiles);
   }
 
@@ -63,7 +63,7 @@ public class SvnUpdateEnvironment extends AbstractSvnUpdateIntegrateEnvironment 
 
   protected static class UpdateCrawler extends AbstractUpdateIntegrateCrawler {
     public UpdateCrawler(SvnVcs vcs, UpdateEventHandler handler, boolean totalUpdate,
-                         Collection<VcsException> exceptions, UpdatedFiles postUpdateFiles) {
+						 Collection<VcsException> exceptions, UpdatedFiles postUpdateFiles) {
       super(totalUpdate, postUpdateFiles, exceptions, handler, vcs);
     }
 

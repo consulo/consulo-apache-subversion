@@ -1,9 +1,9 @@
 package org.jetbrains.idea.svn.mergeinfo;
 
-import com.intellij.openapi.vcs.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 
 import java.util.Collection;

@@ -15,14 +15,15 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.RepositoryLocation;
-import com.intellij.openapi.vcs.changes.committed.RepositoryLocationGroup;
-import javax.annotation.Nonnull;
+import consulo.versionControlSystem.RepositoryLocation;
+import consulo.versionControlSystem.change.commited.RepositoryLocationGroup;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 
-public class SvnRepositoryLocationGroup extends RepositoryLocationGroup {
+public class SvnRepositoryLocationGroup extends RepositoryLocationGroup
+{
   private final SVNURL myUrl;
 
   public SvnRepositoryLocationGroup(@Nonnull final SVNURL url, final Collection<RepositoryLocation> locations) {

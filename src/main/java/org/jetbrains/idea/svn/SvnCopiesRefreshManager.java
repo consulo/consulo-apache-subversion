@@ -15,10 +15,9 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.util.RequestsMerger;
-import com.intellij.util.Consumer;
-import com.intellij.util.concurrency.Semaphore;
+import consulo.application.ApplicationManager;
+import consulo.application.util.RequestsMerger;
+import consulo.application.util.Semaphore;
 
 public class SvnCopiesRefreshManager {
   private final RequestsMerger myRequestsMerger;
@@ -41,11 +40,7 @@ public class SvnCopiesRefreshManager {
         mapping.realRefresh(myMappingCallback);
         mySemaphore.waitFor();
       }
-    }, new Consumer<Runnable>() {
-      public void consume(final Runnable runnable) {
-        ApplicationManager.getApplication().executeOnPooledThread(runnable);
-      }
-    });
+    }, runnable -> ApplicationManager.getApplication().executeOnPooledThread(runnable));
   }
 
   public void asynchRequest() {

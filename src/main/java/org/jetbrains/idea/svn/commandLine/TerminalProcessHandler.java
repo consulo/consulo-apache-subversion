@@ -15,16 +15,16 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.process.CapturingProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
-import com.intellij.execution.process.ProcessOutputTypes;
+import consulo.process.ProcessOutputTypes;
+import consulo.process.event.ProcessEvent;
+import consulo.process.io.BaseOutputReader;
+import consulo.process.local.CapturingProcessAdapter;
+import consulo.util.collection.Lists;
 import consulo.util.dataholder.Key;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.io.BaseOutputReader;
-import javax.annotation.Nonnull;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.SvnUtil;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -33,7 +33,7 @@ import java.util.regex.Matcher;
  */
 public class TerminalProcessHandler extends SvnProcessHandler {
 
-  private final List<InteractiveCommandListener> myInteractiveListeners = ContainerUtil.createLockFreeCopyOnWriteList();
+  private final List<InteractiveCommandListener> myInteractiveListeners = Lists.newLockFreeCopyOnWriteList();
   private final CapturingProcessAdapter terminalOutputCapturer = new CapturingProcessAdapter();
 
   private final StringBuilder outputLine = new StringBuilder();

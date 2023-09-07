@@ -15,13 +15,15 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.MultiLineLabelUI;
-import com.intellij.ui.CollectionComboBoxModel;
+import consulo.project.Project;
+import consulo.ui.ex.awt.CollectionComboBoxModel;
+import consulo.ui.ex.awt.ComboBox;
+import consulo.ui.ex.awt.internal.laf.MultiLineLabelUI;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.ui.ex.awt.DialogWrapper;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 
 import javax.swing.*;
@@ -30,13 +32,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
-import static com.intellij.util.containers.ContainerUtil.sorted;
-import static com.intellij.util.ui.JBUI.*;
+import static consulo.util.collection.ContainerUtil.sorted;
+import static consulo.ui.ex.awt.JBUI.*;
 import static java.awt.GridBagConstraints.*;
 import static org.jetbrains.idea.svn.SvnBundle.message;
 import static org.jetbrains.idea.svn.SvnUtil.createUrl;
 
-public class AddRepositoryLocationDialog extends DialogWrapper {
+public class AddRepositoryLocationDialog extends DialogWrapper
+{
   @Nonnull
   private final List<String> myPreviousLocations;
   private JComboBox myCombo;

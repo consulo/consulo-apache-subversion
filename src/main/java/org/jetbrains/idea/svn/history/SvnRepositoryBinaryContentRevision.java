@@ -15,18 +15,19 @@
  */
 package org.jetbrains.idea.svn.history;
 
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.BinaryContentRevision;
+import org.jetbrains.idea.svn.SvnVcs;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.BinaryContentRevision;
-import org.jetbrains.idea.svn.SvnVcs;
 
 /**
  * @author yole
  */
-public class SvnRepositoryBinaryContentRevision extends SvnRepositoryContentRevision implements BinaryContentRevision {
+public class SvnRepositoryBinaryContentRevision extends SvnRepositoryContentRevision implements BinaryContentRevision
+{
   private byte[] myBinaryContent;
 
   public SvnRepositoryBinaryContentRevision(@Nonnull SvnVcs vcs, @Nonnull FilePath remotePath, @Nullable FilePath localPath, long revision) {
@@ -34,7 +35,8 @@ public class SvnRepositoryBinaryContentRevision extends SvnRepositoryContentRevi
   }
 
   @Nullable
-  public byte[] getBinaryContent() throws VcsException {
+  public byte[] getBinaryContent() throws VcsException
+  {
     if (myBinaryContent == null) {
       myBinaryContent = loadContent().toByteArray();
     }

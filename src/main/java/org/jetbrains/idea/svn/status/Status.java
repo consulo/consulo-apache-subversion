@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.status;
 
-import com.intellij.openapi.util.Condition;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.lang.function.Condition;
+import consulo.util.collection.ContainerUtil;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.NodeKind;

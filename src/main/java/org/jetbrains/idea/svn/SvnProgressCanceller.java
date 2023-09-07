@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
 import org.jetbrains.idea.svn.api.ProgressEvent;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.tmatesoft.svn.core.SVNCancelException;

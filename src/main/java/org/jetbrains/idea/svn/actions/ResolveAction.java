@@ -17,13 +17,15 @@
 
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.*;
-import com.intellij.openapi.vfs.ReadonlyStatusHandler;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Processor;
+import consulo.application.progress.ProgressManager;
+import consulo.application.util.function.Processor;
+import consulo.dataContext.DataContext;
+import consulo.project.Project;
+import consulo.versionControlSystem.*;
+import consulo.virtualFileSystem.ReadonlyStatusHandler;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.status.FileStatusManager;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 
@@ -51,11 +53,13 @@ public class ResolveAction extends BasicAction {
     return true;
   }
 
-  protected void perform(Project project, SvnVcs activeVcs, VirtualFile file, DataContext context) throws VcsException {
+  protected void perform(Project project, SvnVcs activeVcs, VirtualFile file, DataContext context) throws VcsException
+  {
     batchPerform(project, activeVcs, new VirtualFile[]{file}, context);
   }
 
-  protected void batchPerform(final Project project, final SvnVcs activeVcs, final VirtualFile[] files, DataContext context) throws VcsException {
+  protected void batchPerform(final Project project, final SvnVcs activeVcs, final VirtualFile[] files, DataContext context) throws VcsException
+  {
     boolean hasDirs = false;
     for(VirtualFile file: files) {
       if (file.isDirectory()) {

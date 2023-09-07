@@ -15,14 +15,14 @@
  */
 package org.jetbrains.idea.svn.difftool;
 
-import com.intellij.diff.util.DiffPlaces;
-import com.intellij.diff.util.DiffUtil;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.util.xmlb.annotations.MapAnnotation;
+import consulo.component.persist.PersistentStateComponent;
+import consulo.component.persist.State;
+import consulo.component.persist.Storage;
+import consulo.diff.DiffPlaces;
+import consulo.ide.ServiceManager;
+import consulo.ide.impl.idea.diff.util.DiffUtil;
 import consulo.util.dataholder.Key;
+import consulo.util.xml.serializer.annotation.MapAnnotation;
 import jakarta.inject.Singleton;
 
 import javax.annotation.Nonnull;
@@ -45,9 +45,9 @@ public class SvnDiffSettingsHolder implements PersistentStateComponent<SvnDiffSe
 
   public static class SvnDiffSettings {
     @Nonnull
-	public SharedSettings SHARED_SETTINGS = new SharedSettings();
+    public SharedSettings SHARED_SETTINGS = new SharedSettings();
     @Nonnull
-	public PlaceSettings PLACE_SETTINGS = new PlaceSettings();
+    public PlaceSettings PLACE_SETTINGS = new PlaceSettings();
 
     public SvnDiffSettings() {
     }

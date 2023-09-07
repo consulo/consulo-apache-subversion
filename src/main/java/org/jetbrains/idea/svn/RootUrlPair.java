@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.virtualFileSystem.VirtualFile;
 
 public interface RootUrlPair {
   VirtualFile getVirtualFile();

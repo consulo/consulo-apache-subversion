@@ -1,7 +1,7 @@
 package org.jetbrains.idea.svn.add;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.containers.Convertor;
+import consulo.versionControlSystem.VcsException;
+import consulo.ide.impl.idea.util.containers.Convertor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

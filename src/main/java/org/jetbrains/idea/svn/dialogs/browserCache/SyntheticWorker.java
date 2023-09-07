@@ -15,8 +15,6 @@
  */
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
-import com.intellij.util.NotNullFunction;
-import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 import org.jetbrains.idea.svn.checkin.CommitInfo;
@@ -24,7 +22,12 @@ import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 
-import java.util.*;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Function;
 
 public class SyntheticWorker {
   private final SvnRepositoryCache myCache;
@@ -84,21 +87,24 @@ public class SyntheticWorker {
     node.doOnSubtree(new Remover());
   }
 
-  public static DirectoryEntry createSyntheticEntry(final SVNURL newUrl, final SVNURL repositoryUrl, final String name, final boolean isDir) {
+  public static DirectoryEntry createSyntheticEntry(final SVNURL newUrl,
+                                                    final SVNURL repositoryUrl,
+                                                    final String name,
+                                                    final boolean isDir) {
     return new DirectoryEntry(newUrl, repositoryUrl, name, NodeKind.from(isDir), CommitInfo.EMPTY, null);
   }
 
-  private static class Remover implements NotNullFunction<RepositoryTreeNode, Object> {
+  private static class Remover implements Function<RepositoryTreeNode, Object> {
     private final SvnRepositoryCache myCache = SvnRepositoryCache.getInstance();
 
     @Nonnull
-    public Object fun(final RepositoryTreeNode repositoryTreeNode) {
+    public Object apply(final RepositoryTreeNode repositoryTreeNode) {
       myCache.remove(repositoryTreeNode.getURL().toString());
       return Boolean.FALSE;
     }
   }
 
-  private class Adder implements NotNullFunction<RepositoryTreeNode, Object> {
+  private class Adder implements Function<RepositoryTreeNode, Object> {
     private final int myOldPrefixLen;
     private final SVNURL myNewParentUrl;
 
@@ -108,7 +114,7 @@ public class SyntheticWorker {
     }
 
     @Nonnull
-    public Object fun(final RepositoryTreeNode repositoryTreeNode) {
+    public Object apply(final RepositoryTreeNode repositoryTreeNode) {
       final List<DirectoryEntry> children = myCache.getChildren(repositoryTreeNode.getURL().toString());
       if (children == null) {
         return Boolean.FALSE;
@@ -117,7 +123,10 @@ public class SyntheticWorker {
 
       try {
         for (DirectoryEntry child : children) {
-          newChildren.add(createSyntheticEntry(convertUrl(child.getUrl()), child.getRepositoryRoot(), child.getName(), child.isDirectory()));
+          newChildren.add(createSyntheticEntry(convertUrl(child.getUrl()),
+                                               child.getRepositoryRoot(),
+                                               child.getName(),
+                                               child.isDirectory()));
         }
         myCache.put(convertUrl(repositoryTreeNode.getURL()).toString(), newChildren);
       }

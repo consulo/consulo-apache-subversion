@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vcs.changes.ChangesUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.vcsUtil.VcsUtil;
+import consulo.versionControlSystem.change.ChangesUtil;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 import org.tmatesoft.svn.core.SVNException;

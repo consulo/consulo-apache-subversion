@@ -21,7 +21,6 @@ import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.status.Status;
 import org.jetbrains.idea.svn.status.StatusType;
 import consulo.ui.image.Image;
-import icons.SvnIcons;
 
 public enum ConflictState {
   none(false, false, false, null),

@@ -15,22 +15,22 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.util.NotNullFunction;
-import javax.annotation.Nonnull;
-
+import consulo.disposer.Disposable;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.ide.impl.idea.util.NotNullFunction;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.browserCache.*;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import java.util.Enumeration;
 import java.util.List;
 
-public class RepositoryTreeModel extends DefaultTreeModel implements Disposable {
+public class RepositoryTreeModel extends DefaultTreeModel implements Disposable
+{
   private boolean myIsDisposed;
   private final SvnVcs myVCS;
   private boolean myIsShowFiles;
@@ -125,7 +125,7 @@ public class RepositoryTreeModel extends DefaultTreeModel implements Disposable 
 
   @Nonnull
   public Expander getLazyLoadingExpander() {
-    return myDefaultExpanderFactory.fun(myBrowser);
+    return myDefaultExpanderFactory.apply(myBrowser);
   }
 
   @Nonnull

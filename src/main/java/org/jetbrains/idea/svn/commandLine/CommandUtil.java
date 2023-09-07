@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.text.DateFormatUtil;
+import consulo.application.util.DateFormatUtil;
 import consulo.container.boot.ContainerPathManager;
+import consulo.logging.Logger;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.StringUtil;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -244,6 +244,6 @@ public class CommandUtil {
       LOG.error("Existing parent not found for " + file.getAbsolutePath());
     }
 
-    return ObjectUtils.assertNotNull(result);
+    return ObjectUtil.assertNotNull(result);
   }
 }

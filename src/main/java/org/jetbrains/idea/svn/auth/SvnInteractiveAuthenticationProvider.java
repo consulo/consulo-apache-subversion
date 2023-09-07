@@ -15,21 +15,19 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.util.WaitForProgressToShow;
 import com.jcraft.jsch.agentproxy.AgentProxyException;
 import com.jcraft.jsch.agentproxy.Connector;
 import com.jcraft.jsch.agentproxy.ConnectorFactory;
 import com.jcraft.jsch.agentproxy.TrileadAgentProxy;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.Application;
+import consulo.application.ApplicationManager;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.project.util.WaitForProgressToShow;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -39,6 +37,8 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.*;
 import org.tmatesoft.svn.core.internal.wc.ISVNHostOptions;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.security.cert.X509Certificate;
 
@@ -144,7 +144,8 @@ public class SvnInteractiveAuthenticationProvider implements ISVNAuthenticationP
           }
         }
       };
-    } else if (ISVNAuthenticationManager.SSL.equals(kind)) {
+    }
+    else if (ISVNAuthenticationManager.SSL.equals(kind)) {
       command = new Runnable() {
         public void run() {
           final ISVNHostOptions options = myManager.getHostOptionsProvider().getHostOptions(url);
@@ -189,8 +190,8 @@ public class SvnInteractiveAuthenticationProvider implements ISVNAuthenticationP
 
   private static void setTitle(@Nonnull DialogWrapper dialog, @Nullable SVNErrorMessage errorMessage) {
     dialog.setTitle(errorMessage == null
-                    ? SvnBundle.message("dialog.title.authentication.required")
-                    : SvnBundle.message("dialog.title.authentication.required.was.failed"));
+                      ? SvnBundle.message("dialog.title.authentication.required")
+                      : SvnBundle.message("dialog.title.authentication.required.was.failed"));
   }
 
   public int acceptServerAuthentication(final SVNURL url, String realm, final Object certificate, final boolean resultMayBeStored) {
@@ -200,13 +201,14 @@ public class SvnInteractiveAuthenticationProvider implements ISVNAuthenticationP
       command = new Runnable() {
         public void run() {
           ServerSSLDialog dialog = certificate instanceof X509Certificate
-                                   ? new ServerSSLDialog(myProject, (X509Certificate)certificate, resultMayBeStored)
-                                   : new ServerSSLDialog(myProject, (String)certificate, resultMayBeStored);
+            ? new ServerSSLDialog(myProject, (X509Certificate)certificate, resultMayBeStored)
+            : new ServerSSLDialog(myProject, (String)certificate, resultMayBeStored);
           dialog.show();
           result[0] = dialog.getResult();
         }
       };
-    } else if (certificate instanceof byte[]) {
+    }
+    else if (certificate instanceof byte[]) {
       final String sshKeyAlgorithm = myManager.getSSHKeyAlgorithm();
       command = new Runnable() {
         @Override
@@ -217,9 +219,10 @@ public class SvnInteractiveAuthenticationProvider implements ISVNAuthenticationP
           result[0] = serverSSHDialog.getResult();
         }
       };
-    } else {
+    }
+    else {
       VcsBalloonProblemNotifier.showOverChangesView(myProject, "Subversion: unknown certificate type from " + url.toDecodedString(),
-                                                    MessageType.ERROR);
+                                                    NotificationType.ERROR);
       return REJECTED;
     }
 
@@ -228,7 +231,7 @@ public class SvnInteractiveAuthenticationProvider implements ISVNAuthenticationP
   }
 
   private static void showAndWait(@Nonnull Runnable command) {
-    WaitForProgressToShow.runOrInvokeAndWaitAboveProgress(command, ModalityState.any());
+    WaitForProgressToShow.runOrInvokeAndWaitAboveProgress(command, Application.get().getAnyModalityState());
   }
 
   private void log(final String s) {

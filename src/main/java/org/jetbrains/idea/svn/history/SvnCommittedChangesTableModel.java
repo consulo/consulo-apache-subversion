@@ -15,17 +15,19 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.ChangeListColumn;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangesNavigation;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangesTableModel;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.project.Project;
+import consulo.versionControlSystem.ChangeListColumn;
+import consulo.versionControlSystem.VcsException;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangesNavigation;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangesTableModel;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
+import consulo.virtualFileSystem.VirtualFile;
 
 import java.util.ArrayList;
 
-public class SvnCommittedChangesTableModel extends CommittedChangesTableModel implements CommittedChangesNavigation {
+public class SvnCommittedChangesTableModel extends CommittedChangesTableModel implements CommittedChangesNavigation
+
+{
   private final SvnRevisionsNavigationMediator myMediator;
 
   public SvnCommittedChangesTableModel(final SvnRepositoryLocation location, final Project project, final VirtualFile vcsRoot,

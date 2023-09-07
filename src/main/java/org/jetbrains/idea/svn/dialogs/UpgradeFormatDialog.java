@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.application.ApplicationNamesInfo;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.MultiLineLabelUI;
-import com.intellij.ui.components.JBLoadingPanel;
-import com.intellij.util.ui.JBUI;
+import consulo.application.impl.internal.ApplicationNamesInfo;
+import consulo.ide.impl.idea.ui.components.JBLoadingPanel;
+import consulo.ui.ex.awt.JBUI;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.internal.laf.MultiLineLabelUI;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +35,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UpgradeFormatDialog extends DialogWrapper  {
+public class UpgradeFormatDialog extends DialogWrapper
+{
 
   private ButtonGroup formatGroup = new ButtonGroup();
   private List<JRadioButton> formatButtons = new ArrayList<>();

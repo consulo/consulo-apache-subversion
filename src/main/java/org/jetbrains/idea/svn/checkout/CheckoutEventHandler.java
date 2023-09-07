@@ -15,13 +15,10 @@
  */
 package org.jetbrains.idea.svn.checkout;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.StatusBar;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.project.Project;
+import consulo.project.ui.wm.StatusBar;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.EventAction;
@@ -30,6 +27,9 @@ import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CheckoutEventHandler implements ProgressTracker {
   @Nullable

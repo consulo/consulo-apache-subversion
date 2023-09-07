@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.progress.ProgressIndicator;
+import consulo.application.progress.ProgressIndicator;
 
 import java.io.File;
 

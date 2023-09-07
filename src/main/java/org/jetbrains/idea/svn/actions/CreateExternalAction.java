@@ -15,17 +15,21 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.DumbAwareAction;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.*;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.Task;
+import consulo.language.editor.CommonDataKeys;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.DumbAwareAction;
+import consulo.util.lang.ObjectUtil;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.status.FileStatusManager;
 import org.jetbrains.idea.svn.SvnProgressCanceller;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -37,13 +41,14 @@ import org.jetbrains.idea.svn.update.UpdateClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 
-import static com.intellij.openapi.util.text.StringUtil.isEmptyOrSpaces;
-import static com.intellij.openapi.vcs.changes.ChangesUtil.getVcsForFile;
-import static com.intellij.openapi.vfs.VfsUtilCore.virtualToIoFile;
-import static com.intellij.util.ObjectUtils.notNull;
-import static com.intellij.util.containers.UtilKt.getIfSingle;
+import static consulo.ide.impl.idea.openapi.vfs.VfsUtilCore.virtualToIoFile;
+import static consulo.ide.impl.idea.util.containers.UtilKt.getIfSingle;
+import static consulo.util.lang.StringUtil.isEmptyOrSpaces;
+import static consulo.versionControlSystem.change.ChangesUtil.getVcsForFile;
 import static org.jetbrains.idea.svn.SvnBundle.message;
 import static org.jetbrains.idea.svn.commandLine.CommandUtil.escape;
 import static org.jetbrains.idea.svn.properties.ExternalsDefinitionParser.parseExternalsProperty;
@@ -56,7 +61,7 @@ public class CreateExternalAction extends DumbAwareAction {
   @Override
   public void actionPerformed(@Nonnull AnActionEvent e) {
     Project project = e.getRequiredData(CommonDataKeys.PROJECT);
-    VirtualFile file = notNull(getIfSingle(e.getData(VcsDataKeys.VIRTUAL_FILE_STREAM)));
+    VirtualFile file = ObjectUtil.notNull(getIfSingle(e.getData(VcsDataKeys.VIRTUAL_FILE_STREAM)));
     SelectCreateExternalTargetDialog dialog = new SelectCreateExternalTargetDialog(project, file);
 
     if (dialog.showAndGet()) {
@@ -73,7 +78,11 @@ public class CreateExternalAction extends DumbAwareAction {
     }
   }
 
-  private static void doInBackground(@Nonnull Project project, @Nonnull VirtualFile file, String url, boolean checkout, String target) {
+  private static void doInBackground(@Nonnull Project project,
+                                     @Nonnull VirtualFile file,
+                                     String url,
+                                     boolean checkout,
+                                     String target) {
     SvnVcs vcs = SvnVcs.getInstance(project);
     VcsDirtyScopeManager dirtyScopeManager = VcsDirtyScopeManager.getInstance(project);
     File ioFile = virtualToIoFile(file);
@@ -94,7 +103,10 @@ public class CreateExternalAction extends DumbAwareAction {
     }
   }
 
-  public static void addToExternalProperty(@Nonnull SvnVcs vcs, @Nonnull File ioFile, String target, String url) throws VcsException {
+  public static void addToExternalProperty(@Nonnull SvnVcs vcs,
+                                           @Nonnull File ioFile,
+                                           String target,
+                                           String url) throws VcsException {
     ClientFactory factory = vcs.getFactory(ioFile);
     PropertyValue propertyValue =
       factory.createPropertyClient().getProperty(SvnTarget.fromFile(ioFile), SvnPropertyKeys.SVN_EXTERNALS, false, SVNRevision.UNDEFINED);
@@ -113,14 +125,15 @@ public class CreateExternalAction extends DumbAwareAction {
 
     newExternals += escape(url) + " " + target;
     factory.createPropertyClient()
-      .setProperty(ioFile, SvnPropertyKeys.SVN_EXTERNALS, PropertyValue.create(newExternals), Depth.EMPTY, false);
+           .setProperty(ioFile, SvnPropertyKeys.SVN_EXTERNALS, PropertyValue.create(newExternals), Depth.EMPTY, false);
   }
 
   @Override
   public void update(@Nonnull AnActionEvent e) {
-    Project project = e.getProject();
+    Project project = e.getData(Project.KEY);
     boolean visible = project != null && isSvnActive(project);
-    boolean enabled = visible && isEnabled(project, getIfSingle(e.getData(VcsDataKeys.VIRTUAL_FILE_STREAM)));
+    boolean enabled =
+      visible && isEnabled(project, getIfSingle(e.getData(VcsDataKeys.VIRTUAL_FILE_STREAM)));
 
     e.getPresentation().setVisible(visible);
     e.getPresentation().setEnabled(enabled);
@@ -132,17 +145,17 @@ public class CreateExternalAction extends DumbAwareAction {
 
   private static boolean isEnabled(@Nonnull Project project, @Nullable VirtualFile file) {
     return file != null &&
-           file.isDirectory() &&
-           getVcsForFile(file, project) instanceof SvnVcs &&
-           isEnabled(FileStatusManager.getInstance(project).getStatus(file));
+      file.isDirectory() &&
+      getVcsForFile(file, project) instanceof SvnVcs &&
+      isEnabled(FileStatusManager.getInstance(project).getStatus(file));
   }
 
   private static boolean isEnabled(@Nullable FileStatus status) {
     return status != null &&
-           !FileStatus.DELETED.equals(status) &&
-           !FileStatus.IGNORED.equals(status) &&
-           !FileStatus.MERGED_WITH_PROPERTY_CONFLICTS.equals(status) &&
-           !FileStatus.OBSOLETE.equals(status) &&
-           !FileStatus.UNKNOWN.equals(status);
+      !FileStatus.DELETED.equals(status) &&
+      !FileStatus.IGNORED.equals(status) &&
+      !FileStatus.MERGED_WITH_PROPERTY_CONFLICTS.equals(status) &&
+      !FileStatus.OBSOLETE.equals(status) &&
+      !FileStatus.UNKNOWN.equals(status);
   }
 }

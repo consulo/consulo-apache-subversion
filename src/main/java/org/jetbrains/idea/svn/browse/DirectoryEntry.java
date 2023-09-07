@@ -15,15 +15,15 @@
  */
 package org.jetbrains.idea.svn.browse;
 
-import com.intellij.util.ObjectUtils;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.lang.ObjectUtil;
 import org.jetbrains.idea.svn.api.BaseNodeDescription;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.checkin.CommitInfo;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Date;
 
 /**
@@ -55,7 +55,7 @@ public class DirectoryEntry extends BaseNodeDescription implements Comparable<Di
     myUrl = url;
     myRepositoryRoot = repositoryRoot;
     myName = name;
-    myCommitInfo = ObjectUtils.notNull(commitInfo, CommitInfo.EMPTY);
+    myCommitInfo = ObjectUtil.notNull(commitInfo, CommitInfo.EMPTY);
     myPath = path;
   }
 

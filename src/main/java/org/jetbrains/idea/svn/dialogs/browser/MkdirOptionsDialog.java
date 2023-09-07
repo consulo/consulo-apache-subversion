@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.vcs.VcsConfiguration;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.util.ArrayUtil;
+import consulo.project.Project;
+import consulo.util.collection.ArrayUtil;
+import consulo.versionControlSystem.VcsConfiguration;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.ui.ex.awt.DialogWrapper;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.SVNException;
@@ -32,7 +32,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MkdirOptionsDialog extends DialogWrapper {
+public class MkdirOptionsDialog extends DialogWrapper
+{
 
   private SVNURL myURL;
   private JTextArea myCommitMessage;

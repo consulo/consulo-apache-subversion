@@ -1,20 +1,21 @@
 package org.jetbrains.idea.svn.difftool;
 
-import com.intellij.diff.chains.DiffRequestProducerException;
-import com.intellij.diff.impl.DiffViewerWrapper;
-import com.intellij.diff.requests.DiffRequest;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProducer;
-import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffViewerWrapperProvider;
-import com.intellij.util.ThreeState;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.progress.ProgressIndicator;
+import consulo.component.ProcessCanceledException;
+import consulo.diff.chain.DiffRequestProducerException;
+import consulo.diff.request.DiffRequest;
+import consulo.ide.impl.idea.diff.impl.DiffViewerWrapper;
+import consulo.ide.impl.idea.openapi.vcs.changes.actions.diff.ChangeDiffRequestProducer;
+import consulo.ide.impl.idea.openapi.vcs.changes.actions.diff.ChangeDiffViewerWrapperProvider;
+import consulo.logging.Logger;
+import consulo.project.Project;
 import consulo.util.dataholder.UserDataHolder;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.ThreeState;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ContentRevision;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnChangeProvider;
 import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffRequest;
@@ -26,6 +27,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
+@ExtensionImpl
 public class SvnChangeDiffViewerProvider implements ChangeDiffViewerWrapperProvider {
   private static final Logger LOG = Logger.getInstance(SvnChangeDiffViewerProvider.class);
 

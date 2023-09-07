@@ -1,8 +1,9 @@
 package org.jetbrains.idea.svn.cleanup;
 
-import com.intellij.openapi.vcs.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -17,7 +18,8 @@ import java.io.File;
 public class SvnKitCleanupClient extends BaseSvnClient implements CleanupClient {
 
   @Override
-  public void cleanup(@Nonnull File path, @Nullable ProgressTracker handler) throws VcsException {
+  public void cleanup(@Nonnull File path, @Nullable ProgressTracker handler) throws VcsException
+  {
     SVNWCClient client = myVcs.getSvnKitManager().createWCClient();
 
     client.setEventHandler(toEventHandler(handler));

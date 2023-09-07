@@ -15,42 +15,39 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import static com.intellij.openapi.vcs.changes.ChangesUtil.getNavigatableArray;
-import static com.intellij.util.ContentsUtil.addContent;
-import static com.intellij.util.containers.UtilKt.stream;
+import consulo.dataContext.DataManager;
+import consulo.ide.impl.idea.ide.actions.EditSourceAction;
+import consulo.ide.impl.idea.openapi.util.BooleanGetter;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.ChangesBrowserNode;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.ChangesBrowserNodeRenderer;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.TreeModelBuilder;
+import consulo.language.editor.CommonDataKeys;
+import consulo.project.Project;
+import consulo.project.ui.wm.ToolWindowId;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.ui.ex.action.CommonShortcuts;
+import consulo.ui.ex.awt.BorderLayoutPanel;
+import consulo.ui.ex.awt.JBLabel;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.ui.ex.awt.internal.laf.MultiLineLabelUI;
+import consulo.ui.ex.awt.tree.SimpleTree;
+import consulo.ui.ex.awt.tree.TreeUIHelper;
+import consulo.ui.ex.content.Content;
+import consulo.ui.ex.content.ContentFactory;
+import consulo.ui.ex.content.ContentsUtil;
+import consulo.ui.ex.toolWindow.ToolWindow;
+import consulo.versionControlSystem.FilePath;
 
-import java.awt.Dimension;
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-import javax.annotation.Nonnull;
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.SwingConstants;
-import javax.swing.tree.TreePath;
-
-import com.intellij.ide.DataManager;
-import com.intellij.ide.actions.EditSourceAction;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.CommonShortcuts;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MultiLineLabelUI;
-import com.intellij.openapi.util.BooleanGetter;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.changes.ui.ChangesBrowserNode;
-import com.intellij.openapi.vcs.changes.ui.ChangesBrowserNodeRenderer;
-import com.intellij.openapi.vcs.changes.ui.TreeModelBuilder;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowId;
-import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.ui.TreeUIHelper;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentFactory;
-import com.intellij.ui.treeStructure.SimpleTree;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
-import com.intellij.util.ui.components.BorderLayoutPanel;
+import static consulo.ide.impl.idea.util.containers.UtilKt.stream;
+import static consulo.versionControlSystem.change.ChangesUtil.getNavigatableArray;
 
 public class IntersectingLocalChangesPanel {
 
@@ -131,10 +128,10 @@ public class IntersectingLocalChangesPanel {
                                                     @Nonnull List<FilePath> files,
                                                     @Nonnull String prompt) {
     IntersectingLocalChangesPanel intersectingPanel = new IntersectingLocalChangesPanel(project, files, prompt);
-    Content content = ContentFactory.SERVICE.getInstance().createContent(intersectingPanel.myPanel, title, true);
+    Content content = ContentFactory.getInstance().createContent(intersectingPanel.myPanel, title, true);
     ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.VCS);
 
-    addContent(toolWindow.getContentManager(), content, true);
+    ContentsUtil.addContent(toolWindow.getContentManager(), content, true);
     toolWindow.activate(null);
   }
 }

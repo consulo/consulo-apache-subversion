@@ -18,9 +18,9 @@ package org.jetbrains.idea.svn;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.BinaryContentRevision;
+import consulo.versionControlSystem.change.BinaryContentRevision;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nullable;
@@ -36,7 +36,8 @@ class SvnBinaryContentRevision extends SvnContentRevision implements BinaryConte
   }
 
   @Nullable
-  public byte[] getBinaryContent() throws VcsException {
+  public byte[] getBinaryContent() throws VcsException
+  {
     return getContentAsBytes();
   }
 

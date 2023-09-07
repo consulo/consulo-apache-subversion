@@ -17,21 +17,22 @@
 
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.StatusBar;
-import com.intellij.openapi.wm.WindowManager;
-import com.intellij.vcsUtil.VcsUtil;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressManager;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.project.ui.wm.StatusBar;
+import consulo.project.ui.wm.WindowManager;
+import consulo.versionControlSystem.util.VcsUtil;
 import javax.annotation.Nonnull;
+
+import consulo.application.Application;
+import consulo.application.progress.ProgressIndicator;
+import consulo.dataContext.DataContext;
+import consulo.project.Project;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -70,7 +71,8 @@ public class CreateBranchOrTagAction extends BasicAction {
   }
 
   protected void perform(final Project project, final SvnVcs activeVcs, VirtualFile file, DataContext context)
-    throws VcsException {
+    throws VcsException
+  {
     CreateBranchOrTagDialog dialog = new CreateBranchOrTagDialog(project, true, new File(file.getPath()));
     if (dialog.showAndGet()) {
       final String dstURL = dialog.getToURL();

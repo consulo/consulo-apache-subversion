@@ -1,34 +1,30 @@
 package org.jetbrains.idea.svn.difftool;
 
-import com.intellij.diff.DiffContext;
-import com.intellij.diff.FrameDiffTool.DiffViewer;
-import com.intellij.diff.FrameDiffTool.ToolbarComponents;
-import com.intellij.diff.contents.DiffContent;
-import com.intellij.diff.contents.EmptyContent;
-import com.intellij.diff.requests.DiffRequest;
-import com.intellij.diff.requests.ErrorDiffRequest;
-import com.intellij.diff.tools.ErrorDiffTool;
-import com.intellij.diff.util.DiffUtil;
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataProvider;
-import com.intellij.openapi.actionSystem.ToggleAction;
-import com.intellij.openapi.actionSystem.ex.ActionUtil;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Divider;
-import com.intellij.openapi.ui.Splitter;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.ui.EditorNotificationPanel;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.components.panels.Wrapper;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
-import consulo.ide.base.BaseDataManager;
+import consulo.application.dumb.DumbAware;
+import consulo.dataContext.DataManager;
+import consulo.dataContext.DataProvider;
+import consulo.diff.content.DiffContent;
+import consulo.diff.content.EmptyContent;
+import consulo.diff.request.DiffRequest;
+import consulo.ide.impl.dataContext.BaseDataManager;
+import consulo.ide.impl.idea.diff.DiffContext;
+import consulo.ide.impl.idea.diff.FrameDiffTool.DiffViewer;
+import consulo.ide.impl.idea.diff.FrameDiffTool.ToolbarComponents;
+import consulo.ide.impl.idea.diff.requests.ErrorDiffRequest;
+import consulo.ide.impl.idea.diff.tools.ErrorDiffTool;
+import consulo.ide.impl.idea.diff.util.DiffUtil;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.ide.impl.idea.ui.EditorNotificationPanel;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.ui.ex.JBColor;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.ToggleAction;
+import consulo.ui.ex.action.util.ActionUtil;
+import consulo.ui.ex.awt.*;
 import consulo.util.dataholder.Key;
+import consulo.util.lang.Comparing;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.difftool.SvnDiffSettingsHolder.SvnDiffSettings;
 import org.jetbrains.idea.svn.difftool.properties.SvnPropertiesDiffRequest;
@@ -326,7 +322,8 @@ public class SvnDiffViewer implements DiffViewer {
   // Helpers
   //
 
-  private class MyPropertyContext extends DiffContext {
+  private class MyPropertyContext extends DiffContext
+  {
     @Nullable
     @Override
     public Project getProject() {
@@ -362,7 +359,8 @@ public class SvnDiffViewer implements DiffViewer {
     }
   }
 
-  private static class MySplitter extends Splitter {
+  private static class MySplitter extends Splitter
+  {
     @Nonnull
 	private final String myLabelText;
 

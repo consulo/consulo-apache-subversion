@@ -1,12 +1,12 @@
 package org.jetbrains.idea.svn.api;
 
-import com.intellij.execution.process.ProcessOutput;
-import com.intellij.openapi.util.Version;
-import javax.annotation.Nonnull;
+import consulo.process.util.ProcessOutput;
+import consulo.util.lang.Version;
 import org.jetbrains.idea.svn.commandLine.Command;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.commandLine.SvnCommandName;
 
+import javax.annotation.Nonnull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

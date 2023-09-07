@@ -15,24 +15,24 @@
  */
 package org.jetbrains.idea.svn.diff;
 
-import com.intellij.diff.DiffContentFactory;
-import com.intellij.diff.DiffManager;
-import com.intellij.diff.contents.DiffContent;
-import com.intellij.diff.requests.DiffRequest;
-import com.intellij.diff.requests.SimpleDiffRequest;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VirtualFile;
-import javax.annotation.Nonnull;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.diff.DiffContentFactory;
+import consulo.diff.DiffManager;
+import consulo.diff.content.DiffContent;
+import consulo.diff.request.DiffRequest;
+import consulo.diff.request.SimpleDiffRequest;
+import consulo.project.Project;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**

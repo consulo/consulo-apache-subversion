@@ -15,25 +15,29 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import org.jetbrains.idea.svn.*;
+import consulo.component.ProcessCanceledException;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.util.lang.Pair;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import org.jetbrains.idea.svn.RootUrlInfo;
+import org.jetbrains.idea.svn.SvnRevisionNumber;
+import org.jetbrains.idea.svn.SvnUtil;
+import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationNotifier;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
-import org.tmatesoft.svn.core.*;
+import org.tmatesoft.svn.core.SVNErrorCode;
+import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 /**
@@ -66,7 +70,8 @@ public class SingleCommittedListProvider {
     this.number = number;
   }
 
-  public Pair<SvnChangeList, FilePath> run() throws VcsException {
+  public Pair<SvnChangeList, FilePath> run() throws VcsException
+  {
     Pair<SvnChangeList, FilePath> result = null;
 
     if (setup()) {
@@ -99,7 +104,8 @@ public class SingleCommittedListProvider {
     return result;
   }
 
-  private void calculate() throws VcsException {
+  private void calculate() throws VcsException
+  {
     // TODO: Seems that filePath detection could be replaced with "svn info -r <revisionBefore>" - and not call
     // TODO: "svn log -r HEAD:<revisionBefore>" and track copies manually (which also is not correct for all cases).
     if (!searchForUrl(svnRootUrl) && !(hasAccess(repositoryUrl) && searchForUrl(repositoryUrl))) {
@@ -124,7 +130,8 @@ public class SingleCommittedListProvider {
   }
 
   // return changed path, if any
-  private FilePath searchFromHead(@Nonnull SVNURL url) throws VcsException {
+  private FilePath searchFromHead(@Nonnull SVNURL url) throws VcsException
+  {
     final SvnCopyPathTracker pathTracker = new SvnCopyPathTracker(repositoryUrl.toDecodedString(), repositoryRelativeUrl);
     SvnTarget target = SvnTarget.fromURL(url);
 
@@ -159,7 +166,8 @@ public class SingleCommittedListProvider {
     }
   }
 
-  private boolean searchForUrl(@Nonnull SVNURL url) throws VcsException {
+  private boolean searchForUrl(@Nonnull SVNURL url) throws VcsException
+  {
     LogEntryConsumer handler = new LogEntryConsumer() {
       @Override
       public void consume(LogEntry logEntry) {

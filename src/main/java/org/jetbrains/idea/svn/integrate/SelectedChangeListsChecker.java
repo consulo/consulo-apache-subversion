@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.openapi.vcs.changes.ChangeList;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.change.ChangeList;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.tmatesoft.svn.core.SVNURL;
@@ -42,7 +42,7 @@ public class SelectedChangeListsChecker implements SelectedCommittedStuffChecker
     myChangeListsList.clear();
 
     getSelectedSvnCls(event);
-    if (! myChangeListsList.isEmpty()) {
+    if (!myChangeListsList.isEmpty()) {
       checkSame();
     }
   }
@@ -60,11 +60,11 @@ public class SelectedChangeListsChecker implements SelectedCommittedStuffChecker
     final CheckSamePattern<VirtualFile> sameRoot = new CheckSamePattern<>();
 
     for (ChangeList changeList : myChangeListsList) {
-      final SvnChangeList svnChangeList = (SvnChangeList) changeList;
+      final SvnChangeList svnChangeList = (SvnChangeList)changeList;
       sameBranch.iterate(svnChangeList.getBranchUrl());
       sameRoot.iterate(svnChangeList.getRoot());
 
-      if ((! sameBranch.isSame()) || (! sameRoot.isSame())) {
+      if ((!sameBranch.isSame()) || (!sameRoot.isSame())) {
         break;
       }
     }
@@ -86,7 +86,7 @@ public class SelectedChangeListsChecker implements SelectedCommittedStuffChecker
 
     if (cls != null) {
       for (ChangeList cl : cls) {
-        final CommittedChangeList committed = ((CommittedChangeList) cl);
+        final CommittedChangeList committed = ((CommittedChangeList)cl);
         if ((committed != null) && (committed.getVcs() != null) && (SvnVcs.VCS_NAME.equals(committed.getVcs().getName()))) {
           myChangeListsList.add(committed);
         }

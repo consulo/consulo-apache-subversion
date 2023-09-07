@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.openapi.vcs.changes.Change;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.change.Change;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,21 +15,21 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import java.util.List;
-
+import consulo.application.AllIcons;
+import consulo.language.editor.CommonDataKeys;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.VcsKey;
+import consulo.versionControlSystem.history.VcsFileRevision;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnVcs;
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.openapi.vcs.VcsKey;
-import com.intellij.openapi.vcs.history.VcsFileRevision;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Consumer;
-import com.intellij.vcsUtil.VcsUtil;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,15 +56,15 @@ public class SvnEditCommitMessageFromFileHistoryAction extends AnAction {
     SvnEditCommitMessageAction.askAndEditRevision(svnFileRevision.getRevision().getNumber(), svnFileRevision.getCommitMessage(),
       (SvnRepositoryLocation) svnFileRevision.getChangedRepositoryPath(), project, new Consumer<String>() {
       @Override
-      public void consume(final String newMessage) {
+      public void accept(final String newMessage) {
         svnFileRevision.setCommitMessage(newMessage);
         if (listener != null) {
-          listener.consume(newMessage);
+          listener.accept(newMessage);
         }
         ProjectLevelVcsManager.getInstance(project).getVcsHistoryCache().editCached(VcsUtil.getFilePath(revisionVirtualFile), vcsKey,
           new Consumer<List<VcsFileRevision>>() {
             @Override
-            public void consume(List<VcsFileRevision> revisions) {
+            public void accept(List<VcsFileRevision> revisions) {
               for (VcsFileRevision fileRevision : revisions) {
                 if (! (fileRevision instanceof SvnFileRevision)) continue;
                 if (((SvnFileRevision) fileRevision).getRevision().getNumber() == svnFileRevision.getRevision().getNumber()) {

@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.api;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNURL;
@@ -30,7 +30,8 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
 public class CmdRepositoryFeaturesClient extends BaseSvnClient implements RepositoryFeaturesClient {
 
   @Override
-  public boolean supportsMergeTracking(@Nonnull SVNURL url) throws VcsException {
+  public boolean supportsMergeTracking(@Nonnull SVNURL url) throws VcsException
+  {
     boolean result;
 
     try {

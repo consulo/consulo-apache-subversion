@@ -16,29 +16,26 @@
 
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.vcs.*;
-import com.intellij.openapi.vcs.changes.committed.DecoratorManager;
-import com.intellij.openapi.vcs.changes.committed.VcsCommittedListsZipper;
-import com.intellij.openapi.vcs.changes.committed.VcsCommittedViewAuxiliary;
-import com.intellij.openapi.vcs.changes.committed.VcsConfigurationChangeListener;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
-import com.intellij.openapi.vcs.versionBrowser.ChangesBrowserSettingsEditor;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.AsynchConsumer;
-import com.intellij.util.Consumer;
-import com.intellij.util.PairConsumer;
-import com.intellij.util.messages.MessageBusConnection;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.util.function.AsynchConsumer;
+import consulo.application.util.registry.Registry;
+import consulo.component.ProcessCanceledException;
+import consulo.component.messagebus.MessageBusConnection;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.VcsConfigurationChangeListener;
+import consulo.logging.Logger;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Pair;
+import consulo.util.lang.function.PairConsumer;
+import consulo.versionControlSystem.*;
+import consulo.versionControlSystem.change.commited.DecoratorManager;
+import consulo.versionControlSystem.change.commited.VcsCommittedListsZipper;
+import consulo.versionControlSystem.change.commited.VcsCommittedViewAuxiliary;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.versionControlSystem.versionBrowser.ChangeBrowserSettings;
+import consulo.versionControlSystem.versionBrowser.ChangesBrowserSettingsEditor;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -52,20 +49,19 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static com.intellij.openapi.progress.ProgressManager.progress;
-import static com.intellij.openapi.progress.ProgressManager.progress2;
-import static com.intellij.util.containers.ContainerUtil.newArrayList;
-import static com.intellij.util.containers.ContainerUtil.newHashSet;
+import static consulo.application.ApplicationManager.getApplication;
+import static consulo.application.progress.ProgressManager.progress;
+import static consulo.application.progress.ProgressManager.progress2;
+import static consulo.util.collection.ContainerUtil.newArrayList;
 import static java.util.Collections.singletonList;
 import static org.jetbrains.idea.svn.SvnBundle.message;
 
@@ -92,8 +88,8 @@ public class SvnCommittedChangesProvider implements CachingCommittedChangesProvi
     myConnection.subscribe(VcsConfigurationChangeListener.BRANCHES_CHANGED_RESPONSE,
                            (project, vcsRoot, cachedList) -> getApplication().invokeLater(() -> {
                              cachedList.stream().filter(SvnChangeList.class::isInstance).map(SvnChangeList.class::cast)
-                               .filter(list -> vcsRoot == null || vcsRoot.equals(list.getVcsRoot()))
-                               .forEach(SvnChangeList::forceReloadCachedInfo);
+                                       .filter(list -> vcsRoot == null || vcsRoot.equals(list.getVcsRoot()))
+                                       .forEach(SvnChangeList::forceReloadCachedInfo);
                            }, project.getDisposed()));
   }
 
@@ -141,7 +137,7 @@ public class SvnCommittedChangesProvider implements CachingCommittedChangesProvi
       Consumer<LogEntry> resultConsumer = logEntry -> {
         SvnChangeList list = new SvnChangeList(myVcs, svnLocation, logEntry, repositoryRoot);
         if (filter.accepts(list)) {
-          consumer.consume(list);
+          consumer.accept(list);
         }
       };
       SvnTarget target = SvnTarget.fromURL(svnLocation.toSvnUrl(), createBeforeRevision(settings));
@@ -161,7 +157,8 @@ public class SvnCommittedChangesProvider implements CachingCommittedChangesProvi
     SvnRepositoryLocation svnLocation = (SvnRepositoryLocation)location;
     List<SvnChangeList> result = newArrayList();
     String repositoryRoot = getRepositoryRoot(svnLocation);
-    Consumer<LogEntry> resultConsumer = logEntry -> result.add(new SvnChangeList(myVcs, svnLocation, logEntry, repositoryRoot));
+    Consumer<LogEntry> resultConsumer =
+      logEntry -> result.add(new SvnChangeList(myVcs, svnLocation, logEntry, repositoryRoot));
     SvnTarget target = SvnTarget.fromURL(svnLocation.toSvnUrl(), createBeforeRevision(settings));
 
     getCommittedChangesImpl(settings, target, maxCount, resultConsumer, false, true);
@@ -220,8 +217,8 @@ public class SvnCommittedChangesProvider implements CachingCommittedChangesProvi
     SVNRevision revisionAfter = createAfterRevision(settings);
 
     myVcs.getFactory(target).createHistoryClient()
-      .doLog(target, revisionBefore, revisionAfter, settings.STOP_ON_COPY, true, includeMergedRevisions, maxCount, null,
-             createLogHandler(resultConsumer, filterOutByDate, author));
+         .doLog(target, revisionBefore, revisionAfter, settings.STOP_ON_COPY, true, includeMergedRevisions, maxCount, null,
+                createLogHandler(resultConsumer, filterOutByDate, author));
   }
 
   @Nonnull
@@ -264,7 +261,7 @@ public class SvnCommittedChangesProvider implements CachingCommittedChangesProvi
         return;
       }
       if (author == null || author.equalsIgnoreCase(logEntry.getAuthor())) {
-        resultConsumer.consume(logEntry);
+        resultConsumer.accept(logEntry);
       }
     };
   }
@@ -374,23 +371,23 @@ public class SvnCommittedChangesProvider implements CachingCommittedChangesProvi
     // TODO: could only be used with url targets - so we could not use "svn diff" here now for all cases (we could not use url with
     // TODO: concrete revision as there could be mixed revision working copy).
 
-    Set<FilePath> result = newHashSet();
+    Set<FilePath> result = new HashSet<>();
     File rootFile = root.getIOFile();
 
     myVcs.getFactory(rootFile).createStatusClient()
-      .doStatus(rootFile, SVNRevision.UNDEFINED, Depth.INFINITY, true, false, false, false, new StatusConsumer() {
-        @Override
-        public void consume(Status status) throws SVNException {
-          File file = status.getFile();
-          boolean changedOnServer = isNotNone(status.getRemoteContentsStatus()) ||
-                                    isNotNone(status.getRemoteNodeStatus()) ||
-                                    isNotNone(status.getRemotePropertiesStatus());
+         .doStatus(rootFile, SVNRevision.UNDEFINED, Depth.INFINITY, true, false, false, false, new StatusConsumer() {
+           @Override
+           public void consume(Status status) throws SVNException {
+             File file = status.getFile();
+             boolean changedOnServer = isNotNone(status.getRemoteContentsStatus()) ||
+               isNotNone(status.getRemoteNodeStatus()) ||
+               isNotNone(status.getRemotePropertiesStatus());
 
-          if (file != null && changedOnServer) {
-            result.add(VcsUtil.getFilePath(file));
-          }
-        }
-      }, null);
+             if (file != null && changedOnServer) {
+               result.add(VcsUtil.getFilePath(file));
+             }
+           }
+         }, null);
 
     return result;
   }

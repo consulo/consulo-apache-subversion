@@ -15,15 +15,24 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import java.io.File;
-
-import javax.annotation.Nonnull;
-import org.jetbrains.idea.svn.SvnBundle;
-import org.jetbrains.idea.svn.SvnStatusUtil;
-import org.jetbrains.idea.svn.SvnUtil;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.SvnWorkingCopyFormatHolder;
-import org.jetbrains.idea.svn.WorkingCopyFormat;
+import consulo.application.impl.internal.ApplicationNamesInfo;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.dataContext.DataContext;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.language.editor.CommonDataKeys;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.Presentation;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.lang.Pair;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
+import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.ClientFactory;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.checkout.SvnCheckoutProvider;
@@ -32,23 +41,9 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.application.ApplicationNamesInfo;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
+
+import javax.annotation.Nonnull;
+import java.io.File;
 
 public class ShareProjectAction extends BasicAction {
 
@@ -60,7 +55,7 @@ public class ShareProjectAction extends BasicAction {
     Presentation presentation = e.getPresentation();
     final DataContext dataContext = e.getDataContext();
 
-    Project project = e.getProject();
+    Project project = e.getData(Project.KEY);
     if ((project == null) || (ProjectLevelVcsManager.getInstance(project).isBackgroundVcsOperationRunning())) {
       presentation.setEnabled(false);
       presentation.setVisible(false);
@@ -93,11 +88,13 @@ public class ShareProjectAction extends BasicAction {
     return true;
   }
 
-  public static boolean share(final Project project, final VirtualFile file) throws VcsException {
+  public static boolean share(final Project project, final VirtualFile file) throws VcsException
+  {
     return performImpl(project, SvnVcs.getInstance(project), file);
   }
 
-  protected void perform(final Project project, final SvnVcs activeVcs, final VirtualFile file, DataContext context) throws VcsException {
+  protected void perform(final Project project, final SvnVcs activeVcs, final VirtualFile file, DataContext context) throws VcsException
+  {
     performImpl(project, activeVcs, file);
   }
 
@@ -201,7 +198,8 @@ public class ShareProjectAction extends BasicAction {
   private static boolean checkRemoteFolder(Project project,
                                         final SvnVcs activeVcs,
                                         final String parent,
-                                        ProgressManager progressManager) throws VcsException {
+                                        ProgressManager progressManager) throws VcsException
+  {
     final VcsException[] exc = new VcsException[1];
     final boolean[] folderEmpty = new boolean[1];
 
@@ -223,9 +221,9 @@ public class ShareProjectAction extends BasicAction {
   }
 
   private static Pair<SVNRevision, SVNURL> createRemoteFolder(@Nonnull final SvnVcs vcs,
-                                                              @Nonnull final SVNURL parent,
-                                                              final String folderName,
-                                                              String commitText) throws VcsException, SVNException {
+																				@Nonnull final SVNURL parent,
+																				final String folderName,
+																				String commitText) throws VcsException, SVNException {
     SVNURL url = parent.appendPath(folderName, false);
     final String urlText = url.toString();
     final ProgressIndicator indicator = ProgressManager.getInstance().getProgressIndicator();
@@ -248,7 +246,8 @@ public class ShareProjectAction extends BasicAction {
   }
 
   private static void addRecursively(@Nonnull final SvnVcs activeVcs, @Nonnull final ClientFactory factory, final VirtualFile file)
-    throws VcsException {
+    throws VcsException
+  {
     final SvnExcludingIgnoredOperation operation = new SvnExcludingIgnoredOperation(activeVcs.getProject(), new SvnExcludingIgnoredOperation.Operation() {
       public void doOperation(final VirtualFile virtualFile) throws VcsException {
         final File ioFile = new File(virtualFile.getPath());

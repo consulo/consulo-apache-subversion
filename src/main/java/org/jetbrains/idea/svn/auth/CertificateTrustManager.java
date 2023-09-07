@@ -15,17 +15,16 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.util.net.ssl.CertificateManager;
-import com.intellij.util.net.ssl.ClientOnlyTrustManager;
+import consulo.http.CertificateManager;
+import consulo.http.ssl.ClientOnlyTrustManager;
+import consulo.logging.Logger;
 import org.apache.http.client.utils.URIBuilder;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -40,7 +39,7 @@ import java.security.cert.X509Certificate;
  *
  * @author Konstantin Kolosovsky.
  */
-public class CertificateTrustManager extends ClientOnlyTrustManager {
+public class CertificateTrustManager implements ClientOnlyTrustManager {
 
   private static final Logger LOG = Logger.getInstance(CertificateTrustManager.class);
 
@@ -102,7 +101,7 @@ public class CertificateTrustManager extends ClientOnlyTrustManager {
     boolean isStorageEnabled =
       myAuthenticationService.getAuthenticationManager().getHostOptionsProvider().getHostOptions(myRepositoryUrl).isAuthStorageEnabled();
     int result = myAuthenticationService.getAuthenticationManager().getInnerProvider()
-      .acceptServerAuthentication(myRepositoryUrl, myRealm, certificate, isStorageEnabled);
+                                        .acceptServerAuthentication(myRepositoryUrl, myRealm, certificate, isStorageEnabled);
 
     switch (result) {
       case ISVNAuthenticationProvider.ACCEPTED:

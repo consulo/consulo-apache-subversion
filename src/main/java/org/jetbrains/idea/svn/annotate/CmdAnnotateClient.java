@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.annotate;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
@@ -46,7 +46,8 @@ public class CmdAnnotateClient extends BaseSvnClient implements AnnotateClient {
                        @Nonnull SVNRevision endRevision,
                        boolean includeMergedRevisions,
                        @Nullable DiffOptions diffOptions,
-                       @Nullable final AnnotationConsumer handler) throws VcsException {
+                       @Nullable final AnnotationConsumer handler) throws VcsException
+  {
     List<String> parameters = new ArrayList<>();
     CommandUtil.put(parameters, target);
     CommandUtil.put(parameters, startRevision, endRevision);

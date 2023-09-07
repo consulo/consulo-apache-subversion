@@ -15,16 +15,16 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.help.HelpManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.OptionsDialog;
+import consulo.application.HelpManager;
+import consulo.project.Project;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.OptionsDialog;
+import consulo.ui.ex.awt.ScrollPaneFactory;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
@@ -35,7 +35,8 @@ public class LockDialog extends OptionsDialog {
   private JTextArea myLockTextArea;
   private JCheckBox myForceCheckBox;
 
-  @NonNls private static final String HELP_ID = "reference.VCS.subversion.lockFile";
+  @NonNls
+  private static final String HELP_ID = "reference.VCS.subversion.lockFile";
 
   public LockDialog(Project project, boolean canBeParent, boolean multiple) {
     super(project, canBeParent);

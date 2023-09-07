@@ -40,7 +40,7 @@
                   <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="integrate.configuration.source1.label"/>
                 </properties>
               </component>
-              <component id="a6192" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myMergeText1">
+              <component id="a6192" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myMergeText1">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <minimum-size width="250" height="-1"/>
@@ -80,7 +80,7 @@
                   <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="integrate.configuration.source2.label"/>
                 </properties>
               </component>
-              <component id="93f39" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myMergeText2">
+              <component id="93f39" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myMergeText2">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <minimum-size width="250" height="-1"/>

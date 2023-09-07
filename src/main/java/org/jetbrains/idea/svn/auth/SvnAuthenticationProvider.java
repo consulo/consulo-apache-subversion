@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.util.SystemProperties;
+import consulo.application.ApplicationManager;
+import consulo.project.Project;
+import consulo.util.lang.SystemProperties;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 import org.tmatesoft.svn.core.SVNURL;

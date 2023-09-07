@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication;
+import static consulo.application.ApplicationManager.getApplication;
 import static org.jetbrains.idea.svn.SvnUtil.checkRepositoryVersion15;
 import static org.jetbrains.idea.svn.SvnUtil.createUrl;
 import static org.jetbrains.idea.svn.SvnUtil.parseUrl;
@@ -27,18 +27,20 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.application.progress.Task;
+import consulo.document.FileDocumentManager;
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.actions.BackgroundTaskGroup;
-import com.intellij.util.concurrency.Semaphore;
+import consulo.logging.Logger;
+import consulo.util.io.FileUtil;
+import consulo.ide.impl.idea.openapi.vcs.actions.BackgroundTaskGroup;
+import consulo.application.util.Semaphore;
 
-public class QuickMerge extends BackgroundTaskGroup {
+public class QuickMerge extends BackgroundTaskGroup
+{
 
   private static final Logger LOG = Logger.getInstance(QuickMerge.class);
 

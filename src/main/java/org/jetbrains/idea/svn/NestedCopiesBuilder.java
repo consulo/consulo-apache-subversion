@@ -15,19 +15,18 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.status.Status;
 import org.jetbrains.idea.svn.status.StatusType;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 public class NestedCopiesBuilder implements StatusReceiver {
@@ -42,7 +41,7 @@ public class NestedCopiesBuilder implements StatusReceiver {
   public NestedCopiesBuilder(@Nonnull SvnVcs vcs, @Nonnull SvnFileUrlMapping mapping) {
     myVcs = vcs;
     myMapping = mapping;
-    myCopies = ContainerUtil.newHashSet();
+    myCopies = new HashSet<>();
   }
 
   public void process(@Nonnull FilePath path, final Status status) {

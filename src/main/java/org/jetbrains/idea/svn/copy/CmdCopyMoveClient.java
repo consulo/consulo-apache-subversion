@@ -1,10 +1,8 @@
 package org.jetbrains.idea.svn.copy;
 
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.VcsException;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.util.SystemInfo;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.checkin.CmdCheckinClient;
@@ -15,6 +13,8 @@ import org.jetbrains.idea.svn.commandLine.SvnCommandName;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

@@ -15,25 +15,21 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.ObjectsConvertor;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.InvokeAfterUpdateMode;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Consumer;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.Convertor;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.logging.Logger;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.function.Condition;
+import consulo.versionControlSystem.change.ChangeListManager;
+import consulo.versionControlSystem.change.InvokeAfterUpdateMode;
+import consulo.versionControlSystem.util.ObjectsConvertor;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.status.Status;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -100,11 +96,7 @@ public class SvnRootsDetector {
   }
 
   private void addNestedRoots(final boolean clearState, final Runnable callback) {
-    final List<VirtualFile> basicVfRoots = ObjectsConvertor.convert(myResult.myTopRoots, new Convertor<RootUrlInfo, VirtualFile>() {
-      public VirtualFile convert(final RootUrlInfo real) {
-        return real.getVirtualFile();
-      }
-    });
+    final List<VirtualFile> basicVfRoots = ObjectsConvertor.convert(myResult.myTopRoots, RootUrlInfo::getVirtualFile);
 
     final ChangeListManager clManager = ChangeListManager.getInstance(myVcs.getProject());
 
@@ -139,11 +131,9 @@ public class SvnRootsDetector {
 
         callback.run();
       }
-    }, InvokeAfterUpdateMode.SILENT_CALLBACK_POOLED, null, new Consumer<VcsDirtyScopeManager>() {
-      public void consume(VcsDirtyScopeManager vcsDirtyScopeManager) {
-        if (clearState) {
-          vcsDirtyScopeManager.filesDirty(null, basicVfRoots);
-        }
+    }, InvokeAfterUpdateMode.SILENT_CALLBACK_POOLED, null, vcsDirtyScopeManager -> {
+      if (clearState) {
+        vcsDirtyScopeManager.filesDirty(null, basicVfRoots);
       }
     }, null);
   }

@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.ConfigurationException;
+import consulo.configurable.ConfigurationException;
 import org.jetbrains.idea.svn.SvnConfiguration;
 
 import javax.swing.*;

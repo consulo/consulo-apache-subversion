@@ -1,8 +1,8 @@
 package org.jetbrains.idea.svn.properties;
 
-import com.intellij.openapi.diagnostic.Attachment;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.vcs.VcsException;
+import consulo.logging.Logger;
+import consulo.logging.attachment.AttachmentFactory;
+import consulo.versionControlSystem.VcsException;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -39,7 +39,8 @@ public class CmdPropertyClient extends BaseSvnClient implements PropertyClient {
                                    @Nonnull String property,
                                    boolean revisionProperty,
                                    @Nullable SVNRevision revision)
-    throws VcsException {
+    throws VcsException
+  {
     List<String> parameters = new ArrayList<>();
 
     parameters.add(property);
@@ -79,7 +80,8 @@ public class CmdPropertyClient extends BaseSvnClient implements PropertyClient {
                           @Nonnull String property,
                           @Nullable SVNRevision revision,
                           @Nullable Depth depth,
-                          @Nullable PropertyConsumer handler) throws VcsException {
+                          @Nullable PropertyConsumer handler) throws VcsException
+  {
     List<String> parameters = new ArrayList<>();
 
     parameters.add(property);
@@ -118,7 +120,8 @@ public class CmdPropertyClient extends BaseSvnClient implements PropertyClient {
   }
 
   @Override
-  public void setProperties(@Nonnull File file, @Nonnull PropertiesMap properties) throws VcsException {
+  public void setProperties(@Nonnull File file, @Nonnull PropertiesMap properties) throws VcsException
+  {
     PropertiesMap currentProperties = collectPropertiesToDelete(file);
     currentProperties.putAll(properties);
 
@@ -162,7 +165,8 @@ public class CmdPropertyClient extends BaseSvnClient implements PropertyClient {
                                   @Nonnull String property,
                                   @Nonnull SVNRevision revision,
                                   @Nullable PropertyValue value,
-                                  boolean force) throws VcsException {
+                                  boolean force) throws VcsException
+  {
     runSetProperty(target, property, revision, null, value, force);
   }
 
@@ -204,7 +208,8 @@ public class CmdPropertyClient extends BaseSvnClient implements PropertyClient {
   }
 
   @Nullable
-  private PropertyData parseSingleProperty(SvnTarget target, @Nonnull CommandExecutor command) throws VcsException {
+  private PropertyData parseSingleProperty(SvnTarget target, @Nonnull CommandExecutor command) throws VcsException
+  {
     final PropertyData[] data = new PropertyData[1];
     PropertyConsumer handler = new PropertyConsumer() {
       @Override
@@ -228,7 +233,8 @@ public class CmdPropertyClient extends BaseSvnClient implements PropertyClient {
     return data[0];
   }
 
-  private static void parseOutput(SvnTarget target, @Nonnull CommandExecutor command, PropertyConsumer handler) throws VcsException {
+  private static void parseOutput(SvnTarget target, @Nonnull CommandExecutor command, PropertyConsumer handler) throws VcsException
+  {
     try {
       Properties properties = CommandUtil.parse(command.getOutput(), Properties.class);
 
@@ -249,7 +255,7 @@ public class CmdPropertyClient extends BaseSvnClient implements PropertyClient {
     }
     catch (JAXBException e) {
       LOG.error("Could not parse properties. Command: " + command.getCommandText() + ", Warning: " + command.getErrorOutput(),
-                new Attachment("output.xml", command.getOutput()));
+                AttachmentFactory.get().create("output.xml", command.getOutput()));
       throw new VcsException(e);
     }
     catch (SVNException e) {
@@ -288,7 +294,8 @@ public class CmdPropertyClient extends BaseSvnClient implements PropertyClient {
     return result;
   }
 
-  private SVNRevision resolveRevisionNumber(@Nonnull File path, @Nullable SVNRevision revision) throws VcsException {
+  private SVNRevision resolveRevisionNumber(@Nonnull File path, @Nullable SVNRevision revision) throws VcsException
+  {
     long result = revision != null ? revision.getNumber() : -1;
 
     // base should be resolved manually - could not set revision to BASE to get revision property

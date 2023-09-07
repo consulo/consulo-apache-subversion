@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.vcs.update.FileGroup;
+import consulo.versionControlSystem.update.FileGroup;
+import consulo.application.progress.ProgressIndicator;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.EventAction;

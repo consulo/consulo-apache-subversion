@@ -17,19 +17,20 @@
 
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.FileStatusManager;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ArrayUtil;
+import consulo.dataContext.DataContext;
+import consulo.application.ApplicationManager;
+import consulo.logging.Logger;
+import consulo.ui.ex.awt.Messages;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.VcsException;
+import consulo.util.collection.ArrayUtil;
 import javax.annotation.Nonnull;
+
+import consulo.project.Project;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.status.FileStatusManager;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnVcs;

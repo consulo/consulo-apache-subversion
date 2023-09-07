@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.svnkit;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.popup.util.PopupUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.CharsetToolkit;
+import consulo.logging.Logger;
+import consulo.ui.NotificationType;
+import consulo.ui.ex.awt.util.PopupUtil;
+import consulo.util.io.CharsetToolkit;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.NativeLogReader;
 import org.jetbrains.idea.svn.SSLExceptionsHelper;
 import org.jetbrains.idea.svn.SvnNativeLogParser;
@@ -78,12 +78,12 @@ public class SvnKitDebugLogger extends SVNDebugLogAdapter {
       String info = SSLExceptionsHelper.getAddInfo();
       info = info == null ? "" : " (" + info + ") ";
       if (th.getCause() instanceof CertificateException) {
-        PopupUtil.showBalloonForActiveFrame("Subversion: " + info + th.getCause().getMessage(), MessageType.ERROR);
+        PopupUtil.showBalloonForActiveFrame("Subversion: " + info + th.getCause().getMessage(), NotificationType.ERROR);
       }
       else {
         final String postMessage = "\nPlease check Subversion SSL settings (Settings | Version Control | Subversion | Network)\n" +
                                    "Maybe you should specify SSL protocol manually - SSLv3 or TLSv1";
-        PopupUtil.showBalloonForActiveFrame("Subversion: " + info + th.getMessage() + postMessage, MessageType.ERROR);
+        PopupUtil.showBalloonForActiveFrame("Subversion: " + info + th.getMessage() + postMessage, NotificationType.ERROR);
       }
     }
     else if (th instanceof SSLProtocolException) {
@@ -95,7 +95,7 @@ public class SvnKitDebugLogger extends SVNDebugLogAdapter {
         final SSLProtocolExceptionParser parser = new SSLProtocolExceptionParser(message);
         parser.parse();
         final String errMessage = "Subversion: " + info + parser.getParsedMessage();
-        PopupUtil.showBalloonForActiveFrame(errMessage, MessageType.ERROR);
+        PopupUtil.showBalloonForActiveFrame(errMessage, NotificationType.ERROR);
       }
     }
   }

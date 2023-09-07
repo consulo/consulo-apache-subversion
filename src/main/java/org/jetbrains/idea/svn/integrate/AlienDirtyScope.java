@@ -15,18 +15,18 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.changes.VcsDirtyScope;
-import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Consumer;
-import com.intellij.util.Processor;
+import consulo.application.util.function.Processor;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtil;
+import consulo.project.Project;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.change.VcsDirtyScope;
+import consulo.virtualFileSystem.VirtualFile;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class AlienDirtyScope extends VcsDirtyScope {
   private final Set<FilePath> myFiles;

@@ -24,14 +24,15 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.project.Project;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNURL;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.vcs.ProgressManagerQueue;
+import consulo.application.ApplicationManager;
+import consulo.logging.Logger;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.ide.impl.idea.vcs.ProgressManagerQueue;
 
 // synch is here
 public class NewRootBunch {
@@ -77,7 +78,7 @@ public class NewRootBunch {
   }
 
   public void updateBranches(@Nonnull final VirtualFile root, @Nonnull final String branchesParent,
-                             @Nonnull final InfoStorage<List<SvnBranchItem>> items) {
+							 @Nonnull final InfoStorage<List<SvnBranchItem>> items) {
     synchronized (myLock) {
       final InfoStorage<SvnBranchConfigurationNew> existing = myMap.get(root);
       if (existing == null) {

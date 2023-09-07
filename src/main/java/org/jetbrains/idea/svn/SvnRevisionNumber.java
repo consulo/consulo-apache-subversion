@@ -17,8 +17,8 @@ package org.jetbrains.idea.svn;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.vcs.history.LongRevisionNumber;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
+import consulo.versionControlSystem.history.LongRevisionNumber;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
 /**

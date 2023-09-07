@@ -15,29 +15,28 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.RepositoryLocation;
-import com.intellij.openapi.vcs.changes.committed.ChangesBunch;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangesAdapter;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangesCache;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.util.messages.MessageBusConnection;
+import consulo.application.ApplicationManager;
+import consulo.component.messagebus.MessageBusConnection;
+import consulo.disposer.Disposable;
+import consulo.ide.ServiceManager;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.ChangesBunch;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangesAdapter;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangesListener;
+import consulo.logging.Logger;
+import consulo.project.Project;
 import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.RepositoryLocation;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import jakarta.inject.Singleton;
 import java.util.*;
 
 @Singleton
 public class LoadedRevisionsCache implements Disposable {
-  private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.history.LoadedRevisionsCache");
+  private static final Logger LOG = Logger.getInstance(LoadedRevisionsCache.class);
 
   private final Project myProject;
   private final Map<String, Bunch> myMap;
@@ -55,10 +54,11 @@ public class LoadedRevisionsCache implements Disposable {
     myMap = ContainerUtil.createSoftMap();
 
     myConnection = project.getMessageBus().connect();
-    myConnection.subscribe(CommittedChangesCache.COMMITTED_TOPIC, new CommittedChangesAdapter() {
+    myConnection.subscribe(CommittedChangesListener.class, new CommittedChangesAdapter() {
 
       @Override
-      public void changesLoaded(final RepositoryLocation location, final List<CommittedChangeList> changes) {
+      public void changesLoaded(final RepositoryLocation location,
+                                final List<CommittedChangeList> changes) {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
           public void run() {
             myMap.clear();
@@ -82,9 +82,11 @@ public class LoadedRevisionsCache implements Disposable {
     }
   }
 
-  private static void debugInfo(@Nonnull List<CommittedChangeList> data, final boolean consistentWithPrevious, final Bunch bindTo) {
+  private static void debugInfo(@Nonnull List<CommittedChangeList> data,
+                                final boolean consistentWithPrevious,
+                                final Bunch bindTo) {
     LOG.debug(">>> cache internal >>> consistent: " + consistentWithPrevious + " bindTo: " + bindTo +
-             " oldest list: " + data.get(data.size() - 1).getNumber() + ", youngest list: " + data.get(0).getNumber());
+                " oldest list: " + data.get(data.size() - 1).getNumber() + ", youngest list: " + data.get(0).getNumber());
   }
 
   public void dispose() {
@@ -94,7 +96,8 @@ public class LoadedRevisionsCache implements Disposable {
   }
 
   @Nonnull
-  private static List<List<CommittedChangeList>> split(final List<CommittedChangeList> list, final int size) {
+  private static List<List<CommittedChangeList>> split(final List<CommittedChangeList> list,
+                                                                                                   final int size) {
     final int listSize = list.size();
     if (listSize < size) {
       return Collections.singletonList(list);
@@ -113,14 +116,17 @@ public class LoadedRevisionsCache implements Disposable {
   }
 
   @Nullable
-  public Bunch put(final List<CommittedChangeList> data, final boolean consistentWithPrevious, final Bunch bindTo) {
+  public Bunch put(final List<CommittedChangeList> data,
+                   final boolean consistentWithPrevious,
+                   final Bunch bindTo) {
     if (data.isEmpty()) {
       return null;
     }
-    final SvnRepositoryLocation repositoryLocation = ((SvnChangeList) data.get(0)).getLocation();
+    final SvnRepositoryLocation repositoryLocation = ((SvnChangeList)data.get(0)).getLocation();
     final String location = repositoryLocation.getURL();
 
-    final List<List<CommittedChangeList>> list = split(data, SvnRevisionsNavigationMediator.CHUNK_SIZE);
+    final List<List<CommittedChangeList>> list =
+      split(data, SvnRevisionsNavigationMediator.CHUNK_SIZE);
 
     Bunch bindToBunch = bindTo;
     if (bindToBunch == null) {
@@ -135,7 +141,7 @@ public class LoadedRevisionsCache implements Disposable {
       }
     }
     boolean consistent = consistentWithPrevious;
-    for (int i = list.size() - 1; i >= 0; -- i) {
+    for (int i = list.size() - 1; i >= 0; --i) {
       final List<CommittedChangeList> changeLists = list.get(i);
       debugInfo(changeLists, consistent, bindToBunch);
       bindToBunch = new Bunch(changeLists, consistent, bindToBunch);
@@ -192,7 +198,9 @@ public class LoadedRevisionsCache implements Disposable {
   public static class Bunch extends ChangesBunch {
     private final Bunch myNext;
 
-    private Bunch(final List<CommittedChangeList> list, final boolean consistent, final Bunch next) {
+    private Bunch(final List<CommittedChangeList> list,
+                  final boolean consistent,
+                  final Bunch next) {
       super(list, consistent);
       myNext = next;
     }

@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
-import com.intellij.openapi.vcs.versionBrowser.StandardVersionFilterComponent;
+import consulo.versionControlSystem.versionBrowser.ChangeBrowserSettings;
+import consulo.ide.impl.idea.openapi.vcs.versionBrowser.StandardVersionFilterComponent;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.annotation.Nullable;

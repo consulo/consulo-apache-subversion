@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.logging.Logger;
+import consulo.platform.LineSeparator;
 import consulo.util.dataholder.Key;
-import com.intellij.util.LineSeparator;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.

@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.util.NotNullFunction;
+import consulo.ide.impl.idea.util.NotNullFunction;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
 import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
+
+import javax.annotation.Nonnull;
 
 public class UrlOpeningExpander extends AbstractOpeningExpander {
   private final String myUrl;
@@ -57,7 +57,7 @@ public class UrlOpeningExpander extends AbstractOpeningExpander {
     }
 
     @Nonnull
-    public Expander fun(final RepositoryBrowserComponent repositoryBrowserComponent) {
+    public Expander apply(final RepositoryBrowserComponent repositoryBrowserComponent) {
       return new UrlOpeningExpander(repositoryBrowserComponent, mySelectionUrl, myUrl);
     }
   }

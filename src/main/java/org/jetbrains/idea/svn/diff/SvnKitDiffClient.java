@@ -15,10 +15,8 @@
  */
 package org.jetbrains.idea.svn.diff;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -44,8 +42,10 @@ import org.tmatesoft.svn.core.wc2.SvnTarget;
 import org.tmatesoft.svn.util.SVNDebugLog;
 import org.tmatesoft.svn.util.SVNLogType;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class SvnKitDiffClient extends BaseSvnClient implements DiffClient {
 
     try {
       myVcs.getSvnKitManager().createDiffClient()
-        .doDiff(target1.getURL(), target1.getPegRevision(), target2.getURL(), target2.getPegRevision(), true, false, output);
+           .doDiff(target1.getURL(), target1.getPegRevision(), target2.getURL(), target2.getPegRevision(), true, false, output);
     }
     catch (SVNException e) {
       throw new SvnBindException(e);
@@ -85,16 +85,16 @@ public class SvnKitDiffClient extends BaseSvnClient implements DiffClient {
 
   private class DiffExecutor {
     @Nonnull
-	private final SvnTarget myTarget1;
+    private final SvnTarget myTarget1;
     @Nonnull
-	private final SvnTarget myTarget2;
+    private final SvnTarget myTarget2;
     @Nonnull
-	private final List<Change> myChanges;
+    private final List<Change> myChanges;
 
     private DiffExecutor(@Nonnull SvnTarget target1, @Nonnull SvnTarget target2) {
       this.myTarget1 = target1;
       this.myTarget2 = target2;
-      myChanges = ContainerUtil.newArrayList();
+      myChanges = new ArrayList<>();
     }
 
     @Nonnull

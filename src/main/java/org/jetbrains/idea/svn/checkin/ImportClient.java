@@ -1,9 +1,9 @@
 package org.jetbrains.idea.svn.checkin;
 
-import com.intellij.openapi.vcs.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.tmatesoft.svn.core.SVNURL;

@@ -15,12 +15,11 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.openapi.vfs.VirtualFile;
-import javax.annotation.Nonnull;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.browse.BrowseClient;
@@ -31,6 +30,7 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,7 +76,8 @@ public class BranchesLoader implements Runnable {
   }
 
   @Nonnull
-  public List<SvnBranchItem> loadBranches() throws SVNException, VcsException {
+  public List<SvnBranchItem> loadBranches() throws SVNException, VcsException
+  {
     SvnVcs vcs = SvnVcs.getInstance(myProject);
     SVNURL branchesUrl = SVNURL.parseURIEncoded(myUrl);
     List<SvnBranchItem> result = new LinkedList<>();
@@ -92,7 +93,7 @@ public class BranchesLoader implements Runnable {
   private void showError(Exception e) {
     // already logged inside
     if (InfoReliability.setByUser.equals(myInfoReliability)) {
-      VcsBalloonProblemNotifier.showOverChangesView(myProject, "Branches load error: " + e.getMessage(), MessageType.ERROR);
+      VcsBalloonProblemNotifier.showOverChangesView(myProject, "Branches load error: " + e.getMessage(), NotificationType.ERROR);
     }
   }
 

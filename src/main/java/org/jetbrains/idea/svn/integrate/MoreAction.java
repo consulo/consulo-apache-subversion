@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.actionSystem.ex.CustomComponentAction;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.action.Presentation;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.ui.ex.awt.action.CustomComponentAction;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +29,8 @@ import java.awt.event.ActionListener;
 /**
  * @author irengrig
  */
-public abstract class MoreAction  extends AnAction implements CustomComponentAction {
+public abstract class MoreAction  extends AnAction implements CustomComponentAction
+{
   public static final String LOAD_MORE = "Load more";
   protected final JLabel myLabel;
   private final JPanel myPanel;

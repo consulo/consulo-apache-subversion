@@ -15,13 +15,11 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.util.SystemInfo;
+import consulo.logging.Logger;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.function.Condition;
 import org.jetbrains.idea.svn.SvnApplicationSettings;
 import org.jetbrains.idea.svn.SvnProgressCanceller;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -29,6 +27,8 @@ import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 

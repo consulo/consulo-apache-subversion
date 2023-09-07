@@ -24,7 +24,7 @@
           <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="configure.revision.specified.radio"/>
         </properties>
       </component>
-      <component id="c6cc7" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myRevisionField">
+      <component id="c6cc7" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myRevisionField">
         <constraints>
           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

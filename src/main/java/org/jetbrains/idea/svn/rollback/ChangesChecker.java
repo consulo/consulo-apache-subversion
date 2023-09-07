@@ -15,18 +15,18 @@
  */
 package org.jetbrains.idea.svn.rollback;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.FilterFilePathStrings;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.FilePathsHelper;
-import javax.annotation.Nonnull;
+import consulo.ide.impl.idea.openapi.vcs.FilterFilePathStrings;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.change.FilePathsHelper;
 import org.jetbrains.idea.svn.SvnChangeProvider;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNException;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.*;
 

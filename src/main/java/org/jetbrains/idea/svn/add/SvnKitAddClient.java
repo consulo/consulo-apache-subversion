@@ -1,8 +1,9 @@
 package org.jetbrains.idea.svn.add;
 
-import com.intellij.openapi.vcs.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressTracker;
@@ -26,7 +27,8 @@ public class SvnKitAddClient extends BaseSvnClient implements AddClient {
                   boolean makeParents,
                   boolean includeIgnored,
                   boolean force,
-                  @Nullable ProgressTracker handler) throws VcsException {
+                  @Nullable ProgressTracker handler) throws VcsException
+  {
     try {
       SVNWCClient client = myVcs.getSvnKitManager().createWCClient();
 

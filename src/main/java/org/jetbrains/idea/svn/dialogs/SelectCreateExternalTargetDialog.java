@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionPopupMenu;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ui.JBUI;
+import consulo.project.Project;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.action.ActionPopupMenu;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
 import javax.annotation.Nonnull;

@@ -1,6 +1,6 @@
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
@@ -32,7 +32,8 @@ public class SvnKitMergeClient extends BaseSvnClient implements MergeClient {
                     boolean dryRun,
                     boolean reintegrate,
                     @Nullable DiffOptions diffOptions,
-                    @Nullable ProgressTracker handler) throws VcsException {
+                    @Nullable ProgressTracker handler) throws VcsException
+  {
     assertUrl(source);
 
     SVNDiffClient client = createClient(diffOptions, handler);
@@ -81,7 +82,8 @@ public class SvnKitMergeClient extends BaseSvnClient implements MergeClient {
                     boolean recordOnly,
                     boolean force,
                     @Nullable DiffOptions diffOptions,
-                    @Nullable ProgressTracker handler) throws VcsException {
+                    @Nullable ProgressTracker handler) throws VcsException
+  {
     assertUrl(source1);
     assertUrl(source2);
 

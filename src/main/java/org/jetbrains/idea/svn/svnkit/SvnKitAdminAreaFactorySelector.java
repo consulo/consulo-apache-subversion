@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.svnkit;
 
-import com.intellij.openapi.application.ApplicationManager;
+import consulo.application.ApplicationManager;
 import org.jetbrains.idea.svn.SvnFormatSelector;
 import org.jetbrains.idea.svn.SvnWorkingCopyFormatHolder;
 import org.jetbrains.idea.svn.WorkingCopyFormat;

@@ -15,15 +15,16 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
+import consulo.configurable.Configurable;
+import consulo.configurable.ConfigurationException;
+import consulo.project.Project;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.SvnConfiguration;
 
 import javax.swing.*;
 
-public abstract class SvnUpdateConfigurable implements Configurable {
+public abstract class SvnUpdateConfigurable implements Configurable
+{
   @NonNls private static final String HELP_ID = "vcs.subversion.updateProject";
 
   private AbstractSvnUpdatePanel myPanel;
@@ -39,7 +40,8 @@ public abstract class SvnUpdateConfigurable implements Configurable {
   }
 
 
-  public void apply() throws ConfigurationException {
+  public void apply() throws ConfigurationException
+  {
     myPanel.apply(SvnConfiguration.getInstance(myProject));
   }
 

@@ -15,10 +15,10 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import consulo.application.Application;
+import consulo.project.Project;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.application.ApplicationManager;
 
 public class ExclusiveBackgroundVcsAction {
   private ExclusiveBackgroundVcsAction() {

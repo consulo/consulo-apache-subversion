@@ -15,23 +15,24 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-
-import javax.annotation.Nullable;
+import consulo.dataContext.DataProvider;
+import consulo.disposer.Disposable;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.ide.impl.idea.openapi.vcs.vfs.VcsFileSystem;
+import consulo.ide.impl.idea.openapi.vcs.vfs.VcsVirtualFile;
+import consulo.ide.impl.idea.util.NotNullFunction;
+import consulo.ide.impl.idea.util.containers.Convertor;
+import consulo.language.editor.CommonDataKeys;
+import consulo.language.file.FileTypeManager;
+import consulo.navigation.NavigatableAdapter;
+import consulo.project.Project;
+import consulo.ui.ex.awt.EditSourceOnDoubleClickHandler;
+import consulo.ui.ex.awt.ScrollPaneFactory;
+import consulo.ui.ex.awt.speedSearch.SpeedSearchComparator;
+import consulo.ui.ex.awt.speedSearch.TreeSpeedSearch;
+import consulo.ui.ex.awt.tree.Tree;
+import consulo.util.dataholder.Key;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
@@ -39,24 +40,19 @@ import org.jetbrains.idea.svn.history.SvnFileRevision;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataProvider;
-import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Disposer;
-import consulo.util.dataholder.Key;
-import com.intellij.openapi.vcs.vfs.VcsFileSystem;
-import com.intellij.openapi.vcs.vfs.VcsVirtualFile;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.pom.NavigatableAdapter;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.SpeedSearchComparator;
-import com.intellij.ui.TreeSpeedSearch;
-import com.intellij.ui.treeStructure.Tree;
-import com.intellij.util.EditSourceOnDoubleClickHandler;
-import com.intellij.util.NotNullFunction;
-import com.intellij.util.containers.Convertor;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * @author alex
@@ -103,7 +99,9 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     }
   }
 
-  public void setRepositoryURL(SVNURL url, boolean showFiles, final NotNullFunction<RepositoryBrowserComponent, Expander> defaultExpanderFactory) {
+  public void setRepositoryURL(SVNURL url,
+                               boolean showFiles,
+                               final NotNullFunction<RepositoryBrowserComponent, Expander> defaultExpanderFactory) {
     RepositoryTreeModel model = new RepositoryTreeModel(myVCS, showFiles, this);
 
     model.setDefaultExpanderFactory(defaultExpanderFactory);
@@ -125,7 +123,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
   }
 
   public void expandNode(@Nonnull final TreeNode treeNode) {
-    final TreeNode[] pathToNode = ((RepositoryTreeModel) myRepositoryTree.getModel()).getPathToRoot(treeNode);
+    final TreeNode[] pathToNode = ((RepositoryTreeModel)myRepositoryTree.getModel()).getPathToRoot(treeNode);
 
     if ((pathToNode != null) && (pathToNode.length > 0)) {
       final TreePath treePath = new TreePath(pathToNode);
@@ -134,7 +132,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
   }
 
   public Collection<TreeNode> getExpandedSubTree(@Nonnull final TreeNode treeNode) {
-    final TreeNode[] pathToNode = ((RepositoryTreeModel) myRepositoryTree.getModel()).getPathToRoot(treeNode);
+    final TreeNode[] pathToNode = ((RepositoryTreeModel)myRepositoryTree.getModel()).getPathToRoot(treeNode);
 
     final Enumeration<TreePath> expanded = myRepositoryTree.getExpandedDescendants(new TreePath(pathToNode));
 
@@ -142,30 +140,32 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     if (expanded != null) {
       while (expanded.hasMoreElements()) {
         final TreePath treePath = expanded.nextElement();
-        result.add((TreeNode) treePath.getLastPathComponent());
+        result.add((TreeNode)treePath.getLastPathComponent());
       }
     }
     return result;
   }
 
   public boolean isExpanded(@Nonnull final TreeNode treeNode) {
-    final TreeNode[] pathToNode = ((RepositoryTreeModel) myRepositoryTree.getModel()).getPathToRoot(treeNode);
+    final TreeNode[] pathToNode = ((RepositoryTreeModel)myRepositoryTree.getModel()).getPathToRoot(treeNode);
 
     return (pathToNode != null) && (pathToNode.length > 0) && myRepositoryTree.isExpanded(new TreePath(pathToNode));
   }
 
   public void addURL(String url) {
     try {
-      ((RepositoryTreeModel) myRepositoryTree.getModel()).addRoot(SVNURL.parseURIEncoded(url));
-    } catch (SVNException e) {
+      ((RepositoryTreeModel)myRepositoryTree.getModel()).addRoot(SVNURL.parseURIEncoded(url));
+    }
+    catch (SVNException e) {
       //
     }
   }
 
   public void removeURL(String url) {
     try {
-      ((RepositoryTreeModel) myRepositoryTree.getModel()).removeRoot(SVNURL.parseURIEncoded(url));
-    } catch (SVNException e) {
+      ((RepositoryTreeModel)myRepositoryTree.getModel()).removeRoot(SVNURL.parseURIEncoded(url));
+    }
+    catch (SVNException e) {
       //
     }
   }
@@ -178,7 +178,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     }
     Object element = selection.getLastPathComponent();
     if (element instanceof RepositoryTreeNode) {
-      RepositoryTreeNode node = (RepositoryTreeNode) element;
+      RepositoryTreeNode node = (RepositoryTreeNode)element;
       return node.getSVNDirEntry();
     }
     return null;
@@ -198,7 +198,7 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     }
     Object element = selection.getLastPathComponent();
     if (element instanceof RepositoryTreeNode) {
-      RepositoryTreeNode node = (RepositoryTreeNode) element;
+      RepositoryTreeNode node = (RepositoryTreeNode)element;
       return node.getURL();
     }
     return null;
@@ -245,13 +245,13 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
   public RepositoryTreeNode getSelectedNode() {
     TreePath selection = myRepositoryTree.getSelectionPath();
     if (selection != null && selection.getLastPathComponent() instanceof RepositoryTreeNode) {
-      return (RepositoryTreeNode) selection.getLastPathComponent();
+      return (RepositoryTreeNode)selection.getLastPathComponent();
     }
     return null;
   }
 
   public void setSelectedNode(@Nonnull final TreeNode node) {
-    final TreeNode[] pathNodes = ((RepositoryTreeModel) myRepositoryTree.getModel()).getPathToRoot(node);
+    final TreeNode[] pathNodes = ((RepositoryTreeModel)myRepositoryTree.getModel()).getPathToRoot(node);
     myRepositoryTree.setSelectionPath(new TreePath(pathNodes));
   }
 
@@ -271,10 +271,11 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
     if (entry.getName().lastIndexOf('.') > 0 && !manager.getFileTypeByFileName(name).isBinary()) {
       SVNURL url = node.getURL();
       final SvnFileRevision revision = new SvnFileRevision(myVCS, SVNRevision.UNDEFINED, SVNRevision.HEAD, url.toString(),
-              entry.getAuthor(), entry.getDate(), null, null);
+                                                           entry.getAuthor(), entry.getDate(), null, null);
 
       return new VcsVirtualFile(node.getSVNDirEntry().getName(), revision, VcsFileSystem.getInstance());
-    } else {
+    }
+    else {
       return null;
     }
   }
@@ -300,7 +301,8 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
           navigate(project, vcsFile, requestFocus);
         }
       } : null;
-    } else if (CommonDataKeys.PROJECT == dataId) {
+    }
+    else if (CommonDataKeys.PROJECT == dataId) {
       return myVCS.getProject();
     }
     return null;
@@ -310,6 +312,6 @@ public class RepositoryBrowserComponent extends JPanel implements Disposable, Da
   }
 
   public void setLazyLoadingExpander(final NotNullFunction<RepositoryBrowserComponent, Expander> expanderFactory) {
-    ((RepositoryTreeModel) myRepositoryTree.getModel()).setDefaultExpanderFactory(expanderFactory);
+    ((RepositoryTreeModel)myRepositoryTree.getModel()).setDefaultExpanderFactory(expanderFactory);
   }
 }

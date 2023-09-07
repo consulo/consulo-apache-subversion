@@ -15,35 +15,31 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.concurrency.JobScheduler;
-import com.intellij.notification.NotificationType;
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.util.NamedRunnable;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.impl.GenericNotifierImpl;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.IdeFrame;
-import com.intellij.openapi.wm.ex.WindowManagerEx;
-import com.intellij.ui.awt.RelativePoint;
-import com.intellij.util.Consumer;
-import com.intellij.util.ThreeState;
-import com.intellij.util.net.HttpConfigurable;
-import com.intellij.util.proxy.CommonProxy;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.apache.subversion.SvnNotificationGroup;
+import consulo.application.Application;
+import consulo.application.ApplicationManager;
+import consulo.application.impl.internal.JobScheduler;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.component.util.NamedRunnable;
+import consulo.http.HttpProxyManager;
+import consulo.http.impl.internal.proxy.CommonProxy;
+import consulo.ide.impl.idea.openapi.vcs.impl.GenericNotifierImpl;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.internal.WindowManagerEx;
+import consulo.project.ui.notification.NotificationType;
+import consulo.project.ui.wm.IdeFrame;
+import consulo.ui.ex.RelativePoint;
+import consulo.ui.ex.awt.Messages;
+import consulo.ui.ex.popup.Balloon;
+import consulo.ui.ex.popup.JBPopupFactory;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.ThreeState;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.ClientFactory;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -59,21 +55,27 @@ import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthenticationNotifier.AuthenticationRequest, SVNURL> {
   private static final Logger LOG = Logger.getInstance(SvnAuthenticationNotifier.class);
 
-  private static final List<String> ourAuthKinds = Arrays.asList(ISVNAuthenticationManager.PASSWORD, ISVNAuthenticationManager.SSH,
-    ISVNAuthenticationManager.SSL, ISVNAuthenticationManager.USERNAME, "svn.ssl.server", "svn.ssh.server");
+  private static final List<String> ourAuthKinds = Arrays.asList(ISVNAuthenticationManager.PASSWORD,
+                                                                 ISVNAuthenticationManager.SSH,
+                                                                 ISVNAuthenticationManager.SSL,
+                                                                 ISVNAuthenticationManager.USERNAME,
+                                                                 "svn.ssl.server",
+                                                                 "svn.ssh.server");
 
   private final SvnVcs myVcs;
   private final RootsToWorkingCopies myRootsToWorkingCopies;
@@ -82,7 +84,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
   private volatile boolean myVerificationInProgress;
 
   public SvnAuthenticationNotifier(final SvnVcs svnVcs) {
-    super(svnVcs.getProject(), svnVcs.getDisplayName(), "Not Logged In to Subversion", NotificationType.ERROR);
+    super(svnVcs.getProject(), SvnNotificationGroup.GROUP, "Not Logged In to Subversion", NotificationType.ERROR);
     myVcs = svnVcs;
     myRootsToWorkingCopies = myVcs.getRootsToWorkingCopies();
     myCopiesPassiveResults = Collections.synchronizedMap(new HashMap<SVNURL, Boolean>());
@@ -94,8 +96,8 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
       stop();
     }
     myTimer =
-    // every 10 minutes
-    JobScheduler.getScheduler().scheduleWithFixedDelay(myCopiesPassiveResults::clear, 10, 10 * 60, TimeUnit.SECONDS);
+      // every 10 minutes
+      JobScheduler.getScheduler().scheduleWithFixedDelay(myCopiesPassiveResults::clear, 10, 10 * 60, TimeUnit.SECONDS);
   }
 
   public void stop() {
@@ -150,7 +152,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
         point = new Point((int)(component.getWidth() * 0.7), 0);
       }
       SwingUtilities.convertPointToScreen(point, component);
-      JBPopupFactory.getInstance().createHtmlTextBalloonBuilder("Already checking...", MessageType.WARNING, null).
+      JBPopupFactory.getInstance().createHtmlTextBalloonBuilder("Already checking...", consulo.ui.NotificationType.WARNING, null).
         createBalloon().show(new RelativePoint(point), Balloon.Position.below);
     }
     return false;
@@ -164,11 +166,11 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
     final Collection<SVNURL> keys = getAllCurrentKeys();
     for (SVNURL key : keys) {
       final SVNURL commonURLAncestor = SVNURLUtil.getCommonURLAncestor(key, obj.getUrl());
-      if ((commonURLAncestor != null) && (! StringUtil.isEmptyOrSpaces(commonURLAncestor.getHost())) &&
-          (! StringUtil.isEmptyOrSpaces(commonURLAncestor.getPath()))) {
+      if ((commonURLAncestor != null) && (!StringUtil.isEmptyOrSpaces(commonURLAncestor.getHost())) &&
+        (!StringUtil.isEmptyOrSpaces(commonURLAncestor.getPath()))) {
         //final AuthenticationRequest currObj = getObj(key);
         //if ((currObj != null) && passiveValidation(myVcs.getProject(), key, true, currObj.getRealm(), currObj.getKind())) {
-          outdatedRequests.add(key);
+        outdatedRequests.add(key);
         //}
       }
     }
@@ -180,7 +182,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
           removeLazyNotificationByKey(key);
         }
       }
-    }, ModalityState.NON_MODAL);
+    }, Application.get().getNoneModalityState());
   }
 
   @Override
@@ -196,7 +198,8 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
   protected boolean onFirstNotification(AuthenticationRequest obj) {
     if (ProgressManager.getInstance().hasProgressIndicator()) {
       return ask(obj, null);  // TODO
-    } else {
+    }
+    else {
       return false;
     }
   }
@@ -217,7 +220,8 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
     if (copy != null) {
       obj.setOutsideCopies(false);
       obj.setWcUrl(copy.getUrl());
-    } else {
+    }
+    else {
       obj.setOutsideCopies(true);
     }
     return copy == null ? null : copy.getUrl();
@@ -344,13 +348,13 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
                                         final String kind, boolean interactive) {
     // we should also NOT show proxy credentials dialog if at least fixed proxy was used, so
     Proxy proxyToRelease = null;
-    if (! interactive && configuration.isIsUseDefaultProxy()) {
-      final HttpConfigurable instance = HttpConfigurable.getInstance();
-      if (instance.USE_HTTP_PROXY && instance.PROXY_AUTHENTICATION && (StringUtil.isEmptyOrSpaces(instance.getProxyLogin()) ||
-                                                                       StringUtil.isEmptyOrSpaces(instance.getPlainProxyPassword()))) {
+    if (!interactive && configuration.isIsUseDefaultProxy()) {
+      final HttpProxyManager httpProxyManager = HttpProxyManager.getInstance();
+      if (httpProxyManager.isHttpProxyEnabled() && httpProxyManager.isProxyAuthenticationEnabled() && (StringUtil.isEmptyOrSpaces(httpProxyManager.getProxyLogin()) ||
+        StringUtil.isEmptyOrSpaces(httpProxyManager.getPlainProxyPassword()))) {
         return false;
       }
-      if (instance.USE_PROXY_PAC) {
+      if (httpProxyManager.isPacProxyEnabled()) {
         final List<Proxy> select;
         try {
           select = CommonProxy.getInstance().select(new URI(url.toString()));
@@ -359,12 +363,11 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
           LOG.info("wrong URL: " + url.toString());
           return false;
         }
-        if (select != null && ! select.isEmpty()) {
+        if (select != null && !select.isEmpty()) {
           for (Proxy proxy : select) {
-            if (HttpConfigurable.isRealProxy(proxy) && Proxy.Type.HTTP.equals(proxy.type())) {
+            if (httpProxyManager.isRealProxy(proxy) && Proxy.Type.HTTP.equals(proxy.type())) {
               final InetSocketAddress address = (InetSocketAddress)proxy.address();
-              final PasswordAuthentication password =
-                HttpConfigurable.getInstance().getGenericPassword(address.getHostName(), address.getPort());
+              final PasswordAuthentication password = httpProxyManager.getGenericPassword(address.getHostName(), address.getPort());
               if (password == null) {
                 CommonProxy.getInstance().noAuthentication("http", address.getHostName(), address.getPort());
                 proxyToRelease = proxy;
@@ -379,10 +382,12 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
       // start svnkit authentication cycle
       SvnVcs.getInstance(project).getSvnKitManager().createWCClient(manager).doInfo(url, SVNRevision.UNDEFINED, SVNRevision.HEAD);
       //SvnVcs.getInstance(project).getInfo(url, SVNRevision.HEAD, manager);
-    } catch (SVNAuthenticationException | SVNCancelException e) {
+    }
+    catch (SVNAuthenticationException | SVNCancelException e) {
       log(e);
       return false;
-    } catch (final SVNException e) {
+    }
+    catch (final SVNException e) {
       if (e.getErrorMessage().getErrorCode().isAuthentication()) {
         log(e);
         return false;
@@ -392,14 +397,15 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
         showAuthenticationFailedWithHotFixes(project, configuration, e);
       }
       return false; /// !!!! any exception means user should be notified that authorization failed
-    } finally {
-      if (! interactive && configuration.isIsUseDefaultProxy() && proxyToRelease != null) {
+    }
+    finally {
+      if (!interactive && configuration.isIsUseDefaultProxy() && proxyToRelease != null) {
         final InetSocketAddress address = (InetSocketAddress)proxyToRelease.address();
         CommonProxy.getInstance().noAuthentication("http", address.getHostName(), address.getPort());
       }
     }
 
-    if (! checkWrite) {
+    if (!checkWrite) {
       return true;
     }
     /*if (passive) {
@@ -432,7 +438,7 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
     ApplicationManager.getApplication().invokeLater(new Runnable() {
       @Override
       public void run() {
-        VcsBalloonProblemNotifier.showOverChangesView(project, "Authentication failed: " + e.getMessage(), MessageType.ERROR,
+        VcsBalloonProblemNotifier.showOverChangesView(project, "Authentication failed: " + e.getMessage(), NotificationType.ERROR,
                                                       new NamedRunnable(
                                                         SvnBundle.message("confirmation.title.clear.authentication.cache")) {
                                                         @Override
@@ -446,18 +452,15 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
                                                         public void run() {
                                                           SvnConfigurable
                                                             .selectConfigurationDirectory(configuration.getConfigurationDirectory(),
-                                                                                          new Consumer<String>() {
-                                                                                            @Override
-                                                                                            public void consume(String s) {
-                                                                                              configuration
-                                                                                                .setConfigurationDirParameters(false, s);
-                                                                                            }
-                                                                                          }, project, null);
+                                                                                          s -> configuration
+                                                                                            .setConfigurationDirParameters(false, s),
+                                                                                          project,
+                                                                                          null);
                                                         }
                                                       }
         );
       }
-    }, ModalityState.NON_MODAL, project.getDisposed());
+    }, Application.get().getNoneModalityState(), project.getDisposed());
   }
 
   public static void clearAuthenticationCache(@Nonnull final Project project, final Component component, final String configDirPath) {
@@ -467,7 +470,8 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
         result = Messages.showYesNoDialog(project, SvnBundle.message("confirmation.text.delete.stored.authentication.information"),
                                           SvnBundle.message("confirmation.title.clear.authentication.cache"),
                                           Messages.getWarningIcon());
-      } else {
+      }
+      else {
         result = Messages.showYesNoDialog(component, SvnBundle.message("confirmation.text.delete.stored.authentication.information"),
                                           SvnBundle.message("confirmation.title.clear.authentication.cache"),
                                           Messages.getWarningIcon());
@@ -511,7 +515,10 @@ public class SvnAuthenticationNotifier extends GenericNotifierImpl<SvnAuthentica
       }
       else {
         ProgressManager.getInstance()
-          .runProcessWithProgressSynchronously(process, "button.text.clear.authentication.cache", false, configuration.getProject());
+                       .runProcessWithProgressSynchronously(process,
+                                                            "button.text.clear.authentication.cache",
+                                                            false,
+                                                            configuration.getProject());
       }
     }
   }

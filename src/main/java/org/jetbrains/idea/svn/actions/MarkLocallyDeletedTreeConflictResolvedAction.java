@@ -15,29 +15,28 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.ChangesListView;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.LocallyDeletedChange;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnLocallyDeletedChange;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.LocallyDeletedChange;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vcs.changes.ui.ChangesListView;
+
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author irengrig
@@ -103,7 +102,7 @@ public class MarkLocallyDeletedTreeConflictResolvedAction extends AnAction {
     private final Project myProject;
 
     public MyLocallyDeletedChecker(final AnActionEvent e) {
-      myProject = e.getProject();
+      myProject = e.getData(Project.KEY);
       if (myProject == null) {
         myPath = null;
         myEnabled = false;

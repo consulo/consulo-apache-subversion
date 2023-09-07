@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.help.HelpManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.ui.OrderPanel;
-import com.intellij.ui.OrderPanelListener;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.util.ArrayUtil;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ide.impl.idea.ui.OrderPanel;
+import consulo.ide.impl.idea.ui.OrderPanelListener;
+import consulo.application.HelpManager;
+import consulo.project.Project;
+import consulo.ui.ex.awt.ScrollPaneFactory;
+import consulo.util.collection.ArrayUtil;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;
@@ -48,7 +48,7 @@ public class SelectFilesDialog extends DialogWrapper implements ActionListener {
   private final String myHelpID;
 
   public SelectFilesDialog(final Project project, String label, String title, String actionName, String[] paths,
-                           @NonNls String helpID) {
+						   @NonNls String helpID) {
     super(project, true);
     myHelpID = helpID;
     setOKButtonText(actionName);
@@ -143,7 +143,8 @@ public class SelectFilesDialog extends DialogWrapper implements ActionListener {
     return myFilesList.getSelectedPaths();
   }
 
-  private class FilesList extends OrderPanel<String> {
+  private class FilesList extends OrderPanel<String>
+  {
 
     private final Map<String, Boolean> mySelectedFiles;
 

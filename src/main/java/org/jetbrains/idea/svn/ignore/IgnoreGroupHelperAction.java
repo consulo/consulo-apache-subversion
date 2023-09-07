@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.ignore;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.dataContext.DataContext;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.project.Project;
+import consulo.versionControlSystem.change.ChangeListManager;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.actions.BasicAction;
@@ -88,12 +88,14 @@ public class IgnoreGroupHelperAction extends BasicAction {
   }
 
   protected void perform(final Project project, final SvnVcs activeVcs, final VirtualFile file, final DataContext context)
-      throws VcsException {
+      throws VcsException
+  {
 
   }
 
   protected void batchPerform(final Project project, final SvnVcs activeVcs, final VirtualFile[] file, final DataContext context)
-      throws VcsException {
+      throws VcsException
+  {
 
   }
 

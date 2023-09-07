@@ -17,13 +17,14 @@ package org.jetbrains.idea.svn.svnkit;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.SystemInfo;
+import consulo.apache.subversion.SvnNotificationGroup;
+import consulo.application.util.SystemInfo;
+import consulo.component.ProcessCanceledException;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.project.ui.notification.Notifications;
+import consulo.logging.Logger;
+import consulo.project.ui.notification.Notification;
 import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nullable;
@@ -131,15 +132,15 @@ public class SvnKitManager {
   public void activate() {
     if (SystemInfo.isWindows) {
       if (!SVNJNAUtil.isJNAPresent()) {
-        Notifications.Bus.notify(new Notification(myVcs.getDisplayName(), "Subversion plugin: no JNA",
+        Notifications.Bus.notify(new Notification(SvnNotificationGroup.GROUP, "Subversion plugin: no JNA",
                                                   "A problem with JNA initialization for SVNKit library. Encryption is not available.",
                                                   NotificationType.WARNING), myProject);
       }
       else if (!SVNJNAUtil.isWinCryptEnabled()) {
-        Notifications.Bus.notify(new Notification(myVcs.getDisplayName(), "Subversion plugin: no encryption",
+        Notifications.Bus.notify(new Notification(SvnNotificationGroup.GROUP, "Subversion plugin: no encryption",
                                                   "A problem with encryption module (Crypt32.dll) initialization for SVNKit library. " +
                                                   "Encryption is not available.",
-                                                  NotificationType.WARNING
+                                                  consulo.project.ui.notification.NotificationType.WARNING
         ), myProject);
       }
     }

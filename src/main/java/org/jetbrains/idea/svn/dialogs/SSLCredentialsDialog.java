@@ -15,20 +15,23 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.util.lang.StringUtil;
+
 import javax.annotation.Nonnull;
+
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SSLCredentialsDialog extends DialogWrapper {
+public class SSLCredentialsDialog extends DialogWrapper
+{
   private JPanel myPanel;
   private TextFieldWithBrowseButton myCertificatePath;
   private JPasswordField myCertificatePassword;

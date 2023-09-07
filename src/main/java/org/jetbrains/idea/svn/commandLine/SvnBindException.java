@@ -15,19 +15,19 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.MultiMap;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.collection.MultiMap;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.function.Condition;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 import org.tmatesoft.svn.core.SVNException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * User: Irina.Chernushina
  * Date: 2/25/13
  * Time: 5:57 PM
- *
+ * <p>
  * Marker exception
  */
 public class SvnBindException extends VcsException {
@@ -65,7 +65,7 @@ public class SvnBindException extends VcsException {
   }
 
   public SvnBindException(@Nullable String message, @Nullable Throwable cause) {
-    super(ObjectUtils.chooseNotNull(message, getMessage(cause)), cause);
+    super(ObjectUtil.chooseNotNull(message, getMessage(cause)), cause);
 
     init(message);
     init(cause);
@@ -106,7 +106,7 @@ public class SvnBindException extends VcsException {
     };
 
     return ContainerUtil.exists(errors.keySet(), belongsToCategoryCondition) ||
-           ContainerUtil.exists(warnings.keySet(), belongsToCategoryCondition);
+      ContainerUtil.exists(warnings.keySet(), belongsToCategoryCondition);
   }
 
   private static int getCategoryCode(int category) {

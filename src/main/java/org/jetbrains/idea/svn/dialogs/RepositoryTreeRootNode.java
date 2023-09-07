@@ -15,15 +15,16 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.util.Disposer;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.disposer.Disposable;
 import org.tmatesoft.svn.core.SVNURL;
 
 import javax.swing.tree.TreeNode;
 import java.text.Collator;
 import java.util.*;
 
-public class RepositoryTreeRootNode implements TreeNode, Disposable {
+public class RepositoryTreeRootNode implements TreeNode, Disposable
+{
   private final List<TreeNode> myChildren;
   private final RepositoryTreeModel myModel;
 

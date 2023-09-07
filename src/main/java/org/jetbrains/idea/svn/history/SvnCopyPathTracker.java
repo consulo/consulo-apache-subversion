@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.vcsUtil.VcsUtil;
+import consulo.logging.Logger;
+import consulo.versionControlSystem.util.VcsUtil;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import consulo.versionControlSystem.FilePath;
 import org.jetbrains.idea.svn.SvnFileUrlMapping;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;

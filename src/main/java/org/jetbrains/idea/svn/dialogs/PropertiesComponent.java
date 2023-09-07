@@ -15,22 +15,23 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.keymap.KeymapManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.ui.PopupHandler;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.table.JBTable;
-import com.intellij.util.IconUtil;
+import consulo.application.AllIcons;
+import consulo.ide.impl.idea.util.IconUtil;
+import consulo.language.editor.CommonDataKeys;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.ui.ex.action.*;
+import consulo.ui.ex.awt.PopupHandler;
+import consulo.ui.ex.awt.ScrollPaneFactory;
+import consulo.ui.ex.awt.table.JBTable;
+import consulo.ui.ex.keymap.KeymapManager;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.VirtualFileManager;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -102,19 +103,28 @@ public class PropertiesComponent extends JPanel {
         if (index >= 0) {
           Object value = myTable.getValueAt(index, 1);
           if (value instanceof String) {
-            myTextArea.setText(((String) value));
-          } else {
+            myTextArea.setText(((String)value));
+          }
+          else {
             myTextArea.setText("");
           }
-        } else {
+        }
+        else {
           myTextArea.setText("");
         }
       }
     });
     myPopupActionGroup = createPopup();
-    PopupHandler.installPopupHandler(myTable, myPopupActionGroup, ActionPlaces.UNKNOWN, ActionManager.getInstance());
-    PopupHandler.installPopupHandler(scrollPane, myPopupActionGroup, ActionPlaces.UNKNOWN, ActionManager.getInstance());
-    final Shortcut[] shortcuts = KeymapManager.getInstance().getActiveKeymap().getShortcuts(IdeActions.ACTION_CLOSE_ACTIVE_TAB);
+    PopupHandler.installPopupHandler(myTable,
+                                     myPopupActionGroup,
+                                     ActionPlaces.UNKNOWN,
+                                     ActionManager.getInstance());
+    PopupHandler.installPopupHandler(scrollPane,
+                                     myPopupActionGroup,
+                                     ActionPlaces.UNKNOWN,
+                                     ActionManager.getInstance());
+    final Shortcut[] shortcuts =
+      KeymapManager.getInstance().getActiveKeymap().getShortcuts(IdeActions.ACTION_CLOSE_ACTIVE_TAB);
     myCloseAction.registerCustomShortcutSet(new CustomShortcutSet(shortcuts), this);
     myRefreshAction.registerCustomShortcutSet(CommonShortcuts.getRerun(), this);
   }
@@ -127,8 +137,8 @@ public class PropertiesComponent extends JPanel {
       myVcs = vcs;
       collectProperties(vcs, file, props);
     }
-    DefaultTableModel model = (DefaultTableModel) myTable.getModel();
-    model.setDataVector(createTableModel(props), new Object[] {"Name", "Value"});
+    DefaultTableModel model = (DefaultTableModel)myTable.getModel();
+    model.setDataVector(createTableModel(props), new Object[]{"Name", "Value"});
 
     myTable.getColumnModel().setColumnSelectionAllowed(false);
     myTable.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
@@ -222,7 +232,7 @@ public class PropertiesComponent extends JPanel {
     if (row < 0) {
       return null;
     }
-    return (String) myTable.getValueAt(row, 0);
+    return (String)myTable.getValueAt(row, 0);
   }
 
   private void updateFileStatus(boolean recursive) {
@@ -234,7 +244,8 @@ public class PropertiesComponent extends JPanel {
 
         if (recursive && file.isDirectory()) {
           dirtyScopeManager.dirDirtyRecursively(file);
-        } else {
+        }
+        else {
           dirtyScopeManager.fileDirty(file);
         }
       }
@@ -275,11 +286,13 @@ public class PropertiesComponent extends JPanel {
       if (!StringUtil.isEmpty(property)) {
         try {
           myVcs.getFactory(myFile).createPropertyClient()
-            .setProperty(myFile, property, PropertyValue.create(value), Depth.allOrEmpty(recursive), force);
+               .setProperty(myFile, property, PropertyValue.create(value), Depth.allOrEmpty(recursive), force);
         }
         catch (VcsException error) {
           VcsBalloonProblemNotifier
-            .showOverChangesView(myVcs.getProject(), "Can not set property: " + error.getMessage(), MessageType.ERROR);
+            .showOverChangesView(myVcs.getProject(),
+                                 "Can not set property: " + error.getMessage(),
+                                 NotificationType.ERROR);
           // show error message.
         }
       }
@@ -301,11 +314,11 @@ public class PropertiesComponent extends JPanel {
     }
 
     public void actionPerformed(AnActionEvent e) {
-      Project project = e.getProject();
+      Project project = e.getData(Project.KEY);
       PropertyValue propValue = null;
       try {
         propValue = myVcs.getFactory(myFile).createPropertyClient()
-          .getProperty(SvnTarget.fromFile(myFile), SvnPropertyKeys.SVN_KEYWORDS, false, SVNRevision.WORKING);
+                         .getProperty(SvnTarget.fromFile(myFile), SvnPropertyKeys.SVN_KEYWORDS, false, SVNRevision.WORKING);
       }
       catch (VcsException e1) {
         // show erorr message
@@ -343,7 +356,7 @@ public class PropertiesComponent extends JPanel {
     }
 
     public void actionPerformed(AnActionEvent e) {
-      Project project = e.getProject();
+      Project project = e.getData(Project.KEY);
       SetPropertyDialog dialog = new SetPropertyDialog(project, new File[]{myFile}, null,
                                                        myFile.isDirectory());
       boolean recursive = false;
@@ -364,7 +377,7 @@ public class PropertiesComponent extends JPanel {
     }
 
     public void actionPerformed(AnActionEvent e) {
-      Project project = e.getProject();
+      Project project = e.getData(Project.KEY);
       SetPropertyDialog dialog = new SetPropertyDialog(project, new File[]{myFile}, getSelectedPropertyName(), myFile.isDirectory());
       boolean recursive = false;
       if (dialog.showAndGet()) {
@@ -380,9 +393,10 @@ public class PropertiesComponent extends JPanel {
     public boolean isSelected(AnActionEvent e) {
       return myIsFollowSelection;
     }
+
     public void setSelected(AnActionEvent e, boolean state) {
       if (state && !myIsFollowSelection) {
-        updateSelection(e);        
+        updateSelection(e);
       }
       myIsFollowSelection = state;
     }
@@ -407,7 +421,7 @@ public class PropertiesComponent extends JPanel {
         File f = new File(vf.getPath());
         if (!f.equals(myFile)) {
           setFile(myVcs, f);
-          Project p = e.getProject();
+          Project p = e.getData(Project.KEY);
           ToolWindowManager.getInstance(p).getToolWindow(ID).setTitle(f.getName());
         }
 

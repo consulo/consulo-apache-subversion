@@ -15,19 +15,17 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.FixedSizeButton;
-import com.intellij.openapi.vcs.checkout.CheckoutStrategy;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.components.JBScrollPane;
+import consulo.configurable.ConfigurationException;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.fileChooser.IdeaFileChooser;
+import consulo.ide.impl.idea.openapi.vcs.checkout.CheckoutStrategy;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.FixedSizeButton;
+import consulo.ui.ex.awt.JBScrollPane;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.DepthCombo;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.api.Depth;
@@ -36,6 +34,8 @@ import org.jetbrains.idea.svn.update.SvnRevisionPanel;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -76,7 +76,7 @@ public class CheckoutOptionsDialog extends DialogWrapper {
         fcd.setTitle(SvnBundle.message("checkout.directory.chooser.title"));
         fcd.setDescription(SvnBundle.message("checkout.directory.chooser.prompt"));
         fcd.setHideIgnored(false);
-        VirtualFile file = FileChooser.chooseFile(fcd, getContentPane(), project, null);
+        VirtualFile file = IdeaFileChooser.chooseFile(fcd, getContentPane(), project, null);
         if (file == null) {
           return;
         }
@@ -161,7 +161,8 @@ public class CheckoutOptionsDialog extends DialogWrapper {
   }
 
   @Nonnull
-  public SVNRevision getRevision() throws ConfigurationException {
+  public SVNRevision getRevision() throws ConfigurationException
+  {
       return svnSelectRevisionPanel.getRevision();
   }
 

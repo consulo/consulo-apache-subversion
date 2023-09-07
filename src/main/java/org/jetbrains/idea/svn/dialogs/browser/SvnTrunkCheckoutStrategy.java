@@ -15,14 +15,15 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import com.intellij.openapi.vcs.checkout.CheckoutStrategy;
+import consulo.ide.impl.idea.openapi.vcs.checkout.CheckoutStrategy;
 
 import java.io.File;
 
 /**
  * @author yole
  */
-public class SvnTrunkCheckoutStrategy extends CheckoutStrategy {
+public class SvnTrunkCheckoutStrategy extends CheckoutStrategy
+{
   public SvnTrunkCheckoutStrategy(File selectedLocation, File cvsPath, boolean isForFile) {
     super(selectedLocation, cvsPath, isForFile);
   }

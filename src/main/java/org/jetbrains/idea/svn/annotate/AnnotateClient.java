@@ -3,7 +3,7 @@ package org.jetbrains.idea.svn.annotate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.jetbrains.idea.svn.diff.DiffOptions;
 import org.tmatesoft.svn.core.wc.SVNRevision;

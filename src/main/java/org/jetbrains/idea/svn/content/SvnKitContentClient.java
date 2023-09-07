@@ -1,16 +1,16 @@
 package org.jetbrains.idea.svn.content;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.impl.ContentRevisionCache;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ContentRevisionCache;
+import consulo.versionControlSystem.util.VcsUtil;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNWCClient;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;

@@ -22,15 +22,15 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.DocumentAdapter;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.fileChooser.IdeaFileChooser;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -174,7 +174,7 @@ public class DiffOptionsDialog extends DialogWrapper implements ActionListener {
     fcd.setTitle(title);
     fcd.setDescription(description);
     fcd.setHideIgnored(false);
-    VirtualFile file = FileChooser.chooseFile(fcd, myBrowser, myProject, null);
+    VirtualFile file = IdeaFileChooser.chooseFile(fcd, myBrowser, myProject, null);
     if (file == null) {
       return null;
     }

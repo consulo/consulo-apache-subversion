@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.util.lang.StringUtil;
 import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.config.DefaultProxyGroup;
 import org.jetbrains.idea.svn.config.ProxyGroup;

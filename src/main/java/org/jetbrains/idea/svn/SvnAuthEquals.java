@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.util.Comparing;
+import consulo.util.lang.Comparing;
 import org.tmatesoft.svn.core.auth.*;
 
 public class SvnAuthEquals {

@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.ignore;
 
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.virtualFileSystem.VirtualFile;
 
 import java.util.Map;
 import java.util.Set;

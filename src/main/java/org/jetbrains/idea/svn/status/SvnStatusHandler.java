@@ -15,14 +15,14 @@
  */
 package org.jetbrains.idea.svn.status;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Getter;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.containers.Convertor;
-import com.intellij.util.containers.MultiMap;
+import consulo.logging.Logger;
+import consulo.ide.impl.idea.openapi.util.Getter;
+import consulo.ide.impl.idea.util.containers.Convertor;
+import consulo.util.collection.MultiMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.NodeKind;
 import org.jetbrains.idea.svn.info.Info;

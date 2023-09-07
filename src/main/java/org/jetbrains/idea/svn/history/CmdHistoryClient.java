@@ -1,7 +1,7 @@
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.VcsException;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -33,7 +33,8 @@ public class CmdHistoryClient extends BaseSvnClient implements HistoryClient {
                     boolean includeMergedRevisions,
                     long limit,
                     @Nullable String[] revisionProperties,
-                    @Nullable LogEntryConsumer handler) throws VcsException {
+                    @Nullable LogEntryConsumer handler) throws VcsException
+  {
     // TODO: add revision properties parameter if necessary
 
     List<String> parameters =

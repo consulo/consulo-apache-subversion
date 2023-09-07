@@ -1,6 +1,6 @@
 package org.jetbrains.idea.svn.checkout;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
@@ -46,7 +46,8 @@ public class SvnKitCheckoutClient extends BaseSvnClient implements CheckoutClien
                        boolean ignoreExternals,
                        boolean force,
                        @Nonnull WorkingCopyFormat format,
-                       @Nullable ProgressTracker handler) throws VcsException {
+                       @Nullable ProgressTracker handler) throws VcsException
+  {
     assertUrl(source);
     validateFormat(format, getSupportedFormats());
 

@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.ui.MultiLineLabelUI;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.util.ui.JBUI;
+import consulo.project.Project;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.Messages;
+import consulo.ui.ex.awt.JBLabel;
+import consulo.ui.ex.awt.internal.laf.MultiLineLabelUI;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.annotation.Nonnull;

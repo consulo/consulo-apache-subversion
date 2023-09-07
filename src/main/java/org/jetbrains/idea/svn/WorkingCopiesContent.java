@@ -15,19 +15,19 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.changes.ui.ChangesViewContentManager;
-import com.intellij.openapi.vcs.changes.ui.ChangesViewContentProvider;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentManager;
-import com.intellij.util.NotNullFunction;
-import javax.annotation.Nonnull;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.ChangesViewContentManager;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.ChangesViewContentProvider;
+import consulo.project.Project;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.ui.ex.content.Content;
+import consulo.ui.ex.content.ContentManager;
+import consulo.ui.ex.toolWindow.ToolWindow;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
 import org.jetbrains.idea.svn.dialogs.CopiesPanel;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
+import java.util.function.Function;
 
 public class WorkingCopiesContent implements ChangesViewContentProvider {
 
@@ -64,11 +64,11 @@ public class WorkingCopiesContent implements ChangesViewContentProvider {
     }
   }
 
-  public static class VisibilityPredicate implements NotNullFunction<Project, Boolean> {
+  public static class VisibilityPredicate implements Function<Project, Boolean> {
 
     @Nonnull
     @Override
-    public Boolean fun(@Nonnull Project project) {
+    public Boolean apply(@Nonnull Project project) {
       return ProjectLevelVcsManager.getInstance(project).checkVcsIsActive(SvnVcs.VCS_NAME);
     }
   }

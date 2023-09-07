@@ -15,15 +15,16 @@
  */
 package org.jetbrains.idea.svn.config;
 
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.ui.NamedConfigurable;
-import com.intellij.openapi.util.Ref;
+import consulo.ide.impl.idea.openapi.ui.NamedConfigurable;
+import consulo.util.lang.ref.Ref;
+import consulo.configurable.ConfigurationException;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;
 import java.util.List;
 
-public class GroupConfigurable extends NamedConfigurable<ProxyGroup> {
+public class GroupConfigurable extends NamedConfigurable<ProxyGroup>
+{
   private final ProxyGroup myProxyGroup;
   private final ConfigureProxiesOptionsPanel myPanel;
   private boolean myIsInitialized;
@@ -74,7 +75,8 @@ public class GroupConfigurable extends NamedConfigurable<ProxyGroup> {
     }
   }
 
-  public void apply() throws ConfigurationException {
+  public void apply() throws ConfigurationException
+  {
     if (myIsInitialized) {
       applyImpl();
     }

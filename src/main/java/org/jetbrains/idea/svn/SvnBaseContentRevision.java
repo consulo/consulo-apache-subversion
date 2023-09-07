@@ -17,10 +17,11 @@ package org.jetbrains.idea.svn;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.changes.ContentRevision;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.change.ContentRevision;
 
-public abstract class SvnBaseContentRevision implements ContentRevision {
+public abstract class SvnBaseContentRevision implements ContentRevision
+{
 
   @Nonnull
   protected final SvnVcs myVcs;

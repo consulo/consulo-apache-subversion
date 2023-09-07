@@ -15,16 +15,16 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.project.Project;
 import org.jetbrains.idea.svn.api.InfoCommandRepositoryProvider;
 import org.jetbrains.idea.svn.api.Repository;
 import org.jetbrains.idea.svn.api.UrlMappingRepositoryProvider;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 
 /**

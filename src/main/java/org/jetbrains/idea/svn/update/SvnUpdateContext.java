@@ -15,10 +15,11 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.update.SequentialUpdatesContext;
-import com.intellij.util.FilePathByPathComparator;
+import consulo.versionControlSystem.FilePath;
+import consulo.ide.impl.idea.util.FilePathByPathComparator;
 import javax.annotation.Nonnull;
+
+import consulo.versionControlSystem.update.SequentialUpdatesContext;
 import org.jetbrains.idea.svn.FilePathUtil;
 import org.jetbrains.idea.svn.NestedCopyType;
 import org.jetbrains.idea.svn.RootUrlInfo;
@@ -27,7 +28,8 @@ import org.jetbrains.idea.svn.SvnVcs;
 import java.io.File;
 import java.util.*;
 
-public class SvnUpdateContext implements SequentialUpdatesContext {
+public class SvnUpdateContext implements SequentialUpdatesContext
+{
   private final Set<File> myUpdatedExternals;
   private final SvnVcs myVcs;
   private final List<FilePath> myContentRoots;

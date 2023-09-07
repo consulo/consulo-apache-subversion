@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.rollback;
 
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.rollback.RollbackProgressListener;
-import com.intellij.util.Processor;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
+import consulo.application.Application;
+import consulo.application.util.TempFileService;
+import consulo.util.io.FilePermissionCopier;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.rollback.RollbackProgressListener;
+import consulo.versionControlSystem.util.VcsUtil;
 import org.jetbrains.idea.svn.SvnFileSystemListener;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -37,6 +37,7 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -57,8 +58,8 @@ public class Reverter {
     myVcs = vcs;
     myHandler = createRevertHandler(exceptions, listener);
     myExceptions = exceptions;
-    myFromToModified = ContainerUtil.newArrayList();
-    myProperties = ContainerUtil.newHashMap();
+    myFromToModified = new ArrayList<>();
+    myProperties = new HashMap<>();
   }
 
   public void revert(@Nonnull Collection<File> files, boolean recursive) {
@@ -79,7 +80,8 @@ public class Reverter {
       // copy also directories here - for moving with svn
       // also, maybe still use just patching? -> well-tested thing, only deletion of folders might suffer
       // todo: special case: addition + move. mark it
-      final File tmp = FileUtil.createTempDirectory("forRename", "");
+      TempFileService tempFileService = Application.get().getInstance(TempFileService.class);
+      final File tmp = tempFileService.createTempDirectory("forRename", "").toFile();
       final PropertyConsumer handler = createPropertyHandler(myProperties, collector);
 
       for (Map.Entry<File, ThroughRenameInfo> entry : collector.getFromTo().entrySet()) {
@@ -97,7 +99,7 @@ public class Reverter {
         final File tmpFile = FileUtil.createTempFile(tmp, source.getName(), "", false);
         tmpFile.mkdirs();
         FileUtil.delete(tmpFile);
-        FileUtil.copy(source, tmpFile);
+        FileUtil.copy(source, tmpFile, FilePermissionCopier.BY_NIO2);
         myFromToModified.add(new CopiedAsideInfo(info.getParentImmediateReverted(), info.getTo(), info.getFirstTo(), tmpFile));
       }
     }
@@ -129,33 +131,30 @@ public class Reverter {
           if (root == null) continue;
           if (!root.isDirectory()) {
             if (target.exists()) {
-              FileUtil.copy(root, target);
+              FileUtil.copy(root, target, FilePermissionCopier.BY_NIO2);
             }
             else {
-              FileUtil.rename(root, target);
+              FileUtil.rename(root, target, FilePermissionCopier.BY_NIO2);
             }
           }
           else {
-            FileUtil.processFilesRecursively(root, new Processor<File>() {
-              @Override
-              public boolean process(File file) {
-                if (file.isDirectory()) return true;
-                String relativePath = FileUtil.getRelativePath(root.getPath(), file.getPath(), File.separatorChar);
-                File newFile = new File(target, relativePath);
-                newFile.getParentFile().mkdirs();
-                try {
-                  if (target.exists()) {
-                    FileUtil.copy(file, newFile);
-                  }
-                  else {
-                    FileUtil.rename(file, newFile);
-                  }
+            FileUtil.processFilesRecursively(root, file -> {
+              if (file.isDirectory()) return true;
+              String relativePath = FileUtil.getRelativePath(root.getPath(), file.getPath(), File.separatorChar);
+              File newFile = new File(target, relativePath);
+              newFile.getParentFile().mkdirs();
+              try {
+                if (target.exists()) {
+                  FileUtil.copy(file, newFile, FilePermissionCopier.BY_NIO2);
                 }
-                catch (IOException e) {
-                  myExceptions.add(new VcsException(e));
+                else {
+                  FileUtil.rename(file, newFile, FilePermissionCopier.BY_NIO2);
                 }
-                return true;
               }
+              catch (IOException e) {
+                myExceptions.add(new VcsException(e));
+              }
+              return true;
             });
           }
         }

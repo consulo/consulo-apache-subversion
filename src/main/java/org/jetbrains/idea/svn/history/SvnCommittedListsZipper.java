@@ -15,14 +15,16 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.RepositoryLocation;
-import com.intellij.openapi.vcs.changes.committed.RepositoryLocationGroup;
-import com.intellij.openapi.vcs.changes.committed.VcsCommittedListsZipper;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.util.containers.MultiMap;
+import consulo.logging.Logger;
+import consulo.util.collection.MultiMap;
+import consulo.versionControlSystem.RepositoryLocation;
+import consulo.versionControlSystem.change.commited.VcsCommittedListsZipper;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
+
 import javax.annotation.Nonnull;
+
+import consulo.util.lang.Pair;
+import consulo.versionControlSystem.change.commited.RepositoryLocationGroup;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNURL;

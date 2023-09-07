@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
-import com.intellij.openapi.components.ServiceManager;
+import consulo.ide.ServiceManager;
 import consulo.util.collection.ContainerUtil;
 import jakarta.inject.Singleton;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;

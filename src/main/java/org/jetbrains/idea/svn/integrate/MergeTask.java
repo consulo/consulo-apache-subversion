@@ -15,11 +15,12 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.InvokeAfterUpdateMode;
-import com.intellij.openapi.vcs.changes.LocalChangeList;
+import consulo.application.Application;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ChangeListManager;
+import consulo.versionControlSystem.change.InvokeAfterUpdateMode;
+import consulo.versionControlSystem.change.LocalChangeList;
+
 import javax.annotation.Nonnull;
 
 public class MergeTask extends BaseMergeTask {
@@ -33,12 +34,13 @@ public class MergeTask extends BaseMergeTask {
   }
 
   @Override
-  public void run() throws VcsException {
+  public void run() throws VcsException
+  {
     boolean needRefresh = setupDefaultEmptyChangeListForMerge();
 
     if (needRefresh) {
       ChangeListManager.getInstance(myMergeContext.getProject())
-        .invokeAfterUpdate(myCallback, InvokeAfterUpdateMode.BACKGROUND_NOT_CANCELLABLE, "", ModalityState.NON_MODAL);
+        .invokeAfterUpdate(myCallback, InvokeAfterUpdateMode.BACKGROUND_NOT_CANCELLABLE, "", Application.get().getNoneModalityState());
     }
     else {
       myCallback.run();

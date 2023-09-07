@@ -15,17 +15,16 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.CustomShortcutSet;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.openapi.vcs.history.VcsFileRevision;
-import com.intellij.openapi.vfs.VirtualFile;
-import icons.SvnIcons;
+import consulo.application.dumb.DumbAware;
+import consulo.language.editor.CommonDataKeys;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.CustomShortcutSet;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.history.VcsFileRevision;
+import consulo.virtualFileSystem.VirtualFile;
+import org.jetbrains.idea.svn.SvnIcons;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

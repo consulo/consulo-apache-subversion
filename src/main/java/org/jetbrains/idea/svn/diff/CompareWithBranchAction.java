@@ -16,19 +16,19 @@
 
 package org.jetbrains.idea.svn.diff;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.FileStatusManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.idea.svn.*;
+import consulo.application.dumb.DumbAware;
+import consulo.language.editor.CommonDataKeys;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.status.FileStatusManager;
+import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
 import org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationNew;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author yole

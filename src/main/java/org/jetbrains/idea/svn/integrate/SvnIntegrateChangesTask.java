@@ -15,29 +15,32 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.TransactionGuard;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.ex.ProjectManagerEx;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.*;
-import com.intellij.openapi.vcs.changes.*;
-import com.intellij.openapi.vcs.changes.ui.CommitChangeListDialog;
-import com.intellij.openapi.vcs.ex.ProjectLevelVcsManagerEx;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.openapi.vcs.update.*;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Consumer;
-import com.intellij.util.Function;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.ApplicationManager;
+import consulo.application.TransactionGuard;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.CommitChangeListDialog;
+import consulo.ide.impl.idea.openapi.vcs.ex.ProjectLevelVcsManagerEx;
+import consulo.ide.impl.idea.openapi.vcs.update.RestoreUpdateTree;
+import consulo.ide.impl.idea.openapi.vcs.update.UpdatedFilesReverseSide;
+import consulo.project.Project;
+import consulo.project.internal.ProjectManagerEx;
+import consulo.project.ui.notification.NotificationType;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.*;
+import consulo.versionControlSystem.change.*;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
+import consulo.versionControlSystem.update.ActionInfo;
+import consulo.versionControlSystem.update.RefreshVFsSynchronously;
+import consulo.versionControlSystem.update.UpdateFilesHelper;
+import consulo.versionControlSystem.update.UpdatedFiles;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.status.FileStatus;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnChangeProvider;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -47,6 +50,8 @@ import org.jetbrains.idea.svn.status.StatusType;
 import org.jetbrains.idea.svn.update.UpdateEventHandler;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -75,19 +80,21 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     myDryRun = dryRun;
     myTitle = title;
 
-    myProjectLevelVcsManager = ProjectLevelVcsManagerEx.getInstanceEx(myProject);
+    myProjectLevelVcsManager = ProjectLevelVcsManagerEx.getInstanceEx(vcs.getProject());
     myVcs = vcs;
 
     myInfo = info;
 
-    myAccumulatedFiles = new UpdatedFilesReverseSide(UpdatedFiles.create());
+    myAccumulatedFiles =
+      new UpdatedFilesReverseSide(UpdatedFiles.create());
     myExceptions = new ArrayList<>();
     myHandler = new IntegrateEventHandler(myVcs, ProgressManager.getInstance().getProgressIndicator());
     myMerger = mergerFactory.createMerger(myVcs, new File(myInfo.getLocalPath()), myHandler, currentBranchUrl, branchName);
   }
 
   private static void indicatorOnStart() {
-    ProgressIndicator indicator = ProgressManager.getInstance().getProgressIndicator();
+    ProgressIndicator indicator =
+      ProgressManager.getInstance().getProgressIndicator();
 
     if (indicator != null) {
       indicator.setIndeterminate(true);
@@ -97,7 +104,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
 
   public void run(@Nonnull final ProgressIndicator indicator) {
     myHandler.setProgressIndicator(ProgressManager.getInstance().getProgressIndicator());
-    myResolveWorker = new ResolveWorker(myInfo.isUnderProjectRoot(), myProject);
+    myResolveWorker = new ResolveWorker(myInfo.isUnderProjectRoot(), (Project)myProject);
 
     ProjectManagerEx.getInstanceEx().blockReloadingProjectOnExternalChanges();
     myProjectLevelVcsManager.startBackgroundVcsOperation();
@@ -115,13 +122,14 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
         RefreshVFsSynchronously.updateAllChanged(myRecentlyUpdatedFiles);
         indicator.setText(VcsBundle.message("progress.text.updating.done"));
 
-        if (myResolveWorker.needsInteraction(myRecentlyUpdatedFiles) || (! myMerger.hasNext()) ||
-            (! myExceptions.isEmpty()) || UpdatedFilesReverseSide.containErrors(myRecentlyUpdatedFiles)) {
+        if (myResolveWorker.needsInteraction(myRecentlyUpdatedFiles) || (!myMerger.hasNext()) ||
+          (!myExceptions.isEmpty()) || UpdatedFilesReverseSide.containErrors(myRecentlyUpdatedFiles)) {
           break;
         }
         accumulate();
       }
-    } finally {
+    }
+    finally {
       myProjectLevelVcsManager.stopBackgroundVcsOperation();
     }
   }
@@ -138,12 +146,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
 
   @Nonnull
   private static VcsException createException(boolean isWarning, @Nonnull String... messages) {
-    Collection<String> notEmptyMessages = ContainerUtil.mapNotNull(messages, new Function<String, String>() {
-      @Override
-      public String fun(@Nullable String message) {
-        return StringUtil.nullize(message, true);
-      }
-    });
+    Collection<String> notEmptyMessages = ContainerUtil.mapNotNull(messages, message -> StringUtil.nullize(message, true));
 
     return new VcsException(notEmptyMessages).setIsWarning(isWarning);
   }
@@ -173,18 +176,20 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     TransactionGuard.submitTransaction(myProject, () -> {
       try {
         afterExecution(wasCancelled);
-      } finally {
+      }
+      finally {
         ProjectManagerEx.getInstanceEx().unblockReloadingProjectOnExternalChanges();
       }
     });
   }
 
   private void accumulate() {
-    myAccumulatedFiles.accomulateFiles(myRecentlyUpdatedFiles, UpdatedFilesReverseSide.DuplicateLevel.DUPLICATE_ERRORS);
+    myAccumulatedFiles.accomulateFiles(myRecentlyUpdatedFiles,
+                                       UpdatedFilesReverseSide.DuplicateLevel.DUPLICATE_ERRORS);
   }
 
   private void afterExecution(final boolean wasCanceled) {
-    if (! myRecentlyUpdatedFiles.isEmpty()) {
+    if (!myRecentlyUpdatedFiles.isEmpty()) {
       myResolveWorker.execute(myRecentlyUpdatedFiles);
     }
     final boolean haveConflicts = ResolveWorker.haveUnresolvedConflicts(myRecentlyUpdatedFiles);
@@ -196,7 +201,8 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
       if (myAccumulatedFiles.isEmpty() && myExceptions.isEmpty() && (myMergeTarget == null) && (!wasCanceled)) {
         Messages.showMessageDialog(SvnBundle.message("action.Subversion.integrate.changes.message.files.up.to.date.text"), myTitle,
                                    Messages.getInformationIcon());
-      } else {
+      }
+      else {
         if (haveConflicts) {
           myExceptions.add(createWarning(SvnBundle.message("svn.integrate.changelist.warning.unresolved.conflicts.text")));
         }
@@ -206,19 +212,21 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
         finishActions(wasCanceled);
       }
       myMerger.afterProcessing();
-    } else {
+    }
+    else {
       stepToNextChangeList();
     }
   }
 
   private void finishActions(final boolean wasCanceled) {
-    if (! wasCanceled) {
-      if (! ApplicationManager.getApplication().isUnitTestMode() &&
-          (! myDryRun) && (myExceptions.isEmpty()) && (! myAccumulatedFiles.containErrors()) &&
-          ((! myAccumulatedFiles.isEmpty()) || (myMergeTarget != null))) {
+    if (!wasCanceled) {
+      if (!ApplicationManager.getApplication().isUnitTestMode() &&
+        (!myDryRun) && (myExceptions.isEmpty()) && (!myAccumulatedFiles.containErrors()) &&
+        ((!myAccumulatedFiles.isEmpty()) || (myMergeTarget != null))) {
         if (myInfo.isUnderProjectRoot()) {
           showLocalCommit();
-        } else {
+        }
+        else {
           showAlienCommit();
         }
         return;
@@ -226,7 +234,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     }
 
     final Collection<FilePath> files = gatherChangedPaths();
-    VcsDirtyScopeManager.getInstance(myProject).filePathsDirty(files, null);
+    VcsDirtyScopeManager.getInstance((Project)myProject).filePathsDirty(files, null);
     prepareAndShowResults();
   }
 
@@ -236,16 +244,24 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     if (!myAccumulatedFiles.isEmpty()) {
       showUpdateTree();
     }
-    if (! myExceptions.isEmpty()) {
-      AbstractVcsHelper.getInstance(myProject).showErrors(myExceptions, VcsBundle.message("message.title.vcs.update.errors", myExceptions.size()));
+    if (!myExceptions.isEmpty()) {
+      AbstractVcsHelper.getInstance((Project)myProject)
+                       .showErrors(myExceptions,
+                                   VcsBundle.message(
+                                     "message.title.vcs.update.errors",
+                                     myExceptions.size()));
     }
   }
 
   private void showUpdateTree() {
-    RestoreUpdateTree restoreUpdateTree = RestoreUpdateTree.getInstance(myProject);
+    RestoreUpdateTree restoreUpdateTree =
+      RestoreUpdateTree.getInstance((Project)myProject);
     // action info is actually NOT used
     restoreUpdateTree.registerUpdateInformation(myAccumulatedFiles.getUpdatedFiles(), ActionInfo.INTEGRATE);
-    myProjectLevelVcsManager.showUpdateProjectInfo(myAccumulatedFiles.getUpdatedFiles(), myTitle, ActionInfo.INTEGRATE, false);
+    myProjectLevelVcsManager.showUpdateProjectInfo(myAccumulatedFiles.getUpdatedFiles(),
+                                                   myTitle,
+                                                   ActionInfo.INTEGRATE,
+                                                   false);
   }
 
   private void stepToNextChangeList() {
@@ -274,34 +290,25 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
 
     // for changes to be detected, we need switch to background change list manager update thread and back to dispatch thread
     // so callback is used; ok to be called after VCS update markup closed: no remote operations
-    final ChangeListManager changeListManager = ChangeListManager.getInstance(myProject);
-    changeListManager.invokeAfterUpdate(new Runnable() {
-      public void run() {
-        Collection<Change> changes = new ArrayList<>();
-        for (FilePath file : files) {
-          ContainerUtil.addIfNotNull(changes, changeListManager.getChange(file));
-        }
+    final ChangeListManager changeListManager = ChangeListManager.getInstance((Project)myProject);
+    changeListManager.invokeAfterUpdate((Runnable)() -> {
+                                          Collection<Change> changes = new ArrayList<>();
+                                          for (FilePath file : files) {
+                                            ContainerUtil.addIfNotNull(changes, changeListManager.getChange(file));
+                                          }
 
-        CommitChangeListDialog.commitChanges(myProject, changes, null, null, myMerger.getComment());
-        prepareAndShowResults();
-      }
-    }, InvokeAfterUpdateMode.SYNCHRONOUS_CANCELLABLE, myTitle,
-      new Consumer<VcsDirtyScopeManager>() {
-        public void consume(final VcsDirtyScopeManager vcsDirtyScopeManager) {
-          vcsDirtyScopeManager.filePathsDirty(files, null);
-        }
-      }, null);
+                                          CommitChangeListDialog.commitChanges((Project)myProject, changes, null, null, myMerger.getComment());
+                                          prepareAndShowResults();
+                                        }, InvokeAfterUpdateMode.SYNCHRONOUS_CANCELLABLE, myTitle,
+                                        vcsDirtyScopeManager -> vcsDirtyScopeManager.filePathsDirty(files, null), null);
   }
 
   @Nonnull
   private Collection<FilePath> gatherChangedPaths() {
     final Collection<FilePath> result = new ArrayList<>();
 
-    UpdateFilesHelper.iterateFileGroupFiles(myAccumulatedFiles.getUpdatedFiles(), new UpdateFilesHelper.Callback() {
-      public void onFile(final String filePath, final String groupId) {
-        result.add(VcsUtil.getFilePath(new File(filePath)));
-      }
-    });
+    UpdateFilesHelper.iterateFileGroupFiles(myAccumulatedFiles.getUpdatedFiles(),
+                                            (filePath, groupId) -> result.add(VcsUtil.getFilePath(new File(filePath))));
     ContainerUtil.addIfNotNull(result, myMergeTarget);
 
     return result;
@@ -312,12 +319,10 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
 
     if (myMergeTarget != null) {
       dirtyScope.addDir(myMergeTarget);
-    } else {
-      UpdateFilesHelper.iterateFileGroupFiles(myAccumulatedFiles.getUpdatedFiles(), new UpdateFilesHelper.Callback() {
-        public void onFile(final String filePath, final String groupId) {
-          dirtyScope.addFile(VcsUtil.getFilePath(new File(filePath)));
-        }
-      });
+    }
+    else {
+      UpdateFilesHelper.iterateFileGroupFiles(myAccumulatedFiles.getUpdatedFiles(),
+                                              (filePath, groupId) -> dirtyScope.addFile(VcsUtil.getFilePath(new File(filePath))));
     }
 
     showAlienCommit(dirtyScope);
@@ -325,7 +330,8 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
 
   private void showAlienCommit(@Nonnull final AlienDirtyScope dirtyScope) {
     new Task.Backgroundable(myVcs.getProject(),
-                            SvnBundle.message("action.Subversion.integrate.changes.collecting.changes.to.commit.task.title")) {
+                            SvnBundle.message(
+                              "action.Subversion.integrate.changes.collecting.changes.to.commit.task.title")) {
 
       private final GatheringChangelistBuilder changesBuilder = new GatheringChangelistBuilder(myVcs, myAccumulatedFiles);
       private final Ref<String> caughtError = new Ref<>();
@@ -347,10 +353,15 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
       @Override
       public void onSuccess() {
         if (!caughtError.isNull()) {
-          VcsBalloonProblemNotifier.showOverVersionControlView(myVcs.getProject(), caughtError.get(), MessageType.ERROR);
+          VcsBalloonProblemNotifier.showOverVersionControlView(myVcs.getProject(),
+                                                               caughtError.get(),
+                                                               NotificationType.ERROR);
         }
         else if (!changesBuilder.getChanges().isEmpty()) {
-          CommitChangeListDialog.commitAlienChanges(myProject, changesBuilder.getChanges(), myVcs, myMerger.getComment(),
+          CommitChangeListDialog.commitAlienChanges((Project)myProject,
+                                                    changesBuilder.getChanges(),
+                                                    myVcs,
+                                                    myMerger.getComment(),
                                                     myMerger.getComment());
         }
       }

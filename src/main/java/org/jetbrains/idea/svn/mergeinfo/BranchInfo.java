@@ -15,14 +15,12 @@
  */
 package org.jetbrains.idea.svn.mergeinfo;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.Factory;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.MultiMap;
-import javax.annotation.Nonnull;
+import consulo.logging.Logger;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.collection.MultiMap;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.function.Condition;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -39,6 +37,7 @@ import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.*;
 
@@ -75,11 +74,11 @@ public class BranchInfo {
     myInfo = info;
     myBranch = branch;
 
-    myPathMergedMap = ContainerUtil.newHashMap();
+    myPathMergedMap = new HashMap<>();
     myPartlyMerged = MultiMap.create();
-    myNonInheritablePathMergedMap = ContainerUtil.newHashMap();
+    myNonInheritablePathMergedMap = new HashMap<>();
 
-    myAlreadyCalculatedMap = ContainerUtil.newHashMap();
+    myAlreadyCalculatedMap = new HashMap<>();
   }
 
   private long calculateCopyRevision(final String branchPath) {
@@ -119,12 +118,7 @@ public class BranchInfo {
         result = SvnMergeInfoCache.MergeCheckResult.COMMON;
       }
       else {
-        result = ContainerUtil.getOrCreate(myAlreadyCalculatedMap, list.getNumber(), new Factory<SvnMergeInfoCache.MergeCheckResult>() {
-          @Override
-          public SvnMergeInfoCache.MergeCheckResult create() {
-            return checkAlive(list, branchPath);
-          }
-        });
+        result = myAlreadyCalculatedMap.computeIfAbsent(list.getNumber(), aLong -> checkAlive(list, branchPath));
       }
       return result;
     }
@@ -194,7 +188,8 @@ public class BranchInfo {
                                                   final long targetRevision,
                                                   final String branchRootPath,
                                                   final String path,
-                                                  @Nonnull String trunkUrl) throws SVNException, VcsException {
+                                                  @Nonnull String trunkUrl) throws SVNException, VcsException
+  {
     SvnMergeInfoCache.MergeCheckResult result;
     String newTrunkUrl = SVNPathUtil.removeTail(trunkUrl).trim();
 
@@ -375,8 +370,8 @@ public class BranchInfo {
   }
 
   private void fillMergedRevisions(String pathWithRevisionNumber, @Nonnull SVNMergeRangeList mergeRangeList) {
-    Set<Long> revisions = ContainerUtil.newHashSet();
-    Set<Long> nonInheritableRevisions = ContainerUtil.newHashSet();
+    Set<Long> revisions = new HashSet<>();
+    Set<Long> nonInheritableRevisions = new HashSet<>();
 
     for (SVNMergeRange range : mergeRangeList.getRanges()) {
       // TODO: Seems there is no much sense in converting merge range to list of revisions - we need just implement smart search

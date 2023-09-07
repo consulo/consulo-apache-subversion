@@ -15,13 +15,10 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.ObjectsConvertor;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.Convertor;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.versionControlSystem.util.ObjectsConvertor;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -31,11 +28,13 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 
 public class SvnBranchConfigurationNew {
-  private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationNew");
+  private static final Logger LOG = Logger.getInstance(SvnBranchConfigurationNew.class);
   private String myTrunkUrl;
   // need public for serialization
   public Map<String, InfoStorage<List<SvnBranchItem>>> myBranchMap;
@@ -64,12 +63,7 @@ public class SvnBranchConfigurationNew {
 
   public List<String> getBranchUrls() {
     final ArrayList<String> result = new ArrayList<>(myBranchMap.keySet());
-    final List<String> cutList = ObjectsConvertor.convert(result, new Convertor<String, String>() {
-      @Override
-      public String convert(String s) {
-        return cutEndSlash(s);
-      }
-    });
+    final List<String> cutList = ObjectsConvertor.convert(result, s -> cutEndSlash(s));
     Collections.sort(cutList);
     return cutList;
   }

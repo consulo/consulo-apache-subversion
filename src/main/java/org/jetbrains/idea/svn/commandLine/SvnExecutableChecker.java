@@ -15,17 +15,18 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.ExecutableValidator;
-import com.intellij.execution.process.ProcessOutput;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Version;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.util.registry.RegistryValue;
-import com.intellij.openapi.util.registry.RegistryValueListener;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.ui.UIUtil;
+import consulo.application.util.registry.Registry;
+import consulo.application.util.registry.RegistryValue;
+import consulo.application.util.registry.RegistryValueListener;
+import consulo.execution.ExecutableValidator;
+import consulo.ide.setting.ShowSettingsUtil;
+import consulo.logging.Logger;
+import consulo.process.util.ProcessOutput;
+import consulo.project.ui.notification.Notification;
+import consulo.project.ui.notification.NotificationType;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.Version;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.CmdVersionClient;
 
@@ -70,12 +71,6 @@ public class SvnExecutableChecker extends ExecutableValidator {
     return SvnApplicationSettings.getInstance().getCommandLinePath();
   }
 
-  @Nonnull
-  @Override
-  protected String getConfigurableDisplayName() {
-    return SvnConfigurable.DISPLAY_NAME;
-  }
-
   @Override
   protected boolean notify(@Nullable Notification notification) {
     expireAll();
@@ -96,6 +91,11 @@ public class SvnExecutableChecker extends ExecutableValidator {
     notification.expire();
 
     myVcs.checkCommandLineVersion();
+  }
+
+  @Override
+  protected void showSettings() {
+    ShowSettingsUtil.getInstance().showAndSelect(myProject, SvnConfigurable.class);
   }
 
   @Override

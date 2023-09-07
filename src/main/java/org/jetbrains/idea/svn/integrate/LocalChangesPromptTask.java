@@ -15,20 +15,20 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.LocalChangeList;
-import com.intellij.openapi.vcs.changes.shelf.ShelveChangesManager;
-import com.intellij.util.FilePathByPathComparator;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.document.FileDocumentManager;
+import consulo.ide.impl.idea.openapi.vcs.changes.shelf.ShelveChangesManager;
+import consulo.ide.impl.idea.util.FilePathByPathComparator;
+import consulo.util.lang.function.Condition;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ChangeListManager;
+import consulo.versionControlSystem.change.LocalChangeList;
+import consulo.versionControlSystem.util.VcsUtil;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -36,11 +36,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static com.intellij.openapi.util.Conditions.alwaysTrue;
-import static com.intellij.openapi.util.text.StringUtil.isEmptyOrSpaces;
-import static com.intellij.openapi.vcs.changes.ChangesUtil.*;
-import static com.intellij.util.containers.ContainerUtil.sorted;
+import static consulo.application.ApplicationManager.getApplication;
+import static consulo.util.collection.ContainerUtil.sorted;
+import static consulo.util.lang.StringUtil.isEmptyOrSpaces;
+import static consulo.util.lang.function.Conditions.alwaysTrue;
+import static consulo.versionControlSystem.change.ChangesUtil.*;
 import static java.util.stream.Collectors.toSet;
 import static org.jetbrains.idea.svn.integrate.Intersection.isEmpty;
 import static org.jetbrains.idea.svn.integrate.LocalChangesAction.continueMerge;

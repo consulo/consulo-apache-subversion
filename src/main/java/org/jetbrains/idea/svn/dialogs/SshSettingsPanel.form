@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="473b7" class="com.intellij.ui.components.JBRadioButton" binding="myPasswordChoice">
+      <component id="473b7" class="consulo.ui.ex.awt.JBRadioButton" binding="myPasswordChoice">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -19,7 +19,7 @@
           <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="ssh.settings.password.choice.title"/>
         </properties>
       </component>
-      <component id="25089" class="com.intellij.ui.components.JBRadioButton" binding="myPrivateKeyChoice">
+      <component id="25089" class="consulo.ui.ex.awt.JBRadioButton" binding="myPrivateKeyChoice">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -28,7 +28,7 @@
           <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="ssh.settings.private.key.choice.title"/>
         </properties>
       </component>
-      <component id="c9d7d" class="com.intellij.ui.components.JBRadioButton" binding="mySubversionConfigChoice">
+      <component id="c9d7d" class="consulo.ui.ex.awt.JBRadioButton" binding="mySubversionConfigChoice">
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -48,7 +48,7 @@
           <size top="0" left="2" bottom="0" right="0"/>
         </border>
         <children>
-          <component id="552b0" class="com.intellij.ui.components.JBLabel">
+          <component id="552b0" class="consulo.ui.ex.awt.JBLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -57,7 +57,7 @@
               <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="ssh.settings.executable.label"/>
             </properties>
           </component>
-          <component id="8fdc6" class="com.intellij.ui.components.JBLabel">
+          <component id="8fdc6" class="consulo.ui.ex.awt.JBLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -66,7 +66,7 @@
               <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="ssh.settings.user.name.label"/>
             </properties>
           </component>
-          <component id="c2b30" class="com.intellij.ui.components.JBTextField" binding="myUserNameField">
+          <component id="c2b30" class="consulo.ui.ex.awt.JBTextField" binding="myUserNameField">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -74,7 +74,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="76a49" class="com.intellij.ui.components.JBLabel">
+          <component id="76a49" class="consulo.ui.ex.awt.JBLabel">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -82,13 +82,13 @@
               <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="ssh.settings.port.label"/>
             </properties>
           </component>
-          <component id="33519" class="com.intellij.ui.PortField" binding="myPortField">
+          <component id="33519" class="consulo.ide.impl.idea.ui.PortField" binding="myPortField">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
           </component>
-          <component id="36189" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myExecutablePathField" custom-create="true">
+          <component id="36189" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myExecutablePathField" custom-create="true">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -109,7 +109,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="956bd" class="com.intellij.ui.components.JBLabel">
+          <component id="956bd" class="consulo.ui.ex.awt.JBLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -117,7 +117,7 @@
               <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="ssh.settings.private.key.path.label"/>
             </properties>
           </component>
-          <component id="9dc30" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myPrivateKeyPathField">
+          <component id="9dc30" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myPrivateKeyPathField">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -133,7 +133,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="8f467" class="com.intellij.ui.components.JBLabel">
+          <component id="8f467" class="consulo.ui.ex.awt.JBLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -141,7 +141,7 @@
               <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="ssh.settings.tunnel.label"/>
             </properties>
           </component>
-          <component id="48bdc" class="com.intellij.ui.components.JBTextField" binding="mySshTunnelField">
+          <component id="48bdc" class="consulo.ui.ex.awt.JBTextField" binding="mySshTunnelField">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -157,7 +157,7 @@
               <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="ssh.settings.update.tunnel.title"/>
             </properties>
           </component>
-          <component id="f1352" class="com.intellij.ui.components.JBLabel" binding="mySvnSshVariableLabel">
+          <component id="f1352" class="consulo.ui.ex.awt.JBLabel" binding="mySvnSshVariableLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -165,7 +165,7 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="785ea" class="com.intellij.ui.components.JBTextField" binding="mySvnSshVariableField">
+          <component id="785ea" class="consulo.ui.ex.awt.JBTextField" binding="mySvnSshVariableField">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>

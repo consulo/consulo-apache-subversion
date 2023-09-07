@@ -15,18 +15,17 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.io.DataExternalizer;
-import com.intellij.util.io.EnumeratorStringDescriptor;
 import consulo.container.boot.ContainerPathManager;
+import consulo.index.io.EnumeratorStringDescriptor;
+import consulo.index.io.data.DataExternalizer;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.jetbrains.idea.svn.SmallMapSerializer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
@@ -73,7 +72,7 @@ public class SvnLoadedBranchesStorage {
 
 
   public void deactivate() {
-    Map<String, Collection<SvnBranchItem>> branchLocationToBranchItemsMap = ContainerUtil.newHashMap();
+    Map<String, Collection<SvnBranchItem>> branchLocationToBranchItemsMap = new HashMap<>();
     SvnBranchConfigurationManager manager = SvnBranchConfigurationManager.getInstance(myProject);
     Map<VirtualFile,SvnBranchConfigurationNew> mapCopy = manager.getSvnBranchConfigManager().getMapCopy();
     for (Map.Entry<VirtualFile, SvnBranchConfigurationNew> entry : mapCopy.entrySet()) {

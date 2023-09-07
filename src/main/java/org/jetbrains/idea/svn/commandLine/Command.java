@@ -1,11 +1,8 @@
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.Function;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.properties.PropertyValue;
@@ -13,6 +10,8 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -125,12 +124,7 @@ public class Command {
 
   @Nullable
   public List<String> getTargetsPaths() {
-    return ContainerUtil.isEmpty(myTargets) ? null : ContainerUtil.map(myTargets, new Function<File, String>() {
-      @Override
-      public String fun(File file) {
-        return CommandUtil.format(file.getAbsolutePath(), null);
-      }
-    });
+    return ContainerUtil.isEmpty(myTargets) ? null : ContainerUtil.map(myTargets, file -> CommandUtil.format(file.getAbsolutePath(), null));
   }
 
   @Nullable

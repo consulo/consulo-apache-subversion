@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.FileStatusManager;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.ChangeListManagerImpl;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.ide.impl.idea.openapi.vcs.changes.ChangeListManagerImpl;
+import consulo.project.Project;
+import consulo.versionControlSystem.change.ChangeListManager;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.status.FileStatusManager;
 
 public class SvnStatusUtil {
   private SvnStatusUtil() {

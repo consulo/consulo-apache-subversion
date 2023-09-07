@@ -15,22 +15,21 @@
  */
 package org.jetbrains.idea.svn.mergeinfo;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Couple;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangeListsListener;
-import com.intellij.openapi.vcs.changes.committed.DecoratorManager;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.application.ApplicationManager;
+import consulo.project.Project;
+import consulo.util.lang.Couple;
+import consulo.util.lang.ObjectUtil;
+import consulo.versionControlSystem.change.commited.CommittedChangeListsListener;
+import consulo.versionControlSystem.change.commited.DecoratorManager;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 import org.jetbrains.idea.svn.dialogs.WCInfoWithBranches;
 import org.jetbrains.idea.svn.history.RootsAndBranches;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.history.SvnMergeInfoRootPanelManual;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MergeInfoHolder {
@@ -56,7 +55,7 @@ public class MergeInfoHolder {
     myMainPanel = mainPanel;
     myPanel = panel;
     myMergeInfoCache = SvnMergeInfoCache.getInstance(project);
-    myCachedMap = ContainerUtil.newHashMap();
+    myCachedMap = new HashMap<>();
   }
 
   @Nullable
@@ -106,7 +105,8 @@ public class MergeInfoHolder {
     return result;
   }
 
-  private class MyRefresher implements CommittedChangeListsListener {
+  private class MyRefresher implements CommittedChangeListsListener
+  {
 
     @Nonnull
 	private final WCInfoWithBranches myRefreshedRoot;
@@ -174,7 +174,7 @@ public class MergeInfoHolder {
     SvnMergeInfoCache.MergeCheckResult mergeCheckResult = state.getMap().get(list.getNumber());
     ListMergeStatus result = state.copiedAfter(list) ? ListMergeStatus.COMMON : ListMergeStatus.from(mergeCheckResult);
 
-    return ObjectUtils.notNull(result, isCached ? ListMergeStatus.REFRESHING : ListMergeStatus.ALIEN);
+    return ObjectUtil.notNull(result, isCached ? ListMergeStatus.REFRESHING : ListMergeStatus.ALIEN);
   }
 
   public void updateMixedRevisionsForPanel() {

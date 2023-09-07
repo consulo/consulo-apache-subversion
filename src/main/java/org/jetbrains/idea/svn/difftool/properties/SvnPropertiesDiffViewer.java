@@ -1,42 +1,46 @@
 package org.jetbrains.idea.svn.difftool.properties;
 
-import com.intellij.diff.DiffContentFactory;
-import com.intellij.diff.DiffContext;
-import com.intellij.diff.comparison.ComparisonManager;
-import com.intellij.diff.comparison.ComparisonPolicy;
-import com.intellij.diff.comparison.DiffTooBigException;
-import com.intellij.diff.contents.DiffContent;
-import com.intellij.diff.contents.DocumentContent;
-import com.intellij.diff.fragments.DiffFragment;
-import com.intellij.diff.fragments.LineFragment;
-import com.intellij.diff.fragments.LineFragmentImpl;
-import com.intellij.diff.requests.ContentDiffRequest;
-import com.intellij.diff.tools.util.DiffSplitter;
-import com.intellij.diff.tools.util.SyncScrollSupport;
-import com.intellij.diff.tools.util.side.TwosideTextDiffViewer;
-import com.intellij.diff.util.*;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.EditorSettings;
-import com.intellij.openapi.editor.LogicalPosition;
-import com.intellij.openapi.editor.event.DocumentEvent;
-import com.intellij.openapi.editor.ex.DocumentEx;
-import com.intellij.openapi.editor.ex.EditorEx;
-import com.intellij.openapi.editor.impl.DocumentImpl;
-import com.intellij.openapi.editor.markup.SeparatorPlacement;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.util.EmptyRunnable;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.ui.UIUtil;
-import consulo.awt.TargetAWT;
+import consulo.application.progress.ProgressIndicator;
+import consulo.codeEditor.EditorEx;
+import consulo.codeEditor.EditorSettings;
+import consulo.codeEditor.LogicalPosition;
+import consulo.codeEditor.markup.SeparatorPlacement;
+import consulo.diff.DiffContentFactory;
+import consulo.diff.DiffUserDataKeys;
+import consulo.diff.comparison.ComparisonManager;
+import consulo.diff.comparison.ComparisonPolicy;
+import consulo.diff.comparison.DiffTooBigException;
+import consulo.diff.content.DiffContent;
+import consulo.diff.content.DocumentContent;
+import consulo.diff.fragment.DiffFragment;
+import consulo.diff.fragment.LineFragment;
+import consulo.diff.request.ContentDiffRequest;
+import consulo.diff.util.Side;
+import consulo.document.Document;
+import consulo.document.event.DocumentEvent;
+import consulo.document.impl.DocumentImpl;
+import consulo.ide.impl.idea.diff.DiffContext;
+import consulo.ide.impl.idea.diff.fragments.LineFragmentImpl;
+import consulo.ide.impl.idea.diff.tools.util.DiffSplitter;
+import consulo.ide.impl.idea.diff.tools.util.SyncScrollSupport;
+import consulo.ide.impl.idea.diff.tools.util.side.TwosideTextDiffViewer;
+import consulo.ide.impl.idea.diff.util.DiffDividerDrawUtil;
+import consulo.ide.impl.idea.diff.util.DiffDrawUtil;
+import consulo.ide.impl.idea.diff.util.DiffUtil;
+import consulo.ide.impl.idea.diff.util.TextDiffType;
+import consulo.language.editor.PlatformDataKeys;
 import consulo.ui.color.ColorValue;
+import consulo.ui.ex.JBColor;
+import consulo.ui.ex.awt.JBLabel;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.ui.ex.awtUnsafe.TargetAWT;
 import consulo.ui.style.StandardColors;
+import consulo.util.collection.ContainerUtil;
 import consulo.util.dataholder.Key;
+import consulo.util.lang.EmptyRunnable;
+import consulo.util.lang.Pair;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.status.FileStatus;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.properties.PropertyData;
 import org.jetbrains.idea.svn.properties.PropertyValue;
@@ -58,17 +62,22 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   private boolean myFirstRediff = true;
 
   @Nonnull
-  public static SvnPropertiesDiffViewer create(@Nonnull DiffContext context, @Nonnull SvnPropertiesDiffRequest request) {
+  public static SvnPropertiesDiffViewer create(@Nonnull DiffContext context,
+                                               @Nonnull SvnPropertiesDiffRequest request) {
     return create(context, request, false);
   }
 
   @Nonnull
-  public static SvnPropertiesDiffViewer create(@Nonnull DiffContext context, @Nonnull SvnPropertiesDiffRequest request, boolean embedded) {
+  public static SvnPropertiesDiffViewer create(@Nonnull DiffContext context,
+                                               @Nonnull SvnPropertiesDiffRequest request,
+                                               boolean embedded) {
     Pair<WrapperRequest, List<DiffChange>> pair = convertRequest(request, embedded);
     return new SvnPropertiesDiffViewer(context, pair.first, pair.second);
   }
 
-  private SvnPropertiesDiffViewer(@Nonnull DiffContext context, @Nonnull WrapperRequest request, @Nonnull List<DiffChange> diffChanges) {
+  private SvnPropertiesDiffViewer(@Nonnull DiffContext context,
+                                  @Nonnull WrapperRequest request,
+                                  @Nonnull List<DiffChange> diffChanges) {
     super(context, request);
     myWrapperRequest = request;
     myDiffChanges = diffChanges;
@@ -93,8 +102,12 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     }
 
     for (DiffChange change : myDiffChanges) {
-      DiffDrawUtil.createBorderLineMarker(getEditor(Side.LEFT), change.myEndLine1, SeparatorPlacement.TOP);
-      DiffDrawUtil.createBorderLineMarker(getEditor(Side.RIGHT), change.myEndLine2, SeparatorPlacement.TOP);
+      DiffDrawUtil.createBorderLineMarker(getEditor(Side.LEFT),
+                                                                          change.myEndLine1,
+                                                                          SeparatorPlacement.TOP);
+      DiffDrawUtil.createBorderLineMarker(getEditor(Side.RIGHT),
+                                                                          change.myEndLine2,
+                                                                          SeparatorPlacement.TOP);
     }
 
     DiffSplitter splitter = myContentPanel.getSplitter();
@@ -156,7 +169,7 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     assert fragments != null;
 
     EditorEx editor = getEditor(side);
-    DocumentEx document = editor.getDocument();
+    Document document = editor.getDocument();
     int changeStartLine = change.getStartLine(side);
 
     for (LineFragment fragment : fragments) {
@@ -188,12 +201,19 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
 
   @Nonnull
   private static List<? extends LineFragment> createEverythingChanged(int length1, int length2, int lines1, int lines2) {
-    return Collections.singletonList(new LineFragmentImpl(0, lines1, 0, lines2, 0, length1, 0, length2));
+    return Collections.singletonList(new LineFragmentImpl(0,
+                                                                                               lines1,
+                                                                                               0,
+                                                                                               lines2,
+                                                                                               0,
+                                                                                               length1,
+                                                                                               0,
+                                                                                               length2));
   }
 
   private class MyDividerPainter implements DiffSplitter.Painter, DiffDividerDrawUtil.DividerPaintable {
     @Nonnull
-	private final JBLabel myLabel;
+    private final JBLabel myLabel;
 
     public MyDividerPainter() {
       myLabel = new JBLabel();
@@ -228,7 +248,8 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
 
       for (DiffChange change : myDiffChanges) {
         int y1 = editor1.logicalPositionToXY(new LogicalPosition(change.getStartLine(Side.LEFT), 0)).y - shift1;
-        int y2 = editor2.logicalPositionToXY(new LogicalPosition(change.getStartLine(Side.RIGHT), 0)).y - shift2;
+        int y2 = editor2.logicalPositionToXY(new LogicalPosition(change.getStartLine(Side.RIGHT),
+                                                                                    0)).y - shift2;
         int endY1 = editor1.logicalPositionToXY(new LogicalPosition(change.getEndLine(Side.LEFT), 0)).y - shift1;
         int endY2 = editor2.logicalPositionToXY(new LogicalPosition(change.getEndLine(Side.RIGHT), 0)).y - shift2;
 
@@ -260,8 +281,10 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
         if (fragments == null) continue;
 
         for (LineFragment fragment : diffChange.getFragments()) {
-          if (!handler.process(Side.LEFT.getStartLine(fragment) + shift1, Side.LEFT.getEndLine(fragment) + shift1,
-                               Side.RIGHT.getStartLine(fragment) + shift2, Side.RIGHT.getEndLine(fragment) + shift2,
+          if (!handler.process(Side.LEFT.getStartLine(fragment) + shift1,
+                               Side.LEFT.getEndLine(fragment) + shift1,
+                               Side.RIGHT.getStartLine(fragment) + shift2,
+                               Side.RIGHT.getEndLine(fragment) + shift2,
                                DiffUtil.getLineDiffType(fragment).getColor(getEditor1()))) {
             return;
           }
@@ -273,8 +296,10 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
     private ColorValue getRecordTitleColor(@Nonnull DiffChange change) {
       TextDiffType type = getDiffType(change);
       if (type == TextDiffType.INSERTED) return FileStatus.ADDED.getColor();
-      if (type == TextDiffType.DELETED) return FileStatus.DELETED.getColor();
-      if (type == TextDiffType.MODIFIED) return FileStatus.MODIFIED.getColor();
+      if (type == TextDiffType.DELETED)
+        return FileStatus.DELETED.getColor();
+      if (type == TextDiffType.MODIFIED)
+        return FileStatus.MODIFIED.getColor();
       return StandardColors.BLACK; // unchanged
     }
 
@@ -327,7 +352,8 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
   //
 
   @Nonnull
-  private static Pair<WrapperRequest, List<DiffChange>> convertRequest(@Nonnull SvnPropertiesDiffRequest request, boolean embedded) {
+  private static Pair<WrapperRequest, List<DiffChange>> convertRequest(@Nonnull SvnPropertiesDiffRequest request,
+                                                                                         boolean embedded) {
     List<PropertyRecord> records = collectRecords(request);
 
     StringBuilder builder1 = new StringBuilder();
@@ -427,11 +453,11 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
 
   private static class WrapperRequest extends ContentDiffRequest {
     @Nonnull
-	SvnPropertiesDiffRequest myRequest;
+    SvnPropertiesDiffRequest myRequest;
     @Nonnull
-	DocumentContent myContent1;
+    DocumentContent myContent1;
     @Nonnull
-	DocumentContent myContent2;
+    DocumentContent myContent2;
     private final boolean myEmbedded;
 
     public WrapperRequest(@Nonnull SvnPropertiesDiffRequest request,
@@ -482,9 +508,11 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
 
   private static class PropertyRecord {
     @Nonnull
-	private final String myName;
-    @Nullable private final String myBefore;
-    @Nullable private final String myAfter;
+    private final String myName;
+    @Nullable
+    private final String myBefore;
+    @Nullable
+    private final String myAfter;
 
     public PropertyRecord(@Nonnull String name,
                           @Nullable String before,
@@ -514,14 +542,14 @@ public class SvnPropertiesDiffViewer extends TwosideTextDiffViewer {
 
   private static class DiffChange {
     @Nonnull
-	private final PropertyRecord myRecord;
+    private final PropertyRecord myRecord;
     private final int myStartLine1;
     private final int myEndLine1;
     private final int myStartLine2;
     private final int myEndLine2;
 
     @Nullable
-	private List<? extends LineFragment> myFragments;
+    private List<? extends LineFragment> myFragments;
 
     public DiffChange(@Nonnull PropertyRecord record, int startLine1, int endLine1, int startLine2, int endLine2) {
       myRecord = record;

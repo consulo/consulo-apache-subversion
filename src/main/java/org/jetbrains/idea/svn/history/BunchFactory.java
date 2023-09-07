@@ -15,10 +15,10 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
+import consulo.application.progress.ProgressManager;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -78,7 +78,8 @@ public class BunchFactory {
     myYoungest = subList.get(subList.size() - 1).getNumber();
   }
 
-  private void execute(final int bunchSize) throws VcsException {
+  private void execute(final int bunchSize) throws VcsException
+  {
     myBunchSize = bunchSize;
     myResult.clear();
 

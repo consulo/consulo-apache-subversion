@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.changes.committed.ChangesBunch;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.ChangesBunch;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 
 import java.util.List;
 

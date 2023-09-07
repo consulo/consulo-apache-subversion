@@ -1,6 +1,6 @@
 package org.jetbrains.idea.svn.change;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -21,7 +21,8 @@ import java.util.List;
 public class CmdChangeListClient extends BaseSvnClient implements ChangeListClient {
 
   @Override
-  public void add(@Nonnull String changeList, @Nonnull File path, @Nullable String[] changeListsToOperate) throws VcsException {
+  public void add(@Nonnull String changeList, @Nonnull File path, @Nullable String[] changeListsToOperate) throws VcsException
+  {
     List<String> parameters = new ArrayList<>();
 
     parameters.add(changeList);

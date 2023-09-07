@@ -15,12 +15,14 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.vcs.ui.CommitMessage;
-import com.intellij.util.ui.JBUI;
+import consulo.ide.impl.idea.openapi.vcs.ui.CommitMessage;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.JBUI;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;
@@ -32,7 +34,8 @@ import java.awt.*;
  * Date: 11/16/12
  * Time: 2:55 PM
  */
-public class SvnEditCommitMessageDialog extends DialogWrapper {
+public class SvnEditCommitMessageDialog extends DialogWrapper
+{
   @Nullable
   private final Project myProject;
   private final String myOldText;

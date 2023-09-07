@@ -15,12 +15,14 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.vcs.FilePath;
+import consulo.logging.Logger;
+import consulo.configurable.ConfigurationException;
+import consulo.project.Project;
+
 import javax.annotation.Nullable;
+
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.versionControlSystem.FilePath;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
 import org.jetbrains.idea.svn.branchConfig.SvnBranchConfigurationManager;
@@ -211,7 +213,8 @@ public class SvnUpdateRootOptionsPanel implements SvnPanel{
     myBranchField.setEnabled(myUpdateToSpecificUrl.isSelected() && (mySourceUrl != null));
   }
 
-  public void apply(final SvnConfiguration configuration) throws ConfigurationException {
+  public void apply(final SvnConfiguration configuration) throws ConfigurationException
+  {
     final UpdateRootInfo rootInfo = configuration.getUpdateRootInfo(myRoot.getIOFile(), myVcs);
     if (myUpdateToSpecificUrl.isSelected()) {
       try {

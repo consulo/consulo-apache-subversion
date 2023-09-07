@@ -15,12 +15,13 @@
  */
 package org.jetbrains.idea.svn.info;
 
-import com.intellij.util.ThrowableConsumer;
+import consulo.util.lang.function.ThrowableConsumer;
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNException;
 
 /**
  * @author Konstantin Kolosovsky.
  */
-public interface InfoConsumer extends ThrowableConsumer<Info, SVNException> {
+public interface InfoConsumer extends ThrowableConsumer<Info, SVNException>
+{
 }

@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.ui.ScrollPaneFactory;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.ScrollPaneFactory;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnBundle;

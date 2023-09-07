@@ -15,25 +15,25 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.ZipperUpdater;
-import com.intellij.openapi.vcs.VcsListener;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangesTreeBrowser;
-import com.intellij.openapi.vcs.changes.committed.VcsConfigurationChangeListener;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Consumer;
-import com.intellij.util.messages.MessageBusConnection;
-import javax.annotation.Nonnull;
+import consulo.application.ApplicationManager;
+import consulo.component.messagebus.MessageBusConnection;
+import consulo.ide.impl.idea.openapi.util.ZipperUpdater;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangesReloadListener;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.VcsBranchMappingChangedNotification;
+import consulo.project.Project;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnVcs;
+import org.jetbrains.idea.svn.integrate.CommittedChangesMergedStateChanged;
 import org.jetbrains.idea.svn.integrate.Merger;
-import org.jetbrains.idea.svn.mergeinfo.SvnMergeInfoCache;
+import org.jetbrains.idea.svn.mergeinfo.SvnMergeInfoCacheListener;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-import static com.intellij.openapi.vcs.ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED;
+import static consulo.versionControlSystem.ProjectLevelVcsManager.VCS_CONFIGURATION_CHANGED;
 
 public class MergeInfoUpdatesListener {
   private final static int DELAY = 300;
@@ -54,64 +54,45 @@ public class MergeInfoUpdatesListener {
       myMergeInfoRefreshActions = new ArrayList<>();
       myMergeInfoRefreshActions.add(action);
 
-      myConnection.subscribe(VcsConfigurationChangeListener.BRANCHES_CHANGED, new VcsConfigurationChangeListener.Notification() {
+      myConnection.subscribe(VcsBranchMappingChangedNotification.class, new VcsBranchMappingChangedNotification() {
         public void execute(final Project project, final VirtualFile vcsRoot) {
           callReloadMergeInfo();
         }
       });
-      final Consumer<Boolean> reloadConsumer = new Consumer<Boolean>() {
-        @Override
-        public void consume(Boolean aBoolean) {
-          if (Boolean.TRUE.equals(aBoolean)) {
-            callReloadMergeInfo();
-          }
-        }
-      };
-      final Runnable reloadRunnable = new Runnable() {
-        @Override
-        public void run() {
-          callReloadMergeInfo();
-        }
-      };
-      myConnection.subscribe(SvnVcs.WC_CONVERTED, reloadRunnable);
-      myConnection.subscribe(RootsAndBranches.REFRESH_REQUEST, reloadRunnable);
+      final Runnable reloadRunnable = this::callReloadMergeInfo;
+      myConnection.subscribe(SvnVcs.WC_CONVERTED, reloadRunnable::run);
+      myConnection.subscribe(RootsAndBranches.REFRESH_REQUEST, reloadRunnable::run);
 
-      myConnection.subscribe(SvnVcs.ROOTS_RELOADED, reloadConsumer);
-
-      myConnection.subscribe(VCS_CONFIGURATION_CHANGED, new VcsListener() {
-        public void directoryMappingChanged() {
+      myConnection.subscribe(SvnVcs.ROOTS_RELOADED, mappingChanged -> {
+        if (mappingChanged) {
           callReloadMergeInfo();
         }
       });
 
-      myConnection.subscribe(CommittedChangesTreeBrowser.ITEMS_RELOADED, new CommittedChangesTreeBrowser.CommittedChangesReloadListener() {
+      myConnection.subscribe(VCS_CONFIGURATION_CHANGED, () -> callReloadMergeInfo());
+
+      myConnection.subscribe(CommittedChangesReloadListener.class, new CommittedChangesReloadListener() {
         public void itemsReloaded() {
           reloadRunnable.run();
         }
+
         public void emptyRefresh() {
         }
       });
 
-      myConnection.subscribe(SvnMergeInfoCache.SVN_MERGE_INFO_CACHE, new SvnMergeInfoCache.SvnMergeInfoCacheListener() {
+      myConnection.subscribe(SvnMergeInfoCacheListener.class, new SvnMergeInfoCacheListener() {
         public void copyRevisionUpdated() {
-          doForEachInitialized(new Consumer<RootsAndBranches>() {
-            public void consume(final RootsAndBranches rootsAndBranches) {
-              rootsAndBranches.fireRepaint();
-            }
-          });
+          doForEachInitialized(rootsAndBranches -> rootsAndBranches.fireRepaint());
         }
       });
 
-      myConnection.subscribe(Merger.COMMITTED_CHANGES_MERGED_STATE, new Merger.CommittedChangesMergedStateChanged() {
+      myConnection.subscribe(Merger.COMMITTED_CHANGES_MERGED_STATE, new CommittedChangesMergedStateChanged() {
         public void event(final List<CommittedChangeList> list) {
-          doForEachInitialized(new Consumer<RootsAndBranches>() {
-            public void consume(RootsAndBranches rootsAndBranches) {
-              rootsAndBranches.refreshByLists(list);
-            }
-          });
+          doForEachInitialized(rootsAndBranches -> rootsAndBranches.refreshByLists(list));
         }
       });
-    } else {
+    }
+    else {
       myMergeInfoRefreshActions.add(action);
     }
   }
@@ -122,11 +103,12 @@ public class MergeInfoUpdatesListener {
         for (final RootsAndBranches action : myMergeInfoRefreshActions) {
           if (action.strategyInitialized()) {
             if (ApplicationManager.getApplication().isDispatchThread()) {
-              consumer.consume(action);
-            } else {
+              consumer.accept(action);
+            }
+            else {
               ApplicationManager.getApplication().invokeLater(new Runnable() {
                 public void run() {
-                  consumer.consume(action);
+                  consumer.accept(action);
                 }
               });
             }
@@ -135,10 +117,10 @@ public class MergeInfoUpdatesListener {
       }
     });
   }
-  
+
   private void callReloadMergeInfo() {
     doForEachInitialized(new Consumer<RootsAndBranches>() {
-      public void consume(final RootsAndBranches rootsAndBranches) {
+      public void accept(final RootsAndBranches rootsAndBranches) {
         rootsAndBranches.reloadPanels();
         rootsAndBranches.refresh();
       }

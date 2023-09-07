@@ -17,15 +17,15 @@ package org.jetbrains.idea.svn.actions;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileVisitor;
+import consulo.project.Project;
+import consulo.application.util.function.Computable;
+import consulo.versionControlSystem.VcsException;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.util.VirtualFileVisitor;
+import consulo.application.ApplicationManager;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.change.ChangeListManager;
 import org.jetbrains.idea.svn.api.Depth;
 
 public class SvnExcludingIgnoredOperation {
@@ -77,14 +77,16 @@ public class SvnExcludingIgnoredOperation {
     }
   }
 
-  private boolean operation(final VirtualFile file) throws VcsException {
+  private boolean operation(final VirtualFile file) throws VcsException
+  {
     if (!myFilter.accept(file)) return false;
 
     myImportAction.doOperation(file);
     return true;
   }
 
-  private void executeDown(final VirtualFile file) throws VcsException {
+  private void executeDown(final VirtualFile file) throws VcsException
+  {
     VfsUtilCore.visitChildrenRecursively(file, new VirtualFileVisitor() {
       @Override
       public boolean visitFile(@Nonnull VirtualFile file) {

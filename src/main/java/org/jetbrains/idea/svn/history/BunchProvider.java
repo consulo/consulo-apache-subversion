@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nullable;
 
 public interface BunchProvider {

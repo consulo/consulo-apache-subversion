@@ -15,8 +15,9 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.util.containers.MultiMap;
+import consulo.util.collection.MultiMap;
+import consulo.logging.Logger;
+
 import javax.annotation.Nonnull;
 
 import java.util.*;
@@ -28,7 +29,7 @@ import java.util.*;
  * Time: 4:05 PM
  */
 public class NativeLogReader {
-  private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.NativeLogReader");
+  private static final Logger LOG = Logger.getInstance(NativeLogReader.class);
 
   private final static MultiMap<Thread, CallInfo> ourCallLog = new MultiMap<Thread, CallInfo>() {
     @Nonnull

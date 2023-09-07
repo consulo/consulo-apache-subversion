@@ -15,31 +15,30 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
+import consulo.application.dumb.DumbAware;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
 import org.jetbrains.idea.svn.ConflictedSvnChange;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class MarkTreeConflictResolvedAction extends AnAction implements DumbAware {
   private static final String myText = SvnBundle.message("action.mark.tree.conflict.resolved.text");
@@ -62,7 +61,7 @@ public class MarkTreeConflictResolvedAction extends AnAction implements DumbAwar
     private final Project myProject;
 
     public MyChecker(final AnActionEvent e) {
-      myProject = e.getProject();
+      myProject = e.getData(Project.KEY);
       final Change[] changes = e.getData(VcsDataKeys.CHANGE_LEAD_SELECTION);
 
       if (myProject == null || changes == null || changes.length != 1) {
@@ -72,9 +71,9 @@ public class MarkTreeConflictResolvedAction extends AnAction implements DumbAwar
       }
 
       final Change change = changes[0];
-      myEnabled = change instanceof ConflictedSvnChange && ((ConflictedSvnChange) change).getConflictState().isTree();
+      myEnabled = change instanceof ConflictedSvnChange && ((ConflictedSvnChange)change).getConflictState().isTree();
       if (myEnabled) {
-        myChange = (ConflictedSvnChange) change;
+        myChange = (ConflictedSvnChange)change;
       }
       else {
         myChange = null;
@@ -96,7 +95,7 @@ public class MarkTreeConflictResolvedAction extends AnAction implements DumbAwar
 
   public void actionPerformed(AnActionEvent e) {
     final MyChecker checker = new MyChecker(e);
-    if (! checker.isEnabled()) return;
+    if (!checker.isEnabled()) return;
 
     final String markText = SvnBundle.message("action.mark.tree.conflict.resolved.confirmation.title");
     final int result = Messages.showYesNoDialog(checker.getProject(),
@@ -119,7 +118,7 @@ public class MarkTreeConflictResolvedAction extends AnAction implements DumbAwar
           VcsDirtyScopeManager.getInstance(checker.getProject()).filePathsDirty(getDistinctFiles(change), null);
         }
       });
-      if (! exception.isNull()) {
+      if (!exception.isNull()) {
         AbstractVcsHelper.getInstance(checker.getProject()).showError(exception.get(), markText);
       }
     }

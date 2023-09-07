@@ -15,17 +15,14 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.changes.VcsDirtyScope;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
+import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.change.VcsDirtyScope;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public class SvnScopeZipper implements Runnable {
 
@@ -40,7 +37,7 @@ public class SvnScopeZipper implements Runnable {
   public SvnScopeZipper(@Nonnull VcsDirtyScope in) {
     myIn = in;
     myRecursiveDirs = ContainerUtil.newArrayList(in.getRecursivelyDirtyDirectories());
-    myNonRecursiveDirs = ContainerUtil.newHashMap();
+    myNonRecursiveDirs = new HashMap<>();
   }
 
   public void run() {
@@ -105,7 +102,7 @@ public class SvnScopeZipper implements Runnable {
 
     private MyDirNonRecursive(@Nonnull FilePath dir) {
       myDir = dir;
-      myChildren = ContainerUtil.newHashMap();
+      myChildren = new HashMap<>();
     }
 
     public void add(@Nonnull FilePath path) {

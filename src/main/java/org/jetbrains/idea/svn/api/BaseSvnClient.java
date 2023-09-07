@@ -1,9 +1,10 @@
 package org.jetbrains.idea.svn.api;
 
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
@@ -76,7 +77,8 @@ public abstract class BaseSvnClient implements SvnClient {
     }
   }
 
-  protected void validateFormat(@Nonnull WorkingCopyFormat format, @Nonnull Collection<WorkingCopyFormat> supported) throws VcsException {
+  protected void validateFormat(@Nonnull WorkingCopyFormat format, @Nonnull Collection<WorkingCopyFormat> supported) throws VcsException
+  {
     if (!supported.contains(format)) {
       throw new VcsException(
         String.format("%s format is not supported. Supported formats are: %s.", format.getName(), StringUtil.join(supported, ",")));
@@ -129,7 +131,8 @@ public abstract class BaseSvnClient implements SvnClient {
     return new CommandRuntime(vcs, new AuthenticationService(vcs, myIsActive));
   }
 
-  protected static void callHandler(@Nullable ProgressTracker handler, @Nonnull ProgressEvent event) throws VcsException {
+  protected static void callHandler(@Nullable ProgressTracker handler, @Nonnull ProgressEvent event) throws VcsException
+  {
     if (handler != null) {
       try {
         handler.consume(event);

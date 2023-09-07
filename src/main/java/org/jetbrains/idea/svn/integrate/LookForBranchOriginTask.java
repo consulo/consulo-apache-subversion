@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.Consumer;
+import consulo.versionControlSystem.VcsException;
 import org.tmatesoft.svn.core.SVNURL;
+
+import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 public class LookForBranchOriginTask extends BaseMergeTask {
 
@@ -44,7 +44,7 @@ public class LookForBranchOriginTask extends BaseMergeTask {
       myMergeContext.getVcs().getSvnBranchPointsCalculator().calculateCopyPoint(repoUrl, sourceUrl, targetUrl);
 
     if (copyPoint != null) {
-      myCallback.consume(copyPoint);
+      myCallback.accept(copyPoint);
     }
     else {
       myMergeProcess.end("Merge start wasn't found", true);

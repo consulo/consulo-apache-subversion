@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vfs.VirtualFile;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.virtualFileSystem.VirtualFile;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 

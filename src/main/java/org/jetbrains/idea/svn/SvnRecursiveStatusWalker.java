@@ -15,25 +15,26 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Processor;
-import com.intellij.vcsUtil.VcsUtil;
+import consulo.application.util.function.Processor;
+import consulo.logging.Logger;
+import consulo.component.ProcessCanceledException;
+import consulo.application.progress.ProgressIndicator;
+import consulo.project.Project;
+import consulo.application.util.function.Computable;
+import consulo.util.lang.ref.Ref;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.versionControlSystem.util.VcsUtil;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.application.ApplicationManager;
+import consulo.util.lang.Comparing;
+import consulo.versionControlSystem.change.ChangeListManager;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressEvent;
 import org.jetbrains.idea.svn.api.ProgressTracker;

@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.config;
 
-import com.intellij.openapi.util.Ref;
+import consulo.util.lang.ref.Ref;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import java.util.*;

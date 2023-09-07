@@ -17,8 +17,8 @@
 
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.FileStatusFactory;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.status.FileStatusFactory;
 import consulo.apache.subversion.localize.SvnLocalize;
 import consulo.ui.color.RGBColor;
 

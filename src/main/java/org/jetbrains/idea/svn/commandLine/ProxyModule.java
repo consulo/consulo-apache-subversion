@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.util.text.StringUtil;
-import javax.annotation.Nonnull;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.IdeaSVNConfigFile;
 import org.jetbrains.idea.svn.auth.AuthenticationService;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationManager;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 

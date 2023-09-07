@@ -15,14 +15,12 @@
  */
 package org.jetbrains.idea.svn.checkin;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.Function;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.application.progress.ProgressManager;
+import consulo.logging.Logger;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
@@ -31,6 +29,7 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNCommitClient;
 import org.tmatesoft.svn.core.wc.SVNCommitPacket;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.List;
 
@@ -43,7 +42,8 @@ public class SvnKitCheckinClient extends BaseSvnClient implements CheckinClient 
 
   @Nonnull
   @Override
-  public CommitInfo[] commit(@Nonnull List<File> paths, @Nonnull String comment) throws VcsException {
+  public CommitInfo[] commit(@Nonnull List<File> paths, @Nonnull String comment) throws VcsException
+  {
     File[] pathsToCommit = ArrayUtil.toObjectArray(paths, File.class);
     boolean keepLocks = myVcs.getSvnConfiguration().isKeepLocks();
     SVNCommitPacket[] commitPackets = null;
@@ -83,12 +83,7 @@ public class SvnKitCheckinClient extends BaseSvnClient implements CheckinClient 
 
   @Nonnull
   private static CommitInfo[] convert(@Nonnull SVNCommitInfo[] infos) {
-    return ContainerUtil.map(infos, new Function<SVNCommitInfo, CommitInfo>() {
-      @Override
-      public CommitInfo fun(SVNCommitInfo info) {
-        return new CommitInfo.Builder(info.getNewRevision(), info.getDate(), info.getAuthor())
-          .setError(info.getErrorMessage()).build();
-      }
-    }, new CommitInfo[0]);
+    return ContainerUtil.map(infos, info -> new CommitInfo.Builder(info.getNewRevision(), info.getDate(), info.getAuthor())
+      .setError(info.getErrorMessage()).build(), new CommitInfo[0]);
   }
 }

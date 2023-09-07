@@ -1,13 +1,12 @@
 package org.jetbrains.idea.svn.revert;
 
-import com.intellij.openapi.vcs.VcsException;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressTracker;
 import org.jetbrains.idea.svn.api.SvnClient;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 

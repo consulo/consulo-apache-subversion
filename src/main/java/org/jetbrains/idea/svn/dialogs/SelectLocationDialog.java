@@ -15,17 +15,17 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.help.HelpManager;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.Ref;
-import com.intellij.util.ui.JBUI;
+import consulo.application.HelpManager;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.application.progress.ProgressManager;
+import consulo.project.Project;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.Messages;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.util.lang.Pair;
+import consulo.util.lang.ref.Ref;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.awt.DialogWrapper;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,12 +45,13 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
 
-import static com.intellij.openapi.util.Pair.create;
+import static consulo.util.lang.Pair.create;
 
 /**
  * @author alex
  */
-public class SelectLocationDialog extends DialogWrapper {
+public class SelectLocationDialog extends DialogWrapper
+{
   private final Project myProject;
   private RepositoryBrowserComponent myRepositoryBrowser;
   private final SVNURL myURL;
@@ -86,12 +87,12 @@ public class SelectLocationDialog extends DialogWrapper {
 
   @Nullable
   private static SelectLocationDialog openDialog(Project project,
-                                                 String url,
-                                                 String dstLabel,
-                                                 String dstName,
-                                                 boolean showFiles,
-                                                 boolean allowActions,
-                                                 String errorMessage) {
+												 String url,
+												 String dstLabel,
+												 String dstName,
+												 boolean showFiles,
+												 boolean allowActions,
+												 String errorMessage) {
     try {
       SVNURL svnUrl = SvnUtil.createUrl(url);
       final SVNURL repositoryUrl = initRoot(project, svnUrl);

@@ -1,6 +1,6 @@
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.process.ProcessOutputTypes;
+import consulo.process.ProcessOutputTypes;
 import consulo.util.dataholder.Key;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

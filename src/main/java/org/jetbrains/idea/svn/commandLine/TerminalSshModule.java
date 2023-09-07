@@ -15,23 +15,23 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.project.Project;
+import consulo.application.Application;
+import consulo.project.Project;
+import consulo.project.util.WaitForProgressToShow;
 import consulo.util.dataholder.Key;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.WaitForProgressToShow;
-import javax.annotation.Nonnull;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.ref.Ref;
 import org.jetbrains.idea.svn.dialogs.ServerSSHDialog;
 import org.jetbrains.idea.svn.dialogs.SimpleCredentialsDialog;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
 
+import javax.annotation.Nonnull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.intellij.ssh.SSHUtil.PASSPHRASE_PROMPT;
-import static com.intellij.ssh.SSHUtil.PASSWORD_PROMPT;
+import static consulo.ide.impl.idea.ssh.SSHUtil.PASSPHRASE_PROMPT;
+import static consulo.ide.impl.idea.ssh.SSHUtil.PASSWORD_PROMPT;
 
 /**
  * @author Konstantin Kolosovsky.
@@ -101,7 +101,7 @@ public class TerminalSshModule extends BaseTerminalModule {
 
     // Use ModalityState.any() as currently ssh credentials in terminal mode are requested in the thread that reads output and not in
     // the thread that started progress
-    WaitForProgressToShow.runOrInvokeAndWaitAboveProgress(command, ModalityState.any());
+    WaitForProgressToShow.runOrInvokeAndWaitAboveProgress(command, Application.get().getAnyModalityState());
 
     unknownHost = null;
     fingerprintAlgorithm = null;

@@ -1,6 +1,6 @@
 package org.jetbrains.idea.svn.delete;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -20,7 +20,8 @@ import java.io.File;
 public class SvnKitDeleteClient extends BaseSvnClient implements DeleteClient {
 
   @Override
-  public void delete(@Nonnull File path, boolean force, boolean dryRun, @Nullable ProgressTracker handler) throws VcsException {
+  public void delete(@Nonnull File path, boolean force, boolean dryRun, @Nullable ProgressTracker handler) throws VcsException
+  {
     SVNWCClient client = myVcs.getSvnKitManager().createWCClient();
     client.setEventHandler(toEventHandler(handler));
 

@@ -15,14 +15,15 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
+import consulo.application.Application;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressManager;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 import javax.annotation.Nonnull;
+
+import consulo.application.progress.ProgressIndicator;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -62,7 +63,8 @@ public class LiveProvider implements BunchProvider {
   }
 
   public Fragment getEarliestBunchInInterval(final long earliestRevision, final long oldestRevision, final int desirableSize,
-                                             final boolean includeYoungest, final boolean includeOldest) throws VcsException {
+                                             final boolean includeYoungest, final boolean includeOldest) throws VcsException
+  {
     return getEarliestBunchInIntervalImpl(earliestRevision, oldestRevision, desirableSize, includeYoungest, includeOldest, earliestRevision);
   }
 
@@ -70,7 +72,8 @@ public class LiveProvider implements BunchProvider {
                                                   final long oldestRevision,
                                                   final int desirableSize,
                                                   final boolean includeYoungest,
-                                                  final boolean includeOldest, final long earliestToTake) throws VcsException {
+                                                  final boolean includeOldest, final long earliestToTake) throws VcsException
+  {
     if ((myEarliestRevisionWasAccessed) || ((oldestRevision == myYoungestRevision) && ((! includeYoungest) || (! includeOldest)))) {
       return null;
     }

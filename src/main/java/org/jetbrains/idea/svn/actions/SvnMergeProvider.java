@@ -15,17 +15,15 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.VcsBundle;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.merge.MergeData;
-import com.intellij.openapi.vcs.merge.MergeProvider;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.vcsUtil.VcsRunnable;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.versionControlSystem.VcsBundle;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.merge.MergeData;
+import consulo.versionControlSystem.merge.MergeProvider;
+import consulo.versionControlSystem.util.VcsRunnable;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -37,9 +35,11 @@ import org.jetbrains.idea.svn.properties.PropertyValue;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 /**
@@ -49,7 +49,7 @@ import java.util.Arrays;
 public class SvnMergeProvider implements MergeProvider {
 
   private final Project myProject;
-  private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.actions.SvnMergeProvider");
+  private static final Logger LOG = Logger.getInstance(SvnMergeProvider.class);
 
   public SvnMergeProvider(final Project project) {
     myProject = project;
@@ -83,7 +83,8 @@ public class SvnMergeProvider implements MergeProvider {
             workingFile = info.getConflictWrkFile();
           }
           data.LAST_REVISION_NUMBER = new SvnRevisionNumber(info.getRevision());
-        } else {
+        }
+        else {
           throw new VcsException("Could not get info for " + file.getPath());
         }
         if (oldFile == null || newFile == null || workingFile == null) {
@@ -99,7 +100,7 @@ public class SvnMergeProvider implements MergeProvider {
         }
         if (mergeCase) {
           final ByteArrayOutputStream contents = getBaseRevisionContents(vcs, file);
-          if (! Arrays.equals(contents.toByteArray(), data.ORIGINAL)) {
+          if (!Arrays.equals(contents.toByteArray(), data.ORIGINAL)) {
             // swap base and server: another order of merge arguments
             byte[] original = data.ORIGINAL;
             data.ORIGINAL = data.LAST;
@@ -127,7 +128,7 @@ public class SvnMergeProvider implements MergeProvider {
 
   private static byte[] readFile(File workingFile) throws VcsException {
     try {
-      return FileUtil.loadFileBytes(workingFile);
+      return Files.readAllBytes(workingFile.toPath());
     }
     catch (IOException e) {
       throw new VcsException(e);

@@ -15,26 +15,28 @@
  */
 package org.jetbrains.idea.svn.checkout;
 
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.FileIndexFacade;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.CheckoutProvider;
-import com.intellij.openapi.vcs.VcsConfiguration;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.ex.ProjectLevelVcsManagerEx;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.StatusBar;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.Application;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.application.util.function.Computable;
+import consulo.ide.ServiceManager;
+import consulo.ide.impl.idea.openapi.vcs.ex.ProjectLevelVcsManagerEx;
+import consulo.language.content.FileIndexFacade;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.wm.StatusBar;
+import consulo.ui.ModalityState;
 import consulo.ui.annotation.RequiredUIAccess;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.VcsConfiguration;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.checkout.CheckoutProvider;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.SvnWorkingCopyFormatHolder;
@@ -63,13 +65,13 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static com.intellij.openapi.application.ModalityState.any;
-import static com.intellij.openapi.ui.Messages.showErrorDialog;
-import static com.intellij.util.containers.ContainerUtil.getFirstItem;
+import static consulo.application.ApplicationManager.getApplication;
+import static consulo.ui.ex.awt.Messages.showErrorDialog;
+import static consulo.util.collection.ContainerUtil.getFirstItem;
 import static org.jetbrains.idea.svn.SvnBundle.message;
 import static org.jetbrains.idea.svn.WorkingCopyFormat.UNKNOWN;
 
+@ExtensionImpl
 public class SvnCheckoutProvider implements CheckoutProvider {
 
   public void doCheckout(@Nonnull final Project project, Listener listener) {
@@ -78,9 +80,14 @@ public class SvnCheckoutProvider implements CheckoutProvider {
     dialog.show();
   }
 
-  public static void doCheckout(@Nonnull Project project, @Nonnull File target, final String url, final SVNRevision revision,
-                                final Depth depth, final boolean ignoreExternals, @Nullable final Listener listener) {
-    if (! target.exists()) {
+  public static void doCheckout(@Nonnull Project project,
+                                @Nonnull File target,
+                                final String url,
+                                final SVNRevision revision,
+                                final Depth depth,
+                                final boolean ignoreExternals,
+                                @Nullable final Listener listener) {
+    if (!target.exists()) {
       target.mkdirs();
     }
 
@@ -102,16 +109,21 @@ public class SvnCheckoutProvider implements CheckoutProvider {
   }
 
   public static void checkout(final Project project,
-                               final File target,
-                               final String url,
-                               final SVNRevision revision,
-                               final Depth depth,
-                               final boolean ignoreExternals,
-                               final Listener listener, final WorkingCopyFormat selectedFormat) {
+                              final File target,
+                              final String url,
+                              final SVNRevision revision,
+                              final Depth depth,
+                              final boolean ignoreExternals,
+                              final Listener listener, final WorkingCopyFormat selectedFormat) {
     final Ref<Boolean> checkoutSuccessful = new Ref<>();
     final Exception[] exception = new Exception[1];
     final Task.Backgroundable checkoutBackgroundTask = new Task.Backgroundable(project,
-                     message("message.title.check.out"), true, VcsConfiguration.getInstance(project).getCheckoutOption()) {
+                                                                               message(
+                                                                                 "message.title.check.out"),
+                                                                               true,
+                                                                               VcsConfiguration.getInstance(
+                                                                                 project)
+                                                                                               .getCheckoutOption()) {
       public void run(@Nonnull final ProgressIndicator indicator) {
         final WorkingCopyFormat format = selectedFormat == null ? UNKNOWN : selectedFormat;
 
@@ -122,7 +134,14 @@ public class SvnCheckoutProvider implements CheckoutProvider {
         ProgressManager.progress(message("progress.text.checking.out", target.getAbsolutePath()));
         try {
           getFactory(vcs, format).createCheckoutClient()
-            .checkout(SvnTarget.fromURL(SVNURL.parseURIEncoded(url)), target, revision, depth, ignoreExternals, true, format, handler);
+                                 .checkout(SvnTarget.fromURL(SVNURL.parseURIEncoded(url)),
+                                           target,
+                                           revision,
+                                           depth,
+                                           ignoreExternals,
+                                           true,
+                                           format,
+                                           handler);
           ProgressManager.checkCanceled();
           checkoutSuccessful.set(Boolean.TRUE);
         }
@@ -169,8 +188,9 @@ public class SvnCheckoutProvider implements CheckoutProvider {
 
   private static void notifyRootManagerIfUnderProject(final Project project, final File directory) {
     if (project.isDefault()) return;
-    final ProjectLevelVcsManagerEx plVcsManager = ProjectLevelVcsManagerEx.getInstanceEx(project);
-    final SvnVcs vcs = (SvnVcs) plVcsManager.findVcsByName(SvnVcs.VCS_NAME);
+    final ProjectLevelVcsManagerEx plVcsManager =
+      ProjectLevelVcsManagerEx.getInstanceEx(project);
+    final SvnVcs vcs = (SvnVcs)plVcsManager.findVcsByName(SvnVcs.VCS_NAME);
 
     final VirtualFile[] files = vcs.getSvnFileUrlMapping().getNotFilteredRoots();
     for (VirtualFile file : files) {
@@ -237,7 +257,8 @@ public class SvnCheckoutProvider implements CheckoutProvider {
               final VirtualFile targetVf = SvnUtil.getVirtualFile(targetPath);
               if (targetVf == null) {
                 errorMessage.set("Can not find file: " + targetPath);
-              } else {
+              }
+              else {
                 final boolean isInContent = getApplication().runReadAction(new Computable<Boolean>() {
                   @Override
                   public Boolean compute() {
@@ -249,7 +270,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
                 ISVNCommitHandler commitHandler =
                   useFileFilter ? new MyFilter(LocalFileSystem.getInstance(), new SvnExcludingIgnoredOperation.Filter(project)) : null;
                 long revision = vcs.getFactoryFromSettings().createImportClient()
-                  .doImport(target, url, depth, message, includeIgnored, handler, commitHandler);
+                                   .doImport(target, url, depth, message, includeIgnored, handler, commitHandler);
 
                 if (revision > 0) {
                   StatusBar.Info.set(message("status.text.comitted.revision", revision), project);
@@ -263,8 +284,8 @@ public class SvnCheckoutProvider implements CheckoutProvider {
         }, message("message.title.import"), true, project);
       }
     });
-    
-    if (! errorMessage.isNull()) {
+
+    if (!errorMessage.isNull()) {
       showErrorDialog(message("message.text.cannot.import", errorMessage.get()), message("message.title.import"));
     }
   }
@@ -293,14 +314,14 @@ public class SvnCheckoutProvider implements CheckoutProvider {
     private static final Logger LOG = Logger.getInstance(CheckoutFormatFromUserProvider.class);
 
     @Nonnull
-	private final Project myProject;
+    private final Project myProject;
     @Nonnull
-	private final SvnVcs myVcs;
+    private final SvnVcs myVcs;
     @Nonnull
-	private final File myPath;
+    private final File myPath;
 
     @Nonnull
-	private final AtomicReference<String> error;
+    private final AtomicReference<String> error;
 
     public CheckoutFormatFromUserProvider(@Nonnull Project project, @Nonnull File path) {
       myProject = project;
@@ -316,7 +337,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
 
       final WorkingCopyFormat result = displayUpgradeDialog();
 
-      getApplication().getMessageBus().syncPublisher(SvnVcs.WC_CONVERTED).run();
+      getApplication().getMessageBus().syncPublisher(SvnVcs.WC_CONVERTED).wcConverted();
 
       return result;
     }
@@ -324,7 +345,7 @@ public class SvnCheckoutProvider implements CheckoutProvider {
     @Nonnull
     private WorkingCopyFormat displayUpgradeDialog() {
       final UpgradeFormatDialog dialog = new UpgradeFormatDialog(myProject, myPath, false);
-      final ModalityState dialogState = any();
+      final ModalityState dialogState = Application.get().getAnyModalityState();
 
       dialog.startLoading();
       getApplication().executeOnPooledThread(new Runnable() {

@@ -15,11 +15,10 @@
  */
 package org.jetbrains.idea.svn.properties;
 
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +34,7 @@ public class ExternalsDefinitionParser {
    */
   @Nonnull
   public static Map<String, String> parseExternalsProperty(@Nonnull String externals) throws SvnBindException {
-    HashMap<String, String> map = ContainerUtil.newHashMap();
+    HashMap<String, String> map = new HashMap<>();
 
     for (String external : StringUtil.splitByLines(externals, true)) {
       map.put(parseRelativeDirectory(external), external);

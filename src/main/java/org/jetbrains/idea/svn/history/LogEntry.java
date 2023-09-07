@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.collection.ContainerUtil;
 import jakarta.xml.bind.annotation.*;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNLogEntryPath;
@@ -23,6 +23,7 @@ import org.tmatesoft.svn.core.SVNLogEntryPath;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,13 +73,13 @@ public class LogEntry {
 
   @Nonnull
   private static Map<String, LogEntryPath> toImmutable(@Nonnull List<LogEntryPath.Builder> paths) {
-    ContainerUtil.ImmutableMapBuilder<String, LogEntryPath> builder = ContainerUtil.immutableMapBuilder();
+    Map<String, LogEntryPath> builder = new LinkedHashMap<>();
 
     for (LogEntryPath.Builder path : paths) {
       builder.put(path.getPath(), path.build());
     }
 
-    return builder.build();
+    return Map.copyOf(builder);
   }
 
   @Nonnull

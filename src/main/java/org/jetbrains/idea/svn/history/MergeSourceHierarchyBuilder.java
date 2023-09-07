@@ -15,17 +15,17 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.util.Pair;
-import com.intellij.util.Consumer;
-import com.intellij.util.ThrowableConsumer;
-import javax.annotation.Nonnull;
+import consulo.util.lang.Pair;
+import consulo.util.lang.function.ThrowableConsumer;
 import org.tmatesoft.svn.core.SVNException;
 
+import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
-* @author Konstantin Kolosovsky.
-*/
+ * @author Konstantin Kolosovsky.
+ */
 public class MergeSourceHierarchyBuilder implements ThrowableConsumer<Pair<LogEntry, Integer>, SVNException> {
 
   private LogHierarchyNode myCurrentHierarchy;
@@ -42,23 +42,25 @@ public class MergeSourceHierarchyBuilder implements ThrowableConsumer<Pair<LogEn
 
     if (mergeLevel < 0) {
       if (myCurrentHierarchy != null) {
-        myConsumer.consume(myCurrentHierarchy);
+        myConsumer.accept(myCurrentHierarchy);
       }
       if (logEntry.hasChildren()) {
         myCurrentHierarchy = new LogHierarchyNode(logEntry);
-      } else {
+      }
+      else {
         // just pass
         myCurrentHierarchy = null;
-        myConsumer.consume(new LogHierarchyNode(logEntry));
+        myConsumer.accept(new LogHierarchyNode(logEntry));
       }
-    } else {
+    }
+    else {
       addToLevel(myCurrentHierarchy, logEntry, mergeLevel);
     }
   }
 
   public void finish() {
     if (myCurrentHierarchy != null) {
-      myConsumer.consume(myCurrentHierarchy);
+      myConsumer.accept(myCurrentHierarchy);
     }
   }
 
@@ -66,9 +68,10 @@ public class MergeSourceHierarchyBuilder implements ThrowableConsumer<Pair<LogEn
     assert tree != null;
     if (left == 0) {
       tree.add(entry);
-    } else {
+    }
+    else {
       final List<LogHierarchyNode> children = tree.getChildren();
-      assert ! children.isEmpty();
+      assert !children.isEmpty();
       addToLevel(children.get(children.size() - 1), entry, left - 1);
     }
   }

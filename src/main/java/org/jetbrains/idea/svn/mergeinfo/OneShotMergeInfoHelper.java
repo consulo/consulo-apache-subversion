@@ -15,13 +15,11 @@
  */
 package org.jetbrains.idea.svn.mergeinfo;
 
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.PairProcessor;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.application.progress.ProgressManager;
+import consulo.application.util.SystemInfo;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.function.PairProcessor;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -37,14 +35,15 @@ import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 
-import static com.intellij.openapi.util.io.FileUtil.getRelativePath;
-import static com.intellij.openapi.util.io.FileUtil.toSystemIndependentName;
-import static com.intellij.openapi.util.text.StringUtil.toUpperCase;
-import static com.intellij.util.ObjectUtils.notNull;
-import static com.intellij.util.containers.ContainerUtil.*;
+import static consulo.util.collection.ContainerUtil.*;
+import static consulo.util.io.FileUtil.getRelativePath;
+import static consulo.util.io.FileUtil.toSystemIndependentName;
+import static consulo.util.lang.StringUtil.toUpperCase;
 import static java.util.Collections.reverseOrder;
 import static org.jetbrains.idea.svn.SvnUtil.ensureStartSlash;
 import static org.jetbrains.idea.svn.mergeinfo.SvnMergeInfoCache.MergeCheckResult;
@@ -64,7 +63,7 @@ public class OneShotMergeInfoHelper implements MergeChecker {
 
   public OneShotMergeInfoHelper(@Nonnull MergeContext mergeContext) {
     myMergeContext = mergeContext;
-    myPartiallyMerged = newHashMap();
+    myPartiallyMerged = new HashMap<>();
     myMergeInfoLock = new Object();
     myMergeInfoMap = new TreeMap<>(reverseOrder());
   }
@@ -85,7 +84,7 @@ public class OneShotMergeInfoHelper implements MergeChecker {
 
   @Nonnull
   public MergeCheckResult checkList(@Nonnull SvnChangeList changeList) {
-    Set<String> notMergedPaths = newHashSet();
+    Set<String> notMergedPaths = new HashSet<>();
     boolean hasMergedPaths = false;
 
     for (String path : changeList.getAffectedPaths()) {
@@ -144,7 +143,8 @@ public class OneShotMergeInfoHelper implements MergeChecker {
     return ".".equals(parentUrl) || isAncestor(ensureStartSlash(parentUrl), ensureStartSlash(childUrl));
   }
 
-  private static class InfoProcessor implements PairProcessor<String, Map<String, SVNMergeRangeList>> {
+  private static class InfoProcessor implements PairProcessor<String, Map<String, SVNMergeRangeList>>
+  {
 
     @Nonnull
 	private final String myRepositoryRelativeSourcePath;
@@ -210,7 +210,7 @@ public class OneShotMergeInfoHelper implements MergeChecker {
       @Nonnull
       private Map<String, SVNMergeRangeList> parseMergeInfo(@Nonnull PropertyData property) throws SVNException {
         try {
-          return BranchInfo.parseMergeInfo(notNull(property.getValue()));
+          return BranchInfo.parseMergeInfo(ObjectUtil.notNull(property.getValue()));
         }
         catch (SvnBindException e) {
           throw new SVNException(SVNErrorMessage.create(SVNErrorCode.MERGE_INFO_PARSE_ERROR, e), e);
@@ -221,7 +221,7 @@ public class OneShotMergeInfoHelper implements MergeChecker {
 
   @Nonnull
   private String getWorkingCopyRelativePath(@Nonnull File file) {
-    return toSystemIndependentName(notNull(getRelativePath(myMergeContext.getWcInfo().getRootInfo().getIoFile(), file)));
+    return toSystemIndependentName(ObjectUtil.notNull(getRelativePath(myMergeContext.getWcInfo().getRootInfo().getIoFile(), file)));
   }
 
   @Nonnull

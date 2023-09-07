@@ -1,8 +1,9 @@
 package org.jetbrains.idea.svn.checkin;
 
-import com.intellij.openapi.vcs.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -27,7 +28,8 @@ public class CmdImportClient extends BaseSvnClient implements ImportClient {
                        @Nonnull String message,
                        boolean noIgnore,
                        @Nullable CommitEventHandler handler,
-                       @Nullable ISVNCommitHandler commitHandler) throws VcsException {
+                       @Nullable ISVNCommitHandler commitHandler) throws VcsException
+  {
     // TODO: ISVNFileFilter from ISVNCommitHandler is not currently implemented
 
     List<String> parameters = new ArrayList<>();

@@ -15,36 +15,33 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.ide.DataManager;
-import com.intellij.notification.*;
-import com.intellij.openapi.actionSystem.DataProvider;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.vcs.ObjectsConvertor;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.IdeFocusManager;
-import com.intellij.ui.ColorUtil;
-import com.intellij.ui.DottedBorder;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.components.labels.LinkLabel;
-import com.intellij.ui.components.labels.LinkListener;
-import com.intellij.util.Consumer;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.Convertor;
-import com.intellij.util.messages.MessageBusConnection;
-import com.intellij.util.ui.UIUtil;
+import consulo.application.Application;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.application.ui.wm.ApplicationIdeFocusManager;
+import consulo.component.messagebus.MessageBusConnection;
+import consulo.dataContext.DataManager;
+import consulo.dataContext.DataProvider;
+import consulo.language.editor.PlatformDataKeys;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.notification.Notification;
+import consulo.project.ui.notification.NotificationGroup;
+import consulo.project.ui.notification.NotificationType;
+import consulo.project.ui.notification.NotificationsManager;
+import consulo.project.ui.notification.event.NotificationListener;
+import consulo.ui.ex.JBColor;
+import consulo.ui.ex.awt.*;
+import consulo.ui.ex.awt.util.ColorUtil;
+import consulo.util.collection.ContainerUtil;
 import consulo.util.collection.HashingStrategy;
 import consulo.util.dataholder.Key;
+import consulo.util.lang.Comparing;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.util.ObjectsConvertor;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.actions.CleanupWorker;
 import org.jetbrains.idea.svn.api.ClientFactory;
@@ -74,14 +71,16 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 import java.util.*;
+import java.util.function.Consumer;
 
-import static com.intellij.notification.NotificationDisplayType.STICKY_BALLOON;
+import static consulo.project.ui.notification.NotificationDisplayType.STICKY_BALLOON;
 
 public class CopiesPanel {
 
   private static final Logger LOG = Logger.getInstance(CopiesPanel.class);
 
-  private static final NotificationGroup NOTIFICATION_GROUP = new NotificationGroup("Svn Roots Detection Errors", STICKY_BALLOON, true);
+  public static final NotificationGroup NOTIFICATION_GROUP =
+    new NotificationGroup("Svn Roots Detection Errors", STICKY_BALLOON, true);
 
   private final Project myProject;
   private MessageBusConnection myConnection;
@@ -108,7 +107,7 @@ public class CopiesPanel {
     final Runnable focus = new Runnable() {
       @Override
       public void run() {
-        IdeFocusManager.getInstance(myProject).requestFocus(myRefreshLabel, true);
+        ApplicationIdeFocusManager.getInstance().getInstanceForProject(myProject).requestFocus(myRefreshLabel, true);
       }
     };
     final Runnable refreshView = new Runnable() {
@@ -122,12 +121,9 @@ public class CopiesPanel {
           public void run() {
             if (myCurrentInfoList != null) {
               final List<OverrideEqualsWrapper<WCInfo>> newList =
-                ObjectsConvertor.convert(infoList, new Convertor<WCInfo, OverrideEqualsWrapper<WCInfo>>() {
-                  @Override
-                  public OverrideEqualsWrapper<WCInfo> convert(WCInfo o) {
-                    return new OverrideEqualsWrapper<>(InfoEqualityPolicy.getInstance(), o);
-                  }
-                }, ObjectsConvertor.NOT_NULL);
+                ObjectsConvertor.convert(infoList,
+                                         o -> new OverrideEqualsWrapper<>(InfoEqualityPolicy.getInstance(), o),
+                                         ObjectsConvertor.NOT_NULL);
 
               if (Comparing.haveEqualElements(newList, myCurrentInfoList)) {
                 myRefreshLabel.setEnabled(true);
@@ -142,12 +138,12 @@ public class CopiesPanel {
             SwingUtilities.invokeLater(focus);
           }
         };
-        ApplicationManager.getApplication().invokeLater(runnable, ModalityState.NON_MODAL);
+        ApplicationManager.getApplication().invokeLater(runnable, Application.get().getNoneModalityState());
       }
     };
     final Consumer<Boolean> refreshOnPooled = new Consumer<Boolean>() {
       @Override
-      public void consume(Boolean somethingNew) {
+      public void accept(Boolean somethingNew) {
         if (Boolean.TRUE.equals(somethingNew)) {
           if (ApplicationManager.getApplication().isUnitTestMode()) {
             refreshView.run();
@@ -155,17 +151,18 @@ public class CopiesPanel {
           else {
             ApplicationManager.getApplication().executeOnPooledThread(refreshView);
           }
-        } else {
+        }
+        else {
           ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
               myRefreshLabel.setEnabled(true);
             }
-          }, ModalityState.NON_MODAL);
+          }, Application.get().getNoneModalityState());
         }
       }
     };
-    myConnection.subscribe(SvnVcs.ROOTS_RELOADED, refreshOnPooled);
+    myConnection.subscribe(SvnVcs.ROOTS_RELOADED, mappingChanged -> refreshOnPooled.accept(mappingChanged));
 
     final JPanel holderPanel = new JPanel(new BorderLayout());
     FontMetrics fm = holderPanel.getFontMetrics(holderPanel.getFont());
@@ -188,7 +185,7 @@ public class CopiesPanel {
     myHolder = pane;
     myHolder.setBorder(null);
     setFocusableForLinks(myRefreshLabel);
-    refreshOnPooled.consume(true);
+    refreshOnPooled.accept(true);
     initView();
   }
 
@@ -223,27 +220,32 @@ public class CopiesPanel {
         public void hyperlinkUpdate(HyperlinkEvent e) {
           if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
             if (CONFIGURE_BRANCHES.equals(e.getDescription())) {
-              if (! checkRoot(root, wcInfo.getPath(), " invoke Configure Branches")) return;
+              if (!checkRoot(root, wcInfo.getPath(), " invoke Configure Branches")) return;
               BranchConfigurationDialog.configureBranches(myProject, root);
-            } else if (FIX_DEPTH.equals(e.getDescription())) {
+            }
+            else if (FIX_DEPTH.equals(e.getDescription())) {
               final int result =
-                Messages.showOkCancelDialog(myVcs.getProject(), "You are going to checkout into '" + wcInfo.getPath() + "' with 'infinity' depth.\n" +
-                                                        "This will update your working copy to HEAD revision as well.",
-                                    "Set Working Copy Infinity Depth",
-                                    Messages.getWarningIcon());
+                Messages.showOkCancelDialog(myVcs.getProject(),
+                                            "You are going to checkout into '" + wcInfo.getPath() + "' with 'infinity' depth.\n" +
+                                              "This will update your working copy to HEAD revision as well.",
+                                            "Set Working Copy Infinity Depth",
+                                            Messages.getWarningIcon());
               if (result == Messages.OK) {
                 // update of view will be triggered by roots changed event
                 SvnCheckoutProvider.checkout(myVcs.getProject(), new File(wcInfo.getPath()), wcInfo.getRootUrl(), SVNRevision.HEAD,
                                              Depth.INFINITY, false, null, wcInfo.getFormat());
               }
-            } else if (CHANGE_FORMAT.equals(e.getDescription())) {
+            }
+            else if (CHANGE_FORMAT.equals(e.getDescription())) {
               changeFormat(wcInfo, upgradeFormats);
-            } else if (MERGE_FROM.equals(e.getDescription())) {
-              if (! checkRoot(root, wcInfo.getPath(), " invoke Merge From")) return;
+            }
+            else if (MERGE_FROM.equals(e.getDescription())) {
+              if (!checkRoot(root, wcInfo.getPath(), " invoke Merge From")) return;
               mergeFrom(wcInfo, root, editorPane);
-            } else if (CLEANUP.equals(e.getDescription())) {
-              if (! checkRoot(root, wcInfo.getPath(), " invoke Cleanup")) return;
-              new CleanupWorker(new VirtualFile[] {root}, myVcs.getProject(), "action.Subversion.cleanup.progress.title").execute();
+            }
+            else if (CLEANUP.equals(e.getDescription())) {
+              if (!checkRoot(root, wcInfo.getPath(), " invoke Cleanup")) return;
+              new CleanupWorker(new VirtualFile[]{root}, myVcs.getProject(), "action.Subversion.cleanup.progress.title").execute();
             }
           }
         }
@@ -268,7 +270,7 @@ public class CopiesPanel {
 
       gb.insets = topIndent;
       gb.fill = GridBagConstraints.HORIZONTAL;
-      ++ gb.gridy;
+      ++gb.gridy;
 
       final JPanel contForCopy = new JPanel(new BorderLayout());
       contForCopy.add(copyPanel, BorderLayout.WEST);
@@ -284,8 +286,12 @@ public class CopiesPanel {
 
   @SuppressWarnings("MethodMayBeStatic")
   private String formatWc(@Nonnull WCInfo info, @Nonnull Collection<WorkingCopyFormat> upgradeFormats) {
-    final StringBuilder sb = new StringBuilder().append("<html><head>").append(UIUtil.getCssFontDeclaration(UIUtil.getLabelFont()))
-      .append("</head><body><table bgColor=\"").append(ColorUtil.toHex(UIUtil.getPanelBackground())).append("\">");
+    final StringBuilder sb =
+      new StringBuilder().append("<html><head>")
+                         .append(UIUtil.getCssFontDeclaration(UIUtil.getLabelFont()))
+                         .append("</head><body><table bgColor=\"")
+                         .append(ColorUtil.toHex(UIUtil.getPanelBackground()))
+                         .append("\">");
 
     sb.append("<tr valign=\"top\"><td colspan=\"3\"><b>").append(info.getPath()).append("</b></td></tr>");
     if (info.hasError()) {
@@ -298,7 +304,8 @@ public class CopiesPanel {
     if (upgradeFormats.size() > 1) {
       sb.append("<tr valign=\"top\"><td>Format:</td><td>").append(info.getFormat().getName()).append("</td><td><a href=\"").
         append(CHANGE_FORMAT).append("\">Change</a></td></tr>");
-    } else {
+    }
+    else {
       sb.append("<tr valign=\"top\"><td>Format:</td><td colspan=\"2\">").append(info.getFormat().getName()).append("</td></tr>");
     }
 
@@ -306,7 +313,8 @@ public class CopiesPanel {
       // can fix
       sb.append("<tr valign=\"top\"><td>Depth:</td><td>").append(info.getStickyDepth().getName()).append("</td><td><a href=\"").
         append(FIX_DEPTH).append("\">Fix</a></td></tr>");
-    } else {
+    }
+    else {
       sb.append("<tr valign=\"top\"><td>Depth:</td><td colspan=\"2\">").append(info.getStickyDepth().getName()).append("</td></tr>");
     }
 
@@ -383,7 +391,7 @@ public class CopiesPanel {
 
   @SuppressWarnings("MethodMayBeStatic")
   private void setFocusableForLinks(final LinkLabel label) {
-    final Border border = new DottedBorder(new Insets(1,2,1,1), JBColor.BLACK);
+    final Border border = new DottedBorder(new Insets(1, 2, 1, 1), JBColor.BLACK);
     label.setFocusable(true);
     label.addFocusListener(new FocusAdapter() {
       @Override
@@ -443,7 +451,8 @@ public class CopiesPanel {
       if (notifications.length == 0) {
         new ErrorsFoundNotification(myProject).notify(myProject.isDefault() ? null : myProject);
       }
-    } else {
+    }
+    else {
       // expire notification
       for (ErrorsFoundNotification notification : notifications) {
         notification.expire();
@@ -485,7 +494,7 @@ public class CopiesPanel {
     public boolean equals(Object o) {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
-      final OverrideEqualsWrapper<T> that = (OverrideEqualsWrapper<T>) o;
+      final OverrideEqualsWrapper<T> that = (OverrideEqualsWrapper<T>)o;
 
       return myPolicy.equals(myT, that.getT());
     }
@@ -536,11 +545,11 @@ public class CopiesPanel {
       if (val1 == val2) return true;
       if (val1 == null || val2 == null || val1.getClass() != val2.getClass()) return false;
 
-      if (! Comparing.equal(val1.getFormat(), val2.getFormat())) return false;
-      if (! Comparing.equal(val1.getPath(), val2.getPath())) return false;
-      if (! Comparing.equal(val1.getStickyDepth(), val2.getStickyDepth())) return false;
-      if (! Comparing.equal(val1.getType(), val2.getType())) return false;
-      if (! Comparing.equal(val1.getUrl(), val2.getUrl())) return false;
+      if (!Comparing.equal(val1.getFormat(), val2.getFormat())) return false;
+      if (!Comparing.equal(val1.getPath(), val2.getPath())) return false;
+      if (!Comparing.equal(val1.getStickyDepth(), val2.getStickyDepth())) return false;
+      if (!Comparing.equal(val1.getType(), val2.getType())) return false;
+      if (!Comparing.equal(val1.getUrl(), val2.getUrl())) return false;
 
       return true;
     }
@@ -581,13 +590,14 @@ public class CopiesPanel {
     private static final String DESCRIPTION = SvnBundle.message("subversion.roots.detection.errors.found.description");
 
     private ErrorsFoundNotification(@Nonnull final Project project) {
-      super(NOTIFICATION_GROUP.getDisplayId(), TITLE, DESCRIPTION, NotificationType.ERROR, createListener(project));
+      super(NOTIFICATION_GROUP, TITLE, DESCRIPTION, NotificationType.ERROR, createListener(project));
     }
 
     private static NotificationListener.Adapter createListener(@Nonnull final Project project) {
       return new NotificationListener.Adapter() {
         @Override
-        protected void hyperlinkActivated(@Nonnull Notification notification, @Nonnull HyperlinkEvent event) {
+        protected void hyperlinkActivated(@Nonnull Notification notification,
+                                          @Nonnull HyperlinkEvent event) {
           if (FIX_ACTION.equals(event.getDescription())) {
             WorkingCopiesContent.show(project);
           }

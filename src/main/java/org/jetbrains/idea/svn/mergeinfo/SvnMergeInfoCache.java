@@ -15,18 +15,19 @@
  */
 package org.jetbrains.idea.svn.mergeinfo;
 
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.EmptyProgressIndicator;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.messages.Topic;
+import consulo.application.progress.EmptyProgressIndicator;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.ide.ServiceManager;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.WCInfoWithBranches;
 import org.jetbrains.idea.svn.history.CopyData;
@@ -36,8 +37,7 @@ import org.tmatesoft.svn.core.SVNURL;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
+import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
@@ -50,13 +50,13 @@ public class SvnMergeInfoCache {
   @Nonnull
   private final Map<String, MyCurrentUrlData> myCurrentUrlMapping;
 
-  public static Topic<SvnMergeInfoCacheListener> SVN_MERGE_INFO_CACHE =
-    new Topic<>("SVN_MERGE_INFO_CACHE", SvnMergeInfoCacheListener.class);
+  @Deprecated
+  public static Class<SvnMergeInfoCacheListener> SVN_MERGE_INFO_CACHE = SvnMergeInfoCacheListener.class;
 
   @Inject
   private SvnMergeInfoCache(@Nonnull Project project) {
     myProject = project;
-    myCurrentUrlMapping = ContainerUtil.newHashMap();
+    myCurrentUrlMapping = new HashMap<>();
   }
 
   public static SvnMergeInfoCache getInstance(@Nonnull Project project) {
@@ -88,7 +88,8 @@ public class SvnMergeInfoCache {
     if (rootMapping == null) {
       rootMapping = new MyCurrentUrlData();
       myCurrentUrlMapping.put(info.getRootUrl(), rootMapping);
-    } else {
+    }
+    else {
       mergeChecker = rootMapping.getBranchInfo(branchPath);
     }
     if (mergeChecker == null) {
@@ -159,7 +160,7 @@ public class SvnMergeInfoCache {
 
         private void logAndShow(@Nonnull Throwable error) {
           LOG.info(error);
-          VcsBalloonProblemNotifier.showOverChangesView(vcs.getProject(), error.getMessage(), MessageType.ERROR);
+          VcsBalloonProblemNotifier.showOverChangesView(vcs.getProject(), error.getMessage(), NotificationType.ERROR);
         }
       };
       ProgressManager.getInstance().runProcessWithProgressAsynchronously(task, new EmptyProgressIndicator());
@@ -178,7 +179,7 @@ public class SvnMergeInfoCache {
 
     // key - working copy local path
     @Nonnull
-	private final Map<String, BranchInfo> myBranchInfo;
+    private final Map<String, BranchInfo> myBranchInfo;
 
     private MyCurrentUrlData() {
       myBranchInfo = ContainerUtil.createSoftMap();
@@ -193,7 +194,4 @@ public class SvnMergeInfoCache {
     }
   }
 
-  public interface SvnMergeInfoCacheListener {
-    void copyRevisionUpdated();
-  }
 }

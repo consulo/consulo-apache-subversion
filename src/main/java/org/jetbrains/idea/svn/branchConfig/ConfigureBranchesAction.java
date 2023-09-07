@@ -15,22 +15,23 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.openapi.vcs.changes.ChangeList;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import icons.SvnIcons;
+import consulo.application.dumb.DumbAware;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.Presentation;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.change.ChangeList;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
+import org.jetbrains.idea.svn.SvnIcons;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 
-public class ConfigureBranchesAction extends AnAction implements DumbAware {
+public class ConfigureBranchesAction extends AnAction implements DumbAware
+{
   public void update(final AnActionEvent e) {
-    final Project project = e.getProject();
+    final Project project = e.getData(Project.KEY);
     final Presentation presentation = e.getPresentation();
 
     if (project == null) {
@@ -52,7 +53,7 @@ public class ConfigureBranchesAction extends AnAction implements DumbAware {
   }
 
   public void actionPerformed(final AnActionEvent e) {
-    final Project project = e.getProject();
+    final Project project = e.getData(Project.KEY);
     final ChangeList[] cls = e.getData(VcsDataKeys.CHANGE_LISTS);
     if ((cls == null) || (cls.length == 0) ||
         (! SvnVcs.getInstance(project).getName().equals(((CommittedChangeList) cls[0]).getVcs().getName())) ||

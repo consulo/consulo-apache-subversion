@@ -15,31 +15,32 @@
  */
 package org.jetbrains.idea.svn;
 
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.Task;
+import consulo.application.util.BackgroundTaskQueue;
+import consulo.ide.impl.idea.openapi.util.ZipperUpdater;
+import consulo.project.Project;
+import consulo.ui.ex.awt.util.Alarm;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.VcsListener;
+import consulo.virtualFileSystem.VirtualFile;
+import org.jetbrains.idea.svn.info.Info;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import org.jetbrains.idea.svn.info.Info;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.internal.util.SVNURLUtil;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.BackgroundTaskQueue;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.ZipperUpdater;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsListener;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Alarm;
-
 // 1. listen to roots changes
 // 2. - possibly - to deletion/checkouts??? what if WC roots can be
-public class RootsToWorkingCopies implements VcsListener {
+public class RootsToWorkingCopies implements VcsListener
+{
   private final Object myLock;
   private final Map<VirtualFile, WorkingCopy> myRootMapping;
   private final Set<VirtualFile> myUnversioned;
@@ -51,7 +52,7 @@ public class RootsToWorkingCopies implements VcsListener {
 
   public RootsToWorkingCopies(final SvnVcs vcs) {
     myProject = vcs.getProject();
-    myQueue = new BackgroundTaskQueue(myProject, "SVN VCS roots authorization checker");
+    myQueue = new BackgroundTaskQueue(vcs.getProject().getApplication(), myProject, "SVN VCS roots authorization checker");
     myLock = new Object();
     myRootMapping = new HashMap<>();
     myUnversioned = new HashSet<>();

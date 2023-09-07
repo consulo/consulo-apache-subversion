@@ -15,21 +15,16 @@
  */
 package org.jetbrains.idea.svn.branchConfig;
 
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.*;
-import com.intellij.openapi.ui.popup.util.BaseListPopupStep;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.components.JBList;
-import com.intellij.util.NullableFunction;
-import com.intellij.util.continuation.ModalityIgnorantBackgroundableTask;
-import com.intellij.util.text.DateFormatUtil;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.util.DateFormatUtil;
+import consulo.ide.impl.idea.util.continuation.ModalityIgnorantBackgroundableTask;
+import consulo.project.Project;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.ui.ex.popup.*;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnFileUrlMapping;
@@ -37,6 +32,8 @@ import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -60,7 +57,11 @@ public class SelectBranchPopup {
     show(project, file, callback, title, null);
   }
 
-  public static void show(Project project, VirtualFile file, BranchSelectedCallback callback, final String title, final Component component) {
+  public static void show(Project project,
+                          VirtualFile file,
+                          BranchSelectedCallback callback,
+                          final String title,
+                          final Component component) {
     final SvnFileUrlMapping urlMapping = SvnVcs.getInstance(project).getSvnFileUrlMapping();
     final SVNURL svnurl = urlMapping.getUrlForFile(new File(file.getPath()));
     if (svnurl == null) {
@@ -83,7 +84,7 @@ public class SelectBranchPopup {
                                        final Component component) {
     final SvnBranchConfigurationNew configuration = SvnBranchConfigurationManager.getInstance(project).get(vcsRoot);
     final List<String> items = new ArrayList<>();
-    if (! StringUtil.isEmptyOrSpaces(configuration.getTrunkUrl())) {
+    if (!StringUtil.isEmptyOrSpaces(configuration.getTrunkUrl())) {
       items.add(getTrunkString(configuration));
     }
     for (String url : configuration.getBranchUrls()) {
@@ -95,7 +96,7 @@ public class SelectBranchPopup {
     final ListPopup listPopup = JBPopupFactory.getInstance().createListPopup(step);
     step.showPopupAt(listPopup);
   }
-  
+
   private static String getTrunkString(final SvnBranchConfigurationNew configuration) {
     return configuration.getTrunkUrl() + " (trunk)";
   }
@@ -144,7 +145,7 @@ public class SelectBranchPopup {
     @Override
     public ListSeparator getSeparatorAbove(final String value) {
       return (CONFIGURE_MESSAGE.equals(value)) ||
-             (REFRESH_MESSAGE.equals(value)) ? new ListSeparator("") : null;
+        (REFRESH_MESSAGE.equals(value)) ? new ListSeparator("") : null;
     }
 
     @Nonnull
@@ -154,10 +155,10 @@ public class SelectBranchPopup {
       if (pos < 0) {
         return value;
       }
-      if (myTopLevel && ((myConfiguration.getTrunkUrl() == null) || (! value.startsWith(myConfiguration.getTrunkUrl())))) {
-        return value.substring(pos+1) + "...";
+      if (myTopLevel && ((myConfiguration.getTrunkUrl() == null) || (!value.startsWith(myConfiguration.getTrunkUrl())))) {
+        return value.substring(pos + 1) + "...";
       }
-      return value.substring(pos+1);
+      return value.substring(pos + 1);
     }
 
     @Override
@@ -215,7 +216,7 @@ public class SelectBranchPopup {
 
         @Override
         protected void runImpl(@Nonnull ProgressIndicator indicator) {
-          final NewRootBunch manager = SvnBranchConfigurationManager.getInstance(myProject).getSvnBranchConfigManager();
+          final NewRootBunch manager = SvnBranchConfigurationManager.getInstance((Project)myProject).getSvnBranchConfigManager();
 
           manager.reloadBranches(myVcsRoot, selectedBranchesHolder, InfoReliability.setByUser, false);
         }
@@ -232,49 +233,43 @@ public class SelectBranchPopup {
       System.arraycopy(branches.toArray(), 0, items, 0, branches.size());
       items[items.length - 1] = REFRESH_MESSAGE;
 
-      final JList branchList = new JBList(items);
-      branchList.setCellRenderer(new BranchRenderer());
-      final JBPopup popup = JBPopupFactory.getInstance().createListPopupBuilder(branchList)
-        .setTitle(SVNPathUtil.tail(selectedValue))
-        .setResizable(true)
-        //.setDimensionServiceKey("Svn.CompareWithBranchPopup")
-        .setItemChoosenCallback(new Runnable() {
-          public void run() {
-            if (REFRESH_MESSAGE.equals(branchList.getSelectedValue())) {
-              SwingUtilities.invokeLater(new Runnable() {
+      IPopupChooserBuilder<Object> builder = JBPopupFactory.getInstance().createPopupChooserBuilder(List.of(items));
+      builder.setTitle(SVNPathUtil.tail(selectedValue));
+      builder.setResizable(true);
+      builder.setRenderer(new BranchRenderer());
+      //.setDimensionServiceKey("Svn.CompareWithBranchPopup")
+      builder.setItemChosenCallback(i -> {
+        if (REFRESH_MESSAGE.equals(i)) {
+          SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              loadBranches(selectedValue, new Runnable() {
                 @Override
                 public void run() {
-                  loadBranches(selectedValue, new Runnable() {
-                    @Override
-                    public void run() {
-                      showBranchPopup(selectedValue);
-                    }
-                  });
+                  showBranchPopup(selectedValue);
                 }
               });
-              return;
             }
-            SvnBranchItem item = (SvnBranchItem)branchList.getSelectedValue();
-            if (item != null) {
-              myCallback.branchSelected(myProject, myConfiguration, item.getUrl(), item.getRevision());
-            }
-          }
-        })
-        .setFilteringEnabled(new NullableFunction<Object, String>() {
-          @Nullable
-          @Override
-          public String fun(Object item) {
-            return item instanceof SvnBranchItem ? getBranchName((SvnBranchItem)item) : null;
-          }
-        })
-        .createPopup();
+          });
+          return;
+        }
+        SvnBranchItem item = (SvnBranchItem)i;
+        if (item != null) {
+          myCallback.branchSelected(myProject, myConfiguration, item.getUrl(), item.getRevision());
+        }
+      });
+      builder.setNamerForFiltering(item -> item != null ? getBranchName((SvnBranchItem)item) : null);
+
+      JBPopup popup = builder.createPopup();
+
       showPopupAt(popup);
     }
 
     public void showPopupAt(final JBPopup listPopup) {
       if (myComponent == null) {
         listPopup.showCenteredInCurrentWindow(myProject);
-      } else {
+      }
+      else {
         listPopup.showInCenterOf(myComponent);
       }
     }
@@ -310,10 +305,11 @@ public class SelectBranchPopup {
         setForeground(foregroundColor);
       }
       if (value instanceof String) {
-        myUrlLabel.setText((String) value);
+        myUrlLabel.setText((String)value);
         myDateLabel.setText("");
-      } else {
-        SvnBranchItem item = (SvnBranchItem) value;
+      }
+      else {
+        SvnBranchItem item = (SvnBranchItem)value;
         myUrlLabel.setText(getBranchName(item));
         final long creationMillis = item.getCreationDateMillis();
         myDateLabel.setText((creationMillis > 0) ? DateFormatUtil.formatDate(creationMillis) : "");

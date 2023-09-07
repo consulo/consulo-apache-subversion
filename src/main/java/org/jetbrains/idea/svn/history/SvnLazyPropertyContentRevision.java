@@ -15,15 +15,15 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressManager;
 import org.jetbrains.idea.svn.SvnBaseContentRevision;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -57,11 +57,13 @@ public class SvnLazyPropertyContentRevision extends SvnBaseContentRevision imple
   }
 
   @Override
-  public String getContent() throws VcsException {
+  public String getContent() throws VcsException
+  {
     return toSortedStringPresentation(getProperties());
   }
 
-  private List<PropertyData> loadContent() throws VcsException {
+  private List<PropertyData> loadContent() throws VcsException
+  {
     final Ref<List<PropertyData>> ref = new Ref<>();
     final Ref<VcsException> exceptionRef = new Ref<>();
     final Runnable runnable = () -> {

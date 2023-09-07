@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
-import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
 import consulo.ui.image.Image;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.virtualFileSystem.status.FileStatus;
+import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
 
 public class ConflictedSvnChange extends Change {
   private final ConflictState myConflictState;
@@ -31,14 +31,18 @@ public class ConflictedSvnChange extends Change {
   private final FilePath myTreeConflictMarkHolder;
   private boolean myIsPhantom;
 
-  public ConflictedSvnChange(ContentRevision beforeRevision, ContentRevision afterRevision, final ConflictState conflictState,
+  public ConflictedSvnChange(ContentRevision beforeRevision,
+                             ContentRevision afterRevision,
+                             final ConflictState conflictState,
                              final FilePath treeConflictMarkHolder) {
     super(beforeRevision, afterRevision);
     myConflictState = conflictState;
     myTreeConflictMarkHolder = treeConflictMarkHolder;
   }
 
-  public ConflictedSvnChange(ContentRevision beforeRevision, ContentRevision afterRevision, FileStatus fileStatus,
+  public ConflictedSvnChange(ContentRevision beforeRevision,
+                             ContentRevision afterRevision,
+                             FileStatus fileStatus,
                              final ConflictState conflictState,
                              final FilePath treeConflictMarkHolder) {
     super(beforeRevision, afterRevision, fileStatus);

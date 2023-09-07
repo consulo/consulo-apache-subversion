@@ -15,13 +15,10 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.versionBrowser.ChangeBrowserSettings;
-import com.intellij.util.Consumer;
-import com.intellij.util.PairFunction;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.lang.Pair;
+import consulo.util.lang.function.PairFunction;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.versionBrowser.ChangeBrowserSettings;
 import org.jetbrains.idea.svn.history.LogHierarchyNode;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.history.SvnCommittedChangesProvider;
@@ -29,11 +26,14 @@ import org.jetbrains.idea.svn.history.SvnRepositoryLocation;
 import org.jetbrains.idea.svn.mergeinfo.MergeChecker;
 import org.jetbrains.idea.svn.mergeinfo.OneShotMergeInfoHelper;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Consumer;
 
-import static com.intellij.openapi.progress.ProgressManager.progress;
-import static com.intellij.openapi.progress.ProgressManager.progress2;
-import static com.intellij.util.containers.ContainerUtil.newArrayList;
+import static consulo.application.progress.ProgressManager.progress;
+import static consulo.application.progress.ProgressManager.progress2;
+import static consulo.util.collection.ContainerUtil.newArrayList;
 import static java.lang.Math.min;
 import static org.jetbrains.idea.svn.SvnBundle.message;
 import static org.jetbrains.idea.svn.mergeinfo.SvnMergeInfoCache.MergeCheckResult;
@@ -80,7 +80,8 @@ public class MergeCalculatorTask extends BaseMergeTask {
   }
 
   @Override
-  public void run() throws VcsException {
+  public void run() throws VcsException
+  {
     progress("Collecting merge information");
     myMergeChecker.prepare();
 
@@ -96,7 +97,7 @@ public class MergeCalculatorTask extends BaseMergeTask {
     }
 
     if (!myChangeLists.isEmpty()) {
-      myCallback.consume(this);
+      myCallback.accept(this);
     }
     else {
       myMergeProcess.end("Everything is up-to-date", false);

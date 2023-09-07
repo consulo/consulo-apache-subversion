@@ -15,16 +15,17 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.actions.VcsQuickListContentProvider;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.dataContext.DataContext;
+import consulo.project.Project;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.AnAction;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.action.VcsQuickListContentProvider;
 import org.jetbrains.idea.svn.SvnVcs;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.List;
 /**
  * @author Roman.Chernyatchik
  */
+@ExtensionImpl
 public class SvnQuickListContentProvider implements VcsQuickListContentProvider {
   public List<AnAction> getVcsActions(@Nullable Project project, @Nullable AbstractVcs activeVcs,
                                       @Nullable DataContext dataContext) {

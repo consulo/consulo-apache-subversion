@@ -17,11 +17,11 @@
 
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.dataContext.DataContext;
+import consulo.project.Project;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.versionControlSystem.AbstractVcs;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnUtil;

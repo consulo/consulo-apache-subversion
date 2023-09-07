@@ -15,18 +15,17 @@
  */
 package org.jetbrains.idea.svn.config;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonShortcuts;
-import com.intellij.openapi.actionSystem.CustomShortcutSet;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.ui.MasterDetailsComponent;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.Ref;
-import com.intellij.util.IconUtil;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.ui.tree.TreeUtil;
+import consulo.application.AllIcons;
+import consulo.configurable.ConfigurationException;
+import consulo.ide.impl.idea.util.IconUtil;
+import consulo.ide.setting.ui.MasterDetailsComponent;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.CommonShortcuts;
+import consulo.ui.ex.action.CustomShortcutSet;
+import consulo.ui.ex.awt.tree.TreeUtil;
+import consulo.util.lang.function.Condition;
+import consulo.util.lang.ref.Ref;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnServerFileManager;
 
@@ -45,7 +44,9 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
   private final TestConnectionPerformer myTestConnectionPerformer;
   private ConfigureProxiesOptionsPanel myDefaultGroupPanel;
 
-  public SvnConfigureProxiesComponent(final SvnServerFileManager manager, final GroupsValidator validator, final TestConnectionPerformer testConnectionPerformer) {
+  public SvnConfigureProxiesComponent(final SvnServerFileManager manager,
+                                      final GroupsValidator validator,
+                                      final TestConnectionPerformer testConnectionPerformer) {
     myTestConnectionPerformer = testConnectionPerformer;
     myValidator = validator;
     myTreeUpdaterValidator = new CompositeRunnable(TREE_UPDATER, myValidator);
@@ -85,11 +86,12 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
   private void addGroup(final ProxyGroup template) {
     final ProxyGroup group;
     if (template == null) {
-      group = new ProxyGroup(getNewName(), "", ContainerUtil.<String, String>newHashMap());
-    } else {
+      group = new ProxyGroup(getNewName(), "", new HashMap<>());
+    }
+    else {
       group = new ProxyGroup(getNewName(), template.getPatterns(), template.getProperties());
     }
-    
+
     addNode(createNodeForObject(group), myRoot);
     selectNodeInTree(group);
   }
@@ -99,9 +101,9 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
     final List<String> result = new LinkedList<>(all);
 
     for (int i = 0; i < myRoot.getChildCount(); i++) {
-      final MyNode node = (MyNode) myRoot.getChildAt(i);
-      final GroupConfigurable groupConfigurable = (GroupConfigurable) node.getConfigurable();
-      if (! groupConfigurable.getEditableObject().isDefault()) {
+      final MyNode node = (MyNode)myRoot.getChildAt(i);
+      final GroupConfigurable groupConfigurable = (GroupConfigurable)node.getConfigurable();
+      if (!groupConfigurable.getEditableObject().isDefault()) {
         result.removeAll(groupConfigurable.getRepositories());
       }
     }
@@ -113,10 +115,10 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
     final Ref<String> errorMessageRef = new Ref<>();
     final Set<String> checkSet = new HashSet<>();
     final AmbiguousPatternsFinder ambiguousPatternsFinder = new AmbiguousPatternsFinder();
-    
+
     for (int i = 0; i < myRoot.getChildCount(); i++) {
-      final MyNode node = (MyNode) myRoot.getChildAt(i);
-      final GroupConfigurable groupConfigurable = (GroupConfigurable) node.getConfigurable();
+      final MyNode node = (MyNode)myRoot.getChildAt(i);
+      final GroupConfigurable groupConfigurable = (GroupConfigurable)node.getConfigurable();
       final String groupName = groupConfigurable.getEditableObject().getName();
 
       if (checkSet.contains(groupName)) {
@@ -127,22 +129,22 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
     }
 
     for (int i = 0; i < myRoot.getChildCount(); i++) {
-      final MyNode node = (MyNode) myRoot.getChildAt(i);
-      final GroupConfigurable groupConfigurable = (GroupConfigurable) node.getConfigurable();
+      final MyNode node = (MyNode)myRoot.getChildAt(i);
+      final GroupConfigurable groupConfigurable = (GroupConfigurable)node.getConfigurable();
       groupConfigurable.applyImpl();
-      if(! groupConfigurable.validate(errorMessageRef)) {
+      if (!groupConfigurable.validate(errorMessageRef)) {
         listener.onError(errorMessageRef.get(), myComponent, false);
         return false;
       }
 
-      if (! groupConfigurable.getEditableObject().isDefault()) {
+      if (!groupConfigurable.getEditableObject().isDefault()) {
         final String groupName = groupConfigurable.getEditableObject().getName();
         final List<String> urls = groupConfigurable.getRepositories();
         ambiguousPatternsFinder.acceptUrls(groupName, urls);
       }
     }
 
-    if(! ambiguousPatternsFinder.isValid(errorMessageRef)) {
+    if (!ambiguousPatternsFinder.isValid(errorMessageRef)) {
       listener.onError(errorMessageRef.get(), myComponent, false);
       return false;
     }
@@ -152,22 +154,23 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
   protected ArrayList<AnAction> createActions(final boolean fromPopup) {
     ArrayList<AnAction> result = new ArrayList<>();
     result.add(new AnAction("Add", "Add", IconUtil.getAddIcon()) {
-        {
-            registerCustomShortcutSet(CommonShortcuts.INSERT, myTree);
-        }
-        public void actionPerformed(AnActionEvent event) {
-          addGroup(null);
-        }
+      {
+        registerCustomShortcutSet(CommonShortcuts.INSERT, myTree);
+      }
+
+      public void actionPerformed(AnActionEvent event) {
+        addGroup(null);
+      }
 
 
     });
-    result.add(new MyDeleteAction(forAll(new Condition<Object>(){
+    result.add(new MyDeleteAction(forAll(new Condition<Object>() {
       public boolean value(final Object o) {
         if (o instanceof MyNode) {
-          final MyNode node = (MyNode) o;
+          final MyNode node = (MyNode)o;
           if (node.getConfigurable() instanceof GroupConfigurable) {
-            final ProxyGroup group = ((GroupConfigurable) node.getConfigurable()).getEditableObject();
-            return ! group.isDefault();
+            final ProxyGroup group = ((GroupConfigurable)node.getConfigurable()).getEditableObject();
+            return !group.isDefault();
           }
         }
         return false;
@@ -176,7 +179,7 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
       public void actionPerformed(final AnActionEvent e) {
         final TreePath path = myTree.getSelectionPath();
         final MyNode node = (MyNode)path.getLastPathComponent();
-        final MyNode parentNode = (MyNode) node.getParent();
+        final MyNode parentNode = (MyNode)node.getParent();
         int idx = parentNode.getIndex(node);
 
         super.actionPerformed(e);
@@ -190,26 +193,28 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
     });
 
     result.add(new AnAction("Copy", "Copy", AllIcons.Actions.Copy) {
-        {
-            registerCustomShortcutSet(new CustomShortcutSet(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_MASK)), myTree);
-        }
-        public void actionPerformed(AnActionEvent event) {
-          // apply - for update of editable object
-          try {
-            getSelectedConfigurable().apply();
-          } catch (ConfigurationException e) {
-            // suppress & wait for OK
-          }
-          final ProxyGroup selectedGroup = (ProxyGroup) getSelectedObject();
-          if (selectedGroup != null) {
-            addGroup(selectedGroup);
-          }
-        }
+      {
+        registerCustomShortcutSet(new CustomShortcutSet(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_MASK)), myTree);
+      }
 
-        public void update(AnActionEvent event) {
-            super.update(event);
-            event.getPresentation().setEnabled(getSelectedObject() != null);
+      public void actionPerformed(AnActionEvent event) {
+        // apply - for update of editable object
+        try {
+          getSelectedConfigurable().apply();
         }
+        catch (ConfigurationException e) {
+          // suppress & wait for OK
+        }
+        final ProxyGroup selectedGroup = (ProxyGroup)getSelectedObject();
+        if (selectedGroup != null) {
+          addGroup(selectedGroup);
+        }
+      }
+
+      public void update(AnActionEvent event) {
+        super.update(event);
+        event.getPresentation().setEnabled(getSelectedObject() != null);
+      }
     });
     return result;
   }
@@ -218,8 +223,8 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
     final List<ProxyGroup> groups = new ArrayList<>(myRoot.getChildCount());
 
     for (int i = 0; i < myRoot.getChildCount(); i++) {
-      final MyNode node = (MyNode) myRoot.getChildAt(i);
-      final GroupConfigurable groupConfigurable = (GroupConfigurable) node.getConfigurable();
+      final MyNode node = (MyNode)myRoot.getChildAt(i);
+      final GroupConfigurable groupConfigurable = (GroupConfigurable)node.getConfigurable();
       groupConfigurable.apply();
       groups.add(groupConfigurable.getEditableObject());
     }
@@ -230,10 +235,10 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
   public void reset() {
     super.reset();
     myManager.updateFromFile();
-    
+
     for (int i = 0; i < myRoot.getChildCount(); i++) {
-      final MyNode node = (MyNode) myRoot.getChildAt(i);
-      final GroupConfigurable groupConfigurable = (GroupConfigurable) node.getConfigurable();
+      final MyNode node = (MyNode)myRoot.getChildAt(i);
+      final GroupConfigurable groupConfigurable = (GroupConfigurable)node.getConfigurable();
       groupConfigurable.reset();
     }
   }
@@ -248,7 +253,7 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
     // first added node must be global /default group. since url-fillers for other groups forwards their updates to global group
     assert myDefaultGroupPanel != null;
     panel.setPatternsListener((group.isDefault()) ? PatternsListener.Empty.instance :
-                              new RepositoryUrlFilter(panel, this, myDefaultGroupPanel));
+                                new RepositoryUrlFilter(panel, this, myDefaultGroupPanel));
 
     return new MyNode(gc, group.isDefault());
   }
@@ -266,7 +271,7 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
     }
 
     TreeUtil.sort(myRoot, GroupNodesComparator.getInstance());
-    ((DefaultTreeModel) myTree.getModel()).reload(myRoot);
+    ((DefaultTreeModel)myTree.getModel()).reload(myRoot);
   }
 
   @Override
@@ -283,8 +288,8 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
 
     public int compare(final MyNode node1, final MyNode node2) {
       if ((node1.getConfigurable() instanceof GroupConfigurable) && (node2.getConfigurable() instanceof GroupConfigurable)) {
-        final ProxyGroup group1 = ((GroupConfigurable) node1.getConfigurable()).getEditableObject();
-        final ProxyGroup group2 = ((GroupConfigurable) node2.getConfigurable()).getEditableObject();
+        final ProxyGroup group1 = ((GroupConfigurable)node1.getConfigurable()).getEditableObject();
+        final ProxyGroup group2 = ((GroupConfigurable)node2.getConfigurable()).getEditableObject();
         if (group1.isDefault()) {
           return -1;
         }
@@ -302,8 +307,8 @@ public class SvnConfigureProxiesComponent extends MasterDetailsComponent {
    */
   public void setIsValid(final boolean valid) {
     for (int i = 0; i < myRoot.getChildCount(); i++) {
-      final MyNode node = (MyNode) myRoot.getChildAt(i);
-      final GroupConfigurable groupConfigurable = (GroupConfigurable) node.getConfigurable();
+      final MyNode node = (MyNode)myRoot.getChildAt(i);
+      final GroupConfigurable groupConfigurable = (GroupConfigurable)node.getConfigurable();
       groupConfigurable.setIsValid(valid);
     }
   }

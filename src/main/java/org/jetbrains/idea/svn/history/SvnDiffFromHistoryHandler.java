@@ -15,13 +15,10 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.history.BaseDiffFromHistoryHandler;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.ide.impl.idea.openapi.vcs.history.BaseDiffFromHistoryHandler;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.ClientFactory;
@@ -29,6 +26,8 @@ import org.jetbrains.idea.svn.diff.DirectoryWithBranchComparer;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 
@@ -36,7 +35,6 @@ import java.util.List;
  * @author Konstantin Kolosovsky.
  */
 public class SvnDiffFromHistoryHandler extends BaseDiffFromHistoryHandler<SvnFileRevision> {
-
   @Nonnull
   private final SvnVcs myVcs;
 
@@ -58,7 +56,8 @@ public class SvnDiffFromHistoryHandler extends BaseDiffFromHistoryHandler<SvnFil
 
   @Nonnull
   @Override
-  protected List<Change> getAffectedChanges(@Nonnull FilePath path, @Nonnull SvnFileRevision rev) throws VcsException {
+  protected List<Change> getAffectedChanges(@Nonnull FilePath path,
+                                            @Nonnull SvnFileRevision rev) throws VcsException {
     // Diff with zero revision is used here to get just affected changes under the path, and not all affected changes of the revision.
     SvnTarget target1 = SvnTarget.fromURL(SvnUtil.createUrl(rev.getURL()), SVNRevision.create(0));
     SvnTarget target2 = SvnTarget.fromURL(SvnUtil.createUrl(rev.getURL()), rev.getRevision());
@@ -73,7 +72,9 @@ public class SvnDiffFromHistoryHandler extends BaseDiffFromHistoryHandler<SvnFil
   }
 
   @Nonnull
-  private List<Change> executeDiff(@Nonnull FilePath path, @Nonnull SvnTarget target1, @Nonnull SvnTarget target2) throws VcsException {
+  private List<Change> executeDiff(@Nonnull FilePath path,
+                                   @Nonnull SvnTarget target1,
+                                   @Nonnull SvnTarget target2) throws VcsException {
     File file = path.getIOFile();
     ClientFactory factory = target2.isURL() ? myVcs.getFactory(file) : DirectoryWithBranchComparer.getClientFactory(myVcs, file);
 

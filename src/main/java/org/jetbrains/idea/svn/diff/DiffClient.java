@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.diff;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import javax.annotation.Nonnull;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.io.OutputStream;
 import java.util.List;
 

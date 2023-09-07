@@ -15,13 +15,14 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.util.io.BaseDataReader;
-import com.intellij.util.io.BinaryOutputReader;
+import consulo.ide.impl.idea.util.io.BinaryOutputReader;
+import consulo.process.internal.OSProcessHandler;
+import consulo.process.io.BaseDataReader;
+import consulo.process.io.ProcessIOExecutorService;
+import consulo.util.io.CharsetToolkit;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -81,7 +82,7 @@ public class SvnProcessHandler extends OSProcessHandler {
     @Nonnull
     @Override
     protected Future<?> executeOnPooledThread(@Nonnull Runnable runnable) {
-      return SvnProcessHandler.this.executeOnPooledThread(runnable);
+      return ProcessIOExecutorService.INSTANCE.submit(runnable);
     }
   }
 }

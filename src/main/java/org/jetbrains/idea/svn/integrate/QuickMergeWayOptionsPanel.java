@@ -15,9 +15,10 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.MultiLineLabelUI;
-import com.intellij.util.ui.JBUI;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.internal.laf.MultiLineLabelUI;
+
 import javax.annotation.Nonnull;
 
 import javax.swing.*;

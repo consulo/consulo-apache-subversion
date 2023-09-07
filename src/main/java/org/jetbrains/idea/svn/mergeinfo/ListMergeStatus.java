@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.Contract;
 import consulo.ui.image.Image;
-import icons.SvnIcons;
+import org.jetbrains.idea.svn.SvnIcons;
 
 /**
 * Created with IntelliJ IDEA.

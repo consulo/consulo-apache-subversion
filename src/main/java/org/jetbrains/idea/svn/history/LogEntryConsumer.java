@@ -15,11 +15,12 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.util.ThrowableConsumer;
+import consulo.util.lang.function.ThrowableConsumer;
 import org.tmatesoft.svn.core.SVNException;
 
 /**
  * @author Konstantin Kolosovsky.
  */
-public interface LogEntryConsumer extends ThrowableConsumer<LogEntry, SVNException> {
+public interface LogEntryConsumer extends ThrowableConsumer<LogEntry, SVNException>
+{
 }

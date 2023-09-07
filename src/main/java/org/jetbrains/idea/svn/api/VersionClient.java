@@ -1,9 +1,9 @@
 package org.jetbrains.idea.svn.api;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.openapi.util.Version;
+import consulo.util.lang.Version;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.

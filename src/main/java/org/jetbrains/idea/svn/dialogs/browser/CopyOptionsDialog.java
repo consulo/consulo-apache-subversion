@@ -15,23 +15,23 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionPopupMenu;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Splitter;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vcs.VcsConfiguration;
-import com.intellij.openapi.vcs.ui.CommitMessage;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.ui.EditorTextField;
-import com.intellij.ui.PopupHandler;
-import com.intellij.util.ui.GridBag;
-import com.intellij.util.ui.JBUI;
-import consulo.awt.TargetAWT;
+import consulo.language.editor.ui.awt.EditorTextField;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.awt.GridBag;
+import consulo.ui.ex.awt.PopupHandler;
+import consulo.ui.ex.awt.Splitter;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.versionControlSystem.VcsConfiguration;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.ide.impl.idea.openapi.vcs.ui.CommitMessage;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awtUnsafe.TargetAWT;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.ActionPopupMenu;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.ui.ex.awt.DialogWrapper;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
@@ -53,7 +53,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CopyOptionsDialog extends DialogWrapper {
+public class CopyOptionsDialog extends DialogWrapper
+{
 
   private final SVNURL myURL;
   private EditorTextField myCommitMessage;
@@ -66,7 +67,7 @@ public class CopyOptionsDialog extends DialogWrapper {
   private JPanel myMainPanel;
 
   public CopyOptionsDialog(String title, Project project, final RepositoryTreeNode root, final RepositoryTreeNode node,
-                           final boolean copy) {
+						   final boolean copy) {
     super(project, true);
     myProject = project;
     myURL = node.getURL();

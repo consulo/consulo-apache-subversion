@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.util.lang.StringUtil;
 import org.intellij.lang.annotations.MagicConstant;
 import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.*;

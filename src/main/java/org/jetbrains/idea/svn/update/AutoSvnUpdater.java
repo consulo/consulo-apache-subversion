@@ -15,30 +15,29 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import java.util.LinkedHashMap;
-
-import javax.annotation.Nonnull;
-import javax.swing.JComponent;
-
+import consulo.configurable.Configurable;
+import consulo.dataContext.DataManager;
+import consulo.ide.impl.idea.openapi.vcs.update.AbstractCommonUpdateAction;
+import consulo.ide.impl.idea.openapi.vcs.update.ScopeInfo;
+import consulo.project.Project;
+import consulo.project.ui.wm.WindowManager;
+import consulo.ui.ex.action.ActionPlaces;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.action.VcsContext;
+import consulo.versionControlSystem.ui.UpdateOrStatusOptionsDialog;
+import consulo.versionControlSystem.update.ActionInfo;
+import consulo.versionControlSystem.update.FileGroup;
+import consulo.versionControlSystem.update.UpdateEnvironment;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
 import org.tmatesoft.svn.core.wc.SVNRevision;
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.ActionPlaces;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.actions.VcsContext;
-import com.intellij.openapi.vcs.update.AbstractCommonUpdateAction;
-import com.intellij.openapi.vcs.update.ActionInfo;
-import com.intellij.openapi.vcs.update.FileGroup;
-import com.intellij.openapi.vcs.update.ScopeInfo;
-import com.intellij.openapi.vcs.update.UpdateEnvironment;
-import com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialog;
-import com.intellij.openapi.wm.WindowManager;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import java.util.LinkedHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -135,7 +134,8 @@ public class AutoSvnUpdater extends AbstractCommonUpdateAction {
     }
   }
 
-  private static class AutoUpdateScope implements ScopeInfo {
+  private static class AutoUpdateScope implements ScopeInfo
+  {
     private final FilePath[] myRoots;
 
     private AutoUpdateScope(final FilePath[] roots) {

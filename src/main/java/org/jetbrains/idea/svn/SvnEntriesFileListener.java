@@ -15,22 +15,22 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.changes.VcsAnnotationRefresher;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileAdapter;
-import com.intellij.openapi.vfs.VirtualFileEvent;
-import javax.annotation.Nonnull;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.versionControlSystem.change.VcsAnnotationRefresher;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.event.VirtualFileAdapter;
+import consulo.virtualFileSystem.event.VirtualFileEvent;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class SvnEntriesFileListener extends VirtualFileAdapter {
   private final Project myProject;
-  private static final Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.SvnEntriesFileListener");
+  private static final Logger LOG = Logger.getInstance(SvnEntriesFileListener.class);
   private VcsDirtyScopeManager myDirtyScopeManager;
 
   public SvnEntriesFileListener(final Project project) {
@@ -54,7 +54,7 @@ public class SvnEntriesFileListener extends VirtualFileAdapter {
   }
 
   private void refreshAnnotationsUnder(VirtualFile parent) {
-    myProject.getMessageBus().syncPublisher(VcsAnnotationRefresher.LOCAL_CHANGES_CHANGED).dirtyUnder(parent);
+    myProject.getMessageBus().syncPublisher(VcsAnnotationRefresher.class).dirtyUnder(parent);
   }
 
   public void contentsChanged(@Nonnull VirtualFileEvent event) {

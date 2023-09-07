@@ -15,13 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.UriUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.util.io.UriUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 
 public class RootUrlInfo implements RootUrlPair {

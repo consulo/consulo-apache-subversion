@@ -1,10 +1,7 @@
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.ArrayUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.util.collection.ArrayUtil;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
@@ -14,6 +11,8 @@ import org.tmatesoft.svn.core.wc.SVNLogClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 
 /**
@@ -30,7 +29,8 @@ public class SvnKitHistoryClient extends BaseSvnClient implements HistoryClient 
                     boolean includeMergedRevisions,
                     long limit,
                     @Nullable String[] revisionProperties,
-                    @Nullable LogEntryConsumer handler) throws VcsException {
+                    @Nullable LogEntryConsumer handler) throws VcsException
+  {
     try {
       SVNLogClient client = myVcs.getSvnKitManager().createLogClient();
 

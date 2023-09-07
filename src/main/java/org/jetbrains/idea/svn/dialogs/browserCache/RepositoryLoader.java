@@ -15,14 +15,14 @@
  */
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.progress.EmptyProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.application.Application;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.EmptyProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.ui.ModalityState;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.Pair;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.auth.SvnAuthenticationProvider;
@@ -33,11 +33,9 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.Queue;
-import java.util.TreeSet;
+import java.util.*;
 
 class RepositoryLoader extends Loader {
   // may be several requests if: several same-level nodes are expanded simultaneosly; or browser can be opening into some expanded state
@@ -48,7 +46,7 @@ class RepositoryLoader extends Loader {
   RepositoryLoader(@Nonnull SvnRepositoryCache cache) {
     super(cache);
 
-    myLoadQueue = ContainerUtil.newLinkedList();
+    myLoadQueue = new LinkedList<>();
     myQueueProcessorActive = false;
   }
 
@@ -56,10 +54,11 @@ class RepositoryLoader extends Loader {
     ApplicationManager.getApplication().assertIsDispatchThread();
 
     final Pair<RepositoryTreeNode, Expander> data = Pair.create(node, afterRefreshExpander);
-    if (! myQueueProcessorActive) {
+    if (!myQueueProcessorActive) {
       startLoadTask(data);
       myQueueProcessorActive = true;
-    } else {
+    }
+    else {
       myLoadQueue.offer(data);
     }
   }
@@ -85,14 +84,16 @@ class RepositoryLoader extends Loader {
     if (data.first.isDisposed()) {
       // ignore if node is already disposed
       startNext();
-    } else {
+    }
+    else {
       startLoadTask(data);
     }
   }
 
   private void startLoadTask(@Nonnull final Pair<RepositoryTreeNode, Expander> data) {
-    final ModalityState state = ModalityState.current();
-    ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+    Application application = ApplicationManager.getApplication();
+    final ModalityState state = application.getCurrentModalityState();
+    application.executeOnPooledThread(new Runnable() {
       @Override
       public void run() {
         ProgressManager.getInstance().runProcess(new LoadTask(data), new EmptyProgressIndicator(state));
@@ -108,7 +109,7 @@ class RepositoryLoader extends Loader {
   private class LoadTask implements Runnable {
 
     @Nonnull
-	private final Pair<RepositoryTreeNode, Expander> myData;
+    private final Pair<RepositoryTreeNode, Expander> myData;
 
     private LoadTask(@Nonnull Pair<RepositoryTreeNode, Expander> data) {
       myData = data;
@@ -139,7 +140,8 @@ class RepositoryLoader extends Loader {
           }
         });
         return;
-      } finally {
+      }
+      finally {
         SvnAuthenticationProvider.clearInteractive();
       }
 

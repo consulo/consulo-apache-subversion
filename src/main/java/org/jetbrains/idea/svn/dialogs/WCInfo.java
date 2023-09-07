@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.dialogs;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.virtualFileSystem.VirtualFile;
 
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.NestedCopyType;

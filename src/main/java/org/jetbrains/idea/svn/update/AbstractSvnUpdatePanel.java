@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.util.FilePathByPathComparator;
+import consulo.versionControlSystem.FilePath;
+import consulo.ide.impl.idea.util.FilePathByPathComparator;
 import javax.annotation.Nonnull;
 
+import consulo.configurable.ConfigurationException;
 import org.jetbrains.idea.svn.DepthCombo;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -94,7 +94,8 @@ public abstract class AbstractSvnUpdatePanel {
 
   }
 
-  public void apply(final SvnConfiguration configuration) throws ConfigurationException {
+  public void apply(final SvnConfiguration configuration) throws ConfigurationException
+  {
     configuration.setUpdateDepth(getDepthBox().getDepth());
 
     for (FilePath filePath : myRootToPanel.keySet()) {

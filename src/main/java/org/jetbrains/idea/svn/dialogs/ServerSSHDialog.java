@@ -15,12 +15,13 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.ui.JBUI;
+import consulo.project.Project;
+import consulo.ui.ex.awt.JBUI;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationProvider;
 import org.tmatesoft.svn.core.internal.util.SVNSSLUtil;
@@ -33,7 +34,8 @@ import java.awt.*;
  *         Date: 1/31/11
  *         Time: 5:48 PM
  */
-public class ServerSSHDialog extends DialogWrapper {
+public class ServerSSHDialog extends DialogWrapper
+{
   private int myResult;
   private String myFingerprints;
   private JCheckBox myJCheckBox;
@@ -42,7 +44,7 @@ public class ServerSSHDialog extends DialogWrapper {
   private final String myAlgorithm;
 
   public ServerSSHDialog(Project project, boolean store, @Nonnull final String host, @Nullable final String algorithm,
-                         @Nonnull final byte[] fingerprints) {
+						 @Nonnull final byte[] fingerprints) {
     this(project, store, host, algorithm, SVNSSLUtil.getFingerprint(fingerprints, "SHA1"));
   }
 

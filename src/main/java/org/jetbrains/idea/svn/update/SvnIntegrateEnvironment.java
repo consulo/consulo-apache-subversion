@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.update.UpdatedFiles;
+import consulo.configurable.Configurable;
+import consulo.application.progress.ProgressIndicator;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.update.UpdatedFiles;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -86,7 +86,8 @@ public class SvnIntegrateEnvironment extends AbstractSvnUpdateIntegrateEnvironme
       }
     }
 
-    protected long doUpdate(final File root) throws VcsException {
+    protected long doUpdate(final File root) throws VcsException
+	{
       final SvnConfiguration svnConfig = SvnConfiguration.getInstance(myVcs.getProject());
 
       MergeRootInfo info = svnConfig.getMergeRootInfo(root, myVcs);

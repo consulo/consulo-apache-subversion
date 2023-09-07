@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
-import com.intellij.openapi.progress.ProcessCanceledException;
+import consulo.component.ProcessCanceledException;
 import org.tmatesoft.svn.core.ISVNCanceller;
 import org.tmatesoft.svn.core.SVNCancelException;
 

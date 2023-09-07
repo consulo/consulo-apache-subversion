@@ -17,10 +17,11 @@ package org.jetbrains.idea.svn.actions;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.vcs.VcsShowToolWindowTabAction;
+import consulo.ide.impl.idea.vcs.VcsShowToolWindowTabAction;
 import org.jetbrains.idea.svn.WorkingCopiesContent;
 
-public class ShowSvnMapAction extends VcsShowToolWindowTabAction {
+public class ShowSvnMapAction extends VcsShowToolWindowTabAction
+{
 
   @Nonnull
   @Override

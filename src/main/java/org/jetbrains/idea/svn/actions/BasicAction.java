@@ -17,39 +17,37 @@
 
 package org.jetbrains.idea.svn.actions;
 
+import consulo.application.ApplicationManager;
+import consulo.application.dumb.DumbAware;
+import consulo.dataContext.DataContext;
+import consulo.language.editor.CommonDataKeys;
+import consulo.localHistory.LocalHistory;
+import consulo.localHistory.LocalHistoryAction;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.ui.annotation.RequiredUIAccess;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.Presentation;
+import consulo.versionControlSystem.*;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
+import org.jetbrains.idea.svn.SvnVcs;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.jetbrains.idea.svn.SvnVcs;
-import com.intellij.history.LocalHistory;
-import com.intellij.history.LocalHistoryAction;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.TransactionRunnable;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-
 public abstract class BasicAction extends AnAction implements DumbAware {
-  private static final Logger LOG = Logger.getInstance("org.jetbrains.idea.svn.actions.BasicAction");
+  private static final Logger LOG = Logger.getInstance(BasicAction.class);
 
+  @RequiredUIAccess
   public void actionPerformed(AnActionEvent event) {
     if (LOG.isDebugEnabled()) {
       LOG.debug("enter: actionPerformed(id='" + ActionManager.getInstance().getId(this) + "')");
     }
     final DataContext dataContext = event.getDataContext();
-    final Project project = event.getProject();
+    final Project project = event.getData(Project.KEY);
 
     final VirtualFile[] files = dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
     if (LOG.isDebugEnabled() && files != null) {
@@ -108,13 +106,14 @@ public abstract class BasicAction extends AnAction implements DumbAware {
     return true;
   }
 
+  @RequiredUIAccess
   public void update(AnActionEvent e) {
     //LOG.debug("enter: update class:"+getClass().getName());
     super.update(e);
 
     Presentation presentation = e.getPresentation();
 
-    Project project = e.getProject();
+    Project project = e.getData(Project.KEY);
     if (project == null) {
       presentation.setEnabled(false);
       presentation.setVisible(false);
@@ -183,10 +182,11 @@ public abstract class BasicAction extends AnAction implements DumbAware {
   }
 
   protected void execute(Project project,
-                       final SvnVcs activeVcs,
-                       final VirtualFile file,
-                       DataContext context,
-                       AbstractVcsHelper helper) throws VcsException {
+						 final SvnVcs activeVcs,
+						 final VirtualFile file,
+						 DataContext context,
+						 AbstractVcsHelper helper) throws VcsException
+  {
     if (file.isDirectory()) {
       perform(project, activeVcs, file, context);
       ApplicationManager.getApplication().runWriteAction(new Runnable() {
@@ -213,10 +213,10 @@ public abstract class BasicAction extends AnAction implements DumbAware {
   }
 
   private void batchExecute(Project project,
-                            final SvnVcs activeVcs,
-                            final VirtualFile[] file,
-                            DataContext context,
-                            AbstractVcsHelper helper) throws VcsException {
+							final SvnVcs activeVcs,
+							final VirtualFile[] file,
+							DataContext context,
+							AbstractVcsHelper helper) throws VcsException {
     batchPerform(project, activeVcs, file, context);
     ApplicationManager.getApplication().runWriteAction(new Runnable() {
       public void run() {

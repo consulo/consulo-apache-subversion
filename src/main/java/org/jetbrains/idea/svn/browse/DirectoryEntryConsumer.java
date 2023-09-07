@@ -15,11 +15,12 @@
  */
 package org.jetbrains.idea.svn.browse;
 
-import com.intellij.util.ThrowableConsumer;
+import consulo.util.lang.function.ThrowableConsumer;
 import org.tmatesoft.svn.core.SVNException;
 
 /**
  * @author Konstantin Kolosovsky.
  */
-public interface DirectoryEntryConsumer extends ThrowableConsumer<DirectoryEntry, SVNException> {
+public interface DirectoryEntryConsumer extends ThrowableConsumer<DirectoryEntry, SVNException>
+{
 }

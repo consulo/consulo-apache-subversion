@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import com.intellij.util.NotNullFunction;
-import javax.annotation.Nonnull;
+import consulo.ide.impl.idea.util.NotNullFunction;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
 import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
 import org.jetbrains.idea.svn.dialogs.browserCache.Expander;
 
+import javax.annotation.Nonnull;
 import javax.swing.tree.TreeNode;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class OpeningExpander extends AbstractOpeningExpander {
     }
 
     @Nonnull
-    public Expander fun(final RepositoryBrowserComponent repositoryBrowserComponent) {
+    public Expander apply(final RepositoryBrowserComponent repositoryBrowserComponent) {
       return new OpeningExpander(myPath, repositoryBrowserComponent, mySelectionPath);
     }
   }

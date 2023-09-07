@@ -15,32 +15,30 @@
  */
 package org.jetbrains.idea.svn.checkin;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.diff.impl.patch.formove.FilePathComparator;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.CheckinProjectPanel;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ChangeList;
-import com.intellij.openapi.vcs.changes.ChangesUtil;
-import com.intellij.openapi.vcs.checkin.CheckinEnvironment;
-import com.intellij.openapi.vcs.ui.RefreshableOnComponent;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.FunctionUtil;
-import com.intellij.util.NullableFunction;
-import com.intellij.util.PairConsumer;
-import com.intellij.util.containers.Convertor;
-import com.intellij.util.containers.MultiMap;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.ide.impl.idea.util.FunctionUtil;
+import consulo.ide.impl.idea.util.containers.Convertor;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.util.collection.MultiMap;
 import consulo.util.collection.Sets;
+import consulo.util.lang.Pair;
+import consulo.util.lang.function.PairConsumer;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.FilePathComparator;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ChangeList;
+import consulo.versionControlSystem.change.ChangesUtil;
+import consulo.versionControlSystem.checkin.CheckinEnvironment;
+import consulo.versionControlSystem.checkin.CheckinProjectPanel;
+import consulo.versionControlSystem.ui.RefreshableOnComponent;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -58,6 +56,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
+import java.util.function.Function;
 
 public class SvnCheckinEnvironment implements CheckinEnvironment {
 
@@ -107,7 +106,7 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
                                List<VcsException> exception,
                                final Set<String> feedback,
                                @Nonnull WorkingCopyFormat format)
-  throws VcsException {
+    throws VcsException {
     if (committables.isEmpty()) {
       return;
     }
@@ -136,16 +135,12 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
     final String message = SvnBundle.message("status.text.comitted.revision", committedRevisions);
     if (feedback == null) {
       ApplicationManager.getApplication().invokeLater(new Runnable() {
-                                                        public void run() {
-                                                          new VcsBalloonProblemNotifier(project, message, MessageType.INFO).run();
-                                                        }
-                                                      }, new Condition<Object>() {
-        @Override
-        public boolean value(Object o) {
-          return (! project.isOpen()) || project.isDisposed();
+        public void run() {
+          new VcsBalloonProblemNotifier(project, message, NotificationType.INFORMATION).run();
         }
-      });
-    } else {
+      }, () -> (!project.isOpen()) || project.isDisposed());
+    }
+    else {
       feedback.add("Subversion: " + message);
     }
   }
@@ -197,7 +192,7 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
 
   public List<VcsException> commit(List<Change> changes,
                                    final String preparedComment,
-                                   @Nonnull NullableFunction<Object, Object> parametersHolder,
+                                   @Nonnull Function<Object, Object> parametersHolder,
                                    final Set<String> feedback) {
     final List<VcsException> exception = new ArrayList<>();
     final Collection<FilePath> committables = getCommitables(changes);
@@ -248,7 +243,9 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
     return scheduleUnversionedFilesForAddition(vcs, files, false);
   }
 
-  public static List<VcsException> scheduleUnversionedFilesForAddition(@Nonnull SvnVcs vcs, List<VirtualFile> files, final boolean recursive) {
+  public static List<VcsException> scheduleUnversionedFilesForAddition(@Nonnull SvnVcs vcs,
+                                                                       List<VirtualFile> files,
+                                                                       final boolean recursive) {
     Collections.sort(files, FilePathComparator.getInstance());
 
     ProgressTracker eventHandler = new SvnProgressCanceller() {
@@ -293,12 +290,12 @@ public class SvnCheckinEnvironment implements CheckinEnvironment {
   private class KeepLocksComponent implements RefreshableOnComponent {
 
     @Nonnull
-	private final JCheckBox myKeepLocksBox;
+    private final JCheckBox myKeepLocksBox;
     private boolean myIsKeepLocks;
     @Nonnull
-	private final JPanel myPanel;
+    private final JPanel myPanel;
     @Nonnull
-	private final JCheckBox myAutoUpdate;
+    private final JCheckBox myAutoUpdate;
 
     public KeepLocksComponent() {
 

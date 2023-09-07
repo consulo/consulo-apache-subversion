@@ -15,14 +15,14 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.update.UpdateEventHandler;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.List;
 

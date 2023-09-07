@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn.browse;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.PathUtil;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.PathUtil;
+import consulo.versionControlSystem.VcsException;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -52,7 +52,8 @@ public class CmdBrowseClient extends BaseSvnClient implements BrowseClient {
   public void list(@Nonnull SvnTarget target,
                    @Nullable SVNRevision revision,
                    @Nullable Depth depth,
-                   @Nullable DirectoryEntryConsumer handler) throws VcsException {
+                   @Nullable DirectoryEntryConsumer handler) throws VcsException
+  {
     assertUrl(target);
 
     List<String> parameters = new ArrayList<>();

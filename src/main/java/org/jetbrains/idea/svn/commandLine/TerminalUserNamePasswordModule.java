@@ -16,12 +16,12 @@
 package org.jetbrains.idea.svn.commandLine;
 
 import consulo.util.dataholder.Key;
-import com.intellij.openapi.util.text.StringUtil;
-import javax.annotation.Nonnull;
+import consulo.util.lang.StringUtil;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.auth.SVNPasswordAuthentication;
 
+import javax.annotation.Nonnull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

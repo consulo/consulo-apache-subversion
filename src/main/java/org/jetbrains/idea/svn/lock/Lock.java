@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.lock;
 
-import com.intellij.openapi.vcs.changes.LogicalLock;
+import consulo.versionControlSystem.change.LogicalLock;
 import jakarta.xml.bind.annotation.*;
 import org.tmatesoft.svn.core.SVNLock;
 

@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.versionControlSystem.FilePath;
 import org.jetbrains.idea.svn.status.Status;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;

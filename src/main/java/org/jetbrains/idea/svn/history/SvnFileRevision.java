@@ -15,20 +15,16 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Throwable2Computable;
-import com.intellij.openapi.vcs.RepositoryLocation;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.history.VcsFileRevision;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vcs.impl.ContentRevisionCache;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.logging.Logger;
+import consulo.versionControlSystem.RepositoryLocation;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ContentRevisionCache;
+import consulo.versionControlSystem.history.VcsFileRevision;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
+import consulo.versionControlSystem.util.VcsUtil;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -37,13 +33,15 @@ import org.jetbrains.idea.svn.checkin.CommitInfo;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class SvnFileRevision implements VcsFileRevision {
-  private final static Logger LOG = Logger.getInstance("#org.jetbrains.idea.svn.history.SvnFileRevision");
+  private final static Logger LOG = Logger.getInstance(SvnFileRevision.class);
 
   private final Date myDate;
   private String myCommitMessage;
@@ -146,7 +144,7 @@ public class SvnFileRevision implements VcsFileRevision {
   public byte[] loadContent() throws IOException, VcsException {
     ContentLoader loader = new ContentLoader(myURL, myRevision, myPegRevision);
     if (ApplicationManager.getApplication().isDispatchThread() &&
-        !myRevision.isLocal()) {
+      !myRevision.isLocal()) {
       ProgressManager.getInstance().runProcessWithProgressSynchronously(loader, SvnBundle.message("progress.title.loading.file.content"),
                                                                         false, myVCS.getProject());
     }
@@ -175,12 +173,7 @@ public class SvnFileRevision implements VcsFileRevision {
     else {
       result = ContentRevisionCache.getOrLoadAsBytes(myVCS.getProject(), VcsUtil.getFilePathOnNonLocal(myURL, false), getRevisionNumber(),
                                                      myVCS.getKeyInstanceMethod(), ContentRevisionCache.UniqueType.REMOTE_CONTENT,
-                                                     new Throwable2Computable<byte[], VcsException, IOException>() {
-                                                       @Override
-                                                       public byte[] compute() throws VcsException, IOException {
-                                                         return loadContent();
-                                                       }
-                                                     });
+                                                     () -> loadContent());
     }
 
     return result;

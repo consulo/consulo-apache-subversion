@@ -16,10 +16,8 @@
 package org.jetbrains.idea.svn.integrate;
 
 import javax.annotation.Nonnull;
-
+import java.util.HashSet;
 import java.util.Set;
-
-import static com.intellij.util.containers.ContainerUtil.newHashSet;
 
 public class QuantitySelection<T> {
   @Nonnull
@@ -32,7 +30,8 @@ public class QuantitySelection<T> {
     myUnselected = new Group<>();
     if (startFromSelectAll) {
       mySelected.setAll();
-    } else {
+    }
+    else {
       myUnselected.setAll();
     }
   }
@@ -40,7 +39,8 @@ public class QuantitySelection<T> {
   public void add(T t) {
     if (mySelected.hasAll()) {
       myUnselected.remove(t);
-    } else {
+    }
+    else {
       mySelected.add(t);
     }
   }
@@ -48,7 +48,8 @@ public class QuantitySelection<T> {
   public void remove(T t) {
     if (mySelected.hasAll()) {
       myUnselected.add(t);
-    } else {
+    }
+    else {
       mySelected.remove(t);
     }
   }
@@ -84,7 +85,7 @@ public class QuantitySelection<T> {
   private static class Group<T> {
     private boolean myAll;
     @Nonnull
-	private final Set<T> myItems = newHashSet();
+    private final Set<T> myItems = new HashSet<T>();
 
     public void add(T t) {
       myItems.add(t);

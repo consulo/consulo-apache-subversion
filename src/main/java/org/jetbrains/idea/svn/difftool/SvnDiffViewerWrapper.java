@@ -1,11 +1,11 @@
 package org.jetbrains.idea.svn.difftool;
 
-import javax.annotation.Nonnull;
+import consulo.diff.request.DiffRequest;
+import consulo.ide.impl.idea.diff.DiffContext;
+import consulo.ide.impl.idea.diff.FrameDiffTool.DiffViewer;
+import consulo.ide.impl.idea.diff.impl.DiffViewerWrapper;
 
-import com.intellij.diff.DiffContext;
-import com.intellij.diff.FrameDiffTool.DiffViewer;
-import com.intellij.diff.impl.DiffViewerWrapper;
-import com.intellij.diff.requests.DiffRequest;
+import javax.annotation.Nonnull;
 
 public class SvnDiffViewerWrapper implements DiffViewerWrapper {
   @Nonnull

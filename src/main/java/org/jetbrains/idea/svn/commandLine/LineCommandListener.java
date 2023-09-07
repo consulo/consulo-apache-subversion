@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.vcs.LineProcessEventListener;
+import consulo.versionControlSystem.LineProcessEventListener;
 
 /**
  * Created with IntelliJ IDEA.

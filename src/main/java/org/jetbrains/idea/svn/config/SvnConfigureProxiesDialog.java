@@ -15,14 +15,14 @@
  */
 package org.jetbrains.idea.svn.config;
 
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Ref;
-import com.intellij.ui.components.JBTabbedPane;
+import consulo.project.Project;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.lang.ref.Ref;
+import consulo.ui.ex.awt.JBTabbedPane;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.configurable.ConfigurationException;
+import consulo.ui.ex.awt.DialogWrapper;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.wc.SVNRevision;

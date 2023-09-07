@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.CommonBundle;
+import consulo.application.CommonBundle;
 import consulo.annotation.DeprecationInfo;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
@@ -50,7 +50,7 @@ public class SvnBundle
 
 	private static ResourceBundle getBundle()
 	{
-		ResourceBundle bundle = com.intellij.reference.SoftReference.dereference(ourBundle);
+		ResourceBundle bundle = consulo.util.lang.ref.SoftReference.dereference(ourBundle);
 		if(bundle == null)
 		{
 			bundle = ResourceBundle.getBundle(BUNDLE);

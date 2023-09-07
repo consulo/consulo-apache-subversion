@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Pair;
-import com.intellij.util.ThrowableConsumer;
-import com.intellij.util.ThrowableConvertor;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.component.ProcessCanceledException;
+import consulo.application.progress.ProgressManager;
+import consulo.util.lang.Pair;
+import consulo.util.lang.function.ThrowableConsumer;
+import consulo.ide.impl.idea.util.ThrowableConvertor;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 import org.tmatesoft.svn.core.SVNException;
@@ -167,8 +167,8 @@ public class CachingSvnRepositoryPool implements SvnRepositoryPool {
     private long myConnectionTimeout;
 
     private RepoGroup(ThrowableConvertor<SVNURL, SVNRepository, SVNException> creator, int cached, int concurrent,
-                      final ThrowableConsumer<Pair<SVNURL, SVNRepository>, SVNException> adjuster,
-                      final ApplicationLevelNumberConnectionsGuard guard, final Object waitObj, final long connectionTimeout) {
+					  final ThrowableConsumer<Pair<SVNURL, SVNRepository>, SVNException> adjuster,
+					  final ApplicationLevelNumberConnectionsGuard guard, final Object waitObj, final long connectionTimeout) {
       myCreator = creator;
       myMaxCached = cached;
       myMaxConcurrent = concurrent;

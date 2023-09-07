@@ -17,11 +17,11 @@ package org.jetbrains.idea.svn.update;
 
 import javax.annotation.Nullable;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.committed.ChangesBrowserDialog;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.project.Project;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.ChangesBrowserDialog;
+import consulo.ui.ex.awt.Messages;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.history.SvnChangeList;

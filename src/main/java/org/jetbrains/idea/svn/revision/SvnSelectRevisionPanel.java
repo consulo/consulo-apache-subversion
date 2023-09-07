@@ -15,10 +15,12 @@
  */
 package org.jetbrains.idea.svn.revision;
 
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.configurable.ConfigurationException;
+
 import javax.annotation.Nonnull;
+
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.update.SvnRevisionPanel;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 

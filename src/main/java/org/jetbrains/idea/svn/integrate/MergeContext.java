@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
 import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.WCInfo;

@@ -15,16 +15,12 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Splitter;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.impl.VcsPathPresenter;
-import com.intellij.ui.ColoredListCellRenderer;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.SimpleTextAttributes;
-import com.intellij.ui.components.JBList;
-import com.intellij.util.ui.AdjustComponentWhenShown;
-import com.intellij.util.ui.UIUtil;
+import consulo.project.Project;
+import consulo.ui.ex.awt.*;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.internal.VcsPathPresenter;
+import consulo.ui.ex.SimpleTextAttributes;
+import consulo.ide.impl.idea.util.ui.AdjustComponentWhenShown;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 

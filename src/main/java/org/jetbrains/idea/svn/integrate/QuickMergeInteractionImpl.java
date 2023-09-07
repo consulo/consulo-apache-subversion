@@ -15,25 +15,24 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogBuilder;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import javax.annotation.Nonnull;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.ui.ex.awt.DialogBuilder;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
 import org.jetbrains.idea.svn.dialogs.IntersectingLocalChangesPanel;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.mergeinfo.MergeChecker;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
-import static com.intellij.openapi.ui.DialogWrapper.OK_EXIT_CODE;
-import static com.intellij.openapi.ui.Messages.*;
-import static com.intellij.util.Functions.TO_STRING;
-import static com.intellij.util.containers.ContainerUtil.emptyList;
-import static com.intellij.util.containers.ContainerUtil.map2Array;
+import static consulo.ui.ex.awt.DialogWrapper.OK_EXIT_CODE;
+import static consulo.ui.ex.awt.Messages.*;
+import static consulo.util.collection.ContainerUtil.map2Array;
+import static consulo.util.lang.function.Functions.TO_STRING;
 import static org.jetbrains.idea.svn.integrate.LocalChangesAction.*;
 import static org.jetbrains.idea.svn.integrate.ToBeMergedDialog.MERGE_ALL_CODE;
 
@@ -90,7 +89,7 @@ public class QuickMergeInteractionImpl implements QuickMergeInteraction {
     dialog.show();
 
     QuickMergeContentsVariants resultCode = toMergeVariant(dialog.getExitCode());
-    List<SvnChangeList> selectedLists = resultCode == QuickMergeContentsVariants.select ? dialog.getSelected() : emptyList();
+    List<SvnChangeList> selectedLists = resultCode == QuickMergeContentsVariants.select ? dialog.getSelected() : List.of();
 
     return new SelectMergeItemsResult(resultCode, selectedLists);
   }
@@ -126,7 +125,7 @@ public class QuickMergeInteractionImpl implements QuickMergeInteraction {
 
   @Override
   public void showErrors(@Nonnull String message, boolean isError) {
-    VcsBalloonProblemNotifier.showOverChangesView(myProject, message, isError ? MessageType.ERROR : MessageType.WARNING);
+    VcsBalloonProblemNotifier.showOverChangesView(myProject, message, isError ? NotificationType.ERROR : NotificationType.WARNING);
   }
 
   private boolean prompt(@Nonnull String question) {

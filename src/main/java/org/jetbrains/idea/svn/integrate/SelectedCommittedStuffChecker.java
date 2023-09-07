@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.virtualFileSystem.VirtualFile;
 import org.tmatesoft.svn.core.SVNURL;
 
 import java.util.List;

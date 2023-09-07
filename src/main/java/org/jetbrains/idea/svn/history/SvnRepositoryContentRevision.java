@@ -22,29 +22,28 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ByteBackedContentRevision;
-import com.intellij.openapi.vcs.impl.ContentRevisionCache;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.ide.impl.idea.openapi.vcs.changes.ByteBackedContentRevision;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ContentRevisionCache;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static com.intellij.util.ObjectUtils.notNull;
+import static consulo.util.lang.ObjectUtil.notNull;
 
 public class SvnRepositoryContentRevision extends SvnBaseContentRevision implements ByteBackedContentRevision {
 
@@ -79,7 +78,8 @@ public class SvnRepositoryContentRevision extends SvnBaseContentRevision impleme
   }
 
   @Nonnull
-  protected ByteArrayOutputStream loadContent() throws VcsException {
+  protected ByteArrayOutputStream loadContent() throws VcsException
+  {
     final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     ContentLoader loader = new ContentLoader(myPath, buffer, myRevision);
     if (ApplicationManager.getApplication().isDispatchThread()) {

@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.dialogs.browserCache;
 
-import com.intellij.util.NotNullFunction;
-import javax.annotation.Nonnull;
+import consulo.ide.impl.idea.util.NotNullFunction;
 import org.jetbrains.idea.svn.dialogs.RepositoryBrowserComponent;
 import org.jetbrains.idea.svn.dialogs.RepositoryTreeNode;
 
+import javax.annotation.Nonnull;
 import javax.swing.tree.TreeNode;
 import java.util.*;
 
@@ -41,7 +41,7 @@ public class KeepingExpandedExpander implements Expander {
 
   public void onBeforeRefresh(final RepositoryTreeNode node) {
     mySelectionExpander.onBeforeRefresh(node);
-    
+
     myThirdLevel = new HashMap<>();
     myExpanded = new ArrayList<>();
 
@@ -49,12 +49,12 @@ public class KeepingExpandedExpander implements Expander {
     while (children.hasMoreElements()) {
       final TreeNode treeNode = children.nextElement();
       if (treeNode instanceof RepositoryTreeNode) {
-        final RepositoryTreeNode repositoryNode = (RepositoryTreeNode) treeNode;
+        final RepositoryTreeNode repositoryNode = (RepositoryTreeNode)treeNode;
         final List<TreeNode> thirdLevelChildren = repositoryNode.getAllAlreadyLoadedChildren();
 
         final String nodeName = repositoryNode.getSVNDirEntry().getName();
 
-        if (! thirdLevelChildren.isEmpty()) {
+        if (!thirdLevelChildren.isEmpty()) {
           final boolean selfExpanded = myBrowser.isExpanded(repositoryNode);
           myThirdLevel.put(nodeName, new ChildrenData(selfExpanded, thirdLevelChildren, repositoryNode.getChildrenLoadState()));
           if (selfExpanded) {
@@ -68,7 +68,7 @@ public class KeepingExpandedExpander implements Expander {
   public void onAfterRefresh(final RepositoryTreeNode node) {
     final Enumeration<TreeNode> children = node.children();
     while (children.hasMoreElements()) {
-      final RepositoryTreeNode treeNode = (RepositoryTreeNode) children.nextElement();
+      final RepositoryTreeNode treeNode = (RepositoryTreeNode)children.nextElement();
       final String name = treeNode.getSVNDirEntry().getName();
 
       final ChildrenData thirdLevelLoaded = myThirdLevel.get(name);
@@ -89,7 +89,7 @@ public class KeepingExpandedExpander implements Expander {
 
   public static class Factory implements NotNullFunction<RepositoryBrowserComponent, Expander> {
     @Nonnull
-    public Expander fun(final RepositoryBrowserComponent repositoryBrowserComponent) {
+    public Expander apply(final RepositoryBrowserComponent repositoryBrowserComponent) {
       return new KeepingExpandedExpander(repositoryBrowserComponent);
     }
   }

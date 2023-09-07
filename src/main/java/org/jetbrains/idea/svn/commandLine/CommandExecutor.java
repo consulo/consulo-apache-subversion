@@ -15,20 +15,25 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.process.*;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.util.EventDispatcher;
-import com.intellij.util.SystemProperties;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.vcs.VcsLocaleHelper;
-import com.intellij.vcsUtil.VcsFileUtil;
 import consulo.container.boot.ContainerPathManager;
+import consulo.logging.Logger;
+import consulo.process.ExecutionException;
+import consulo.process.ProcessOutputTypes;
+import consulo.process.cmd.GeneralCommandLine;
+import consulo.process.event.ProcessAdapter;
+import consulo.process.event.ProcessEvent;
+import consulo.process.internal.OSProcessHandler;
+import consulo.process.util.CapturingProcessAdapter;
+import consulo.process.util.ProcessOutput;
+import consulo.proxy.EventDispatcher;
+import consulo.util.collection.ContainerUtil;
 import consulo.util.dataholder.Key;
+import consulo.util.io.CharsetToolkit;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.SystemProperties;
+import consulo.versionControlSystem.VcsLocaleHelper;
+import consulo.versionControlSystem.util.VcsFileUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.properties.PropertyValue;
 import org.tmatesoft.svn.core.SVNCancelException;
@@ -50,7 +55,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Time: 12:58 PM
  */
 public class CommandExecutor {
-  static final Logger LOG = Logger.getInstance(CommandExecutor.class.getName());
+  static final Logger LOG = Logger.getInstance(CommandExecutor.class);
   private final AtomicReference<Integer> myExitCodeReference;
 
   @Nullable private String myMessage;
@@ -432,7 +437,7 @@ public class CommandExecutor {
 
   public String getCommandText() {
     synchronized (myLock) {
-      return StringUtil.join(myCommandLine.getExePath(), " ", myCommand.getText());
+      return myCommandLine.getExePath() + " " + myCommand.getText();
     }
   }
 

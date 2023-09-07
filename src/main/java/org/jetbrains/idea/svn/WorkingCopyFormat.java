@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.util.Version;
-import javax.annotation.Nonnull;
+import consulo.util.lang.Version;
 
+import javax.annotation.Nonnull;
 import java.util.stream.Stream;
 
 public enum WorkingCopyFormat {

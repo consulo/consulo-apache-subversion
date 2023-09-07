@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import javax.annotation.Nonnull;
-
+import consulo.process.io.BaseOutputReader;
 import consulo.util.dataholder.Key;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.io.BaseOutputReader;
+import consulo.util.lang.StringUtil;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Konstantin Kolosovsky.

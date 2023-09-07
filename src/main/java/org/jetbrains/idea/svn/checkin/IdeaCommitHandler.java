@@ -15,14 +15,14 @@
  */
 package org.jetbrains.idea.svn.checkin;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.logging.Logger;
+import consulo.component.ProcessCanceledException;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.util.function.Computable;
+import consulo.util.collection.ContainerUtil;
+import consulo.application.ApplicationManager;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.VirtualFileManager;
 import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

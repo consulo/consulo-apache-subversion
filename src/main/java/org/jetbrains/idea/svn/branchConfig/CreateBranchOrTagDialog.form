@@ -7,7 +7,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <scrollpane id="57f3f" class="com.intellij.ui.components.JBScrollPane">
+      <scrollpane id="57f3f" class="consulo.ui.ex.awt.JBScrollPane">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="8" fill="3" indent="0" use-parent-layout="false"/>
           <gridbag top="2" left="2" bottom="2" right="2" weightx="1.0" weighty="1.0"/>
@@ -47,7 +47,7 @@
               <text value="&amp;Working Copy"/>
             </properties>
           </component>
-          <component id="643a9" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myWorkingCopyField">
+          <component id="643a9" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myWorkingCopyField">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="2" use-parent-layout="false"/>
             </constraints>
@@ -61,7 +61,7 @@
               <text value="&amp;Repository Location:"/>
             </properties>
           </component>
-          <component id="d7ae0" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myRepositoryField">
+          <component id="d7ae0" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myRepositoryField">
             <constraints>
               <grid row="5" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="2" use-parent-layout="false"/>
             </constraints>
@@ -103,7 +103,7 @@
               <text resource-bundle="org/jetbrains/idea/svn/SvnBundle" key="dialog.create.branch.or.tag.from.working.copy.warning"/>
             </properties>
           </component>
-          <component id="ff73f" class="com.intellij.ui.components.JBCheckBox" binding="mySwitchOnCreate">
+          <component id="ff73f" class="consulo.ui.ex.awt.JBCheckBox" binding="mySwitchOnCreate">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="2" use-parent-layout="false"/>
             </constraints>
@@ -126,7 +126,7 @@
         </clientProperties>
         <border type="none" title="Copy To"/>
         <children>
-          <component id="f1672" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="myToURLText">
+          <component id="f1672" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="myToURLText">
             <constraints>
               <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="2" use-parent-layout="false"/>
             </constraints>
@@ -141,7 +141,7 @@
               <text value="Base URL:"/>
             </properties>
           </component>
-          <component id="6108c" class="com.intellij.ui.ComboboxWithBrowseButton" binding="myBranchTagBaseComboBox" default-binding="true">
+          <component id="6108c" class="consulo.ui.ex.awt.ComboboxWithBrowseButton" binding="myBranchTagBaseComboBox" default-binding="true">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -196,7 +196,7 @@
           <text value=" "/>
         </properties>
       </component>
-      <component id="b34c" class="com.intellij.ui.TitledSeparator">
+      <component id="b34c" class="consulo.ui.ex.awt.TitledSeparator">
         <constraints>
           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>

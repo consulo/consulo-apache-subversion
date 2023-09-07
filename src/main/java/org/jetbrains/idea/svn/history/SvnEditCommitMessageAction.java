@@ -15,9 +15,22 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangesCache;
+import consulo.project.Project;
+import consulo.project.ProjectManager;
+import consulo.project.ui.notification.NotificationType;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ChangeList;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -26,23 +39,10 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ChangeList;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangesCache;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.util.Consumer;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,7 +57,7 @@ public class SvnEditCommitMessageAction extends AnAction {
     final boolean enabled = lists != null && lists.length == 1 && lists[0] instanceof SvnChangeList;
     if (! enabled) return;
     final SvnChangeList svnList = (SvnChangeList) lists[0];
-    Project project = e.getProject();
+    Project project = e.getData(Project.KEY);
     project = project == null ? ProjectManager.getInstance().getDefaultProject() : project;
     final Consumer<String> listener = e.getData(VcsDataKeys.REMOTE_HISTORY_CHANGED_LISTENER);
 
@@ -79,7 +79,7 @@ public class SvnEditCommitMessageAction extends AnAction {
     final ChangeList[] lists = e.getData(VcsDataKeys.CHANGE_LISTS);
     final boolean enabled = lists != null && lists.length == 1 && lists[0] instanceof SvnChangeList;
     boolean visible = enabled;
-    Project project = e.getProject();
+    Project project = e.getData(Project.KEY);
     if (project == null) {
       visible = e.getData(VcsDataKeys.REMOTE_HISTORY_LOCATION) instanceof SvnRepositoryLocation;
     } else {
@@ -126,7 +126,7 @@ public class SvnEditCommitMessageAction extends AnAction {
       myNumber = number;
       myListener = listener;
       myFromVersionControl = fromVersionControl;
-      myVcs = SvnVcs.getInstance(myProject);
+      myVcs = SvnVcs.getInstance((Project)myProject);
     }
 
     @Override
@@ -153,21 +153,22 @@ public class SvnEditCommitMessageAction extends AnAction {
 
     @Override
     public void onSuccess() {
+      Project project = (Project)myProject;
       if (myException != null) {
-        AbstractVcsHelper.getInstance(myProject).showError(myException, myTitle);
+        AbstractVcsHelper.getInstance(project).showError(myException, myTitle);
       } else {
         if (myListener != null) {
-          myListener.consume(myNewMessage);
+          myListener.accept(myNewMessage);
         }
-        if (! myProject.isDefault()) {
-          CommittedChangesCache.getInstance(myProject).commitMessageChanged(myVcs, myLocation, myNumber, myNewMessage);
+        if (!project.isDefault()) {
+          CommittedChangesCache.getInstance(project).commitMessageChanged(myVcs, myLocation, myNumber, myNewMessage);
         }
         if (myFromVersionControl) {
-          VcsBalloonProblemNotifier.showOverVersionControlView(myProject, "Revision #" + myNumber + " comment " +
-                                                                          "changed to:\n'" + myNewMessage + "'", MessageType.INFO);
+          VcsBalloonProblemNotifier.showOverVersionControlView(project, "Revision #" + myNumber + " comment " +
+                                                                          "changed to:\n'" + myNewMessage + "'", NotificationType.INFORMATION);
         } else {
-          VcsBalloonProblemNotifier.showOverChangesView(myProject, "Revision #" + myNumber + " comment " +
-                                                                   "changed to:\n'" + myNewMessage + "'", MessageType.INFO);
+          VcsBalloonProblemNotifier.showOverChangesView(project, "Revision #" + myNumber + " comment " +
+                                                                   "changed to:\n'" + myNewMessage + "'", NotificationType.INFORMATION);
         }
       }
     }

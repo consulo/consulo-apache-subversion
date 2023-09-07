@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.util.Pair;
-import com.intellij.util.ThrowableConsumer;
+import consulo.util.lang.Pair;
+import consulo.util.lang.function.ThrowableConsumer;
 import org.tmatesoft.svn.core.SVNException;
 
 public class SvnMergeSourceTracker {

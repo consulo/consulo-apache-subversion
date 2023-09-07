@@ -15,39 +15,39 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.DumbAwareAction;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.Splitter;
-import com.intellij.openapi.ui.popup.util.PopupUtil;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangeListRenderer;
-import com.intellij.openapi.vcs.changes.committed.RepositoryChangesBrowser;
-import com.intellij.openapi.vcs.changes.issueLinks.AbstractBaseTagMouseListener;
-import com.intellij.openapi.vcs.changes.ui.ChangeNodeDecorator;
-import com.intellij.openapi.vcs.changes.ui.ChangesBrowserNodeRenderer;
-import com.intellij.ui.*;
-import com.intellij.ui.table.TableView;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.ui.ColumnInfo;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.ListTableModel;
-import com.intellij.util.ui.UIUtil;
-import com.intellij.util.ui.components.BorderLayoutPanel;
-import javax.annotation.Nonnull;
+import consulo.application.AllIcons;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.Task;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangeListRenderer;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.RepositoryChangesBrowser;
+import consulo.ide.impl.idea.openapi.vcs.changes.issueLinks.AbstractBaseTagMouseListener;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.ChangeNodeDecorator;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.ChangesBrowserNodeRenderer;
+import consulo.ui.NotificationType;
+import consulo.ui.ex.SimpleTextAttributes;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.ActionPlaces;
+import consulo.ui.ex.action.ActionToolbar;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.ui.ex.action.DumbAwareAction;
+import consulo.ui.ex.awt.*;
+import consulo.ui.ex.awt.speedSearch.TableViewSpeedSearch;
+import consulo.ui.ex.awt.table.ListTableModel;
+import consulo.ui.ex.awt.table.TableView;
+import consulo.ui.ex.awt.util.PopupUtil;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.Pair;
+import consulo.util.lang.function.Condition;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.mergeinfo.ListMergeStatus;
 import org.jetbrains.idea.svn.mergeinfo.MergeChecker;
 import org.jetbrains.idea.svn.mergeinfo.SvnMergeInfoCache;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -57,20 +57,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.intellij.openapi.vcs.changes.committed.CommittedChangesTreeBrowser.collectChanges;
-import static com.intellij.util.containers.ContainerUtil.*;
-import static com.intellij.util.containers.ContainerUtilRt.emptyList;
-import static com.intellij.util.containers.ContainerUtilRt.newHashSet;
+import static consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangesTreeBrowser.collectChanges;
+import static consulo.ide.impl.idea.util.containers.ContainerUtilRt.emptyList;
+import static consulo.ide.impl.idea.util.containers.ContainerUtilRt.newHashSet;
+import static consulo.util.collection.ContainerUtil.filter;
+import static consulo.util.collection.ContainerUtil.isEmpty;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.synchronizedMap;
 import static org.jetbrains.idea.svn.integrate.MergeCalculatorTask.getBunchSize;
 import static org.jetbrains.idea.svn.integrate.MergeCalculatorTask.loadChangeLists;
 
-public class ToBeMergedDialog extends DialogWrapper {
+public class ToBeMergedDialog extends DialogWrapper
+{
   public static final int MERGE_ALL_CODE = 222;
   private final JPanel myPanel;
   @Nonnull
@@ -101,7 +103,7 @@ public class ToBeMergedDialog extends DialogWrapper {
     super(mergeContext.getProject(), true);
     myMergeContext = mergeContext;
     myAllListsLoaded = allListsLoaded;
-    myStatusMap = synchronizedMap(newHashMap());
+    myStatusMap = synchronizedMap(new HashMap<>());
     myMergeChecker = mergeChecker;
     myAllStatusesCalculated = allStatusesCalculated;
     setTitle(title);
@@ -454,7 +456,7 @@ public class ToBeMergedDialog extends DialogWrapper {
       }
       catch (VcsException e) {
         setEmptyData();
-        PopupUtil.showBalloonForActiveComponent(e.getMessage(), MessageType.ERROR);
+        PopupUtil.showBalloonForActiveComponent(e.getMessage(), NotificationType.ERROR);
       }
     }
 
@@ -495,7 +497,7 @@ public class ToBeMergedDialog extends DialogWrapper {
       myRenderer = new CommittedChangeListRenderer(myMergeContext.getProject(), singletonList(list -> {
         ListMergeStatus status = myAllStatusesCalculated
                                  ? ListMergeStatus.NOT_MERGED
-                                 : ObjectUtils.notNull(myStatusMap.get(list.getNumber()), ListMergeStatus.REFRESHING);
+                                 : ObjectUtil.notNull(myStatusMap.get(list.getNumber()), ListMergeStatus.REFRESHING);
 
         return status.getIcon();
       }));

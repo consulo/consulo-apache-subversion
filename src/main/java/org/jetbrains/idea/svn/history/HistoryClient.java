@@ -1,13 +1,12 @@
 package org.jetbrains.idea.svn.history;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.openapi.vcs.VcsException;
-
-import javax.annotation.Nullable;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.api.SvnClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Konstantin Kolosovsky.

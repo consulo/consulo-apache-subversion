@@ -15,13 +15,13 @@
  */
 package org.jetbrains.idea.svn.rollback;
 
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.function.Condition;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ContentRevision;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;

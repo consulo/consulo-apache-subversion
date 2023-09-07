@@ -15,13 +15,15 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
+import consulo.component.ProcessCanceledException;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.versionControlSystem.VcsException;
+
 import javax.annotation.Nonnull;
+
+import consulo.project.Project;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNURL;
@@ -45,7 +47,7 @@ public class SvnLogUtil implements SvnLogLoader {
   }
 
   public List<CommittedChangeList> loadInterval(final SVNRevision fromIncluding, final SVNRevision toIncluding,
-                                                final int maxCount, final boolean includingYoungest, final boolean includeOldest)
+																							final int maxCount, final boolean includingYoungest, final boolean includeOldest)
     throws VcsException {
     final List<CommittedChangeList> result = new ArrayList<>();
     LogEntryConsumer handler = createLogHandler(fromIncluding, toIncluding, includingYoungest, includeOldest, result);

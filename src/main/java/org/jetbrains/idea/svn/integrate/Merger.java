@@ -15,15 +15,12 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.messages.Topic;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.project.Project;
+import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -35,6 +32,8 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNRevisionRange;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 
@@ -182,7 +181,7 @@ public class Merger implements IMerger {
 
   @Nullable
   public String getSkipped() {
-    return getSkippedMessage(myMergeChunk != null ? myMergeChunk.chunkAndAfterLists() : ContainerUtil.<CommittedChangeList>emptyList());
+    return getSkippedMessage(myMergeChunk != null ? myMergeChunk.chunkAndAfterLists() : List.of());
   }
 
   @Nullable
@@ -222,18 +221,14 @@ public class Merger implements IMerger {
       List<CommittedChangeList> processed =
         myMergeChunk != null
         ? ContainerUtil.newArrayList(myMergeChunk.chunkAndBeforeLists())
-        : ContainerUtil.<CommittedChangeList>emptyList();
+        : List.of();
 
       myProject.getMessageBus().syncPublisher(COMMITTED_CHANGES_MERGED_STATE).event(processed);
     }
   }
 
-  public static final Topic<CommittedChangesMergedStateChanged> COMMITTED_CHANGES_MERGED_STATE =
-    new Topic<>("COMMITTED_CHANGES_MERGED_STATE", CommittedChangesMergedStateChanged.class);
-
-  public interface CommittedChangesMergedStateChanged {
-    void event(final List<CommittedChangeList> list);
-  }
+  @Deprecated
+  public static final Class<CommittedChangesMergedStateChanged> COMMITTED_CHANGES_MERGED_STATE = CommittedChangesMergedStateChanged.class;
 
   @Nonnull
   private CommittedChangeList listAt(int index) {

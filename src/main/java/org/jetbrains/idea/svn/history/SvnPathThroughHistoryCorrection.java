@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;

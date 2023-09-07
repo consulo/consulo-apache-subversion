@@ -15,9 +15,10 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.help.HelpManager;
-import com.intellij.openapi.project.Project;
 import javax.annotation.Nonnull;
+
+import consulo.application.HelpManager;
+import consulo.project.Project;
 import org.jetbrains.idea.svn.SvnBundle;
 
 import javax.swing.*;

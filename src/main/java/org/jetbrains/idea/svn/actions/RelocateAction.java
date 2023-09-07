@@ -15,16 +15,16 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.WaitForProgressToShow;
+import consulo.application.progress.ProgressIndicator;
+import consulo.dataContext.DataContext;
+import consulo.application.progress.ProgressManager;
+import consulo.project.Project;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.project.util.WaitForProgressToShow;
+import consulo.ui.ex.awt.Messages;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.dialogs.RelocateDialog;

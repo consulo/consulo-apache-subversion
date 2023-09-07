@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.openapi.Disposable;
+import consulo.disposer.Disposable;
 import org.tmatesoft.svn.core.SVNURL;
 
 import java.io.File;

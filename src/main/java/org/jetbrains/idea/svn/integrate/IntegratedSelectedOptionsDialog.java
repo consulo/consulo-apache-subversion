@@ -15,19 +15,26 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.FileIndexFacade;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.IconUtil;
-import com.intellij.util.ui.UIUtil;
+import consulo.application.ApplicationManager;
+import consulo.application.util.function.Computable;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.fileChooser.IdeaFileChooser;
+import consulo.ide.impl.idea.util.IconUtil;
+import consulo.language.content.FileIndexFacade;
+import consulo.project.Project;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.ActionPlaces;
+import consulo.ui.ex.action.ActionToolbar;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.CommonShortcuts;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.ui.ex.action.Presentation;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.Messages;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.util.lang.Pair;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnUtil;
@@ -112,7 +119,7 @@ public class IntegratedSelectedOptionsDialog extends DialogWrapper {
       }
 
       public void actionPerformed(final AnActionEvent e) {
-        final VirtualFile vFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), myProject, null);
+        final VirtualFile vFile = IdeaFileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), myProject, null);
         if (vFile != null) {
           final File file = new File(vFile.getPath());
           if (hasDuplicate(file)) {
@@ -258,8 +265,8 @@ public class IntegratedSelectedOptionsDialog extends DialogWrapper {
 
   @Nullable
   public static Pair<WorkingCopyInfo, SVNURL> selectWorkingCopy(final Project project, final SVNURL currentBranch, final String targetBranch,
-                                                                final boolean showIntegrationParameters,
-                                                                final String selectedLocalBranchPath, final String dialogTitle) {
+																final boolean showIntegrationParameters,
+																final String selectedLocalBranchPath, final String dialogTitle) {
     final IntegratedSelectedOptionsDialog dialog = new IntegratedSelectedOptionsDialog(project, currentBranch, targetBranch);
     if (!showIntegrationParameters) {
       dialog.selectWcopyRootOnly();

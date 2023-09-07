@@ -15,16 +15,13 @@
  */
 package org.jetbrains.idea.svn.info;
 
-import com.intellij.execution.process.ProcessOutput;
-import com.intellij.execution.process.ProcessOutputTypes;
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.logging.Logger;
+import consulo.process.ProcessOutputTypes;
+import consulo.process.local.ProcessOutput;
+import consulo.util.collection.ContainerUtil;
 import consulo.util.dataholder.Key;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.util.Consumer;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.io.CharsetToolkit;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.*;
@@ -33,6 +30,8 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -41,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -106,7 +106,7 @@ public class CmdInfoClient extends BaseSvnClient implements InfoClient {
 
     final SvnInfoHandler infoHandler = new SvnInfoHandler(base, new Consumer<Info>() {
       @Override
-      public void consume(Info info) {
+      public void accept(Info info) {
         try {
           handler.consume(info);
         }

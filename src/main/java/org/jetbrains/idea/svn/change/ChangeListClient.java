@@ -1,6 +1,6 @@
 package org.jetbrains.idea.svn.change;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.SvnClient;

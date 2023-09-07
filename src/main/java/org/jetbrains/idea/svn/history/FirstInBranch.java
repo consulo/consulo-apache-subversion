@@ -16,21 +16,21 @@
 package org.jetbrains.idea.svn.history;
 
 import com.google.common.base.MoreObjects;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.logging.Logger;
+import consulo.util.lang.Pair;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
-import static com.intellij.openapi.util.text.StringUtil.join;
-import static com.intellij.util.ObjectUtils.notNull;
-import static com.intellij.util.containers.ContainerUtil.immutableList;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+
+import static consulo.util.lang.ObjectUtil.notNull;
 import static org.jetbrains.idea.svn.SvnUtil.*;
 import static org.jetbrains.idea.svn.commandLine.CommandUtil.format;
 
@@ -66,7 +66,9 @@ public class FirstInBranch {
   }
 
   @Nullable
-  private CopyData find(@Nonnull BranchPoint trunk, @Nonnull BranchPoint branch, boolean isBranchFromTrunk) throws VcsException {
+  private CopyData find(@Nonnull BranchPoint trunk,
+                        @Nonnull BranchPoint branch,
+                        boolean isBranchFromTrunk) throws VcsException {
     CopyData result = null;
 
     debug(trunk, branch, isBranchFromTrunk);
@@ -85,8 +87,8 @@ public class FirstInBranch {
           else {
             // both trunk and branch were copied from different points -> search recursively starting with latter revisions
             result = branch.copyRevision() > trunk.copyRevision()
-                     ? find(trunk, new BranchPoint(branch.copyTarget()), isBranchFromTrunk)
-                     : find(new BranchPoint(trunk.copyTarget()), branch, isBranchFromTrunk);
+              ? find(trunk, new BranchPoint(branch.copyTarget()), isBranchFromTrunk)
+              : find(new BranchPoint(trunk.copyTarget()), branch, isBranchFromTrunk);
           }
         }
         else {
@@ -98,8 +100,8 @@ public class FirstInBranch {
     else if (branch.hasCopyPath()) {
       // trunk was not copied from anywhere -> search in branch when it was copied from trunk
       result = StringUtil.equals(branch.copyPath(), trunk.relativePath())
-               ? branch.toCopyData(isBranchFromTrunk)
-               : find(trunk, new BranchPoint(branch.copyTarget()), isBranchFromTrunk);
+        ? branch.toCopyData(isBranchFromTrunk)
+        : find(trunk, new BranchPoint(branch.copyTarget()), isBranchFromTrunk);
     }
 
     return result;
@@ -107,21 +109,26 @@ public class FirstInBranch {
 
   private void debug(@Nullable CopyData copyData) {
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Found branch point " + join(immutableList(myAbsoluteTrunkUrl, myAbsoluteBranchUrl, copyData), ", "));
+      LOG.debug("Found branch point " + String.join(", ", List.of(myAbsoluteTrunkUrl, myAbsoluteBranchUrl, String.valueOf(copyData))));
     }
   }
 
   private void debug(@Nonnull BranchPoint trunk, @Nonnull BranchPoint branch, boolean isBranchFromTrunk) {
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Searching branch point for " + join(immutableList(trunk, branch, isBranchFromTrunk), ", "));
+      LOG.debug("Searching branch point for " + String.join(", ",
+                                                            List.of(trunk.toString(),
+                                                                    branch.toString(),
+                                                                    String.valueOf(isBranchFromTrunk))));
     }
   }
 
   private class BranchPoint {
     @Nonnull
-	private final SvnTarget myTarget;
-    @Nullable private LogEntry myEntry;
-    @Nullable private LogEntryPath myPath;
+    private final SvnTarget myTarget;
+    @Nullable
+    private LogEntry myEntry;
+    @Nullable
+    private LogEntryPath myPath;
 
     private BranchPoint(@Nonnull SvnTarget target) {
       myTarget = target;
@@ -130,12 +137,12 @@ public class FirstInBranch {
     @Override
     public String toString() {
       return MoreObjects.toStringHelper(this)
-        .add("target", myTarget)
-        .add("revision", myEntry != null ? myEntry.getRevision() : -1)
-        .add("path", myPath != null && myPath.getCopyPath() != null
-                     ? format(myPath.getCopyPath(), SVNRevision.create(myPath.getCopyRevision()))
-                     : null)
-        .toString();
+                        .add("target", myTarget)
+                        .add("revision", myEntry != null ? myEntry.getRevision() : -1)
+                        .add("path", myPath != null && myPath.getCopyPath() != null
+                          ? format(myPath.getCopyPath(), SVNRevision.create(myPath.getCopyRevision()))
+                          : null)
+                        .toString();
     }
 
     private void init() throws VcsException {

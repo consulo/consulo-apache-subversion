@@ -15,12 +15,11 @@
  */
 package org.jetbrains.idea.svn.ignore;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import javax.annotation.Nonnull;
+import consulo.project.Project;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -28,6 +27,7 @@ import org.jetbrains.idea.svn.properties.PropertyValue;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.*;
 
@@ -37,7 +37,7 @@ public class SvnPropertyService {
   }
 
   public static void doAddToIgnoreProperty(final SvnVcs activeVcs, final Project project, final boolean useCommonExtension,
-                                           final VirtualFile[] file, final IgnoreInfoGetter getter) throws VcsException {
+										   final VirtualFile[] file, final IgnoreInfoGetter getter) throws VcsException {
     final IgnorePropertyAdder adder = new IgnorePropertyAdder(activeVcs, project, useCommonExtension);
     adder.execute(file, getter);
   }
@@ -49,7 +49,7 @@ public class SvnPropertyService {
   }
 
   public static void doCheckIgnoreProperty(final SvnVcs activeVcs, final Project project, final VirtualFile[] file,
-        final IgnoreInfoGetter getter, final String extensionPattern, final Ref<Boolean> filesOk, final Ref<Boolean> extensionOk) {
+										   final IgnoreInfoGetter getter, final String extensionPattern, final Ref<Boolean> filesOk, final Ref<Boolean> extensionOk) {
     final IgnorePropertyChecker checker = new IgnorePropertyChecker(activeVcs, project, extensionPattern);
     try {
       checker.execute(file, getter);
@@ -125,7 +125,8 @@ public class SvnPropertyService {
     }
 
     protected void processFolder(final VirtualFile folder, final File folderDir, final Set<String> data, final PropertyValue propertyValue)
-      throws VcsException {
+      throws VcsException
+	{
       if (propertyValue == null) {
         myFilesOk = false;
         myExtensionOk = false;
@@ -180,7 +181,8 @@ public class SvnPropertyService {
     protected abstract String getNewPropertyValue(final Set<String> data, final PropertyValue propertyValue);
 
     protected void processFolder(final VirtualFile folder, final File folderDir, final Set<String> data, final PropertyValue propertyValue)
-      throws VcsException {
+      throws VcsException
+	{
       String newValue = getNewPropertyValue(data, propertyValue);
       newValue = (newValue.trim().isEmpty()) ? null : newValue;
       myVcs.getFactory(folderDir).createPropertyClient()

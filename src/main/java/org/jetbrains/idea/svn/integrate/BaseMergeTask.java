@@ -15,10 +15,11 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.ThrowableConsumer;
-import com.intellij.util.ThrowableRunnable;
+import consulo.application.progress.ProgressIndicator;
+import consulo.util.lang.function.ThrowableRunnable;
+import consulo.versionControlSystem.VcsException;
+import consulo.util.lang.function.ThrowableConsumer;
+
 import javax.annotation.Nonnull;
 
 public abstract class BaseMergeTask implements ThrowableRunnable<VcsException>, ThrowableConsumer<ProgressIndicator, VcsException> {
@@ -37,7 +38,8 @@ public abstract class BaseMergeTask implements ThrowableRunnable<VcsException>, 
   }
 
   @Override
-  public void consume(@Nonnull ProgressIndicator indicator) throws VcsException {
+  public void consume(@Nonnull ProgressIndicator indicator) throws VcsException
+  {
     run();
   }
 

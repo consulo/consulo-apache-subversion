@@ -15,15 +15,15 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.VcsKey;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vcs.update.FileGroup;
-import com.intellij.openapi.vcs.update.UpdateFilesHelper;
-import com.intellij.openapi.vcs.update.UpdatedFiles;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.project.Project;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.VcsKey;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.versionControlSystem.update.FileGroup;
+import consulo.versionControlSystem.update.UpdateFilesHelper;
+import consulo.versionControlSystem.update.UpdatedFiles;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -66,7 +66,8 @@ public class ResolveWorker {
   public boolean needsInteraction(final UpdatedFiles updatedFiles) {
     if (myChangesUnderProjectRoot) {
       refreshChangeListsFindConflicts(updatedFiles);
-    } else {
+    }
+    else {
       final FileGroup conflictedGroup = updatedFiles.getGroupById(FileGroup.MERGED_WITH_CONFLICT_ID);
       for (String filename : conflictedGroup.getFiles()) {
         final VirtualFile vf = SvnUtil.getVirtualFile(filename);
@@ -74,16 +75,17 @@ public class ResolveWorker {
       }
     }
 
-    return ((! myConflictedVirtualFiles.isEmpty()) || (! haveUnresolvedConflicts(updatedFiles))) &&
-           (!SvnConfiguration.getInstance(myProject).isMergeDryRun());
+    return ((!myConflictedVirtualFiles.isEmpty()) || (!haveUnresolvedConflicts(updatedFiles))) &&
+      (!SvnConfiguration.getInstance(myProject).isMergeDryRun());
   }
 
   public static boolean haveUnresolvedConflicts(final UpdatedFiles updatedFiles) {
-    final String[] ids = new String[] {FileGroup.MERGED_WITH_CONFLICT_ID, FileGroup.MERGED_WITH_PROPERTY_CONFLICT_ID,
-      FileGroup.MERGED_WITH_TREE_CONFLICT, FileGroup.SKIPPED_ID};
+    final String[] ids =
+      new String[]{FileGroup.MERGED_WITH_CONFLICT_ID, FileGroup.MERGED_WITH_PROPERTY_CONFLICT_ID,
+        FileGroup.MERGED_WITH_TREE_CONFLICT, FileGroup.SKIPPED_ID};
     for (String id : ids) {
       final FileGroup group = updatedFiles.getGroupById(id);
-      if ((group != null) && (! group.isEmpty())) return true;
+      if ((group != null) && (!group.isEmpty())) return true;
     }
     return false;
   }
@@ -98,7 +100,8 @@ public class ResolveWorker {
     List<VirtualFile> mergedFiles = vcsHelper.showMergeDialog(myConflictedVirtualFiles, new SvnMergeProvider(myProject));
 
     final FileGroup mergedGroup = updatedFiles.getGroupById(FileGroup.MERGED_ID);
-    final FileGroup conflictedGroup = updatedFiles.getGroupById(FileGroup.MERGED_WITH_CONFLICT_ID);
+    final FileGroup conflictedGroup =
+      updatedFiles.getGroupById(FileGroup.MERGED_WITH_CONFLICT_ID);
     final VcsKey vcsKey = SvnVcs.getKey();
 
     for (final VirtualFile mergedFile : mergedFiles) {

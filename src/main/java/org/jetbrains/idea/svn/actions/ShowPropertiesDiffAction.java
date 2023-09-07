@@ -15,26 +15,26 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.diff.DiffManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.progress.PerformInBackgroundOption;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ChangesUtil;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.CurrentContentRevision;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.dumb.DumbAware;
+import consulo.application.progress.PerformInBackgroundOption;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.diff.DiffManager;
+import consulo.ide.impl.idea.util.containers.ContainerUtil;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.lang.ObjectUtil;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsDataKeys;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ChangesUtil;
+import consulo.versionControlSystem.change.ContentRevision;
+import consulo.versionControlSystem.change.CurrentContentRevision;
 import org.jetbrains.idea.svn.SvnBaseContentRevision;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -53,16 +53,16 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.intellij.util.ObjectUtils.notNull;
-import static com.intellij.util.containers.ContainerUtil.exists;
-
-public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
+public class ShowPropertiesDiffAction extends AnAction implements DumbAware
+{
 
   @Override
   public void update(@Nonnull AnActionEvent e) {
@@ -74,7 +74,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
   }
 
   private static boolean checkThatChangesAreUnderSvn(@Nullable Change[] changes) {
-    return changes != null && exists(changes, change -> isUnderSvn(change.getBeforeRevision()) || isUnderSvn(change.getAfterRevision()));
+    return changes != null && ContainerUtil.exists(changes, change -> isUnderSvn(change.getBeforeRevision()) || isUnderSvn(change.getAfterRevision()));
   }
 
   private static boolean isUnderSvn(@Nullable ContentRevision revision) {
@@ -86,7 +86,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     Change[] changes = e.getData(VcsDataKeys.CHANGE_LEAD_SELECTION);
 
     if (checkThatChangesAreUnderSvn(changes)) {
-      new CalculateAndShow(e.getProject(), changes[0], e.getPresentation().getText()).queue();
+      new CalculateAndShow(e.getData(Project.KEY), changes[0], e.getPresentation().getText()).queue();
     }
   }
 
@@ -106,7 +106,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
     }
 
     public void run(@Nonnull final ProgressIndicator indicator) {
-      final SvnVcs vcs = SvnVcs.getInstance(myProject);
+      final SvnVcs vcs = SvnVcs.getInstance((Project)myProject);
 
       try {
         myBeforeRevisionValue = getBeforeRevisionValue(myChange);
@@ -140,7 +140,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
                                                      new PropertyContent(myBeforeContent), new PropertyContent(myAfterContent),
                                                      revisionToString(myBeforeRevisionValue), revisionToString(myAfterRevision));
         }
-        DiffManager.getInstance().showDiff(myProject, diffRequest);
+        DiffManager.getInstance().showDiff((Project)myProject, diffRequest);
       }
     }
   }
@@ -152,7 +152,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
       return ((SvnRevisionNumber)beforeRevision.getRevisionNumber()).getRevision();
     }
     else {
-      return SVNRevision.create(((SvnRevisionNumber)notNull(change.getAfterRevision()).getRevisionNumber()).getRevision().getNumber() - 1);
+      return SVNRevision.create(((SvnRevisionNumber)ObjectUtil.notNull(change.getAfterRevision()).getRevisionNumber()).getRevision().getNumber() - 1);
     }
   }
 
@@ -166,7 +166,7 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
              : ((SvnRevisionNumber)afterRevision.getRevisionNumber()).getRevision();
     }
     else {
-      return SVNRevision.create(((SvnRevisionNumber)notNull(change.getBeforeRevision()).getRevisionNumber()).getRevision().getNumber() + 1);
+      return SVNRevision.create(((SvnRevisionNumber)ObjectUtil.notNull(change.getBeforeRevision()).getRevisionNumber()).getRevision().getNumber() + 1);
     }
   }
 
@@ -234,7 +234,8 @@ public class ShowPropertiesDiffAction extends AnAction implements DumbAware {
 
   @Nonnull
   public static List<PropertyData> getPropertyList(@Nonnull SvnVcs vcs, @Nonnull final SVNURL url, @Nullable final SVNRevision revision)
-    throws VcsException {
+    throws VcsException
+  {
     return getPropertyList(vcs, SvnTarget.fromURL(url, revision), revision);
   }
 

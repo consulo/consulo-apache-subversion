@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
-import com.intellij.openapi.Disposable;
+import consulo.disposer.Disposable;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.io.SVNRepository;
@@ -26,7 +26,8 @@ import org.tmatesoft.svn.core.io.SVNRepository;
  * Date: 7/30/12
  * Time: 3:18 PM
  */
-public interface SvnRepositoryPool extends Disposable {
+public interface SvnRepositoryPool extends Disposable
+{
   SVNRepository getRepo(SVNURL url, boolean mayReuse) throws SVNException;
   void returnRepo(SVNRepository repo);
 }

@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.Pair;
-import com.intellij.util.ThrowableConsumer;
-import com.intellij.util.ThrowableConvertor;
+import consulo.application.ApplicationManager;
+import consulo.util.lang.function.ThrowableConsumer;
+import consulo.ide.impl.idea.util.ThrowableConvertor;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.util.lang.Pair;
 import org.tmatesoft.svn.core.ISVNCanceller;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNException;

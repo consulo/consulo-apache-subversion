@@ -15,10 +15,11 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.application.util.SystemInfo;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.io.FileUtil;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

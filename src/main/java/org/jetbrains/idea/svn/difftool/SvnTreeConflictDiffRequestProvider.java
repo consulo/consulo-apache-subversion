@@ -1,20 +1,22 @@
 package org.jetbrains.idea.svn.difftool;
 
-import com.intellij.diff.DiffContext;
-import com.intellij.diff.FrameDiffTool;
-import com.intellij.diff.chains.DiffRequestProducerException;
-import com.intellij.diff.requests.DiffRequest;
-import com.intellij.openapi.progress.BackgroundTaskQueue;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProducer;
-import com.intellij.openapi.vcs.changes.actions.diff.ChangeDiffRequestProvider;
-import com.intellij.ui.components.panels.Wrapper;
-import com.intellij.util.ThreeState;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.Application;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.util.BackgroundTaskQueue;
+import consulo.component.ProcessCanceledException;
+import consulo.diff.chain.DiffRequestProducerException;
+import consulo.diff.request.DiffRequest;
+import consulo.disposer.Disposer;
+import consulo.ide.impl.idea.diff.DiffContext;
+import consulo.ide.impl.idea.diff.FrameDiffTool;
+import consulo.ide.impl.idea.openapi.vcs.changes.actions.diff.ChangeDiffRequestProducer;
+import consulo.ide.impl.idea.openapi.vcs.changes.actions.diff.ChangeDiffRequestProvider;
+import consulo.project.Project;
+import consulo.ui.ex.awt.Wrapper;
 import consulo.util.dataholder.UserDataHolder;
+import consulo.util.lang.ThreeState;
+import consulo.versionControlSystem.change.Change;
 import org.jetbrains.idea.svn.ConflictedSvnChange;
 import org.jetbrains.idea.svn.conflict.TreeConflictDescription;
 import org.jetbrains.idea.svn.treeConflict.TreeConflictRefreshablePanel;
@@ -23,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
+@ExtensionImpl
 public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProvider {
   @Nonnull
   @Override
@@ -53,7 +56,7 @@ public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProv
 
   public static class SvnTreeConflictDiffRequest extends DiffRequest {
     @Nonnull
-	private final ConflictedSvnChange myChange;
+    private final ConflictedSvnChange myChange;
 
     public SvnTreeConflictDiffRequest(@Nonnull ConflictedSvnChange change) {
       myChange = change;
@@ -92,22 +95,22 @@ public class SvnTreeConflictDiffRequestProvider implements ChangeDiffRequestProv
 
   private static class SvnTreeConflictDiffViewer implements FrameDiffTool.DiffViewer {
     @Nonnull
-	private final DiffContext myContext;
+    private final DiffContext myContext;
     @Nonnull
-	private final SvnTreeConflictDiffRequest myRequest;
+    private final SvnTreeConflictDiffRequest myRequest;
     @Nonnull
-	private final Wrapper myPanel = new Wrapper();
+    private final Wrapper myPanel = new Wrapper();
 
     @Nonnull
-	private final BackgroundTaskQueue myQueue;
+    private final BackgroundTaskQueue myQueue;
     @Nonnull
-	private final TreeConflictRefreshablePanel myDelegate;
+    private final TreeConflictRefreshablePanel myDelegate;
 
     public SvnTreeConflictDiffViewer(@Nonnull DiffContext context, @Nonnull SvnTreeConflictDiffRequest request) {
       myContext = context;
       myRequest = request;
 
-      myQueue = new BackgroundTaskQueue(myContext.getProject(), "Loading change details");
+      myQueue = new BackgroundTaskQueue(Application.get(), myContext.getProject(), "Loading change details");
 
       // We don't need to listen on File/Document, because panel always will be the same for a single change.
       // And if Change will change - we'll create new DiffRequest and DiffViewer

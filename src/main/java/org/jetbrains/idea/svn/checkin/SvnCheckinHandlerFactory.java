@@ -15,42 +15,37 @@
  */
 package org.jetbrains.idea.svn.checkin;
 
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.Application;
+import consulo.application.ApplicationManager;
+import consulo.project.Project;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.collection.MultiMap;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.function.PairConsumer;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ChangesUtil;
+import consulo.versionControlSystem.change.CommitExecutor;
+import consulo.versionControlSystem.change.LocalCommitExecutor;
+import consulo.versionControlSystem.checkin.CheckinHandler;
+import consulo.versionControlSystem.checkin.CheckinProjectPanel;
+import consulo.versionControlSystem.checkin.VcsCheckinHandlerFactory;
+import consulo.versionControlSystem.ui.RefreshableOnComponent;
+import consulo.versionControlSystem.update.ActionInfo;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
+import org.jetbrains.idea.svn.*;
+import org.jetbrains.idea.svn.update.AutoSvnUpdater;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.jetbrains.idea.svn.RootUrlInfo;
-import org.jetbrains.idea.svn.SvnBundle;
-import org.jetbrains.idea.svn.SvnConfiguration;
-import org.jetbrains.idea.svn.SvnFileUrlMapping;
-import org.jetbrains.idea.svn.SvnVcs;
-import org.jetbrains.idea.svn.WorkingCopyFormat;
-import org.jetbrains.idea.svn.update.AutoSvnUpdater;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.CheckinProjectPanel;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ChangesUtil;
-import com.intellij.openapi.vcs.changes.CommitExecutor;
-import com.intellij.openapi.vcs.changes.LocalCommitExecutor;
-import com.intellij.openapi.vcs.checkin.CheckinHandler;
-import com.intellij.openapi.vcs.checkin.VcsCheckinHandlerFactory;
-import com.intellij.openapi.vcs.ui.RefreshableOnComponent;
-import com.intellij.openapi.vcs.update.ActionInfo;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.PairConsumer;
-import com.intellij.util.containers.MultiMap;
-import com.intellij.vcsUtil.VcsUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,6 +53,7 @@ import com.intellij.vcsUtil.VcsUtil;
  * Date: 2/16/12
  * Time: 6:51 PM
  */
+@ExtensionImpl
 public class SvnCheckinHandlerFactory extends VcsCheckinHandlerFactory {
   public SvnCheckinHandlerFactory() {
     super(SvnVcs.getKey());
@@ -87,11 +83,13 @@ public class SvnCheckinHandlerFactory extends VcsCheckinHandlerFactory {
             repoUrls.add(entry.getKey());
           }
         }
-        if (! repoUrls.isEmpty()) {
+        if (!repoUrls.isEmpty()) {
           final String join = StringUtil.join(repoUrls, ",\n");
           final int isOk = Messages.showOkCancelDialog(project,
-            SvnBundle.message("checkin.different.formats.involved", repoUrls.size() > 1 ? 1 : 0, join),
-            "Subversion: Commit Will Split", Messages.getWarningIcon());
+                                                       SvnBundle.message("checkin.different.formats.involved",
+                                                                         repoUrls.size() > 1 ? 1 : 0,
+                                                                         join),
+                                                       "Subversion: Commit Will Split", Messages.getWarningIcon());
 
           return Messages.OK == isOk ? ReturnResult.COMMIT : ReturnResult.CANCEL;
         }
@@ -111,7 +109,7 @@ public class SvnCheckinHandlerFactory extends VcsCheckinHandlerFactory {
           for (VirtualFile root : roots) {
             boolean take = false;
             for (VirtualFile commitRoot : commitRoots) {
-              if (VfsUtilCore.isAncestor(root, commitRoot, false)) {
+              if (VirtualFileUtil.isAncestor(root, commitRoot, false)) {
                 take = true;
                 break;
               }
@@ -126,14 +124,15 @@ public class SvnCheckinHandlerFactory extends VcsCheckinHandlerFactory {
             public void run() {
               AutoSvnUpdater.run(new AutoSvnUpdater(project, paths.toArray(new FilePath[paths.size()])), ActionInfo.UPDATE.getActionName());
             }
-          }, ModalityState.NON_MODAL);
+          }, Application.get().getNoneModalityState());
         }
       }
     };
   }
 
   @Nonnull
-  private static MultiMap<String, WorkingCopyFormat> splitIntoCopies(@Nonnull SvnVcs vcs, @Nonnull Collection<Change> changes) {
+  private static MultiMap<String, WorkingCopyFormat> splitIntoCopies(@Nonnull SvnVcs vcs,
+                                                                                             @Nonnull Collection<Change> changes) {
     MultiMap<String, WorkingCopyFormat> result = MultiMap.createSet();
     SvnFileUrlMapping mapping = vcs.getSvnFileUrlMapping();
 

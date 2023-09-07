@@ -1,7 +1,7 @@
 package org.jetbrains.idea.svn.properties;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.LineSeparator;
+import consulo.versionControlSystem.VcsException;
+import consulo.platform.LineSeparator;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
@@ -33,7 +33,8 @@ public class SvnKitPropertyClient extends BaseSvnClient implements PropertyClien
   public PropertyValue getProperty(@Nonnull SvnTarget target,
                                    @Nonnull String property,
                                    boolean revisionProperty,
-                                   @Nullable SVNRevision revision) throws VcsException {
+                                   @Nullable SVNRevision revision) throws VcsException
+  {
     PropertyData resultData;
 
     try {
@@ -114,7 +115,8 @@ public class SvnKitPropertyClient extends BaseSvnClient implements PropertyClien
                                   @Nonnull String property,
                                   @Nonnull SVNRevision revision,
                                   @Nullable PropertyValue value,
-                                  boolean force) throws VcsException {
+                                  boolean force) throws VcsException
+  {
     try {
       if (target.isFile()) {
         createClient().doSetRevisionProperty(target.getFile(), revision, property, toPropertyValue(value), force, null);

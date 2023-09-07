@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.actions.StandardVcsGroup;
+import consulo.project.Project;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.action.StandardVcsGroup;
 import org.jetbrains.idea.svn.SvnVcs;
 
 public class SubversionGroup extends StandardVcsGroup {

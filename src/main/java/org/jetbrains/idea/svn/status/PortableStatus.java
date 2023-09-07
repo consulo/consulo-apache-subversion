@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.status;
 
-import com.intellij.openapi.util.Getter;
+import consulo.ide.impl.idea.openapi.util.Getter;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.NodeKind;

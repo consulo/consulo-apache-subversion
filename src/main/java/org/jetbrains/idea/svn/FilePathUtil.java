@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.FilePath;
 
 import java.io.File;
 import java.util.Collection;

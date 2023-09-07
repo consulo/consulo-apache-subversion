@@ -15,17 +15,17 @@
  */
 package org.jetbrains.idea.svn.diff;
 
-import com.intellij.openapi.util.io.BufferExposingByteArrayOutputStream;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.ByteBackedContentRevision;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nonnull;
+import consulo.ide.impl.idea.openapi.vcs.changes.ByteBackedContentRevision;
+import consulo.util.io.BufferExposingByteArrayOutputStream;
+import consulo.util.io.CharsetToolkit;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
+import consulo.versionControlSystem.util.VcsUtil;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.io.SVNRepository;
 
+import javax.annotation.Nonnull;
 import java.nio.charset.Charset;
 
 public class DiffContentRevision implements ByteBackedContentRevision {
@@ -47,7 +47,8 @@ public class DiffContentRevision implements ByteBackedContentRevision {
   }
 
   @Nonnull
-  public String getContent() throws VcsException {
+  public String getContent() throws VcsException
+  {
     final byte[] bytes = getContentAsBytes();
     final Charset charset = myFilePath.getCharset();
     return CharsetToolkit.bytesToString(bytes, charset);
@@ -55,7 +56,8 @@ public class DiffContentRevision implements ByteBackedContentRevision {
 
   @Nonnull
   @Override
-  public byte[] getContentAsBytes() throws VcsException {
+  public byte[] getContentAsBytes() throws VcsException
+  {
     if (myContents == null) {
       BufferExposingByteArrayOutputStream bos = new BufferExposingByteArrayOutputStream(2048);
       try {

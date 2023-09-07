@@ -15,12 +15,11 @@
  */
 package org.jetbrains.idea.svn;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.openapi.vfs.VirtualFile;
-
-import javax.annotation.Nullable;
+import consulo.virtualFileSystem.VirtualFile;
 import org.tmatesoft.svn.core.SVNURL;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Konstantin Kolosovsky.

@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.status;
 
-import com.intellij.util.ThrowableConsumer;
+import consulo.util.lang.function.ThrowableConsumer;
 import org.tmatesoft.svn.core.SVNException;
 
 /**

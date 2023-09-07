@@ -15,9 +15,10 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
 import javax.annotation.Nonnull;
+
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.mergeinfo.MergeChecker;
 

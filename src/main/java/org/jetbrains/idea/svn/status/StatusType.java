@@ -15,13 +15,12 @@
  */
 package org.jetbrains.idea.svn.status;
 
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.util.lang.ObjectUtil;
 import org.tmatesoft.svn.core.wc.SVNStatusType;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -59,9 +58,9 @@ public enum StatusType {
   private static final String STATUS_PREFIX = "STATUS_";
 
   @Nonnull
-  private static final Map<String, StatusType> ourOtherStatusTypes = ContainerUtil.newHashMap();
+  private static final Map<String, StatusType> ourOtherStatusTypes = new HashMap<>();
   @Nonnull
-  private static final Map<String, StatusType> ourStatusTypesForStatusOperation = ContainerUtil.newHashMap();
+  private static final Map<String, StatusType> ourStatusTypesForStatusOperation = new HashMap<>();
 
   static {
     for (StatusType action : StatusType.values()) {
@@ -100,10 +99,10 @@ public enum StatusType {
     // CONFLICTED, OBSTRUCTED, MISSING status types have corresponding STATUS_* analogs with same names - so additional check added when
     // converting from SVNKit values
     if (type != SVNStatusType.CONFLICTED && type != SVNStatusType.OBSTRUCTED && type != SVNStatusType.MISSING) {
-      result = ObjectUtils.chooseNotNull(ourStatusTypesForStatusOperation.get(type.toString()), result);
+      result = ObjectUtil.chooseNotNull(ourStatusTypesForStatusOperation.get(type.toString()), result);
     }
 
-    return ObjectUtils.notNull(result, UNUSED);
+    return ObjectUtil.notNull(result, UNUSED);
   }
 
   @Nullable

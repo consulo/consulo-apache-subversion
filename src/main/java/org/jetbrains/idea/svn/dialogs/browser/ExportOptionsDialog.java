@@ -15,14 +15,14 @@
  */
 package org.jetbrains.idea.svn.dialogs.browser;
 
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ui.JBUI;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.fileChooser.IdeaFileChooser;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.idea.svn.DepthCombo;
 import org.jetbrains.idea.svn.SvnBundle;
@@ -173,7 +173,7 @@ public class ExportOptionsDialog extends DialogWrapper implements ActionListener
     fcd.setTitle("Export Directory");
     fcd.setDescription("Select directory to export from subversion");
     fcd.setHideIgnored(false);
-    VirtualFile file = FileChooser.chooseFile(fcd, getContentPane(), myProject, null);
+    VirtualFile file = IdeaFileChooser.chooseFile(fcd, getContentPane(), myProject, null);
     if (file == null) {
       return;
     }

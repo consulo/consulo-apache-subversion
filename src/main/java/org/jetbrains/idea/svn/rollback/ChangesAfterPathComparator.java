@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.rollback;
 
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import javax.annotation.Nonnull;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Comparing;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ContentRevision;
 
+import javax.annotation.Nonnull;
 import java.util.Comparator;
 
 /**

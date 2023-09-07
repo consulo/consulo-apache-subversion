@@ -15,16 +15,17 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.ui.ColoredTreeCellRenderer;
-import com.intellij.ui.SimpleTextAttributes;
-import com.intellij.util.text.DateFormatUtil;
+import consulo.application.util.DateFormatUtil;
+import consulo.application.AllIcons;
+import consulo.language.file.FileTypeManager;
+import consulo.ui.ex.SimpleTextAttributes;
+import consulo.ui.ex.awt.tree.ColoredTreeCellRenderer;
 import org.jetbrains.idea.svn.browse.DirectoryEntry;
 
 import javax.swing.*;
 
-public class SvnRepositoryTreeCellRenderer extends ColoredTreeCellRenderer {
+public class SvnRepositoryTreeCellRenderer extends ColoredTreeCellRenderer
+{
 
   private boolean myIsShowDetails;
 

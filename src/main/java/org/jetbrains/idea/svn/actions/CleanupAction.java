@@ -17,12 +17,12 @@
 
 package org.jetbrains.idea.svn.actions;
 
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.dataContext.DataContext;
+import consulo.project.Project;
+import consulo.versionControlSystem.AbstractVcs;
+import consulo.versionControlSystem.AbstractVcsHelper;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnStatusUtil;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -46,18 +46,20 @@ public class CleanupAction extends BasicAction {
 
   @Override
   protected void execute(final Project project,
-                         final SvnVcs activeVcs, final VirtualFile file, final DataContext context, final AbstractVcsHelper helper)
+						 final SvnVcs activeVcs, final VirtualFile file, final DataContext context, final AbstractVcsHelper helper)
       throws VcsException {
     perform(project, activeVcs, file, context);
   }
 
   protected void perform(Project project, SvnVcs activeVcs, VirtualFile file, DataContext context)
-    throws VcsException {
+    throws VcsException
+  {
     new CleanupWorker(new VirtualFile[]{file}, project, "action.Subversion.cleanup.progress.title").execute();
   }
 
   protected void batchPerform(Project project, SvnVcs activeVcs, VirtualFile[] file, DataContext context)
-    throws VcsException {
+    throws VcsException
+  {
     throw new VcsException(SvnBundle.message("exception.text.cleanupaction.batchperform.not.implemented"));
   }
 

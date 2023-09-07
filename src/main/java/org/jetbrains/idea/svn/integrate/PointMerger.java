@@ -15,12 +15,10 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.collection.ContainerUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.api.Depth;
@@ -32,6 +30,8 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Comparator;
 import java.util.List;
@@ -53,7 +53,8 @@ public class PointMerger extends Merger {
     mySelectedChanges = ContainerUtil.sorted(selectedChanges, ChangesComparator.getInstance());
   }
 
-  protected void doMerge() throws VcsException {
+  protected void doMerge() throws VcsException
+  {
     for (Change change : mySelectedChanges) {
       SvnRepositoryContentRevision before = (SvnRepositoryContentRevision)change.getBeforeRevision();
       SvnRepositoryContentRevision after = (SvnRepositoryContentRevision)change.getAfterRevision();
@@ -81,7 +82,8 @@ public class PointMerger extends Merger {
                  myHandler);
   }
 
-  private void delete(@Nonnull SvnRepositoryContentRevision revision) throws VcsException {
+  private void delete(@Nonnull SvnRepositoryContentRevision revision) throws VcsException
+  {
     DeleteClient client = myVcs.getFactory(myTarget).createDeleteClient();
     File localPath = getLocalPath(revision.getFullPath());
 

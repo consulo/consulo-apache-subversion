@@ -15,9 +15,9 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.vcs.EditFileProvider;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.versionControlSystem.EditFileProvider;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.properties.PropertyClient;
 import org.jetbrains.idea.svn.properties.PropertyValue;
 import org.tmatesoft.svn.core.wc.SVNRevision;
@@ -35,7 +35,8 @@ public class SvnEditFileProvider implements EditFileProvider {
     myVCS = vcs;
   }
 
-  public void editFiles(VirtualFile[] files) throws VcsException {
+  public void editFiles(VirtualFile[] files) throws VcsException
+  {
     File[] ioFiles = new File[files.length];
 
     for (int i = 0; i < files.length; i++) {

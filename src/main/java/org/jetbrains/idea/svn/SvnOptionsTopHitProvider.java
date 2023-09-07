@@ -15,15 +15,16 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.ide.ui.OptionsTopHitProvider;
-import com.intellij.ide.ui.PublicMethodBasedOptionDescription;
-import com.intellij.ide.ui.search.BooleanOptionDescription;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.impl.VcsDescriptor;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.ide.impl.idea.ide.ui.OptionsTopHitProvider;
+import consulo.ide.impl.idea.ide.ui.PublicMethodBasedOptionDescription;
+import consulo.ide.impl.idea.ide.ui.search.BooleanOptionDescription;
+import consulo.project.Project;
+import consulo.versionControlSystem.ProjectLevelVcsManager;
+import consulo.versionControlSystem.VcsDescriptor;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +32,7 @@ import java.util.Collections;
 /**
  * @author Sergey.Malenkov
  */
+@ExtensionImpl
 public final class SvnOptionsTopHitProvider extends OptionsTopHitProvider {
   @Override
   public String getId() {
@@ -45,11 +47,26 @@ public final class SvnOptionsTopHitProvider extends OptionsTopHitProvider {
         if ("Subversion".equals(descriptor.getDisplayName())) {
           final SvnConfiguration config = SvnConfiguration.getInstance(project);
           return Collections.unmodifiableCollection(Arrays.asList(
-            option(config, "Subversion: Update administrative information only in changed subtrees", "isUpdateLockOnDemand", "setUpdateLockOnDemand"),
-            option(config, "Subversion: Check svn:mergeinfo in target subtree when preparing for merge", "isCheckNestedForQuickMerge", "setCheckNestedForQuickMerge"),
-            option(config, "Subversion: Show merge source in history and annotations", "isShowMergeSourcesInAnnotate", "setShowMergeSourcesInAnnotate"),
-            option(config, "Subversion: Ignore whitespace differences in annotations", "isIgnoreSpacesInAnnotate", "setIgnoreSpacesInAnnotate"),
-            option(config, "Subversion: Use IDEA general proxy settings as default for Subversion", "isIsUseDefaultProxy", "setIsUseDefaultProxy")));
+            option(config,
+                   "Subversion: Update administrative information only in changed subtrees",
+                   "isUpdateLockOnDemand",
+                   "setUpdateLockOnDemand"),
+            option(config,
+                   "Subversion: Check svn:mergeinfo in target subtree when preparing for merge",
+                   "isCheckNestedForQuickMerge",
+                   "setCheckNestedForQuickMerge"),
+            option(config,
+                   "Subversion: Show merge source in history and annotations",
+                   "isShowMergeSourcesInAnnotate",
+                   "setShowMergeSourcesInAnnotate"),
+            option(config,
+                   "Subversion: Ignore whitespace differences in annotations",
+                   "isIgnoreSpacesInAnnotate",
+                   "setIgnoreSpacesInAnnotate"),
+            option(config,
+                   "Subversion: Use IDEA general proxy settings as default for Subversion",
+                   "isIsUseDefaultProxy",
+                   "setIsUseDefaultProxy")));
         }
       }
     }

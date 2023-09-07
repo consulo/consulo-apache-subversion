@@ -1,9 +1,6 @@
 package org.jetbrains.idea.svn.api;
 
-import com.intellij.util.ReflectionUtil;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.lang.reflect.ReflectionUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.add.AddClient;
 import org.jetbrains.idea.svn.annotate.AnnotateClient;
@@ -31,6 +28,9 @@ import org.jetbrains.idea.svn.update.UpdateClient;
 import org.jetbrains.idea.svn.upgrade.UpgradeClient;
 import org.tmatesoft.svn.core.wc.ISVNStatusFileProvider;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -68,7 +68,7 @@ public abstract class ClientFactory {
   protected RepositoryFeaturesClient myRepositoryFeaturesClient;
 
   @Nonnull
-  private final Map<Class, Class> myClientImplementations = ContainerUtil.newHashMap();
+  private final Map<Class, Class> myClientImplementations = new HashMap<>();
 
   protected ClientFactory(@Nonnull SvnVcs vcs) {
     myVcs = vcs;

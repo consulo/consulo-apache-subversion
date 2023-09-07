@@ -15,20 +15,20 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.RepositoryLocation;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.NotNullFunction;
-import com.intellij.vcsUtil.VcsUtil;
-import javax.annotation.Nullable;
+import consulo.ide.impl.idea.util.NotNullFunction;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.RepositoryLocation;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.RootUrlInfo;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nullable;
 import java.io.File;
 
 /**
@@ -79,7 +79,9 @@ public class SvnRepositoryLocation implements RepositoryLocation {
   }
 
   @Nullable
-  public static FilePath getLocalPath(final String fullPath, final NotNullFunction<File, Boolean> detector, final SvnVcs vcs) {
+  public static FilePath getLocalPath(final String fullPath,
+                                                                   final NotNullFunction<File, Boolean> detector,
+                                                                   final SvnVcs vcs) {
     if (vcs.getProject().isDefault()) return null;
     final RootUrlInfo rootForUrl = vcs.getSvnFileUrlMapping().getWcRootForUrl(fullPath);
     FilePath result = null;
@@ -88,7 +90,10 @@ public class SvnRepositoryLocation implements RepositoryLocation {
       String relativePath = SvnUtil.getRelativeUrl(rootForUrl.getUrl(), fullPath);
       File file = new File(rootForUrl.getPath(), relativePath);
       VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-      result = virtualFile != null ? VcsUtil.getFilePath(virtualFile) : VcsUtil.getFilePath(file, detector.fun(file).booleanValue());
+      result = virtualFile != null ? VcsUtil.getFilePath(virtualFile) : VcsUtil.getFilePath(file,
+                                                                                                                              detector.apply(
+                                                                                                                                file)
+                                                                                                                                      .booleanValue());
     }
 
     return result;

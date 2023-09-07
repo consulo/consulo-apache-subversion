@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.virtualFileSystem.VirtualFile;
 import javax.annotation.Nonnull;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 

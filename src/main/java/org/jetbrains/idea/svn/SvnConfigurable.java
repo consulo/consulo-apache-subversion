@@ -17,51 +17,37 @@
 
 package org.jetbrains.idea.svn;
 
-import java.awt.Component;
+import consulo.application.impl.internal.ApplicationNamesInfo;
+import consulo.application.util.SystemInfo;
+import consulo.configurable.Configurable;
+import consulo.configurable.ConfigurationException;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.fileChooser.IdeaFileChooser;
+import consulo.ide.impl.idea.ui.MultiLineTooltipUI;
+import consulo.project.Project;
+import consulo.ui.ex.awt.*;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.VirtualFileManager;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.idea.svn.auth.SvnAuthenticationNotifier;
+import org.jetbrains.idea.svn.config.SvnConfigureProxiesDialog;
+import org.jetbrains.idea.svn.dialogs.SshSettingsPanel;
+import org.jetbrains.idea.svn.svnkit.SvnKitManager;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JToolTip;
-import javax.swing.SpinnerNumberModel;
-
-import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import org.jetbrains.idea.svn.auth.SvnAuthenticationNotifier;
-import org.jetbrains.idea.svn.config.SvnConfigureProxiesDialog;
-import org.jetbrains.idea.svn.dialogs.SshSettingsPanel;
-import org.jetbrains.idea.svn.svnkit.SvnKitManager;
-import com.intellij.openapi.application.ApplicationNamesInfo;
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.ui.MultiLineTooltipUI;
-import com.intellij.ui.components.JBCheckBox;
-import com.intellij.ui.components.JBRadioButton;
-import com.intellij.ui.components.labels.LinkLabel;
-import com.intellij.ui.components.labels.LinkListener;
-import com.intellij.util.Consumer;
-import com.intellij.util.ui.UIUtil;
+import java.util.function.Consumer;
 
 public class SvnConfigurable implements Configurable {
 
@@ -97,7 +83,8 @@ public class SvnConfigurable implements Configurable {
   private SshSettingsPanel mySshSettingsPanel;
   private LinkLabel<Object> myNavigateToCommonProxyLink;
 
-  @NonNls private static final String HELP_ID = "project.propSubversion";
+  @NonNls
+  private static final String HELP_ID = "project.propSubversion";
 
   public SvnConfigurable(Project project) {
     myProject = project;
@@ -128,12 +115,11 @@ public class SvnConfigurable implements Configurable {
     myCommandLineClient.addBrowseFolderListener("Subversion", "Select path to Subversion executable (1.7+)", project,
                                                 FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor());
 
-    myClearAuthButton.addActionListener(new ActionListener(){
+    myClearAuthButton.addActionListener(new ActionListener() {
       public void actionPerformed(final ActionEvent e) {
         SvnAuthenticationNotifier.clearAuthenticationCache(myProject, myComponent, myConfigurationDirectoryText.getText());
       }
     });
-
 
 
     myConfigurationDirectoryText.addActionListener(new ActionListener() {
@@ -141,7 +127,7 @@ public class SvnConfigurable implements Configurable {
         @NonNls String path = myConfigurationDirectoryText.getText().trim();
         selectConfigurationDirectory(path, new Consumer<String>() {
           @Override
-          public void consume(String s) {
+          public void accept(String s) {
             myConfigurationDirectoryText.setText(s);
           }
         }, myProject, myComponent);
@@ -189,14 +175,15 @@ public class SvnConfigurable implements Configurable {
       myAllRadioButton.setEnabled(false);
       mySSLExplicitly.setVisible(true);
       mySSLExplicitly.setText("Set explicitly to: " + SvnKitManager.getExplicitlySetSslProtocols());
-    } else {
+    }
+    else {
       mySSLv3RadioButton.setEnabled(true);
       myTLSv1RadioButton.setEnabled(true);
       myAllRadioButton.setEnabled(true);
       mySSLExplicitly.setVisible(false);
       final String version = SystemInfo.JAVA_RUNTIME_VERSION;
       final boolean jdkBugFixed = version.startsWith("1.7") || version.startsWith("1.8");
-      if (! jdkBugFixed) {
+      if (!jdkBugFixed) {
         mySSLExplicitly.setVisible(true);
         mySSLExplicitly.setText("Setting 'All' value in this JDK version (" + version + ") is not recommended.");
       }
@@ -213,22 +200,24 @@ public class SvnConfigurable implements Configurable {
                                                   @Nonnull final Consumer<String> dirConsumer,
                                                   final Project project,
                                                   @Nullable final Component component) {
-    FileChooserDescriptor descriptor =  FileChooserDescriptorFactory.createSingleFolderDescriptor()
-      .withTitle(SvnBundle.message("dialog.title.select.configuration.directory"))
-      .withDescription(SvnBundle.message("dialog.description.select.configuration.directory"))
-      .withShowFileSystemRoots(true)
-      .withHideIgnored(false)
-      .withShowHiddenFiles(true);
+    FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                                                                                       .withTitle(SvnBundle.message(
+                                                                                         "dialog.title.select.configuration.directory"))
+                                                                                       .withDescription(SvnBundle.message(
+                                                                                         "dialog.description.select.configuration.directory"))
+                                                                                       .withShowFileSystemRoots(true)
+                                                                                       .withHideIgnored(false)
+                                                                                       .withShowHiddenFiles(true);
 
     path = "file://" + path.replace(File.separatorChar, '/');
     VirtualFile root = VirtualFileManager.getInstance().findFileByUrl(path);
 
-    VirtualFile file = FileChooser.chooseFile(descriptor, component, project, root);
+    VirtualFile file = IdeaFileChooser.chooseFile(descriptor, component, project, root);
     if (file == null) {
       return;
     }
     final String resultPath = file.getPath().replace('/', File.separatorChar);
-    dirConsumer.consume(resultPath);
+    dirConsumer.accept(resultPath);
   }
 
   public JComponent createComponent() {
@@ -273,7 +262,7 @@ public class SvnConfigurable implements Configurable {
     if (configuration.isShowMergeSourcesInAnnotate() != myShowMergeSourceInAnnotate.isSelected()) {
       return true;
     }
-    if (! configuration.getUseAcceleration().equals(acceleration())) return true;
+    if (!configuration.getUseAcceleration().equals(acceleration())) return true;
     if (configuration.isRunUnderTerminal() != myRunUnderTerminal.isSelected()) return true;
     final int annotateRevisions = configuration.getMaxAnnotateRevisions();
     final boolean useMaxInAnnot = annotateRevisions != -1;
@@ -281,22 +270,22 @@ public class SvnConfigurable implements Configurable {
       return true;
     }
     if (myMaximumNumberOfRevisionsCheckBox.isSelected()) {
-      if (annotateRevisions != ((SpinnerNumberModel) myNumRevsInAnnotations.getModel()).getNumber().intValue()) {
+      if (annotateRevisions != ((SpinnerNumberModel)myNumRevsInAnnotations.getModel()).getNumber().intValue()) {
         return true;
       }
     }
-    if (configuration.getSshConnectionTimeout() /1000 != ((SpinnerNumberModel) mySSHConnectionTimeout.getModel()).getNumber().longValue()) {
+    if (configuration.getSshConnectionTimeout() / 1000 != ((SpinnerNumberModel)mySSHConnectionTimeout.getModel()).getNumber().longValue()) {
       return true;
     }
-    if (configuration.getSshReadTimeout() /1000 != ((SpinnerNumberModel) mySSHReadTimeout.getModel()).getNumber().longValue()) {
+    if (configuration.getSshReadTimeout() / 1000 != ((SpinnerNumberModel)mySSHReadTimeout.getModel()).getNumber().longValue()) {
       return true;
     }
-    if (configuration.getHttpTimeout()/1000 != ((SpinnerNumberModel) myHttpTimeout.getModel()).getNumber().longValue()) {
+    if (configuration.getHttpTimeout() / 1000 != ((SpinnerNumberModel)myHttpTimeout.getModel()).getNumber().longValue()) {
       return true;
     }
-    if (! getSelectedSSL().equals(configuration.getSslProtocols())) return true;
+    if (!getSelectedSSL().equals(configuration.getSslProtocols())) return true;
     final SvnApplicationSettings applicationSettings17 = SvnApplicationSettings.getInstance();
-    if (! Comparing.equal(applicationSettings17.getCommandLinePath(), myCommandLineClient.getText().trim())) return true;
+    if (!Comparing.equal(applicationSettings17.getCommandLinePath(), myCommandLineClient.getText().trim())) return true;
     if (!configuration.getConfigurationDirectory().equals(myConfigurationDirectoryText.getText().trim())) return true;
     return mySshSettingsPanel.isModified(configuration);
   }
@@ -316,17 +305,18 @@ public class SvnConfigurable implements Configurable {
     configuration.setUpdateLockOnDemand(myLockOnDemand.isSelected());
     configuration.setIgnoreSpacesInAnnotate(myIgnoreWhitespaceDifferenciesInCheckBox.isSelected());
     configuration.setShowMergeSourcesInAnnotate(myShowMergeSourceInAnnotate.isSelected());
-    if (! myMaximumNumberOfRevisionsCheckBox.isSelected()) {
+    if (!myMaximumNumberOfRevisionsCheckBox.isSelected()) {
       configuration.setMaxAnnotateRevisions(-1);
-    } else {
-      configuration.setMaxAnnotateRevisions(((SpinnerNumberModel) myNumRevsInAnnotations.getModel()).getNumber().intValue());
+    }
+    else {
+      configuration.setMaxAnnotateRevisions(((SpinnerNumberModel)myNumRevsInAnnotations.getModel()).getNumber().intValue());
     }
     configuration.setSshConnectionTimeout(((SpinnerNumberModel)mySSHConnectionTimeout.getModel()).getNumber().longValue() * 1000);
     configuration.setSshReadTimeout(((SpinnerNumberModel)mySSHReadTimeout.getModel()).getNumber().longValue() * 1000);
 
     final SvnApplicationSettings applicationSettings17 = SvnApplicationSettings.getInstance();
     boolean reloadWorkingCopies = !acceleration().equals(configuration.getUseAcceleration()) ||
-                                  !StringUtil.equals(applicationSettings17.getCommandLinePath(), myCommandLineClient.getText().trim());
+      !StringUtil.equals(applicationSettings17.getCommandLinePath(), myCommandLineClient.getText().trim());
     configuration.setUseAcceleration(acceleration());
     configuration.setRunUnderTerminal(myRunUnderTerminal.isSelected());
     configuration.setSslProtocols(getSelectedSSL());
@@ -338,7 +328,7 @@ public class SvnConfigurable implements Configurable {
       vcs17.invokeRefreshSvnRoots();
       VcsDirtyScopeManager.getInstance(myProject).markEverythingDirty();
     }
-    configuration.setHttpTimeout(((SpinnerNumberModel) myHttpTimeout.getModel()).getNumber().longValue() * 1000);
+    configuration.setHttpTimeout(((SpinnerNumberModel)myHttpTimeout.getModel()).getNumber().longValue() * 1000);
 
     mySshSettingsPanel.apply(configuration);
   }
@@ -366,7 +356,8 @@ public class SvnConfigurable implements Configurable {
     if (annotateRevisions == -1) {
       myMaximumNumberOfRevisionsCheckBox.setSelected(false);
       myNumRevsInAnnotations.setValue(SvnConfiguration.ourMaxAnnotateRevisionsDefault);
-    } else {
+    }
+    else {
       myMaximumNumberOfRevisionsCheckBox.setSelected(true);
       myNumRevsInAnnotations.setValue(annotateRevisions);
     }
@@ -381,9 +372,11 @@ public class SvnConfigurable implements Configurable {
 
     if (SvnConfiguration.SSLProtocols.sslv3.equals(configuration.getSslProtocols())) {
       mySSLv3RadioButton.setSelected(true);
-    } else if (SvnConfiguration.SSLProtocols.tlsv1.equals(configuration.getSslProtocols())) {
+    }
+    else if (SvnConfiguration.SSLProtocols.tlsv1.equals(configuration.getSslProtocols())) {
       myTLSv1RadioButton.setSelected(true);
-    } else {
+    }
+    else {
       myAllRadioButton.setSelected(true);
     }
 
@@ -397,7 +390,7 @@ public class SvnConfigurable implements Configurable {
     myLockOnDemand = new JCheckBox() {
       @Override
       public JToolTip createToolTip() {
-        JToolTip toolTip = new JToolTip(){{
+        JToolTip toolTip = new JToolTip() {{
           setUI(new MultiLineTooltipUI());
         }};
         toolTip.setComponent(this);
@@ -415,7 +408,8 @@ public class SvnConfigurable implements Configurable {
     final Long maximum = 30 * 60 * 1000L;
     final long connection = configuration.getSshConnectionTimeout() <= maximum ? configuration.getSshConnectionTimeout() : maximum;
     final long read = configuration.getSshReadTimeout() <= maximum ? configuration.getSshReadTimeout() : maximum;
-    mySSHConnectionTimeout = new JSpinner(new SpinnerNumberModel(Long.valueOf(connection / 1000), Long.valueOf(0L), maximum, Long.valueOf(10L)));
+    mySSHConnectionTimeout =
+      new JSpinner(new SpinnerNumberModel(Long.valueOf(connection / 1000), Long.valueOf(0L), maximum, Long.valueOf(10L)));
     mySSHReadTimeout = new JSpinner(new SpinnerNumberModel(Long.valueOf(read / 1000), Long.valueOf(0L), maximum, Long.valueOf(10L)));
     myHttpTimeout = new JSpinner(new SpinnerNumberModel(Long.valueOf(read / 1000), Long.valueOf(0L), maximum, Long.valueOf(10L)));
   }

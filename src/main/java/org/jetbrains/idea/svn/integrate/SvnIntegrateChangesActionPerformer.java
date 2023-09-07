@@ -17,11 +17,12 @@ package org.jetbrains.idea.svn.integrate;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Pair;
+import consulo.project.Project;
 
 import javax.annotation.Nullable;
+
+import consulo.ui.ex.awt.Messages;
+import consulo.util.lang.Pair;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
@@ -62,8 +63,8 @@ public class SvnIntegrateChangesActionPerformer implements SelectBranchPopup.Bra
 
   @Nullable
   private Pair<WorkingCopyInfo, SVNURL> selectWorkingCopy(String url,
-                                                          @Nullable String selectedLocalBranchPath,
-                                                          @Nullable String dialogTitle) {
+														  @Nullable String selectedLocalBranchPath,
+														  @Nullable String dialogTitle) {
     return IntegratedSelectedOptionsDialog
       .selectWorkingCopy(myVcs.getProject(), myCurrentBranch, url, true, selectedLocalBranchPath, dialogTitle);
   }

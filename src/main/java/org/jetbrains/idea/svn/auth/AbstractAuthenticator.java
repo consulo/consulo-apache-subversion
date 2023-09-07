@@ -15,13 +15,12 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.util.messages.MessageBusConnection;
+import consulo.component.messagebus.MessageBusConnection;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
 import org.intellij.lang.annotations.MagicConstant;
-import javax.annotation.Nonnull;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.tmatesoft.svn.core.SVNErrorMessage;
@@ -30,6 +29,7 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.*;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -70,7 +70,7 @@ abstract class AbstractAuthenticator {
     }
     catch (IOException | SVNException e) {
       LOG.info(e);
-      VcsBalloonProblemNotifier.showOverChangesView(myVcs.getProject(), e.getMessage(), MessageType.ERROR);
+      VcsBalloonProblemNotifier.showOverChangesView(myVcs.getProject(), e.getMessage(), NotificationType.ERROR);
       return false;
     }
   }

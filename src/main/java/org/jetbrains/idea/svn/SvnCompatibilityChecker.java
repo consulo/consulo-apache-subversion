@@ -15,14 +15,12 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vcs.ui.VcsBalloonProblemNotifier;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.application.Application;
+import consulo.application.ApplicationManager;
+import consulo.project.Project;
+import consulo.project.ui.notification.NotificationType;
+import consulo.versionControlSystem.ui.VcsBalloonProblemNotifier;
+import consulo.virtualFileSystem.VirtualFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,7 @@ public class SvnCompatibilityChecker {
   private final static long ourFrequency = 10;
   private final static long ourInvocationMax = 10;
   private final static long ourInitCounter = 3;
-  
+
   private long myCounter;
   private long myDownStartCounter;
   private long myInvocationCounter;
@@ -41,7 +39,7 @@ public class SvnCompatibilityChecker {
 
   public SvnCompatibilityChecker(Project project) {
     myProject = project;
-    myCounter= 0;
+    myCounter = 0;
     myDownStartCounter = ourInitCounter;
     myInvocationCounter = 0;
   }
@@ -49,11 +47,11 @@ public class SvnCompatibilityChecker {
   public void reportNoRoots(final List<VirtualFile> result) {
     synchronized (myLock) {
       if (myInvocationCounter >= ourInvocationMax) return;
-      ++ myCounter;
-      -- myDownStartCounter;
+      ++myCounter;
+      --myDownStartCounter;
       if ((myCounter > ourFrequency) || (myDownStartCounter >= 0)) {
         myCounter = 0;
-        ++ myInvocationCounter;
+        ++myInvocationCounter;
         final Application application = ApplicationManager.getApplication();
         application.executeOnPooledThread(new Runnable() {
           public void run() {
@@ -63,20 +61,15 @@ public class SvnCompatibilityChecker {
                 suspicious.add(vf);
               }
             }
-            if (! suspicious.isEmpty()) {
+            if (!suspicious.isEmpty()) {
               final String message = (suspicious.size() == 1) ?
-                                     "Root '" + suspicious.get(0).getPresentableName() + "' is likely to be of unsupported Subversion format" :
-                                     "Some roots are likely to be of unsupported Subversion format";
+                "Root '" + suspicious.get(0).getPresentableName() + "' is likely to be of unsupported Subversion format" :
+                "Some roots are likely to be of unsupported Subversion format";
               application.invokeLater(new Runnable() {
                 public void run() {
-                  new VcsBalloonProblemNotifier(myProject, message, MessageType.WARNING).run();
+                  new VcsBalloonProblemNotifier(myProject, message, NotificationType.WARNING).run();
                 }
-              }, ModalityState.NON_MODAL, new Condition() {
-                @Override
-                public boolean value(Object o) {
-                  return (! myProject.isOpen()) || myProject.isDisposed();
-                }
-              });
+              }, application.getNoneModalityState(), () -> (!myProject.isOpen()) || myProject.isDisposed());
             }
           }
         });

@@ -15,20 +15,18 @@
  */
 package org.jetbrains.idea.svn;
 
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.vcs.impl.VcsRootIterator;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.component.ProcessCanceledException;
+import consulo.ide.impl.idea.openapi.vcs.impl.VcsRootIterator;
+import consulo.ide.impl.idea.openapi.vfs.VfsUtilCore;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.jetbrains.idea.svn.info.Info;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,8 +45,8 @@ public class ForNestedRootChecker {
 
   @Nonnull
   public List<Node> getAllNestedWorkingCopies(@Nonnull VirtualFile root) {
-    LinkedList<Node> result = ContainerUtil.newLinkedList();
-    LinkedList<VirtualFile> workItems = ContainerUtil.newLinkedList();
+    LinkedList<Node> result = new LinkedList<>();
+    LinkedList<VirtualFile> workItems = new LinkedList<>();
 
     workItems.add(root);
     while (!workItems.isEmpty()) {

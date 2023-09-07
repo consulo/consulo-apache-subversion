@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
 
 import java.io.IOException;
 import java.io.OutputStream;

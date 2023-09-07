@@ -15,18 +15,18 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.configurable.ConfigurationException;
+import consulo.project.Project;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.util.collection.Lists;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.history.SvnChangeList;
 import org.jetbrains.idea.svn.history.SvnRepositoryLocation;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -43,7 +43,7 @@ public class SvnRevisionPanel extends JPanel {
   private TextFieldWithBrowseButton myRevisionField;
   private Project myProject;
   private UrlProvider myUrlProvider;
-  private final List<ChangeListener> myChangeListeners = ContainerUtil.createLockFreeCopyOnWriteList();
+  private final List<ChangeListener> myChangeListeners = Lists.newLockFreeCopyOnWriteList();
   private VirtualFile myRoot;
 
   public SvnRevisionPanel() {
@@ -66,7 +66,8 @@ public class SvnRevisionPanel extends JPanel {
             myRevisionField.setText("HEAD");
           }
           myRevisionField.setEnabled(true);
-        } else {
+        }
+        else {
           myRevisionField.setEnabled(false);
         }
         notifyChangeListeners();
@@ -136,7 +137,8 @@ public class SvnRevisionPanel extends JPanel {
     if (revision == SVNRevision.HEAD) {
       myHead.setSelected(true);
       myRevisionField.setEnabled(false);
-    } else {
+    }
+    else {
       myRevisionField.setText(String.valueOf(revision.getNumber()));
       mySpecified.setSelected(true);
       myRevisionField.setEnabled(true);
@@ -167,7 +169,7 @@ public class SvnRevisionPanel extends JPanel {
   }
 
   private void notifyChangeListeners() {
-    for(ChangeListener listener: myChangeListeners) {
+    for (ChangeListener listener : myChangeListeners) {
       listener.stateChanged(new ChangeEvent(this));
     }
   }

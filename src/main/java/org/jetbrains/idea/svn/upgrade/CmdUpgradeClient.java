@@ -1,12 +1,9 @@
 package org.jetbrains.idea.svn.upgrade;
 
-import com.intellij.execution.process.ProcessOutputTypes;
+import consulo.ide.impl.idea.util.containers.Convertor;
+import consulo.process.ProcessOutputTypes;
 import consulo.util.dataholder.Key;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.containers.Convertor;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.*;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -14,6 +11,8 @@ import org.jetbrains.idea.svn.commandLine.LineCommandAdapter;
 import org.jetbrains.idea.svn.commandLine.SvnCommandName;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,8 @@ public class CmdUpgradeClient extends BaseSvnClient implements UpgradeClient {
   private static final Pattern CHANGED_PATH = Pattern.compile(STATUS + PATH);
 
   @Override
-  public void upgrade(@Nonnull File path, @Nonnull WorkingCopyFormat format, @Nullable ProgressTracker handler) throws VcsException {
+  public void upgrade(@Nonnull File path, @Nonnull WorkingCopyFormat format, @Nullable ProgressTracker handler) throws VcsException
+  {
     validateFormat(format, getSupportedFormats());
 
     // fake event indicating upgrade start
@@ -53,7 +53,8 @@ public class CmdUpgradeClient extends BaseSvnClient implements UpgradeClient {
   }
 
   @Override
-  public List<WorkingCopyFormat> getSupportedFormats() throws VcsException {
+  public List<WorkingCopyFormat> getSupportedFormats() throws VcsException
+  {
     List<WorkingCopyFormat> result = new ArrayList<>();
 
     result.add(WorkingCopyFormat.from(myFactory.createVersionClient().getVersion()));
@@ -61,7 +62,8 @@ public class CmdUpgradeClient extends BaseSvnClient implements UpgradeClient {
     return result;
   }
 
-  private static class UpgradeStatusConvertor implements Convertor<Matcher, ProgressEvent> {
+  private static class UpgradeStatusConvertor implements Convertor<Matcher, ProgressEvent>
+  {
 
     public ProgressEvent convert(@Nonnull Matcher matcher) {
       String statusMessage = matcher.group(1);
@@ -106,7 +108,8 @@ public class CmdUpgradeClient extends BaseSvnClient implements UpgradeClient {
       }
     }
 
-    public void throwIfException() throws VcsException {
+    public void throwIfException() throws VcsException
+	{
       VcsException e = exception.get();
 
       if (e != null) {

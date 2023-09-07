@@ -15,12 +15,8 @@
  */
 package org.jetbrains.idea.svn.commandLine;
 
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.Stack;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.util.collection.Stack;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.api.EventAction;
 import org.jetbrains.idea.svn.api.ProgressEvent;
@@ -28,6 +24,8 @@ import org.jetbrains.idea.svn.status.StatusType;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -77,7 +75,7 @@ public class UpdateOutputLineConverter {
 
   public UpdateOutputLineConverter(File base) {
     myBase = base;
-    myRootsUnderProcessing = ContainerUtil.newStack();
+    myRootsUnderProcessing = new Stack<>();
   }
 
   @Nullable

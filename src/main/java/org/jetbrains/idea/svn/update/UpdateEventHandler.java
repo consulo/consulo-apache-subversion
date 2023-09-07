@@ -15,15 +15,14 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.VcsBundle;
-import com.intellij.openapi.vcs.update.FileGroup;
-import com.intellij.openapi.vcs.update.UpdatedFiles;
-import com.intellij.openapi.wm.StatusBar;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.Stack;
-import javax.annotation.Nullable;
+import consulo.application.progress.ProgressIndicator;
+import consulo.project.ui.wm.StatusBar;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.collection.Stack;
+import consulo.util.lang.Pair;
+import consulo.versionControlSystem.VcsBundle;
+import consulo.versionControlSystem.update.FileGroup;
+import consulo.versionControlSystem.update.UpdatedFiles;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnFileUrlMapping;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -39,6 +38,7 @@ import org.tmatesoft.svn.core.internal.wc.SVNErrorManager;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.util.SVNLogType;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +70,7 @@ public class UpdateEventHandler implements ProgressTracker {
     mySequentialUpdatesContext = sequentialUpdatesContext;
     myExternalsCount = 1;
     myUrlToCheckForSwitch = new HashMap<>();
-    myFilesWaitingForRevision = ContainerUtil.newStack();
+    myFilesWaitingForRevision = new Stack<>();
   }
 
   /**

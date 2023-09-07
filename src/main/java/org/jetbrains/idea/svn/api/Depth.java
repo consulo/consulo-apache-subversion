@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.api;
 
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.tmatesoft.svn.core.SVNDepth;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,7 +34,7 @@ public enum Depth {
   EMPTY("empty");
 
   @Nonnull
-  private static final Map<String, Depth> ourAllDepths = ContainerUtil.newHashMap();
+  private static final Map<String, Depth> ourAllDepths = new HashMap<>();
 
   static {
     for (Depth action : Depth.values()) {

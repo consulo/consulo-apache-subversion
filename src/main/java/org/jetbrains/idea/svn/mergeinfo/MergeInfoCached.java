@@ -15,10 +15,10 @@
  */
 package org.jetbrains.idea.svn.mergeinfo;
 
-import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
+import consulo.versionControlSystem.versionBrowser.CommittedChangeList;
 
+import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MergeInfoCached {
@@ -28,12 +28,12 @@ public class MergeInfoCached {
   private final long myCopyRevision;
 
   public MergeInfoCached() {
-    myMap = ContainerUtil.newHashMap();
+    myMap = new HashMap<>();
     myCopyRevision = -1;
   }
 
   public MergeInfoCached(@Nonnull Map<Long, SvnMergeInfoCache.MergeCheckResult> map, long copyRevision) {
-    myMap = ContainerUtil.newHashMap(map);
+    myMap = new HashMap<>(map);
     myCopyRevision = copyRevision;
   }
 

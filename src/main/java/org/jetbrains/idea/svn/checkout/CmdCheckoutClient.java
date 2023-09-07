@@ -1,9 +1,7 @@
 package org.jetbrains.idea.svn.checkout;
 
-import com.intellij.openapi.util.Version;
-import com.intellij.openapi.vcs.VcsException;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.util.lang.Version;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.api.Depth;
@@ -14,6 +12,8 @@ import org.jetbrains.idea.svn.commandLine.SvnCommandName;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,8 @@ public class CmdCheckoutClient extends BaseSvnClient implements CheckoutClient {
                        boolean ignoreExternals,
                        boolean force,
                        @Nonnull WorkingCopyFormat format,
-                       @Nullable ProgressTracker handler) throws VcsException {
+                       @Nullable ProgressTracker handler) throws VcsException
+  {
     validateFormat(format, getSupportedFormats());
 
     List<String> parameters = new ArrayList<>();
@@ -46,7 +47,8 @@ public class CmdCheckoutClient extends BaseSvnClient implements CheckoutClient {
   }
 
   @Override
-  public List<WorkingCopyFormat> getSupportedFormats() throws VcsException {
+  public List<WorkingCopyFormat> getSupportedFormats() throws VcsException
+  {
     ArrayList<WorkingCopyFormat> result = new ArrayList<>();
 
     Version version = myFactory.createVersionClient().getVersion();

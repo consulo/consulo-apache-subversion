@@ -15,14 +15,13 @@
  */
 package org.jetbrains.idea.svn.diff;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.AbstractVcsHelper;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import javax.annotation.Nonnull;
+import consulo.project.Project;
+import consulo.util.io.FileUtil;
+import consulo.versionControlSystem.AbstractVcsHelper;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.Change;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
@@ -30,6 +29,7 @@ import org.jetbrains.idea.svn.api.ClientFactory;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class DirectoryWithBranchComparer extends ElementWithBranchComparer {
 
   @Nonnull
   private ClientFactory getClientFactory() {
-    return getClientFactory(myVcs, VfsUtilCore.virtualToIoFile(myVirtualFile));
+    return getClientFactory(myVcs, VirtualFileUtil.virtualToIoFile(myVirtualFile));
   }
 
   @Nonnull

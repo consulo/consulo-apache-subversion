@@ -15,14 +15,13 @@
  */
 package org.jetbrains.idea.svn;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.openapi.vcs.FileStatus;
-
-import javax.annotation.Nullable;
+import consulo.virtualFileSystem.status.FileStatus;
 import org.jetbrains.idea.svn.status.PortableStatus;
 import org.jetbrains.idea.svn.status.Status;
 import org.jetbrains.idea.svn.status.StatusType;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class SvnStatusConvertor {
   private SvnStatusConvertor() {

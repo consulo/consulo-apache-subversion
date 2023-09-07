@@ -15,16 +15,14 @@
  */
 package org.jetbrains.idea.svn.diff;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.WaitForProgressToShow;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.Task;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.util.WaitForProgressToShow;
+import consulo.ui.ex.awt.Messages;
+import consulo.versionControlSystem.VcsException;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.*;
 import org.jetbrains.idea.svn.commandLine.SvnBindException;
 import org.tmatesoft.svn.core.SVNCancelException;
@@ -33,6 +31,8 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 
 /**

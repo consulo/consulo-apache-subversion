@@ -15,12 +15,12 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.actionSystem.ToggleAction;
-import com.intellij.openapi.vcs.changes.committed.ChangeListFilteringStrategy;
-import com.intellij.openapi.vcs.changes.committed.DecoratorManager;
-import icons.SvnIcons;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.ToggleAction;
+import consulo.versionControlSystem.change.commited.DecoratorManager;
+import consulo.ui.ex.action.Presentation;
+import consulo.versionControlSystem.change.commited.ChangeListFilteringStrategy;
+import org.jetbrains.idea.svn.SvnIcons;
 import org.jetbrains.idea.svn.SvnBundle;
 
 /**

@@ -1,10 +1,11 @@
 package org.jetbrains.idea.svn.api;
 
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.containers.Convertor;
+import consulo.versionControlSystem.VcsException;
+import consulo.ide.impl.idea.util.containers.Convertor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import consulo.util.lang.StringUtil;
 import org.tmatesoft.svn.core.SVNException;
 
 import java.util.regex.Matcher;

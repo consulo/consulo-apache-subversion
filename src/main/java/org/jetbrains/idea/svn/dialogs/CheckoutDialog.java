@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.CheckoutProvider;
-import javax.annotation.Nonnull;
+import consulo.project.Project;
+import consulo.versionControlSystem.checkout.CheckoutProvider;
 import org.jetbrains.idea.svn.SvnBundle;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -48,8 +48,9 @@ public class CheckoutDialog extends RepositoryBrowserDialog {
 
   @Nonnull
   protected Action[] createActions() {
-    return new Action[] {getOKAction(), getCancelAction(), getHelpAction()};
+    return new Action[]{getOKAction(), getCancelAction(), getHelpAction()};
   }
+
   protected String getHelpId() {
     return "vcs.subversion.browseSVN";
   }

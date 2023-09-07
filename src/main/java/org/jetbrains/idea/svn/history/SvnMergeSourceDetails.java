@@ -15,26 +15,27 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.MasterDetailsComponent;
-import com.intellij.openapi.ui.NamedConfigurable;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.changes.committed.CommittedChangeListRenderer;
-import com.intellij.openapi.vcs.changes.ui.ChangeListViewerDialog;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowId;
-import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.ui.ColoredTreeCellRenderer;
-import com.intellij.ui.SimpleTextAttributes;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentFactory;
-import com.intellij.ui.content.ContentManager;
-import com.intellij.util.ContentsUtil;
+import consulo.application.Application;
+import consulo.configurable.ConfigurationException;
+import consulo.ide.impl.idea.openapi.ui.NamedConfigurable;
+import consulo.ide.impl.idea.openapi.util.Disposer;
+import consulo.ide.impl.idea.openapi.vcs.changes.committed.CommittedChangeListRenderer;
+import consulo.ide.impl.idea.openapi.vcs.changes.ui.ChangeListViewerDialog;
+import consulo.ide.setting.ui.MasterDetailsComponent;
+import consulo.project.Project;
+import consulo.project.ui.wm.ToolWindowId;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.ui.ModalityState;
+import consulo.ui.ex.SimpleTextAttributes;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.tree.ColoredTreeCellRenderer;
+import consulo.ui.ex.content.Content;
+import consulo.ui.ex.content.ContentFactory;
+import consulo.ui.ex.content.ContentManager;
+import consulo.ui.ex.content.ContentsUtil;
+import consulo.ui.ex.toolWindow.ToolWindow;
+import consulo.util.lang.Pair;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -69,20 +70,28 @@ public class SvnMergeSourceDetails extends MasterDetailsComponent {
   }
 
   public static void showMe(final Project project, final SvnFileRevision revision, final VirtualFile file) {
-    if (ModalityState.NON_MODAL.equals(ModalityState.current())) {
-    ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.VCS);
-    final ContentManager contentManager = toolWindow.getContentManager();
+    Application application = Application.get();
+    ModalityState noneModalityState = application.getNoneModalityState();
+    ModalityState currentModalityState = application.getCurrentModalityState();
 
-    final MyDialog dialog = new MyDialog(project, revision, file);
-    // TODO: Temporary memory leak fix - rewrite this part not to create dialog if only createCenterPanel(), but not show() is invoked
-    Disposer.register(project, dialog.getDisposable());
+    if (noneModalityState.equals(currentModalityState)) {
+      ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.VCS);
+      final ContentManager contentManager = toolWindow.getContentManager();
 
-    Content content = ContentFactory.SERVICE.getInstance().createContent(dialog.createCenterPanel(),
-        SvnBundle.message("merge.source.details.title", (file == null) ? revision.getURL() : file.getName(), revision.getRevisionNumber().asString()), true);
-    ContentsUtil.addOrReplaceContent(contentManager, content, true);
+      final MyDialog dialog = new MyDialog(project, revision, file);
+      // TODO: Temporary memory leak fix - rewrite this part not to create dialog if only createCenterPanel(), but not show() is invoked
+      Disposer.register(project, dialog.getDisposable());
 
-    toolWindow.activate(null);
-    } else {
+      Content content = ContentFactory.getInstance().createContent(dialog.createCenterPanel(),
+                                                                   SvnBundle.message("merge.source.details.title",
+                                                                                     (file == null) ? revision.getURL() : file.getName(),
+                                                                                     revision.getRevisionNumber().asString()),
+                                                                   true);
+      ContentsUtil.addOrReplaceContent(contentManager, content, true);
+
+      toolWindow.activate(null);
+    }
+    else {
       new MyDialog(project, revision, file).show();
     }
   }
@@ -130,19 +139,20 @@ public class SvnMergeSourceDetails extends MasterDetailsComponent {
       final SvnFileRevision revision;
       if (value instanceof MyRootNode) {
         revision = myRevision;
-      } else {
+      }
+      else {
         final MyNode myNode = (MyNode)value;
-        final MyNamedConfigurable configurable = (MyNamedConfigurable) myNode.getConfigurable();
+        final MyNamedConfigurable configurable = (MyNamedConfigurable)myNode.getConfigurable();
         revision = configurable.getRevision();
       }
 
       final String revisonNumber = revision.getRevisionNumber().asString();
-      final Pair<String,Boolean> info = CommittedChangeListRenderer.getDescriptionOfChangeList(revision.getCommitMessage());
+      final Pair<String, Boolean> info = CommittedChangeListRenderer.getDescriptionOfChangeList(revision.getCommitMessage());
       String description = info.getFirst();
       int width = metrics.stringWidth(description);
       int dotsWidth = metrics.stringWidth(ourDots);
       boolean descriptionTruncated = info.getSecond();
-      if ((descriptionTruncated && (ourMaxWidth - dotsWidth < width)) || (! descriptionTruncated) && (ourMaxWidth < width)) {
+      if ((descriptionTruncated && (ourMaxWidth - dotsWidth < width)) || (!descriptionTruncated) && (ourMaxWidth < width)) {
         description = CommittedChangeListRenderer.truncateDescription(description, metrics, ourMaxWidth - dotsWidth);
         descriptionTruncated = true;
       }
@@ -168,7 +178,7 @@ public class SvnMergeSourceDetails extends MasterDetailsComponent {
     final List<TreePath> nodesToExpand = new ArrayList<>();
     addRecursively(myRevision, myRoot, nodesToExpand);
 
-    ((DefaultTreeModel) myTree.getModel()).reload(myRoot);
+    ((DefaultTreeModel)myTree.getModel()).reload(myRoot);
     for (TreePath treePath : nodesToExpand) {
       myTree.expandPath(treePath);
     }
@@ -205,7 +215,7 @@ public class SvnMergeSourceDetails extends MasterDetailsComponent {
       SvnChangeList list = myListsMap.get(myRevision);
       if (list == null) {
         list = (SvnChangeList)SvnVcs.getInstance(myProject).loadRevisions(myFile, myRevision.getRevisionNumber());
-        myListsMap.put(((SvnRevisionNumber) myRevision.getRevisionNumber()).getRevision().getNumber(), list);
+        myListsMap.put(((SvnRevisionNumber)myRevision.getRevisionNumber()).getRevision().getNumber(), list);
       }
       return list;
     }
@@ -215,7 +225,8 @@ public class SvnMergeSourceDetails extends MasterDetailsComponent {
         final SvnChangeList list = getList();
         if (list == null) {
           myPanel = new JPanel();
-        } else {
+        }
+        else {
           ChangeListViewerDialog dialog = new ChangeListViewerDialog(myProject, list);
           // TODO: Temporary memory leak fix - rewrite this part not to create dialog if only createCenterPanel(), but not show() is invoked
           Disposer.register(myProject, dialog.getDisposable());
@@ -227,7 +238,7 @@ public class SvnMergeSourceDetails extends MasterDetailsComponent {
 
     @Nls
     public String getDisplayName() {
-      return getBannerSlogan();  
+      return getBannerSlogan();
     }
 
     public String getHelpTopic() {
@@ -262,7 +273,9 @@ public class SvnMergeSourceDetails extends MasterDetailsComponent {
       myProject = project;
       myRevision = revision;
       myFile = file;
-      setTitle(SvnBundle.message("merge.source.details.title", (myFile == null) ? myRevision.getURL() : myFile.getName(), myRevision.getRevisionNumber().asString()));
+      setTitle(SvnBundle.message("merge.source.details.title",
+                                 (myFile == null) ? myRevision.getURL() : myFile.getName(),
+                                 myRevision.getRevisionNumber().asString()));
       init();
     }
 

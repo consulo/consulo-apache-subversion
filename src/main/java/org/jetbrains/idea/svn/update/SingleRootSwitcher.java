@@ -15,9 +15,10 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.FilePath;
+import consulo.versionControlSystem.FilePath;
 import javax.annotation.Nonnull;
+
+import consulo.project.Project;
 import org.tmatesoft.svn.core.SVNURL;
 
 /**

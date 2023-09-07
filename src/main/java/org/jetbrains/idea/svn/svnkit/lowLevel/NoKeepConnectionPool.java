@@ -15,11 +15,12 @@
  */
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
-import com.intellij.util.ThrowableConvertor;
-import javax.annotation.Nonnull;
+import consulo.ide.impl.idea.util.ThrowableConvertor;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.io.SVNRepository;
+
+import javax.annotation.Nonnull;
 
 /**
  * Created with IntelliJ IDEA.

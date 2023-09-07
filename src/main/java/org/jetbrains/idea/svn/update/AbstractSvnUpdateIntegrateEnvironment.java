@@ -15,36 +15,36 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.*;
-import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.openapi.vcs.update.*;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.ReadonlyStatusHandler;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.newvfs.RefreshQueue;
-import com.intellij.util.WaitForProgressToShow;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.util.SystemInfo;
+import consulo.component.ProcessCanceledException;
+import consulo.configurable.Configurable;
+import consulo.project.util.WaitForProgressToShow;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.ref.Ref;
+import consulo.versionControlSystem.*;
+import consulo.versionControlSystem.change.VcsDirtyScopeManager;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
+import consulo.versionControlSystem.update.*;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.ReadonlyStatusHandler;
+import consulo.virtualFileSystem.RefreshQueue;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.actions.SvnMergeProvider;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class AbstractSvnUpdateIntegrateEnvironment implements UpdateEnvironment {
+public abstract class AbstractSvnUpdateIntegrateEnvironment implements UpdateEnvironment
+{
   protected final SvnVcs myVcs;
   private final ProjectLevelVcsManager myVcsManager;
   @NonNls public static final String REPLACED_ID = "replaced";
@@ -65,9 +65,10 @@ public abstract class AbstractSvnUpdateIntegrateEnvironment implements UpdateEnv
 
   @Nonnull
   public UpdateSession updateDirectories(@Nonnull final FilePath[] contentRoots,
-                                         final UpdatedFiles updatedFiles,
-                                         final ProgressIndicator progressIndicator, @Nonnull final Ref<SequentialUpdatesContext> context)
-    throws ProcessCanceledException {
+																			 final UpdatedFiles updatedFiles,
+																			 final ProgressIndicator progressIndicator, @Nonnull final Ref<SequentialUpdatesContext> context)
+    throws ProcessCanceledException
+  {
 
     if (context.isNull()) {
       context.set(new SvnUpdateContext(myVcs, contentRoots));
@@ -110,7 +111,8 @@ public abstract class AbstractSvnUpdateIntegrateEnvironment implements UpdateEnv
     return new MyUpdateSessionAdapter(contentRoots, updatedFiles, exceptions);
   }
 
-  private class MyUpdateSessionAdapter extends UpdateSessionAdapter {
+  private class MyUpdateSessionAdapter extends UpdateSessionAdapter
+  {
     private final FilePath[] myContentRoots;
     private final UpdatedFiles myUpdatedFiles;
     private final VcsDirtyScopeManager myDirtyScopeManager;
@@ -307,8 +309,8 @@ public abstract class AbstractSvnUpdateIntegrateEnvironment implements UpdateEnv
   }
 
   protected abstract AbstractUpdateIntegrateCrawler createCrawler(UpdateEventHandler eventHandler,
-                                                 boolean totalUpdate,
-                                                 ArrayList<VcsException> exceptions, UpdatedFiles updatedFiles);
+																  boolean totalUpdate,
+																  ArrayList<VcsException> exceptions, UpdatedFiles updatedFiles);
 
   @Nullable
   public abstract Configurable createConfigurable(Collection<FilePath> collection);

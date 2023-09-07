@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.progress.ProcessCanceledException;
+import consulo.component.ProcessCanceledException;
+import consulo.disposer.Disposable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -26,7 +26,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * Date: 8/15/12
  * Time: 3:03 PM
  */
-public abstract class QuicklyDisposableProxy<T> implements Disposable {
+public abstract class QuicklyDisposableProxy<T> implements Disposable
+{
   private final AtomicReference<T> myRef;
 
   protected QuicklyDisposableProxy(final T t) {

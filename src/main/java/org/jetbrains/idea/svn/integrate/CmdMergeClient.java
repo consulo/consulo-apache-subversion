@@ -1,6 +1,6 @@
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.vcs.VcsException;
+import consulo.versionControlSystem.VcsException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
@@ -27,7 +27,8 @@ public class CmdMergeClient extends BaseSvnClient implements MergeClient {
                     boolean dryRun,
                     boolean reintegrate,
                     @Nullable DiffOptions diffOptions,
-                    @Nullable ProgressTracker handler) throws VcsException {
+                    @Nullable ProgressTracker handler) throws VcsException
+  {
     assertUrl(source);
 
     List<String> parameters = new ArrayList<>();

@@ -15,26 +15,27 @@
  */
 package org.jetbrains.idea.svn.rollback;
 
-import com.intellij.openapi.util.Couple;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsKey;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ChangeList;
-import com.intellij.openapi.vcs.changes.EmptyChangelistBuilder;
-import com.intellij.openapi.vcs.changes.FilePathsHelper;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.vcsUtil.VcsUtil;
+import consulo.ide.impl.idea.openapi.vcs.changes.EmptyChangelistBuilder;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Couple;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsKey;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ChangeList;
+import consulo.versionControlSystem.change.FilePathsHelper;
+import consulo.versionControlSystem.util.VcsUtil;
+import consulo.virtualFileSystem.VirtualFile;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.io.File;
 import java.util.*;
 
 /**
 * @author Konstantin Kolosovsky.
 */
-public class UnversionedAndNotTouchedFilesGroupCollector extends EmptyChangelistBuilder {
+public class UnversionedAndNotTouchedFilesGroupCollector extends EmptyChangelistBuilder
+{
   private final List<Couple<File>> myToBeDeleted;
   private final Map<File, ThroughRenameInfo> myFromTo;
   // created by changes

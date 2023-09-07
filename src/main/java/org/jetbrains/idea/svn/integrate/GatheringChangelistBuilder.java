@@ -15,34 +15,29 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.VcsKey;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ChangeList;
-import com.intellij.openapi.vcs.changes.ChangesUtil;
-import com.intellij.openapi.vcs.changes.EmptyChangelistBuilder;
-import com.intellij.openapi.vcs.update.UpdatedFilesReverseSide;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.ide.impl.idea.openapi.vcs.changes.EmptyChangelistBuilder;
+import consulo.ide.impl.idea.openapi.vcs.update.UpdatedFilesReverseSide;
+import consulo.logging.Logger;
+import consulo.util.lang.Comparing;
+import consulo.versionControlSystem.FilePath;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.VcsKey;
+import consulo.versionControlSystem.change.Change;
+import consulo.versionControlSystem.change.ChangeList;
+import consulo.versionControlSystem.change.ChangesUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnPropertyKeys;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.properties.PropertyValue;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GatheringChangelistBuilder extends EmptyChangelistBuilder {
-
   private static final Logger LOG = Logger.getInstance(GatheringChangelistBuilder.class);
 
   @Nonnull
@@ -57,8 +52,8 @@ public class GatheringChangelistBuilder extends EmptyChangelistBuilder {
   public GatheringChangelistBuilder(@Nonnull SvnVcs vcs, @Nonnull UpdatedFilesReverseSide files) {
     myVcs = vcs;
     myFiles = files;
-    myChanges = ContainerUtil.newArrayList();
-    myCheckSet = ContainerUtil.newHashSet();
+    myChanges = new ArrayList<>();
+    myCheckSet = new HashSet<>();
   }
 
   public void processChange(final Change change, VcsKey vcsKey) {

@@ -15,13 +15,9 @@
  */
 package org.jetbrains.idea.svn;
 
+import consulo.application.util.SystemInfo;
+import consulo.util.xml.serializer.annotation.*;
 import org.jetbrains.idea.svn.api.Depth;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.util.xmlb.annotations.Attribute;
-import com.intellij.util.xmlb.annotations.OptionTag;
-import com.intellij.util.xmlb.annotations.Property;
-import com.intellij.util.xmlb.annotations.Tag;
-import com.intellij.util.xmlb.annotations.Text;
 
 /**
  * @author Konstantin Kolosovsky.

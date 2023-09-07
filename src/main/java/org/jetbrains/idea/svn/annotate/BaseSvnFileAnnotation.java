@@ -15,15 +15,16 @@
  */
 package org.jetbrains.idea.svn.annotate;
 
-import com.intellij.openapi.vcs.VcsKey;
-import com.intellij.openapi.vcs.annotate.*;
-import com.intellij.openapi.vcs.history.VcsFileRevision;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.text.DateFormatUtil;
-import com.intellij.xml.util.XmlStringUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.application.util.DateFormatUtil;
+import consulo.util.lang.xml.XmlStringUtil;
+import consulo.versionControlSystem.VcsKey;
+import consulo.versionControlSystem.annotate.AnnotationSource;
+import consulo.versionControlSystem.annotate.AnnotationSourceSwitcher;
+import consulo.versionControlSystem.annotate.FileAnnotation;
+import consulo.versionControlSystem.annotate.LineAnnotationAspect;
+import consulo.versionControlSystem.annotate.LineAnnotationAspectAdapter;
+import consulo.versionControlSystem.history.VcsFileRevision;
+import consulo.versionControlSystem.history.VcsRevisionNumber;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnRevisionNumber;
@@ -32,6 +33,8 @@ import org.jetbrains.idea.svn.checkin.CommitInfo;
 import org.jetbrains.idea.svn.history.SvnFileRevision;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -48,54 +51,58 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
   protected final SvnVcs myVcs;
   private final Map<Long, SvnFileRevision> myRevisionMap = new HashMap<>();
 
-  private final LineAnnotationAspect DATE_ASPECT = new SvnAnnotationAspect(LineAnnotationAspect.DATE, true) {
+  private final LineAnnotationAspect DATE_ASPECT =
+    new SvnAnnotationAspect(LineAnnotationAspect.DATE, true) {
 
-    @Override
-    public String getValue(@Nonnull CommitInfo info) {
-      return DateFormatUtil.formatPrettyDate(info.getDate());
-    }
-  };
+      @Override
+      public String getValue(@Nonnull CommitInfo info) {
+        return DateFormatUtil.formatPrettyDate(info.getDate());
+      }
+    };
 
-  private final LineAnnotationAspect REVISION_ASPECT = new SvnAnnotationAspect(LineAnnotationAspect.REVISION, false) {
+  private final LineAnnotationAspect REVISION_ASPECT =
+    new SvnAnnotationAspect(LineAnnotationAspect.REVISION, false) {
 
-    @Override
-    public String getValue(@Nonnull CommitInfo info) {
-      return String.valueOf(info.getRevision());
-    }
-  };
+      @Override
+      public String getValue(@Nonnull CommitInfo info) {
+        return String.valueOf(info.getRevision());
+      }
+    };
 
-  private final LineAnnotationAspect ORIGINAL_REVISION_ASPECT = new SvnAnnotationAspect(SvnBundle.message("annotation.original.revision"), false) {
-    @Override
-    public String getValue(int lineNumber) {
-      final long value = myInfos.originalRevision(lineNumber);
-      return (value == -1) ? "" : String.valueOf(value);
-    }
+  private final LineAnnotationAspect ORIGINAL_REVISION_ASPECT =
+    new SvnAnnotationAspect(SvnBundle.message("annotation.original.revision"), false) {
+      @Override
+      public String getValue(int lineNumber) {
+        final long value = myInfos.originalRevision(lineNumber);
+        return (value == -1) ? "" : String.valueOf(value);
+      }
 
-    @Override
-    protected long getRevision(int lineNum) {
-      return myInfos.originalRevision(lineNum);
-    }
+      @Override
+      protected long getRevision(int lineNum) {
+        return myInfos.originalRevision(lineNum);
+      }
 
-    @Override
-    public String getTooltipText(int lineNumber) {
-      // TODO: Check what is the difference in returning "" or null
-      if (!myInfos.isValid(lineNumber)) return "";
+      @Override
+      public String getTooltipText(int lineNumber) {
+        // TODO: Check what is the difference in returning "" or null
+        if (!myInfos.isValid(lineNumber)) return "";
 
-      CommitInfo info = myInfos.get(lineNumber);
-      if (info == null) return null;
+        CommitInfo info = myInfos.get(lineNumber);
+        if (info == null) return null;
 
-      SvnFileRevision revision = myRevisionMap.get(info.getRevision());
-      return revision != null ? XmlStringUtil.escapeString("Revision " + info.getRevision() + ": " + revision.getCommitMessage()) : "";
-    }
-  };
+        SvnFileRevision revision = myRevisionMap.get(info.getRevision());
+        return revision != null ? XmlStringUtil.escapeString("Revision " + info.getRevision() + ": " + revision.getCommitMessage()) : "";
+      }
+    };
 
-  private final LineAnnotationAspect AUTHOR_ASPECT = new SvnAnnotationAspect(LineAnnotationAspect.AUTHOR, true) {
+  private final LineAnnotationAspect AUTHOR_ASPECT =
+    new SvnAnnotationAspect(LineAnnotationAspect.AUTHOR, true) {
 
-    @Override
-    public String getValue(@Nonnull CommitInfo info) {
-      return info.getAuthor();
-    }
-  };
+      @Override
+      public String getValue(@Nonnull CommitInfo info) {
+        return info.getAuthor();
+      }
+    };
 
   private final SvnConfiguration myConfiguration;
   private boolean myShowMergeSources;
@@ -118,7 +125,9 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
     return myFirstRevisionNumber;
   }
 
-  public BaseSvnFileAnnotation(final SvnVcs vcs, final String contents, final VcsRevisionNumber baseRevision) {
+  public BaseSvnFileAnnotation(final SvnVcs vcs,
+                               final String contents,
+                               final VcsRevisionNumber baseRevision) {
     super(vcs.getProject());
     myVcs = vcs;
     myContents = contents;
@@ -177,7 +186,8 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
   public List<VcsFileRevision> getRevisions() {
     final List<VcsFileRevision> result = new ArrayList<>(myRevisionMap.values());
     Collections.sort(result, new Comparator<VcsFileRevision>() {
-      public int compare(final VcsFileRevision o1, final VcsFileRevision o2) {
+      public int compare(final VcsFileRevision o1,
+                         final VcsFileRevision o2) {
         return o2.getRevisionNumber().compareTo(o1.getRevisionNumber());
       }
     });
@@ -186,7 +196,7 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
 
   @Nullable
   public AnnotationSourceSwitcher getAnnotationSourceSwitcher() {
-    if (! myShowMergeSources) return null;
+    if (!myShowMergeSources) return null;
     return new AnnotationSourceSwitcher() {
       @Nonnull
       public AnnotationSource getAnnotationSource(int lineNumber) {
@@ -265,8 +275,8 @@ public abstract class BaseSvnFileAnnotation extends FileAnnotation {
     private int myMaxIdx;
 
     private MyPartiallyCreatedInfos() {
-      myMergeSourceInfos = ContainerUtil.newHashMap();
-      myMappedLineInfo = ContainerUtil.newHashMap();
+      myMergeSourceInfos = new HashMap<>();
+      myMappedLineInfo = new HashMap<>();
       myMaxIdx = 0;
     }
 

@@ -15,10 +15,10 @@
  */
 package org.jetbrains.idea.svn.svnkit.lowLevel;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.logging.Logger;
+import consulo.util.lang.StringUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

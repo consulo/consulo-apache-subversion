@@ -15,18 +15,16 @@
  */
 package org.jetbrains.idea.svn.history;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.FixedSizeButton;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.JBColor;
-import com.intellij.util.NotNullFunction;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import consulo.ide.impl.idea.util.NotNullFunction;
+import consulo.project.Project;
+import consulo.ui.ex.JBColor;
+import consulo.ui.ex.awt.FixedSizeButton;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.lang.Pair;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnUtil;
 import org.jetbrains.idea.svn.branchConfig.SelectBranchPopup;
@@ -37,10 +35,13 @@ import org.jetbrains.idea.svn.integrate.IntegratedSelectedOptionsDialog;
 import org.jetbrains.idea.svn.integrate.WorkingCopyInfo;
 import org.tmatesoft.svn.core.SVNURL;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,7 +78,7 @@ public class SvnMergeInfoRootPanelManual {
     myProject = project;
     myRefresher = refresher;
     myListener = listener;
-    myBranchToLocal = ContainerUtil.newHashMap();
+    myBranchToLocal = new HashMap<>();
 
     init();
     myInclude.setVisible(!onlyOneRoot);
@@ -239,7 +240,7 @@ public class SvnMergeInfoRootPanelManual {
     myBranchField.setText(branch.getName());
 
     if (!initSelectedBranch(branch)) {
-      myInfo = myRefresher.fun(myInfo);
+      myInfo = myRefresher.apply(myInfo);
       initSelectedBranch(branch);
     }
   }

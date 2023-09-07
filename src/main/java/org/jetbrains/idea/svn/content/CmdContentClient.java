@@ -1,13 +1,10 @@
 package org.jetbrains.idea.svn.content;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.impl.ContentRevisionCache;
-import com.intellij.util.ArrayUtil;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.logging.Logger;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.lang.StringUtil;
+import consulo.versionControlSystem.VcsException;
+import consulo.versionControlSystem.change.ContentRevisionCache;
 import org.jetbrains.idea.svn.api.BaseSvnClient;
 import org.jetbrains.idea.svn.commandLine.CommandExecutor;
 import org.jetbrains.idea.svn.commandLine.CommandUtil;
@@ -16,6 +13,8 @@ import org.jetbrains.idea.svn.commandLine.SvnCommandName;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc2.SvnTarget;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 

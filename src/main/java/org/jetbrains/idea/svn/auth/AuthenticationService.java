@@ -15,22 +15,24 @@
  */
 package org.jetbrains.idea.svn.auth;
 
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.popup.util.PopupUtil;
-import com.intellij.openapi.util.Getter;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.WaitForProgressToShow;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.net.HttpConfigurable;
-import com.intellij.util.net.IdeHttpClientHelpers;
-import com.intellij.util.net.ssl.CertificateManager;
-import com.intellij.util.proxy.CommonProxy;
+import consulo.application.Application;
+import consulo.application.util.TempFileService;
+import consulo.application.util.registry.Registry;
+import consulo.http.CertificateManager;
+import consulo.http.HttpProxyManager;
+import consulo.http.IdeHttpClientHelpers;
+import consulo.http.impl.internal.proxy.CommonProxy;
+import consulo.ide.impl.idea.openapi.util.Getter;
+import consulo.logging.Logger;
+import consulo.project.util.WaitForProgressToShow;
+import consulo.ui.NotificationType;
+import consulo.ui.ex.awt.util.PopupUtil;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.FilePermissionCopier;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.ref.Ref;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
@@ -38,8 +40,6 @@ import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
-import javax.annotation.Nonnull;
-
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;
@@ -49,6 +49,7 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.auth.SVNAuthentication;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
@@ -57,10 +58,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.security.KeyManagementException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -83,7 +81,7 @@ public class AuthenticationService {
     myVcs = vcs;
     myIsActive = isActive;
     myConfiguration = SvnConfiguration.getInstance(myVcs.getProject());
-    myRequestedCredentials = ContainerUtil.newHashSet();
+    myRequestedCredentials = new HashSet<>();
   }
 
   @Nonnull
@@ -176,7 +174,7 @@ public class AuthenticationService {
 
         // Use ModalityState.any() as currently ssh credentials in terminal mode are requested in the thread that reads output and not in
         // the thread that started progress
-        WaitForProgressToShow.runOrInvokeAndWaitAboveProgress(command, ModalityState.any());
+        WaitForProgressToShow.runOrInvokeAndWaitAboveProgress(command, Application.get().getAnyModalityState());
 
         return answer.get();
       }
@@ -296,11 +294,12 @@ public class AuthenticationService {
 
   @Nonnull
   private SSLContext createSslContext(@Nonnull SVNURL url) {
-    SSLContext result = CertificateManager.getSystemSslContext();
+    CertificateManager certificateManager = CertificateManager.getInstance();
+    SSLContext result = certificateManager.getSystemSslContext();
     TrustManager trustManager = new CertificateTrustManager(this, url);
 
     try {
-      result.init(CertificateManager.getDefaultKeyManagers(), new TrustManager[]{trustManager}, null);
+      result.init(certificateManager.getDefaultKeyManagers(), new TrustManager[]{trustManager}, null);
     }
     catch (KeyManagementException e) {
       LOG.error(e);
@@ -329,9 +328,9 @@ public class AuthenticationService {
 
   // TODO: rename
   public boolean haveDataForTmpConfig() {
-    final HttpConfigurable instance = HttpConfigurable.getInstance();
+    final HttpProxyManager instance = HttpProxyManager.getInstance();
     return SvnConfiguration.getInstance(myVcs.getProject()).isIsUseDefaultProxy() &&
-           (instance.USE_HTTP_PROXY || instance.USE_PROXY_PAC);
+           (instance.isHttpProxyEnabled() || instance.isPacProxyEnabled());
   }
 
   @Nullable
@@ -346,10 +345,11 @@ public class AuthenticationService {
     // from SVNKit code flows.
     CommonProxy.getInstance().removeNoProxy(url.getProtocol(), url.getHost(), url.getPort());
 
+    HttpProxyManager httpProxyManager = HttpProxyManager.getInstance();
     final List<Proxy> proxies = CommonProxy.getInstance().select(URI.create(url.toString()));
     if (proxies != null && !proxies.isEmpty()) {
       for (Proxy proxy : proxies) {
-        if (HttpConfigurable.isRealProxy(proxy) && Proxy.Type.HTTP.equals(proxy.type())) {
+        if (httpProxyManager.isRealProxy(proxy) && Proxy.Type.HTTP.equals(proxy.type())) {
           return proxy;
         }
       }
@@ -376,12 +376,12 @@ public class AuthenticationService {
   }
 
   private static void showFailedAuthenticateProxy() {
-    HttpConfigurable instance = HttpConfigurable.getInstance();
-    String message = instance.USE_HTTP_PROXY || instance.USE_PROXY_PAC
+    HttpProxyManager instance = HttpProxyManager.getInstance();
+    String message = instance.isHttpProxyEnabled() || instance.isPacProxyEnabled()
                      ? "Failed to authenticate to proxy. You can change proxy credentials in HTTP proxy settings."
                      : "Failed to authenticate to proxy.";
 
-    PopupUtil.showBalloonForActiveComponent(message, MessageType.ERROR);
+    PopupUtil.showBalloonForActiveComponent(message, NotificationType.ERROR);
   }
 
   @Nullable
@@ -431,8 +431,10 @@ public class AuthenticationService {
 
   public void initTmpDir(SvnConfiguration configuration) throws IOException {
     if (myTempDirectory == null) {
-      myTempDirectory = FileUtil.createTempDirectory("tmp", "Subversion");
-      FileUtil.copyDir(new File(configuration.getConfigurationDirectory()), myTempDirectory);
+      TempFileService tempFileService = Application.get().getInstance(TempFileService.class);
+
+      myTempDirectory = tempFileService.createTempDirectory("tmp", "Subversion").toFile();
+      FileUtil.copyDir(new File(configuration.getConfigurationDirectory()), myTempDirectory, FilePermissionCopier.BY_NIO2);
     }
   }
 }

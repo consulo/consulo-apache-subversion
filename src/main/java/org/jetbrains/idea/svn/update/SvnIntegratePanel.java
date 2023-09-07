@@ -15,8 +15,8 @@
  */
 package org.jetbrains.idea.svn.update;
 
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.vcs.FilePath;
+import consulo.configurable.ConfigurationException;
+import consulo.versionControlSystem.FilePath;
 import org.jetbrains.idea.svn.DepthCombo;
 import org.jetbrains.idea.svn.SvnConfiguration;
 import org.jetbrains.idea.svn.SvnVcs;

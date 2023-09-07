@@ -15,11 +15,11 @@
  */
 package org.jetbrains.idea.svn.integrate;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.util.io.DataExternalizer;
-import com.intellij.util.io.EnumeratorStringDescriptor;
 import consulo.container.boot.ContainerPathManager;
+import consulo.index.io.EnumeratorStringDescriptor;
+import consulo.index.io.data.DataExternalizer;
+import consulo.logging.Logger;
+import consulo.versionControlSystem.VcsException;
 import org.jetbrains.idea.svn.SmallMapSerializer;
 import org.jetbrains.idea.svn.SvnVcs;
 import org.jetbrains.idea.svn.history.CopyData;
@@ -35,8 +35,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
-
-import static com.intellij.util.containers.ContainerUtil.newTreeMap;
 
 public class SvnBranchPointsCalculator {
 
@@ -94,7 +92,7 @@ public class SvnBranchPointsCalculator {
     synchronized (myPersistenceLock) {
       TreeMap<String, BranchCopyData> map = myPersistentMap.get(repoUrl);
       if (map == null) {
-        map = newTreeMap();
+        map = new TreeMap<>();
       }
       map.put(data.getTarget(), data);
       myPersistentMap.put(repoUrl, map);
@@ -126,7 +124,7 @@ public class SvnBranchPointsCalculator {
 
     @Nonnull
     public TreeMap<String, BranchCopyData> read(@Nonnull DataInput in) throws IOException {
-      TreeMap<String, BranchCopyData> result = newTreeMap();
+      TreeMap<String, BranchCopyData> result = new TreeMap<>();
       int size = in.readInt();
 
       for (int i = 0; i < size; i++) {
