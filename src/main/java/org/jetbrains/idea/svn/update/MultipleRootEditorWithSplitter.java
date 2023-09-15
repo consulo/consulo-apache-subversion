@@ -15,15 +15,15 @@
  */
 package org.jetbrains.idea.svn.update;
 
+import consulo.ide.impl.idea.util.ui.AdjustComponentWhenShown;
 import consulo.project.Project;
+import consulo.ui.ex.SimpleTextAttributes;
 import consulo.ui.ex.awt.*;
 import consulo.versionControlSystem.FilePath;
-import consulo.versionControlSystem.internal.VcsPathPresenter;
-import consulo.ui.ex.SimpleTextAttributes;
-import consulo.ide.impl.idea.util.ui.AdjustComponentWhenShown;
+import consulo.versionControlSystem.VcsPathPresenter;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;

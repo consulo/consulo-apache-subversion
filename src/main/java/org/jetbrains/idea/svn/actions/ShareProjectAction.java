@@ -15,7 +15,7 @@
  */
 package org.jetbrains.idea.svn.actions;
 
-import consulo.application.impl.internal.ApplicationNamesInfo;
+import consulo.application.Application;
 import consulo.application.progress.ProgressIndicator;
 import consulo.application.progress.ProgressManager;
 import consulo.dataContext.DataContext;
@@ -233,7 +233,7 @@ public class ShareProjectAction extends BasicAction {
     }
 
     String message =
-      SvnBundle.message("share.directory.commit.message", folderName, ApplicationNamesInfo.getInstance().getFullProductName(), commitText);
+      SvnBundle.message("share.directory.commit.message", folderName, Application.get().getName(), commitText);
     SvnTarget target = SvnTarget.fromURL(url);
     long revision = vcs.getFactoryFromSettings().createBrowseClient().createDirectory(target, message, false);
 

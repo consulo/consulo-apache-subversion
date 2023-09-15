@@ -18,7 +18,7 @@ package org.jetbrains.idea.svn.commandLine;
 import consulo.process.ProcessOutputTypes;
 import consulo.process.event.ProcessEvent;
 import consulo.process.io.BaseOutputReader;
-import consulo.process.local.CapturingProcessAdapter;
+import consulo.process.util.CapturingProcessAdapter;
 import consulo.util.collection.Lists;
 import consulo.util.dataholder.Key;
 import consulo.util.lang.StringUtil;

@@ -25,8 +25,7 @@ import consulo.ide.impl.idea.openapi.vcs.ex.ProjectLevelVcsManagerEx;
 import consulo.ide.impl.idea.openapi.vcs.update.RestoreUpdateTree;
 import consulo.ide.impl.idea.openapi.vcs.update.UpdatedFilesReverseSide;
 import consulo.project.Project;
-import consulo.project.ProjectManager;
-import consulo.project.internal.ProjectManagerEx;
+import consulo.project.StoreReloadManager;
 import consulo.project.ui.notification.NotificationType;
 import consulo.ui.ex.awt.Messages;
 import consulo.util.collection.ContainerUtil;
@@ -107,7 +106,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
     myHandler.setProgressIndicator(ProgressManager.getInstance().getProgressIndicator());
     myResolveWorker = new ResolveWorker(myInfo.isUnderProjectRoot(), (Project)myProject);
 
-    ProjectManagerEx.getInstanceEx().blockReloadingProjectOnExternalChanges();
+    StoreReloadManager.getInstance((Project)myProject).blockReloadingProjectOnExternalChanges();
     myProjectLevelVcsManager.startBackgroundVcsOperation();
 
     try {
@@ -179,7 +178,7 @@ public class SvnIntegrateChangesTask extends Task.Backgroundable {
         afterExecution(wasCancelled);
       }
       finally {
-        ProjectManager.getInstanceEx().unblockReloadingProjectOnExternalChanges();
+        StoreReloadManager.getInstance((Project)myProject).unblockReloadingProjectOnExternalChanges();
       }
     });
   }

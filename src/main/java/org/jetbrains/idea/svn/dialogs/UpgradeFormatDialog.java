@@ -15,19 +15,19 @@
  */
 package org.jetbrains.idea.svn.dialogs;
 
-import consulo.application.impl.internal.ApplicationNamesInfo;
+import consulo.application.Application;
 import consulo.ide.impl.idea.ui.components.JBLoadingPanel;
-import consulo.ui.ex.awt.JBUI;
 import consulo.project.Project;
 import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.JBUI;
 import consulo.ui.ex.awt.internal.laf.MultiLineLabelUI;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.idea.svn.SvnBundle;
 import org.jetbrains.idea.svn.WorkingCopyFormat;
 import org.tmatesoft.svn.core.internal.wc.SVNFileUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -35,8 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UpgradeFormatDialog extends DialogWrapper
-{
+public class UpgradeFormatDialog extends DialogWrapper {
 
   private ButtonGroup formatGroup = new ButtonGroup();
   private List<JRadioButton> formatButtons = new ArrayList<>();
@@ -103,7 +102,7 @@ public class UpgradeFormatDialog extends DialogWrapper
   }
 
   protected String getTopMessage(final String label) {
-    return SvnBundle.message("label.configure." + label + ".label", ApplicationNamesInfo.getInstance().getFullProductName());
+    return SvnBundle.message("label.configure." + label + ".label", Application.get().getName().get());
   }
 
   @Nullable

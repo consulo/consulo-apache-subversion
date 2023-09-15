@@ -17,7 +17,7 @@
 
 package org.jetbrains.idea.svn;
 
-import consulo.application.impl.internal.ApplicationNamesInfo;
+import consulo.application.Application;
 import consulo.application.util.SystemInfo;
 import consulo.configurable.Configurable;
 import consulo.configurable.ConfigurationException;
@@ -136,7 +136,7 @@ public class SvnConfigurable implements Configurable {
 
     myConfigurationDirectoryLabel.setLabelFor(myConfigurationDirectoryText);
 
-    myUseCommonProxy.setText(SvnBundle.message("use.idea.proxy.as.default", ApplicationNamesInfo.getInstance().getProductName()));
+    myUseCommonProxy.setText(SvnBundle.message("use.idea.proxy.as.default", Application.get().getName()));
     myNavigateToCommonProxyLink.setListener(new LinkListener<Object>() {
       @Override
       public void linkSelected(LinkLabel aSource, Object aLinkData) {

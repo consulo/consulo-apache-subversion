@@ -17,7 +17,7 @@ package org.jetbrains.idea.svn.info;
 
 import consulo.logging.Logger;
 import consulo.process.ProcessOutputTypes;
-import consulo.process.local.ProcessOutput;
+import consulo.process.util.ProcessOutput;
 import consulo.util.collection.ContainerUtil;
 import consulo.util.dataholder.Key;
 import consulo.util.io.CharsetToolkit;
